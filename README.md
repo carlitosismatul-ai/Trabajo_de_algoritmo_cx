@@ -1,5 +1,5 @@
 ## Glosario 
-<br> <h4>IA: Rama de la computación que desarrolla sistemas capaces de aprender, analizar información y tomar decisiones de manera automática. </br></h4>
+<br> IA: Rama de la computación que desarrolla sistemas capaces de aprender, analizar información y tomar decisiones de manera automática. </br>
  <br>Computo: Proceso mediante el cual una computadora realiza cálculos y operaciones para transformar datos en información útil. </br>
 <br>Nube: Tecnología que permite almacenar y procesar información a través de internet sin depender de un solo equipo físico. </br>
 <br>Sotfware: Conjunto de programas y aplicaciones que indican a la computadora cómo funcionar y qué tareas realizar. </br>
