@@ -14,8 +14,10 @@ REGLAS
 
 QUE USAREMOS? 
   
-  • lenguaje de progra:
-  • github como comunicacion 
+  • lenguaje de progra: 
+  
+  • github como comunicacion
+  
   • office osea word, paint, etc cx
 
   OBJETIVO
