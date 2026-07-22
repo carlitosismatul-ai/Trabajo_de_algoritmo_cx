@@ -9,7 +9,9 @@ INTEGRANTES
 REGLAS
 
   • cada integrante debera realizar un commit changes con su cuenta de github antes de modificar o quitar algo al archivo de tds modos tienen que avisar al equipo por cualquier cambio q hagan cx
+  
   • porfavor de no borrar cosas q coloquen los demas integrantes cx
+  
   • cada cosa q cambien pongan un comentario de que es lo que cambiaron cx
 
 QUE USAREMOS? 
