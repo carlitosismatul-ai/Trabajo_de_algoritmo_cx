@@ -5,7 +5,7 @@ INTEGRANTES
 - Helen Nohemi Mateo Herrera 
 - Kally Yajaira Mazariegos reynoso 
 - Cristhian Fernando Santos Alvarez
--Miguel Neftaly Sambrano Velásco
+- Miguel Neftaly Sambrano Velásco
 REGLAS
 
   • cada integrante debera realizar un commit changes con su cuenta de github antes de modificar o quitar algo al archivo de tds modos tienen que avisar al equipo por cualquier cambio q hagan cx
