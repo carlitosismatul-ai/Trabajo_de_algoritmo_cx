@@ -1,18 +1,62 @@
-body
+/*==========================
+    GOOGLE FONT & RESET
+==========================*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+* 
 {
     margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html 
+{
+    scroll-behavior: smooth;
+}
+
+:root 
+{
+    --verde-principal: #2E7D32;
+    --verde-claro: #4CAF50;
+    --verde-oscuro: #1B5E20;
+    --verde-fondo: #f4faf4;
+    --texto-oscuro: #2d3436;
+    --texto-claro: #636e72;
+    --blanco: #ffffff;
+    --sombra: 0 10px 30px rgba(0,0,0,0.08);
+    --sombra-hover: 0 15px 40px rgba(46, 125, 50, 0.2);
+    --transicion: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body 
+{
+    background: var(--verde-fondo);
+    color: var(--texto-oscuro);
+    overflow-x: hidden;
 }
 
 
-#titulo
+header 
 {
-    color: red;
-    font-size: 60px;
-    font-family: Arial, sans-serif;
-    transition: transform 0.3s;
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(27, 94, 32, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 1000;
+    transition: var(--transicion);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+header.scrolled 
+{
+    background: rgba(27, 94, 32, 0.95);
+    padding: 15px 8%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
