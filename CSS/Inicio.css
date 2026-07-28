@@ -1,0 +1,18 @@
+body
+{
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+
+#titulo
+{
+    color: red;
+    font-size: 60px;
+    font-family: Arial, sans-serif;
+    transition: transform 0.3s;
+}
