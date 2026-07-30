@@ -16,7 +16,7 @@ REGLAS
 
 QUE USAREMOS? 
   
-  • lenguaje de progra:  phyton
+  • lenguaje de progra:  phyton, javascrip y css (se agregaran más si es necesario) 
   
   • github como comunicacion
   
