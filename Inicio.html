@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <!-- Pantalla de Carga Inicial -->
+
     <div id="loader" class="loader-container">
         <div class="loader">
             <i class="fa-solid fa-seedling loader-icon"></i>
@@ -18,36 +18,94 @@
         </div>
     </div>
 
+
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajustes del Sistema</h2>
+                <i class="fa-solid fa-xmark close-modal" id="closeSettings"></i>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Tema Oscuro</label>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Sonido</label>
+                    <label class="switch">
+                        <input type="checkbox" id="soundToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Fuente de Letra</label>
+                    <select id="fontSelect" class="form-select">
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Tamaño de Letra</label>
+                    <div class="size-controls">
+                        <button id="btnSizeSmall" class="btn-size">A-</button>
+                        <button id="btnSizeNormal" class="btn-size active">A</button>
+                        <button id="btnSizeLarge" class="btn-size">A+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="youtube-player-container" style="display:none;"></div>
+
     <div class="dashboard-container">
-        <!-- Sidebar -->
+
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <i class="fa-solid fa-leaf logo-icon"></i>
-                <center><h2>HarvestX<br><span>+1000 LAURA</span></h2></center>
-                <i class="fa-solid fa-xmark close-sidebar" id="closeSidebar"></i>
+                <div class="logo-wrapper">
+                    <i class="fa-solid fa-leaf logo-icon"></i>
+                    <div class="logo-text">
+                        <h2>HarvestX</h2>
+                        <span>+1000 LAURA</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-xmark close-sidebar-mobile" id="closeSidebarMobile"></i>
             </div>
             
             <nav class="sidebar-nav">
-                <a href="inicio.html" class="nav-link active"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-droplet"></i> Programación de Riego</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-temperature-half"></i> Tiempo de Cosecha</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-user-tie"></i> Consejo para Agricultores</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-mound"></i> Estado del Suelo</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Gestión de Cultivos</a>
+                <a href="#" class="nav-link active"><i class="fa-solid fa-house"></i> <span class="nav-text">Dashboard</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-droplet"></i> <span class="nav-text">Programación de Riego</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-temperature-half"></i> <span class="nav-text">Tiempo de Cosecha</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-user-tie"></i> <span class="nav-text">Consejo para Agricultores</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-mound"></i> <span class="nav-text">Estado del Suelo</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> <span class="nav-text">Gestión de Cultivos</span></a>
             </nav>
 
             <div class="sidebar-footer">
-                <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
-                <a href="login.html" class="nav-link logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+                <a href="#" class="nav-link" id="openSettings"><i class="fa-solid fa-gear"></i> <span class="nav-text">Configuración</span></a>
+                <a href="./login.html" class="nav-link logout"><i class="fa-solid fa-right-from-bracket"></i> <span class="nav-text">Cerrar Sesión</span></a>
             </div>
         </aside>
 
-        <!-- Contenido Principal -->
-        <main class="main-content">
-            <!-- Topbar -->
+
+        <main class="main-content" id="mainContent">
+
             <header class="topbar">
-                <div class="menu-toggle" id="menuToggle">
-                    <i class="fa-solid fa-bars"></i>
+                <div class="left-controls">
+
+                    <div class="menu-toggle-desktop" id="toggleSidebarDesktop">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </div>
+
+                    <div class="menu-toggle-mobile" id="menuToggleMobile">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
                 </div>
                 
                 <div class="header-title">
@@ -73,10 +131,9 @@
                 </div>
             </header>
 
-            <!-- Contenido Dashboard -->
+
             <section class="content-grid">
-                
-                <!-- Tarjetas de Resumen Rápido -->
+
                 <div class="stats-grid fade-up delay-1">
                     <div class="stat-card">
                         <div class="stat-icon bg-blue text-blue"><i class="fa-solid fa-droplet"></i></div>
@@ -111,10 +168,9 @@
                     </div>
                 </div>
 
-                <!-- Columnas Principales del Dashboard -->
+
                 <div class="main-columns">
-                    
-                    <!-- Columna Izquierda: Estado de Cultivos -->
+
                     <div class="column-left fade-up delay-2">
                         <div class="card">
                             <div class="card-header">
@@ -138,31 +194,13 @@
                                         <h4>Sector B - Maíz</h4>
                                         <div class="progress-bar"><div class="progress" style="width: 50%; background: #fbc02d;"></div></div>
                                     </div>
-                                    <span class="crop-status text-yellow">Riego Requerido</span>
-                                </div>
-
-                                <div class="crop-item">
-                                    <div class="crop-icon"><i class="fa-solid fa-carrot text-orange"></i></div>
-                                    <div class="crop-details">
-                                        <h4>Sector C - Zanahoria</h4>
-                                        <div class="progress-bar"><div class="progress" style="width: 95%; background: #4CAF50;"></div></div>
-                                    </div>
-                                    <span class="crop-status text-green">Listo Cosecha</span>
+                                    <span class="crop-status text-yellow">Riego Req.</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Banner Rápido de Acción -->
-                        <div class="quick-action-card mt-20 fade-up delay-3">
-                            <div class="qa-content">
-                                <h3>¿Necesitas asesoría técnica?</h3>
-                                <p>Revisa el módulo inteligente de Consejos y Poda para tu finca.</p>
-                            </div>
-                            <button class="btn-action">Ir al módulo <i class="fa-solid fa-arrow-right"></i></button>
                         </div>
                     </div>
 
-                    <!-- Columna Derecha: Clima y Actividad -->
+
                     <div class="column-right fade-up delay-3">
                         <div class="card weather-card">
                             <div class="weather-header">
@@ -178,31 +216,12 @@
                                 <div><i class="fa-solid fa-droplet"></i> 45% hum.</div>
                             </div>
                         </div>
-
-                        <div class="card mt-20">
-                            <h3>Próximas Actividades</h3>
-                            <ul class="activity-list">
-                                <li>
-                                    <span class="time">08:00 AM</span>
-                                    <p><strong>Riego automático</strong> - Sector Tomates</p>
-                                </li>
-                                <li>
-                                    <span class="time">11:30 AM</span>
-                                    <p><strong>Medición de pH</strong> - Sector Maíz</p>
-                                </li>
-                                <li>
-                                    <span class="time">04:00 PM</span>
-                                    <p><strong>Revisión de plagas</strong> - Invernadero 2</p>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
-
             </section>
         </main>
     </div>
-
+    
     <script src="JS/inicio.js"></script>
 </body>
 </html>
