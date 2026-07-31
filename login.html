@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosecha</title>
+    <link rel="stylesheet" href="CSS/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+    <header id="header">
+        <div class="logo">
+            <i class="fa-solid fa-seedling"></i>
+            <center>
+                <div>
+                <h2>HarvestX</h2>
+                <span>+1000 LAURA</span>
+            </div>
+            </center>
+            <i class="fa-solid fa-leaf"></i>
+        </div>
+
+        <nav id="navbar">
+            <a href="#">Inicio</a>
+            <a href="#seccion-cards">Servicios</a>
+            <a href="#">Cultivos</a>
+            <a href="#">Contacto</a>
+            
+            <button id="btnLogin" class="btn-primary">
+                <i class="fa-solid fa-user"></i> Iniciar sesión
+            </button>
+        </nav>
+
+        <i class="fa-solid fa-bars menu-icon" id="menu-icon"></i>
+    </header>
+
+    <section class="hero">
+        <div class="overlay"></div>
+        <div class="contenido">
+            <div class="texto">
+                <h1 class="fade-in">Monitorea tus cultivos con precisión</h1>
+                <p class="fade-in">
+                    Optimiza el riego, controla la humedad, administra tus plantas y mejora la producción desde cualquier dispositivo.
+                </p>
+                <div class="botones fade-in">
+                    <button id="abrirLogin" class="btn-primary">
+                        <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+                    </button>
+                    <button class="secundario" id="btnSaberMas">Saber más</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cards-section" id="seccion-cards">
+        <div class="section-title fade-up">
+            <h2>Nuestras Soluciones</h2>
+            <p>Tecnología de punta al servicio del campo</p>
+        </div>
+        
+        <div class="cards">
+            <div class="card fade-up">
+                <div class="icon-wrapper"><i class="fa-solid fa-droplet"></i></div>
+                <h3>Riego Inteligente</h3>
+                <p>Control del agua en tiempo real para optimizar cada gota.</p>
+            </div>
+            <div class="card fade-up delay-1">
+                <div class="icon-wrapper"><i class="fa-solid fa-temperature-half"></i></div>
+                <h3>Clima y Suelo</h3>
+                <p>Sensores avanzados para monitorear temperatura y humedad.</p>
+            </div>
+            <div class="card fade-up delay-2">
+                <div class="icon-wrapper"><i class="fa-solid fa-leaf"></i></div>
+                <h3>Cultivos</h3>
+                <p>Seguimiento detallado del crecimiento y salud de las plantas.</p>
+            </div>
+            <div class="card fade-up delay-3">
+                <div class="icon-wrapper"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Estadísticas</h3>
+                <p>Reportes automáticos y análisis predictivo de tu cosecha.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+
+    </section>
+
+    <div class="modal" id="modal">
+        <div class="login">
+            <span class="cerrar" id="cerrar">&times;</span>
+            <div class="login-header">
+                <i class="fa-solid fa-seedling"></i>
+                <h2>Bienvenido</h2>
+                <p>Inicia sesión para continuar</p>
+            </div>
+            
+            <div class="grupo">
+                <label>Usuario</label>
+                <div class="input-container">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="usuario" placeholder="Ingrese su usuario">
+                </div>
+            </div>
+
+            <div class="grupo">
+                <label>Contraseña</label>
+                <div class="input-container">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña">
+                </div>
+            </div>
+
+            <span id="mensaje-error" class="mensaje-error"></span>
+
+            <button id="ingresar" class="btn-primary w-100">Ingresar</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fa-solid fa-seedling"></i>
+                <h3>Cosecha Inteligente</h3>
+            </div>
+            <p>Impulsando la agricultura del futuro mediante tecnología, datos y sustentabilidad.</p>
+            <div class="redes">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/carlitosismatul-ai/Trabajo_de_algoritmo_cx"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="JS/login.js"></script>
+</body>
+</html>
