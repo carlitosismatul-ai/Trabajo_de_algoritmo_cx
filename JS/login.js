@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ingresar.disabled = true;
 
             setTimeout(() => {
-                window.location.href = "Dashboard.html";
+                window.location.href = "inicio.html";
             }, 1200);
         } else {
             mostrarError("Usuario o contraseña incorrectos.");
