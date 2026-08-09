@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosecha</title>
+    <title>CosechaX</title>
     <link rel="stylesheet" href="CSS/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
@@ -83,38 +83,82 @@
         </div>
     </section>
 
-    <section>
-
-    </section>
-
     <div class="modal" id="modal">
-        <div class="login">
+
+        <div class="login" id="modal-container">
             <span class="cerrar" id="cerrar">&times;</span>
-            <div class="login-header">
-                <i class="fa-solid fa-seedling"></i>
-                <h2>Bienvenido</h2>
-                <p>Inicia sesión para continuar</p>
+            
+             <div id="vista-perfiles" class="vista-activa">
+                <div class="login-header">
+                    <h2>Selecciona tu perfil</h2>
+                    <p>Elige tu rol para ingresar al sistema</p>
+                </div>
+                
+                <div class="perfiles-grid">
+                    <div class="perfil-item" data-perfil="Administrador">
+                        <div class="perfil-img">
+ 
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Administrador">
+                        </div>
+                        <span>Administrador</span>
+                    </div>
+                    <div class="perfil-item" data-perfil="Agricultor">
+                        <div class="perfil-img">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3060/3060233.png" alt="Agricultor">
+                        </div>
+                        <span>Agricultor</span>
+                    </div>
+                    <div class="perfil-item" data-perfil="Técnico Agrícola">
+                        <div class="perfil-img">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2942/2942821.png" alt="Técnico">
+                        </div>
+                        <span>Técnico Agrícola</span>
+                    </div>
+                    <div class="perfil-item" data-perfil="Supervisor">
+                        <div class="perfil-img">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2065/2065064.png" alt="Supervisor">
+                        </div>
+                        <span>Supervisor</span>
+                    </div>
+                    <div class="perfil-item" data-perfil="Invitado">
+                        <div class="perfil-img">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2550/2550260.png" alt="Invitado">
+                        </div>
+                        <span>Invitado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="vista-login" class="vista-oculta">
+                <button id="btn-volver" class="btn-volver"><i class="fa-solid fa-arrow-left"></i></button>
+                
+                <div class="login-header">
+                    <i class="fa-solid fa-seedling"></i>
+                    <h2>Bienvenido</h2>
+                    <p>Iniciando sesión como: <strong id="texto-perfil-seleccionado" style="color: var(--verde-claro);"></strong></p>
+                </div>
+                
+                <div class="grupo">
+                    <label>Usuario</label>
+                    <div class="input-container">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="usuario" placeholder="Ingrese su usuario">
+                    </div>
+                </div>
+
+                <div class="grupo">
+                    <label>Contraseña</label>
+                    <div class="input-container">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="Ingrese su contraseña">
+                    </div>
+                </div>
+
+                <span id="mensaje-error" class="mensaje-error"></span>
+
+                <button id="ingresar" class="btn-primary w-100">Ingresar</button>
             </div>
             
-            <div class="grupo">
-                <label>Usuario</label>
-                <div class="input-container">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="usuario" placeholder="Ingrese su usuario">
-                </div>
-            </div>
-
-            <div class="grupo">
-                <label>Contraseña</label>
-                <div class="input-container">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" placeholder="Ingrese su contraseña">
-                </div>
-            </div>
-
-            <span id="mensaje-error" class="mensaje-error"></span>
-
-            <button id="ingresar" class="btn-primary w-100">Ingresar</button>
         </div>
     </div>
 
