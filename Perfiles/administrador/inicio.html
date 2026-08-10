@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="administrador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+
+    <div id="loader" class="loader-container">
+        <div class="loader">
+            <i class="fa-solid fa-seedling loader-icon"></i>
+            <div class="spinner"></div>
+            <p>Cargando tu cosecha...</p>
+        </div>
+    </div>
+
+
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajustes del Sistema</h2>
+                <i class="fa-solid fa-xmark close-modal" id="closeSettings"></i>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Tema Oscuro</label>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Sonido</label>
+                    <label class="switch">
+                        <input type="checkbox" id="soundToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Fuente de Letra</label>
+                    <select id="fontSelect" class="form-select">
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Tamaño de Letra</label>
+                    <div class="size-controls">
+                        <button id="btnSizeSmall" class="btn-size">A-</button>
+                        <button id="btnSizeNormal" class="btn-size active">A</button>
+                        <button id="btnSizeLarge" class="btn-size">A+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="youtube-player-container" style="display:none;"></div>
+
+    <div class="dashboard-container">
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <i class="fa-solid fa-leaf logo-icon"></i>
+                    <div class="logo-text">
+                        <h2>HarvestX</h2>
+                        <span>+1000 LAURA</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-xmark close-sidebar-mobile" id="closeSidebarMobile"></i>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active"><i class="fa-solid fa-house"></i> <span class="nav-text">Dashboard</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-droplet"></i> <span class="nav-text">Programación de Riego</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-temperature-half"></i> <span class="nav-text">Tiempo de Cosecha</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-user-tie"></i> <span class="nav-text">Consejo para Agricultores</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-mound"></i> <span class="nav-text">Estado del Suelo</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> <span class="nav-text">Gestión de Cultivos</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-link" id="openSettings"><i class="fa-solid fa-gear"></i> <span class="nav-text">Configuración</span></a>
+                <a href="../../login.html" class="nav-link logout"><i class="fa-solid fa-right-from-bracket"></i> <span class="nav-text">Cerrar Sesión</span></a>
+            </div>
+        </aside>
+
+
+        <main class="main-content" id="mainContent">
+
+            <header class="topbar">
+                <div class="left-controls">
+
+                    <div class="menu-toggle-desktop" id="toggleSidebarDesktop">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </div>
+
+                    <div class="menu-toggle-mobile" id="menuToggleMobile">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                </div>
+                
+                <div class="header-title">
+                    <div class="icon-title"><i class="fa-solid fa-chart-line"></i></div>
+                    <div>
+                        <h1>Dashboard General</h1>
+                        <p>Resumen en tiempo real del estado de tu finca y cultivos.</p>
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="profile">
+                        <i class="fa-solid fa-circle-user avatar-icon"></i>
+                        <div class="user-details">
+                            <span class="name">Juan P.</span>
+                            <span class="role">Administrador</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+
+            <section class="content-grid">
+
+                <div class="stats-grid fade-up delay-1">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue text-blue"><i class="fa-solid fa-droplet"></i></div>
+                        <div class="stat-info">
+                            <span>Humedad Promedio</span>
+                            <h3>68% <small class="text-green">+4%</small></h3>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon bg-yellow text-yellow"><i class="fa-solid fa-temperature-high"></i></div>
+                        <div class="stat-info">
+                            <span>Temperatura</span>
+                            <h3>24°C <small>Óptimo</small></h3>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green text-green"><i class="fa-solid fa-seedling"></i></div>
+                        <div class="stat-info">
+                            <span>Cultivos Activos</span>
+                            <h3>12 <small>Zonas</small></h3>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon bg-red text-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-info">
+                            <span>Alertas Pendientes</span>
+                            <h3>1 <small class="text-red">Revisar</small></h3>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="main-columns">
+
+                    <div class="column-left fade-up delay-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Estado de Cultivos Principales</h3>
+                                <a href="#" class="link-more">Ver todos</a>
+                            </div>
+
+                            <div class="crop-list">
+                                <div class="crop-item">
+                                    <div class="crop-icon"><i class="fa-solid fa-apple-whole text-red"></i></div>
+                                    <div class="crop-details">
+                                        <h4>Sector A - Tomate</h4>
+                                        <div class="progress-bar"><div class="progress" style="width: 80%; background: #4CAF50;"></div></div>
+                                    </div>
+                                    <span class="crop-status text-green">Saludable</span>
+                                </div>
+
+                                <div class="crop-item">
+                                    <div class="crop-icon"><i class="fa-solid fa-wheat-awn text-yellow"></i></div>
+                                    <div class="crop-details">
+                                        <h4>Sector B - Maíz</h4>
+                                        <div class="progress-bar"><div class="progress" style="width: 50%; background: #fbc02d;"></div></div>
+                                    </div>
+                                    <span class="crop-status text-yellow">Riego Req.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="column-right fade-up delay-3">
+                        <div class="card weather-card">
+                            <div class="weather-header">
+                                <div>
+                                    <span>Clima Actual en Finca</span>
+                                    <h3>Soleado / Despejado</h3>
+                                </div>
+                                <i class="fa-solid fa-sun weather-icon"></i>
+                            </div>
+                            <div class="weather-stats">
+                                <div><i class="fa-solid fa-wind"></i> 12 km/h</div>
+                                <div><i class="fa-solid fa-cloud-rain"></i> 0% prob.</div>
+                                <div><i class="fa-solid fa-droplet"></i> 45% hum.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="administrador.js"></script>
+</body>
+</html>

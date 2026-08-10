@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ingresar.disabled = true;
 
             setTimeout(() => {
-                window.location.href = "inicio.html";
+                window.location.href = "../Perfiles/administrador/inicio.html";
             }, 1200);
         } else {
             mostrarError("Usuario o contraseña incorrectos.");
