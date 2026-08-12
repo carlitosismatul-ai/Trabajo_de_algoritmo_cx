@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Admin - HarvestX</title>
     <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Chart.js para los gráficos de la parte inferior -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-
+    <!-- Loader Original -->
     <div id="loader" class="loader-container">
         <div class="loader">
             <i class="fa-solid fa-seedling loader-icon"></i>
@@ -18,7 +20,7 @@
         </div>
     </div>
 
-
+    <!-- Modal de Ajustes Original -->
     <div id="settingsModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -61,18 +63,15 @@
         </div>
     </div>
 
-
-    <div id="youtube-player-container" style="display:none;"></div>
-
     <div class="dashboard-container">
-
+        <!-- Barra Lateral Izquierda -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-wrapper">
                     <i class="fa-solid fa-leaf logo-icon"></i>
                     <div class="logo-text">
                         <h2>HarvestX</h2>
-                        <span>+1000 LAURA</span>
+                        <span>Sistema Inteligente</span>
                     </div>
                 </div>
                 <i class="fa-solid fa-xmark close-sidebar-mobile" id="closeSidebarMobile"></i>
@@ -80,39 +79,45 @@
             
             <nav class="sidebar-nav">
                 <a href="#" class="nav-link active"><i class="fa-solid fa-house"></i> <span class="nav-text">Dashboard</span></a>
+                
+                <div class="nav-category"><span class="nav-text">GESTIÓN</span></div>
+                <a href="#" class="nav-link"><i class="fa-solid fa-house-chimney-window"></i> <span class="nav-text">Fincas</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-seedling"></i> <span class="nav-text">Cultivos</span></a>
                 <a href="#" class="nav-link"><i class="fa-solid fa-droplet"></i> <span class="nav-text">Programación de Riego</span></a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-temperature-half"></i> <span class="nav-text">Tiempo de Cosecha</span></a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-user-tie"></i> <span class="nav-text">Consejo para Agricultores</span></a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-mound"></i> <span class="nav-text">Estado del Suelo</span></a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> <span class="nav-text">Gestión de Cultivos</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-tractor"></i> <span class="nav-text">Labores del Campo</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-cloud-sun"></i> <span class="nav-text">Monitoreo Climático</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-bell"></i> <span class="nav-text">Alertas</span></a>
+
+                <div class="nav-category"><span class="nav-text">REPORTES</span></div>
+                <a href="#" class="nav-link"><i class="fa-solid fa-chart-column"></i> <span class="nav-text">Reportes y Estadísticas</span></a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> <span class="nav-text">Historial de Actividades</span></a>
+
+                <div class="nav-category"><span class="nav-text">SISTEMA</span></div>
+                <a href="#" class="nav-link"><i class="fa-solid fa-user"></i> <span class="nav-text">Usuarios</span></a>
+                <a href="#" class="nav-link" id="openSettings"><i class="fa-solid fa-gear"></i> <span class="nav-text">Configuración</span></a>
             </nav>
 
             <div class="sidebar-footer">
-                <a href="#" class="nav-link" id="openSettings"><i class="fa-solid fa-gear"></i> <span class="nav-text">Configuración</span></a>
-                <a href="../../login.html" class="nav-link logout"><i class="fa-solid fa-right-from-bracket"></i> <span class="nav-text">Cerrar Sesión</span></a>
+                <a href="../../login.html" class="nav-link logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span class="nav-text">Cerrar Sesión</span></a>
             </div>
         </aside>
 
-
+        <!-- Contenido Principal -->
         <main class="main-content" id="mainContent">
-
+            <!-- Cabecera -->
             <header class="topbar">
                 <div class="left-controls">
-
                     <div class="menu-toggle-desktop" id="toggleSidebarDesktop">
-                        <i class="fa-solid fa-bars-staggered"></i>
+                        <i class="fa-solid fa-bars"></i>
                     </div>
-
                     <div class="menu-toggle-mobile" id="menuToggleMobile">
                         <i class="fa-solid fa-bars"></i>
                     </div>
-                </div>
-                
-                <div class="header-title">
-                    <div class="icon-title"><i class="fa-solid fa-chart-line"></i></div>
-                    <div>
-                        <h1>Dashboard General</h1>
-                        <p>Resumen en tiempo real del estado de tu finca y cultivos.</p>
+                    <div class="header-title">
+                        <div>
+                            <h1>¡Bienvenido, Juan Pérez! 👋</h1>
+                            <p>Administrador del Sistema</p>
+                        </div>
                     </div>
                 </div>
 
@@ -122,106 +127,248 @@
                         <span class="badge">3</span>
                     </div>
                     <div class="profile">
-                        <i class="fa-solid fa-circle-user avatar-icon"></i>
+                        <img src="../../IMG/juan.jpg" alt="Perfil" class="avatar-img">
                         <div class="user-details">
-                            <span class="name">Juan P.</span>
+                            <span class="name">Juan Pérez</span>
                             <span class="role">Administrador</span>
                         </div>
                     </div>
                 </div>
             </header>
 
-
             <section class="content-grid">
-
+                <!-- 5 Tarjetas de Estadísticas (Fila Superior) -->
                 <div class="stats-grid fade-up delay-1">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-blue text-blue"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="stat-card card-solid-green">
+                        <div class="stat-icon"><i class="fa-solid fa-house-chimney"></i></div>
                         <div class="stat-info">
-                            <span>Humedad Promedio</span>
-                            <h3>68% <small class="text-green">+4%</small></h3>
+                            <span>Fincas Registradas</span>
+                            <h3>18</h3>
+                            <small>+2 este mes</small>
                         </div>
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon bg-yellow text-yellow"><i class="fa-solid fa-temperature-high"></i></div>
-                        <div class="stat-info">
-                            <span>Temperatura</span>
-                            <h3>24°C <small>Óptimo</small></h3>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon bg-green text-green"><i class="fa-solid fa-seedling"></i></div>
+                    <div class="stat-card bg-light-green">
+                        <div class="stat-icon text-green"><i class="fa-solid fa-leaf"></i></div>
                         <div class="stat-info">
                             <span>Cultivos Activos</span>
-                            <h3>12 <small>Zonas</small></h3>
+                            <h3>32</h3>
+                            <small class="text-green">+5 este mes</small>
                         </div>
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon bg-red text-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-card bg-light-blue">
+                        <div class="stat-icon text-blue"><i class="fa-solid fa-droplet"></i></div>
+                        <div class="stat-info">
+                            <span>Humedad Promedio</span>
+                            <h3>68%</h3>
+                            <small>Óptimo</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-light-yellow">
+                        <div class="stat-icon text-yellow"><i class="fa-solid fa-temperature-half"></i></div>
+                        <div class="stat-info">
+                            <span>Temperatura Actual</span>
+                            <h3>24°C</h3>
+                            <small>Óptimo</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-light-red">
+                        <div class="stat-icon text-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
                         <div class="stat-info">
                             <span>Alertas Pendientes</span>
-                            <h3>1 <small class="text-red">Revisar</small></h3>
+                            <h3>3</h3>
+                            <small class="text-red">Requieren atención</small>
                         </div>
                     </div>
                 </div>
 
-
-                <div class="main-columns">
-
-                    <div class="column-left fade-up delay-2">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Estado de Cultivos Principales</h3>
-                                <a href="#" class="link-more">Ver todos</a>
-                            </div>
-
-                            <div class="crop-list">
-                                <div class="crop-item">
-                                    <div class="crop-icon"><i class="fa-solid fa-apple-whole text-red"></i></div>
-                                    <div class="crop-details">
-                                        <h4>Sector A - Tomate</h4>
-                                        <div class="progress-bar"><div class="progress" style="width: 80%; background: #4CAF50;"></div></div>
+                <!-- Columnas Principales (3 Columnas) -->
+                <div class="main-columns fade-up delay-2">
+                    
+                    <!-- Columna 1: Estado de Cultivos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Estado de Cultivos Principales</h3>
+                            <a href="#" class="link-more">Ver todos</a>
+                        </div>
+                        <div class="crop-list">
+                            <div class="crop-item">
+                                <div class="crop-icon-small"><i class="fa-solid fa-apple-whole text-red"></i></div>
+                                <div class="crop-details">
+                                    <div class="crop-title-row">
+                                        <h4>Tomate - Finca El Paraíso</h4>
+                                        <span class="crop-status text-green">Saludable</span>
                                     </div>
-                                    <span class="crop-status text-green">Saludable</span>
+                                    <div class="progress-bar"><div class="progress bg-green" style="width: 85%;"></div></div>
+                                    <div class="crop-percentage">85%</div>
                                 </div>
-
-                                <div class="crop-item">
-                                    <div class="crop-icon"><i class="fa-solid fa-wheat-awn text-yellow"></i></div>
-                                    <div class="crop-details">
-                                        <h4>Sector B - Maíz</h4>
-                                        <div class="progress-bar"><div class="progress" style="width: 50%; background: #fbc02d;"></div></div>
+                            </div>
+                            <div class="crop-item">
+                                <div class="crop-icon-small"><i class="fa-solid fa-wheat-awn text-yellow"></i></div>
+                                <div class="crop-details">
+                                    <div class="crop-title-row">
+                                        <h4>Maíz - Finca San José</h4>
+                                        <span class="crop-status text-gray">Riego requerido</span>
                                     </div>
-                                    <span class="crop-status text-yellow">Riego Req.</span>
+                                    <div class="progress-bar"><div class="progress bg-yellow" style="width: 60%;"></div></div>
+                                    <div class="crop-percentage">60%</div>
+                                </div>
+                            </div>
+                            <div class="crop-item">
+                                <div class="crop-icon-small"><i class="fa-solid fa-seedling text-dark-green"></i></div>
+                                <div class="crop-details">
+                                    <div class="crop-title-row">
+                                        <h4>Café - Finca La Esperanza</h4>
+                                        <span class="crop-status text-green">Saludable</span>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress bg-green" style="width: 90%;"></div></div>
+                                    <div class="crop-percentage">90%</div>
+                                </div>
+                            </div>
+                            <div class="crop-item">
+                                <div class="crop-icon-small"><i class="fa-solid fa-leaf text-light-green"></i></div>
+                                <div class="crop-details">
+                                    <div class="crop-title-row">
+                                        <h4>Lechuga - Finca Los Andes</h4>
+                                        <span class="crop-status text-gray">Atención requerida</span>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress bg-orange" style="width: 40%;"></div></div>
+                                    <div class="crop-percentage">40%</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Columna 2: Clima Actual -->
+                    <div class="card no-padding">
+                        <div class="card-header padding-card" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>Clima Local</h3>
+                            <span id="relojSistema" style="font-family: monospace; font-weight: bold; color: var(--text-blue);">--:--:--</span>
+                        </div>
+                        
+                        <!-- Contenedor de Estado (Cargando, Errores, Permisos) -->
+                        <div id="climaEstado" class="padding-card" style="text-align: center; color: var(--texto-claro); min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-location-crosshairs fa-spin" style="font-size: 2rem; color: var(--verde-activo);"></i>
+                            <p id="climaMensaje">Detectando tu ubicación...</p>
+                        </div>
 
-                    <div class="column-right fade-up delay-3">
-                        <div class="card weather-card">
-                            <div class="weather-header">
-                                <div>
-                                    <span>Clima Actual en Finca</span>
-                                    <h3>Soleado / Despejado</h3>
-                                </div>
-                                <i class="fa-solid fa-sun weather-icon"></i>
+                        <!-- Contenedor del Clima (Oculto inicialmente) -->
+                        <div id="climaContenido" class="weather-widget" style="display: none;">
+                            <div style="font-size: 0.85rem; margin-bottom: 15px; opacity: 0.9;">
+                                <i class="fa-solid fa-location-dot"></i> <span id="climaUbicacion">Ubicación desconocida</span>
                             </div>
-                            <div class="weather-stats">
-                                <div><i class="fa-solid fa-wind"></i> 12 km/h</div>
-                                <div><i class="fa-solid fa-cloud-rain"></i> 0% prob.</div>
-                                <div><i class="fa-solid fa-droplet"></i> 45% hum.</div>
+                            <div class="weather-main">
+                                <i id="climaIcono" class="fa-solid fa-sun weather-icon-large"></i>
+                                <div class="weather-info-main">
+                                    <h2 id="climaEstadoTexto">--</h2>
+                                    <h1 id="climaTemp">--°C</h1>
+                                    <p>Sensación: <span id="climaSensacion">--</span>°C</p>
+                                </div>
+                            </div>
+                            <div class="weather-details">
+                                <div><i class="fa-solid fa-wind"></i> <span id="climaViento">--</span> km/h<br><small>Viento</small></div>
+                                <div><i class="fa-solid fa-droplet"></i> <span id="climaHumedad">--</span>%<br><small>Humedad</small></div>
+                                <div><i class="fa-solid fa-umbrella"></i> <span id="climaProbLluvia">--</span>%<br><small>Lluvia</small></div>
+                            </div>
+                            <div style="margin-top: 15px; font-size: 0.7rem; display: flex; justify-content: space-between; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
+                                <span id="climaFecha">--</span>
+                                <span>Act: <span id="climaUltimaAct">--:--</span></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Pronóstico de 5 días -->
+                        <div id="climaPronostico" class="weather-forecast padding-card" style="display: none;">
+                            <!-- Se llena mediante JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Columna 3: Actividad Reciente -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Actividad Reciente</h3>
+                            <a href="#" class="link-more">Ver todas</a>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon bg-light-green text-green"><i class="fa-solid fa-droplet"></i></div>
+                                <div class="activity-info">
+                                    <h4>Riego programado</h4>
+                                    <p>Finca El Paraíso - Sector A</p>
+                                </div>
+                                <span class="activity-time">Hace 2 horas</span>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon bg-light-green text-green"><i class="fa-solid fa-seedling"></i></div>
+                                <div class="activity-info">
+                                    <h4>Cosecha registrada</h4>
+                                    <p>Tomate - 120 kg</p>
+                                </div>
+                                <span class="activity-time">Hace 4 horas</span>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon bg-light-green text-green"><i class="fa-solid fa-flask"></i></div>
+                                <div class="activity-info">
+                                    <h4>Análisis de suelo</h4>
+                                    <p>Finca San José - Completado</p>
+                                </div>
+                                <span class="activity-time">Hace 6 horas</span>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon bg-light-red text-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <div class="activity-info">
+                                    <h4>Alerta de plaga</h4>
+                                    <p>Pulgón detectado en Maíz</p>
+                                </div>
+                                <span class="activity-time">Hace 8 horas</span>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon bg-light-green text-green"><i class="fa-solid fa-leaf"></i></div>
+                                <div class="activity-info">
+                                    <h4>Fertilización aplicada</h4>
+                                    <p>Finca La Esperanza</p>
+                                </div>
+                                <span class="activity-time">Hace 1 día</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Sección de Gráficos Inferiores -->
+                <div class="card charts-card fade-up delay-3">
+                    <div class="card-header">
+                        <h3>Gráficos y Estadísticas</h3>
+                    </div>
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <h4>Producción por Cultivo (Este mes)</h4>
+                            <div class="chart-wrapper pie-wrapper">
+                                <canvas id="productionChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Rendimiento por Hectárea</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="yieldChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Humedad del Suelo por Sector</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="moistureChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </section>
         </main>
     </div>
     
     <script src="../../JS/paginas/administrador.js"></script>
+    <script src="../../JS/paginas/clima.js"></script>
 </body>
 </html>
