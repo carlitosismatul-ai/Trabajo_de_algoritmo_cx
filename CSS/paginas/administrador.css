@@ -246,3 +246,137 @@ input:checked + .slider:before { transform: translateX(20px); }
         display: block; /* Solo se muestra en móvil */
     }
 }
+/* ==========================================
+   MODAL AGREGAR CULTIVO
+   ========================================== */
+
+.modal-cultivo-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-cultivo-overlay.activo {
+    display: flex;
+}
+
+.modal-cultivo {
+    width: 100%;
+    max-width: 500px;
+    background: var(--fondo-tarjeta);
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: var(--sombra-fuerte);
+    animation: aparecerModal 0.2s ease;
+}
+
+@keyframes aparecerModal {
+
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+.modal-header-cultivo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header-cultivo h3 {
+    color: var(--texto-oscuro);
+    font-size: 1.1rem;
+}
+
+.btn-cerrar-modal {
+    border: none;
+    background: transparent;
+    color: var(--texto-claro);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.btn-cerrar-modal:hover {
+    color: var(--text-red);
+}
+
+.form-cultivo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-grupo label {
+    font-size: 0.8rem;
+    color: var(--texto-oscuro);
+    font-weight: 600;
+}
+
+.form-grupo input,
+.form-grupo select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    background: white;
+    color: var(--texto-oscuro);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus {
+    border-color: var(--verde-activo);
+}
+
+.modal-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-modal {
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.btn-cancelar {
+    background: #eeeeee;
+    color: #555;
+}
+
+.btn-guardar {
+    background: var(--verde-activo);
+    color: white;
+}
+
+.btn-guardar:hover {
+    opacity: 0.9;
+}

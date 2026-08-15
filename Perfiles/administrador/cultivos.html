@@ -797,10 +797,194 @@
                 </div>
 
             </section>
+            <!-- ==========================================
+     MODAL AGREGAR CULTIVO
+     ========================================== -->
+
+<div class="modal-cultivo-overlay" id="modalCultivo">
+
+    <div class="modal-cultivo">
+
+        <!-- Encabezado -->
+
+        <div class="modal-header-cultivo">
+
+            <h3>
+                <i class="fa-solid fa-seedling"></i>
+                Agregar cultivo
+            </h3>
+
+            <button
+                type="button"
+                class="btn-cerrar-modal"
+                id="btnCerrarModal"
+                title="Cerrar"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- Formulario -->
+
+        <form
+            class="form-cultivo"
+            id="formCultivo"
+        >
+
+            <!-- Nombre -->
+
+            <div class="form-grupo">
+
+                <label for="nombreCultivo">
+                    Nombre del cultivo
+                </label>
+
+                <input
+                    type="text"
+                    id="nombreCultivo"
+                    placeholder="Ej. Tomate"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Tipo -->
+
+            <div class="form-grupo">
+
+                <label for="tipoCultivo">
+                    Tipo de cultivo
+                </label>
+
+                <select
+                    id="tipoCultivo"
+                    required
+                >
+
+                    <option value="">
+                        Selecciona un tipo
+                    </option>
+
+                    <option value="Hortaliza">
+                        Hortaliza
+                    </option>
+
+                    <option value="Cereal">
+                        Cereal
+                    </option>
+
+                    <option value="Frutal">
+                        Frutal
+                    </option>
+
+                    <option value="Leguminosa">
+                        Leguminosa
+                    </option>
+
+                    <option value="Cultivo permanente">
+                        Cultivo permanente
+                    </option>
+
+                    <option value="Otro">
+                        Otro
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Agua -->
+
+            <div class="form-grupo">
+
+                <label for="aguaCultivo">
+                    Necesidad de agua
+                </label>
+
+                <select
+                    id="aguaCultivo"
+                    required
+                >
+
+                    <option value="">
+                        Selecciona un nivel
+                    </option>
+
+                    <option value="Baja">
+                        Baja
+                    </option>
+
+                    <option value="Media">
+                        Media
+                    </option>
+
+                    <option value="Alta">
+                        Alta
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Cosecha -->
+
+            <div class="form-grupo">
+
+                <label for="cosechaCultivo">
+                    Tiempo estimado de cosecha
+                </label>
+
+                <input
+                    type="text"
+                    id="cosechaCultivo"
+                    placeholder="Ej. 60 - 80 días"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Botones -->
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    class="btn-modal btn-cancelar"
+                    id="btnCancelarCultivo"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-modal btn-guardar"
+                >
+
+                    <i class="fa-solid fa-plus"></i>
+                    Guardar cultivo
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
         </main>
 
     </div>
+<script src="../../JS/paginas/cultivos.js"></script>
 
 </body>
 </html>
