@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cultivos - HarvestX</title>
+
+    <!-- CSS principal de HarvestX -->
+    <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+
+    <!-- Iconos -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           ESTILOS EXCLUSIVOS DE LA PÁGINA CULTIVOS
+           ========================================== */
+
+        .cultivos-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cultivo-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            background: var(--fondo-tarjeta);
+            transition: var(--transicion);
+        }
+
+        .cultivo-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-fuerte);
+        }
+
+        .cultivo-icono {
+            width: 55px;
+            height: 55px;
+            min-width: 55px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            background: var(--bg-light-green);
+        }
+
+        .cultivo-info {
+            flex: 1;
+        }
+
+        .cultivo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .cultivo-header h4 {
+            font-size: 1rem;
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .cultivo-tipo {
+            font-size: 0.75rem;
+            color: var(--texto-claro);
+            margin-bottom: 8px;
+        }
+
+        .cultivo-datos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .dato-cultivo {
+            font-size: 0.75rem;
+            color: var(--texto-claro);
+        }
+
+        .dato-cultivo i {
+            margin-right: 5px;
+        }
+
+        .estado-activo {
+            font-size: 0.7rem;
+            color: var(--text-green);
+            background: var(--bg-light-green);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .cultivo-acciones {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-cultivo {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .btn-editar {
+            color: var(--text-blue);
+            background: var(--bg-light-blue);
+        }
+
+        .btn-editar:hover {
+            transform: scale(1.08);
+        }
+
+        .btn-eliminar {
+            color: var(--text-red);
+            background: var(--bg-light-red);
+        }
+
+        .btn-eliminar:hover {
+            transform: scale(1.08);
+        }
+
+        .btn-agregar-cultivo {
+            border: 1px solid var(--verde-activo);
+            background: transparent;
+            color: var(--verde-activo);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .btn-agregar-cultivo:hover {
+            background: var(--verde-activo);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+
+            .cultivo-card {
+                align-items: flex-start;
+            }
+
+            .cultivo-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cultivo-datos {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .cultivo-acciones {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- ==========================================
+             BARRA LATERAL
+             ========================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="logo-wrapper">
+
+                    <i class="fa-solid fa-leaf logo-icon"></i>
+
+                    <div class="logo-text">
+                        <h2>HarvestX</h2>
+                        <span>Sistema Inteligente</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <!-- Dashboard -->
+                <a href="inicio.html" class="nav-link">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span class="nav-text">
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- Gestión -->
+                <div class="nav-category">
+                    <span class="nav-text">
+                        GESTIÓN
+                    </span>
+                </div>
+
+
+                <!-- Cultivos -->
+                <a href="#" class="nav-link active">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <span class="nav-text">
+                        Cultivos
+                    </span>
+
+                </a>
+
+
+                <!-- Riego -->
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <span class="nav-text">
+                        Programación de Riego
+                    </span>
+
+                </a>
+
+
+                <!-- Labores -->
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-tractor"></i>
+
+                    <span class="nav-text">
+                        Labores del Campo
+                    </span>
+
+                </a>
+
+
+                <!-- Clima -->
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <span class="nav-text">
+                        Monitoreo Climático
+                    </span>
+
+                </a>
+
+
+                <!-- Alertas -->
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span class="nav-text">
+                        Alertas
+                    </span>
+
+                </a>
+
+
+                <!-- Reportes -->
+                <div class="nav-category">
+
+                    <span class="nav-text">
+                        REPORTES
+                    </span>
+
+                </div>
+
+
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    <span class="nav-text">
+                        Reportes y Estadísticas
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    <span class="nav-text">
+                        Historial de Actividades
+                    </span>
+
+                </a>
+
+
+                <!-- Sistema -->
+                <div class="nav-category">
+
+                    <span class="nav-text">
+                        SISTEMA
+                    </span>
+
+                </div>
+
+
+                <a href="#" class="nav-link">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span class="nav-text">
+                        Usuarios
+                    </span>
+
+                </a>
+
+
+                <a href="inicio.html" class="nav-link">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    <span class="nav-text">
+                        Volver al Dashboard
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <!-- Cerrar sesión -->
+            <div class="sidebar-footer">
+
+                <a href="../../login.html" class="nav-link logout">
+
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                    <span class="nav-text">
+                        Cerrar Sesión
+                    </span>
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ==========================================
+             CONTENIDO PRINCIPAL
+             ========================================== -->
+
+        <main class="main-content">
+
+
+            <!-- CABECERA -->
+            <header class="topbar">
+
+                <div class="left-controls">
+
+                    <div class="header-title">
+
+                        <div>
+
+                            <h1>🌱 Cultivos</h1>
+
+                            <p>
+                                Información y administración de cultivos
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Usuario -->
+                <div class="user-info">
+
+                    <div class="profile">
+
+                        <img
+                            src="../../IMG/juan.jpg"
+                            alt="Perfil"
+                            class="avatar-img"
+                        >
+
+                        <div class="user-details">
+
+                            <span class="name">
+                                Juan Pérez
+                            </span>
+
+                            <span class="role">
+                                Administrador
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ==========================================
+                 CATÁLOGO
+                 ========================================== -->
+
+            <section class="content-grid">
+
+                <div class="card">
+
+
+                    <!-- Encabezado -->
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Catálogo de Cultivos
+                            </h3>
+
+                            <p style="
+                                font-size: 0.75rem;
+                                color: var(--texto-claro);
+                                margin-top: 4px;
+                            ">
+                                Consulta y administra los cultivos registrados.
+                            </p>
+
+                        </div>
+
+
+                        <!-- Botón agregar -->
+                        <button
+                            class="btn-agregar-cultivo"
+                            id="btnAgregarCultivo"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Agregar cultivo
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         LISTA DE CULTIVOS
+                         ================================== -->
+
+                    <div class="cultivos-container">
+
+
+                        <!-- TOMATE -->
+                        <div class="cultivo-card">
+
+                            <div class="cultivo-icono">
+                                <i class="fa-solid fa-apple-whole text-red"></i>
+                            </div>
+
+
+                            <div class="cultivo-info">
+
+                                <div class="cultivo-header">
+
+                                    <h4>
+                                        Tomate
+                                    </h4>
+
+                                    <span class="estado-activo">
+                                        ● Activo
+                                    </span>
+
+                                </div>
+
+
+                                <p class="cultivo-tipo">
+                                    Tipo: Hortaliza
+                                </p>
+
+
+                                <div class="cultivo-datos">
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-droplet text-blue"></i>
+
+                                        Agua: Alta
+
+                                    </span>
+
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-calendar text-green"></i>
+
+                                        Cosecha: 60 - 80 días
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="cultivo-acciones">
+
+                                <button
+                                    class="btn-cultivo btn-editar"
+                                    title="Editar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </button>
+
+
+                                <button
+                                    class="btn-cultivo btn-eliminar"
+                                    title="Eliminar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MAÍZ -->
+                        <div class="cultivo-card">
+
+                            <div class="cultivo-icono">
+                                <i class="fa-solid fa-wheat-awn text-yellow"></i>
+                            </div>
+
+
+                            <div class="cultivo-info">
+
+                                <div class="cultivo-header">
+
+                                    <h4>
+                                        Maíz
+                                    </h4>
+
+                                    <span class="estado-activo">
+                                        ● Activo
+                                    </span>
+
+                                </div>
+
+
+                                <p class="cultivo-tipo">
+                                    Tipo: Cereal
+                                </p>
+
+
+                                <div class="cultivo-datos">
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-droplet text-blue"></i>
+
+                                        Agua: Media
+
+                                    </span>
+
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-calendar text-green"></i>
+
+                                        Cosecha: 90 - 120 días
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="cultivo-acciones">
+
+                                <button
+                                    class="btn-cultivo btn-editar"
+                                    title="Editar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </button>
+
+
+                                <button
+                                    class="btn-cultivo btn-eliminar"
+                                    title="Eliminar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CAFÉ -->
+                        <div class="cultivo-card">
+
+                            <div class="cultivo-icono">
+                                <i class="fa-solid fa-seedling text-dark-green"></i>
+                            </div>
+
+
+                            <div class="cultivo-info">
+
+                                <div class="cultivo-header">
+
+                                    <h4>
+                                        Café
+                                    </h4>
+
+                                    <span class="estado-activo">
+                                        ● Activo
+                                    </span>
+
+                                </div>
+
+
+                                <p class="cultivo-tipo">
+                                    Tipo: Cultivo permanente
+                                </p>
+
+
+                                <div class="cultivo-datos">
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-droplet text-blue"></i>
+
+                                        Agua: Media
+
+                                    </span>
+
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-calendar text-green"></i>
+
+                                        Cosecha: 180+ días
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="cultivo-acciones">
+
+                                <button
+                                    class="btn-cultivo btn-editar"
+                                    title="Editar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </button>
+
+
+                                <button
+                                    class="btn-cultivo btn-eliminar"
+                                    title="Eliminar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LECHUGA -->
+                        <div class="cultivo-card">
+
+                            <div class="cultivo-icono">
+                                <i class="fa-solid fa-leaf text-light-green"></i>
+                            </div>
+
+
+                            <div class="cultivo-info">
+
+                                <div class="cultivo-header">
+
+                                    <h4>
+                                        Lechuga
+                                    </h4>
+
+                                    <span class="estado-activo">
+                                        ● Activo
+                                    </span>
+
+                                </div>
+
+
+                                <p class="cultivo-tipo">
+                                    Tipo: Hortaliza
+                                </p>
+
+
+                                <div class="cultivo-datos">
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-droplet text-blue"></i>
+
+                                        Agua: Alta
+
+                                    </span>
+
+
+                                    <span class="dato-cultivo">
+
+                                        <i class="fa-solid fa-calendar text-green"></i>
+
+                                        Cosecha: 30 - 60 días
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="cultivo-acciones">
+
+                                <button
+                                    class="btn-cultivo btn-editar"
+                                    title="Editar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </button>
+
+
+                                <button
+                                    class="btn-cultivo btn-eliminar"
+                                    title="Eliminar cultivo"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
