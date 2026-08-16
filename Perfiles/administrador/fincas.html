@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fincas - HarvestX</title>
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fa-solid fa-leaf"></i>
+                <span>HarvestX</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="dashboard.html" class="nav-link">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+
+            <div class="nav-category">
+                <span class="nav-text">GESTIÓN</span>
+            </div>
+
+            <a href="fincas.html" class="nav-link active">
+                <i class="fa-solid fa-tractor"></i>
+                <span class="nav-text">Fincas</span>
+            </a>
+
+            <a href="cultivos.html" class="nav-link">
+                <i class="fa-solid fa-seedling"></i>
+                <span class="nav-text">Cultivos</span>
+            </a>
+
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-droplet"></i>
+                <span class="nav-text">Programación de riego</span>
+            </a>
+
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-cloud-sun"></i>
+                <span class="nav-text">Estado del suelo</span>
+            </a>
+
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-wheat-awn"></i>
+                <span class="nav-text">Tiempo de cosecha</span>
+            </a>
+
+            <div class="nav-category">
+                <span class="nav-text">INFORMACIÓN</span>
+            </div>
+
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span class="nav-text">Consejos</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="page-header">
+
+            <div>
+                <h1>Gestión de Fincas</h1>
+                <p>Administra las fincas registradas en HarvestX.</p>
+            </div>
+
+            <button class="btn-primary" id="btnNuevaFinca">
+                <i class="fa-solid fa-plus"></i>
+                Nueva finca
+            </button>
+
+        </header>
+
+
+        <!-- RESUMEN -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-tractor"></i>
+                </div>
+
+                <div>
+                    <span>Total de fincas</span>
+                    <h2 id="totalFincas">3</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-ruler-combined"></i>
+                </div>
+
+                <div>
+                    <span>Área total</span>
+                    <h2>24 ha</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+
+                <div>
+                    <span>Cultivos activos</span>
+                    <h2>8</h2>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- FINCAS -->
+        <section class="content-section">
+
+            <div class="section-header">
+                <div>
+                    <h2>Mis fincas</h2>
+                    <p>Fincas registradas actualmente.</p>
+                </div>
+            </div>
+
+
+            <div class="fincas-grid">
+
+                <!-- FINCA 1 -->
+                <article class="finca-card">
+
+                    <div class="finca-card-header">
+
+                        <div class="finca-icon">
+                            <i class="fa-solid fa-tractor"></i>
+                        </div>
+
+                        <div class="finca-actions">
+
+                            <button class="btn-icon"
+                                    title="Editar finca">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+
+                            <button class="btn-icon delete"
+                                    title="Eliminar finca">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="finca-card-body">
+
+                        <h3>Finca El Paraíso</h3>
+
+                        <p class="finca-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            El Naranjo, Guatemala
+                        </p>
+
+                        <div class="finca-info">
+
+                            <div>
+                                <span>Extensión</span>
+                                <strong>10 ha</strong>
+                            </div>
+
+                            <div>
+                                <span>Cultivo</span>
+                                <strong>Café</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- FINCA 2 -->
+                <article class="finca-card">
+
+                    <div class="finca-card-header">
+
+                        <div class="finca-icon">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+
+                        <div class="finca-actions">
+
+                            <button class="btn-icon"
+                                    title="Editar finca">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+
+                            <button class="btn-icon delete"
+                                    title="Eliminar finca">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="finca-card-body">
+
+                        <h3>Finca Las Flores</h3>
+
+                        <p class="finca-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            San Marcos, Guatemala
+                        </p>
+
+                        <div class="finca-info">
+
+                            <div>
+                                <span>Extensión</span>
+                                <strong>8 ha</strong>
+                            </div>
+
+                            <div>
+                                <span>Cultivo</span>
+                                <strong>Maíz</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- FINCA 3 -->
+                <article class="finca-card">
+
+                    <div class="finca-card-header">
+
+                        <div class="finca-icon">
+                            <i class="fa-solid fa-wheat-awn"></i>
+                        </div>
+
+                        <div class="finca-actions">
+
+                            <button class="btn-icon"
+                                    title="Editar finca">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+
+                            <button class="btn-icon delete"
+                                    title="Eliminar finca">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="finca-card-body">
+
+                        <h3>Finca La Esperanza</h3>
+
+                        <p class="finca-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Huehuetenango, Guatemala
+                        </p>
+
+                        <div class="finca-info">
+
+                            <div>
+                                <span>Extensión</span>
+                                <strong>6 ha</strong>
+                            </div>
+
+                            <div>
+                                <span>Cultivo</span>
+                                <strong>Frijol</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL NUEVA FINCA -->
+    <div class="modal-overlay" id="modalFinca">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2>Nueva finca</h2>
+                    <p>Registra una nueva finca.</p>
+                </div>
+
+                <button class="modal-close" id="cerrarModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <form id="formFinca">
+
+                <div class="form-group">
+                    <label for="nombreFinca">
+                        Nombre de la finca
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombreFinca"
+                        placeholder="Ej. Finca El Paraíso"
+                        required>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="ubicacionFinca">
+                        Ubicación
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ubicacionFinca"
+                        placeholder="Ej. El Naranjo, Guatemala"
+                        required>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="extensionFinca">
+                        Extensión (hectáreas)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="extensionFinca"
+                        placeholder="Ej. 10"
+                        min="0"
+                        step="0.1"
+                        required>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="cultivoFinca">
+                        Cultivo principal
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cultivoFinca"
+                        placeholder="Ej. Café"
+                        required>
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button type="button"
+                            class="btn-secondary"
+                            id="cancelarModal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Guardar finca
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/fincas.js"></script>
+
+</body>
+</html>

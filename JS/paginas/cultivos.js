@@ -7,16 +7,34 @@ const modalCultivo = document.getElementById("modalCultivo");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
 const btnCancelarCultivo = document.getElementById("btnCancelarCultivo");
 const formCultivo = document.getElementById("formCultivo");
+let cultivoEditando = null;
 
+const tituloModalCultivo = document.getElementById("tituloModalCultivo");
+const btnGuardarCultivo = document.getElementById("btnGuardarCultivo");
 
 // ==========================================
 // ABRIR MODAL
 // ==========================================
 
 btnAgregarCultivo.addEventListener("click", function () {
-    modalCultivo.classList.add("activo");
-});
 
+    cultivoEditando = null;
+
+    tituloModalCultivo.innerHTML = `
+        <i class="fa-solid fa-seedling"></i>
+        Agregar cultivo
+    `;
+
+    btnGuardarCultivo.innerHTML = `
+        <i class="fa-solid fa-plus"></i>
+        Guardar cultivo
+    `;
+
+    formCultivo.reset();
+
+    modalCultivo.classList.add("activo");
+
+});
 
 // ==========================================
 // CERRAR MODAL
@@ -26,8 +44,13 @@ btnCerrarModal.addEventListener("click", cerrarModal);
 btnCancelarCultivo.addEventListener("click", cerrarModal);
 
 function cerrarModal() {
+
     modalCultivo.classList.remove("activo");
+
     formCultivo.reset();
+
+    cultivoEditando = null;
+
 }
 
 
@@ -48,22 +71,35 @@ modalCultivo.addEventListener("click", function (evento) {
 // GUARDAR CULTIVO EN MYSQL
 // ==========================================
 
+// ==========================================
+// GUARDAR / EDITAR CULTIVO
+// ==========================================
+
 formCultivo.addEventListener("submit", async function (evento) {
 
     evento.preventDefault();
 
-    // Obtener datos
     const nombre = document.getElementById("nombreCultivo").value;
     const tipo = document.getElementById("tipoCultivo").value;
     const agua = document.getElementById("aguaCultivo").value;
     const cosecha = document.getElementById("cosechaCultivo").value;
 
-
     try {
 
-        const respuesta = await fetch("http://127.0.0.1:5000/cultivos", {
+        let url = "http://127.0.0.1:5000/cultivos";
+        let metodo = "POST";
 
-            method: "POST",
+        // Si existe un cultivo en edición
+        if (cultivoEditando !== null) {
+
+            url = `http://127.0.0.1:5000/cultivos/${cultivoEditando}`;
+            metodo = "PUT";
+
+        }
+
+        const respuesta = await fetch(url, {
+
+            method: metodo,
 
             headers: {
                 "Content-Type": "application/json"
@@ -78,24 +114,21 @@ formCultivo.addEventListener("submit", async function (evento) {
 
         });
 
-
         const resultado = await respuesta.json();
-
 
         if (respuesta.ok) {
 
-            alert("Cultivo agregado correctamente 🌱");
+    cerrarModal();
 
-            cerrarModal();
+    location.reload();
 
-            location.reload();
+}
 
-        } else {
+            else {
 
             alert("Error: " + resultado.mensaje);
 
         }
-
 
     } catch (error) {
 
@@ -214,9 +247,125 @@ async function cargarCultivos() {
 
 }
 
-
 // ==========================================
-// EJECUTAR AL CARGAR LA PÁGINA
+// EDITAR CULTIVO
 // ==========================================
 
+document.addEventListener("click", async function (evento) {
+
+    const botonEditar = evento.target.closest(".btn-editar");
+
+    if (!botonEditar) {
+        return;
+    }
+
+    const id = botonEditar.dataset.id;
+
+    try {
+
+        const respuesta = await fetch(
+            `http://127.0.0.1:5000/cultivos/${id}`
+        );
+
+        const cultivo = await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            alert("No se pudo obtener el cultivo.");
+
+            return;
+
+        }
+
+        // Guardar ID del cultivo que estamos editando
+        cultivoEditando = id;
+
+        // Cambiar título
+        tituloModalCultivo.innerHTML = `
+            <i class="fa-solid fa-pen"></i>
+            Editar cultivo
+        `;
+
+        // Cambiar botón
+        btnGuardarCultivo.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            Guardar cambios
+        `;
+
+        // Cargar datos en el formulario
+        document.getElementById("nombreCultivo").value = cultivo.nombre;
+        document.getElementById("tipoCultivo").value = cultivo.tipo;
+        document.getElementById("aguaCultivo").value = cultivo.agua;
+        document.getElementById("cosechaCultivo").value = cultivo.cosecha;
+
+        // Abrir modal
+        modalCultivo.classList.add("activo");
+
+    } catch (error) {
+
+        console.error("Error al obtener cultivo:", error);
+
+        alert("No se pudo conectar con el servidor de HarvestX ❌");
+
+    }
+
+});
+// ==========================================
+// ELIMINAR CULTIVO
+// ==========================================
+
+document.addEventListener("click", async function (evento) {
+
+    const botonEliminar = evento.target.closest(".btn-eliminar");
+
+    if (!botonEliminar) {
+        return;
+    }
+
+    const id = botonEliminar.dataset.id;
+
+    // Confirmación antes de eliminar
+    const confirmar = confirm(
+        "¿Estás seguro de que deseas eliminar este cultivo?"
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch(
+            `http://127.0.0.1:5000/cultivos/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+
+            alert("Cultivo eliminado correctamente 🌱");
+
+            // Volver a cargar la lista
+            cargarCultivos();
+
+        } else {
+
+            alert("Error: " + resultado.mensaje);
+
+        }
+
+    } catch (error) {
+
+        console.error("Error al eliminar cultivo:", error);
+
+        alert(
+            "No se pudo conectar con el servidor de HarvestX ❌"
+        );
+
+    }
+
+});
 cargarCultivos();

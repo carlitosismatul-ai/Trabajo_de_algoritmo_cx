@@ -217,13 +217,24 @@
 
                 </a>
 
-
                 <!-- Gestión -->
                 <div class="nav-category">
                     <span class="nav-text">
                         GESTIÓN
                     </span>
                 </div>
+                
+               <a href="fincas.html" class="nav-link">
+
+    <i class="fa-solid fa-mountain-sun"></i>
+
+    <span class="nav-text">
+        Fincas
+    </span>
+
+</a>
+
+
 
 
                 <!-- Cultivos -->
@@ -808,11 +819,10 @@
         <!-- Encabezado -->
 
         <div class="modal-header-cultivo">
-
-            <h3>
-                <i class="fa-solid fa-seedling"></i>
-                Agregar cultivo
-            </h3>
+<h3 id="tituloModalCultivo">
+    <i class="fa-solid fa-seedling"></i>
+    Agregar cultivo
+</h3>
 
             <button
                 type="button"
@@ -963,15 +973,14 @@
                     Cancelar
                 </button>
 
-                <button
-                    type="submit"
-                    class="btn-modal btn-guardar"
-                >
-
-                    <i class="fa-solid fa-plus"></i>
-                    Guardar cultivo
-
-                </button>
+                <button 
+    type="submit" 
+    class="btn-modal btn-guardar"
+    id="btnGuardarCultivo"
+>
+    <i class="fa-solid fa-plus"></i> 
+    Guardar cultivo
+</button>
 
             </div>
 

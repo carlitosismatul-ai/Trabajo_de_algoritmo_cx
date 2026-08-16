@@ -101,7 +101,116 @@ def obtener_cultivos():
 
     return jsonify(cultivos)
 
+# ==========================================
+# OBTENER UN CULTIVO POR ID
+# ==========================================
 
+@app.route("/cultivos/<int:id>", methods=["GET"])
+def obtener_cultivo(id):
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor(dictionary=True)
+
+    sql = """
+        SELECT * FROM cultivos
+        WHERE id = %s
+    """
+
+    cursor.execute(sql, (id,))
+
+    cultivo = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
+    if cultivo is None:
+
+        return jsonify({
+            "mensaje": "Cultivo no encontrado"
+        }), 404
+
+    return jsonify(cultivo)
+
+# ==========================================
+# EDITAR CULTIVO
+# ==========================================
+
+@app.route("/cultivos/<int:id>", methods=["PUT"])
+def editar_cultivo(id):
+
+    datos = request.get_json()
+
+    nombre = datos["nombre"]
+    tipo = datos["tipo"]
+    agua = datos["agua"]
+    cosecha = datos["cosecha"]
+
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+
+    sql = """
+        UPDATE cultivos
+        SET nombre = %s,
+            tipo = %s,
+            agua = %s,
+            cosecha = %s
+        WHERE id = %s
+    """
+
+    valores = (
+        nombre,
+        tipo,
+        agua,
+        cosecha,
+        id
+    )
+
+    cursor.execute(sql, valores)
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+        "mensaje": "Cultivo actualizado correctamente"
+    })
+# ==========================================
+# ELIMINAR CULTIVO
+# ==========================================
+
+@app.route("/cultivos/<int:id>", methods=["DELETE"])
+def eliminar_cultivo(id):
+
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+
+    sql = """
+        DELETE FROM cultivos
+        WHERE id = %s
+    """
+
+    cursor.execute(sql, (id,))
+
+    # Verificar si realmente existía
+    if cursor.rowcount == 0:
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({
+            "mensaje": "Cultivo no encontrado"
+        }), 404
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+        "mensaje": "Cultivo eliminado correctamente"
+    })
 # ==========================================
 # EJECUTAR SERVIDOR
 # ==========================================
