@@ -180,6 +180,132 @@
 
 <body>
 
+    <!-- ==========================================
+     MODAL DE CONFIGURACIÓN
+     ========================================== -->
+
+<div id="settingsModal" class="modal-overlay">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Ajustes del Sistema</h2>
+
+            <i
+                class="fa-solid fa-xmark close-modal"
+                id="closeSettings">
+            </i>
+
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Tema -->
+
+            <div class="setting-group">
+
+                <label>Tema Oscuro</label>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="themeToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Sonido -->
+
+            <div class="setting-group">
+
+                <label>Sonido</label>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="soundToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Fuente -->
+
+            <div class="setting-group">
+
+                <label>Fuente de Letra</label>
+
+                <select
+                    id="fontSelect"
+                    class="form-select">
+
+                    <option value="Poppins">
+    Poppins
+</option>
+
+<option value="Arial">
+    Arial
+</option>
+
+<option value="Courier New">
+    Courier New
+</option>
+
+<option value="Times New Roman">
+    Times New Roman
+</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Tamaño -->
+
+            <div class="setting-group">
+
+                <label>Tamaño de Letra</label>
+
+                <div class="size-controls">
+
+                    <button
+                        id="btnSizeSmall"
+                        class="btn-size">
+                        A-
+                    </button>
+
+                    <button
+                        id="btnSizeNormal"
+                        class="btn-size active">
+                        A
+                    </button>
+
+                    <button
+                        id="btnSizeLarge"
+                        class="btn-size">
+                        A+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
     <div class="dashboard-container">
 
         <!-- ==========================================
@@ -349,16 +475,13 @@
 
                 </a>
 
-
-                <a href="inicio.html" class="nav-link">
-
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    <span class="nav-text">
-                        Volver al Dashboard
+                <a href="#" class="nav-link" id="openSettings">
+                   <i class="fa-solid fa-gear"></i>
+                   <span class="nav-text">
+                    Configuración
                     </span>
-
                 </a>
+
 
             </nav>
 
@@ -482,332 +605,17 @@
                         </button>
 
                     </div>
+<!-- ==================================
+     LISTA DE CULTIVOS
+     ================================== -->
 
+<div class="cultivos-container">
+</div>
 
-                    <!-- ==================================
-                         LISTA DE CULTIVOS
-                         ================================== -->
+</div>
 
-                    <div class="cultivos-container">
-
-
-                        <!-- TOMATE -->
-                        <div class="cultivo-card">
-
-                            <div class="cultivo-icono">
-                                <i class="fa-solid fa-apple-whole text-red"></i>
-                            </div>
-
-
-                            <div class="cultivo-info">
-
-                                <div class="cultivo-header">
-
-                                    <h4>
-                                        Tomate
-                                    </h4>
-
-                                    <span class="estado-activo">
-                                        ● Activo
-                                    </span>
-
-                                </div>
-
-
-                                <p class="cultivo-tipo">
-                                    Tipo: Hortaliza
-                                </p>
-
-
-                                <div class="cultivo-datos">
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-droplet text-blue"></i>
-
-                                        Agua: Alta
-
-                                    </span>
-
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-calendar text-green"></i>
-
-                                        Cosecha: 60 - 80 días
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="cultivo-acciones">
-
-                                <button
-                                    class="btn-cultivo btn-editar"
-                                    title="Editar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-pen"></i>
-
-                                </button>
-
-
-                                <button
-                                    class="btn-cultivo btn-eliminar"
-                                    title="Eliminar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-trash"></i>
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MAÍZ -->
-                        <div class="cultivo-card">
-
-                            <div class="cultivo-icono">
-                                <i class="fa-solid fa-wheat-awn text-yellow"></i>
-                            </div>
-
-
-                            <div class="cultivo-info">
-
-                                <div class="cultivo-header">
-
-                                    <h4>
-                                        Maíz
-                                    </h4>
-
-                                    <span class="estado-activo">
-                                        ● Activo
-                                    </span>
-
-                                </div>
-
-
-                                <p class="cultivo-tipo">
-                                    Tipo: Cereal
-                                </p>
-
-
-                                <div class="cultivo-datos">
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-droplet text-blue"></i>
-
-                                        Agua: Media
-
-                                    </span>
-
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-calendar text-green"></i>
-
-                                        Cosecha: 90 - 120 días
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="cultivo-acciones">
-
-                                <button
-                                    class="btn-cultivo btn-editar"
-                                    title="Editar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-pen"></i>
-
-                                </button>
-
-
-                                <button
-                                    class="btn-cultivo btn-eliminar"
-                                    title="Eliminar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-trash"></i>
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- CAFÉ -->
-                        <div class="cultivo-card">
-
-                            <div class="cultivo-icono">
-                                <i class="fa-solid fa-seedling text-dark-green"></i>
-                            </div>
-
-
-                            <div class="cultivo-info">
-
-                                <div class="cultivo-header">
-
-                                    <h4>
-                                        Café
-                                    </h4>
-
-                                    <span class="estado-activo">
-                                        ● Activo
-                                    </span>
-
-                                </div>
-
-
-                                <p class="cultivo-tipo">
-                                    Tipo: Cultivo permanente
-                                </p>
-
-
-                                <div class="cultivo-datos">
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-droplet text-blue"></i>
-
-                                        Agua: Media
-
-                                    </span>
-
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-calendar text-green"></i>
-
-                                        Cosecha: 180+ días
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="cultivo-acciones">
-
-                                <button
-                                    class="btn-cultivo btn-editar"
-                                    title="Editar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-pen"></i>
-
-                                </button>
-
-
-                                <button
-                                    class="btn-cultivo btn-eliminar"
-                                    title="Eliminar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-trash"></i>
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- LECHUGA -->
-                        <div class="cultivo-card">
-
-                            <div class="cultivo-icono">
-                                <i class="fa-solid fa-leaf text-light-green"></i>
-                            </div>
-
-
-                            <div class="cultivo-info">
-
-                                <div class="cultivo-header">
-
-                                    <h4>
-                                        Lechuga
-                                    </h4>
-
-                                    <span class="estado-activo">
-                                        ● Activo
-                                    </span>
-
-                                </div>
-
-
-                                <p class="cultivo-tipo">
-                                    Tipo: Hortaliza
-                                </p>
-
-
-                                <div class="cultivo-datos">
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-droplet text-blue"></i>
-
-                                        Agua: Alta
-
-                                    </span>
-
-
-                                    <span class="dato-cultivo">
-
-                                        <i class="fa-solid fa-calendar text-green"></i>
-
-                                        Cosecha: 30 - 60 días
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="cultivo-acciones">
-
-                                <button
-                                    class="btn-cultivo btn-editar"
-                                    title="Editar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-pen"></i>
-
-                                </button>
-
-
-                                <button
-                                    class="btn-cultivo btn-eliminar"
-                                    title="Eliminar cultivo"
-                                >
-
-                                    <i class="fa-solid fa-trash"></i>
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-            </section>
+</section>            
+                                 
             <!-- ==========================================
      MODAL AGREGAR CULTIVO
      ========================================== -->
@@ -993,6 +801,13 @@
         </main>
 
     </div>
+    <script>
+    console.log("CULTIVOS: HTML cargado");
+    console.log("openSettings:", document.getElementById("openSettings"));
+    console.log("settingsModal:", document.getElementById("settingsModal"));
+</script>
+
+<script src="../../JS/paginas/configuracion.js"></script>
 <script src="../../JS/paginas/cultivos.js"></script>
 
 </body>
