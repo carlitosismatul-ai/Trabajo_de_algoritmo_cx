@@ -4,6 +4,17 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: var(--fuente-actual), sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
     font-family: var(--fuente-actual), sans-serif;
 }
 
@@ -335,14 +346,43 @@ input:checked + .slider:before { transform: translateX(20px); }
 .form-grupo select {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(128, 128, 128, 0.25);
     border-radius: 8px;
-    background: white;
+
+    background: var(--fondo-tarjeta);
     color: var(--texto-oscuro);
+
     font-family: inherit;
     font-size: 0.85rem;
     outline: none;
     box-sizing: border-box;
+
+    transition: var(--transicion);
+}
+
+.form-grupo input::placeholder {
+    color: var(--texto-claro);
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus {
+    border-color: var(--verde-activo);
+}
+
+[data-theme="dark"] .form-grupo input,
+[data-theme="dark"] .form-grupo select {
+    background: #2a2a2a;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .form-grupo input::placeholder {
+    color: #aaaaaa;
+}
+
+[data-theme="dark"] .form-grupo select option {
+    background: #2a2a2a;
+    color: #ffffff;
 }
 
 .form-grupo input:focus,

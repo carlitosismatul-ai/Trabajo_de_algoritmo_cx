@@ -3,161 +3,62 @@ document.addEventListener("DOMContentLoaded", () => {
     const root = document.documentElement;
 
     // ==========================================
-    // CONFIGURACIÓN GUARDADA
+    // ELEMENTOS
     // ==========================================
 
-    const temaGuardado =
-        localStorage.getItem("harvestx-tema") || "light";
+    const openSettings = document.getElementById("openSettings");
+    const settingsModal = document.getElementById("settingsModal");
+    const closeSettings = document.getElementById("closeSettings");
 
-   const fuenteGuardada =
-    localStorage.getItem("harvestx-fuente") ||
-    "Poppins";
+    const themeToggle = document.getElementById("themeToggle");
+    const fontSelect = document.getElementById("fontSelect");
+    const soundToggle = document.getElementById("soundToggle");
 
-    const escalaGuardada =
-        localStorage.getItem("harvestx-escala") ||
-        "1rem";
-
-    const sonidoGuardado =
-        localStorage.getItem("harvestx-sonido") || "off";
+    const btnSmall = document.getElementById("btnSizeSmall");
+    const btnNormal = document.getElementById("btnSizeNormal");
+    const btnLarge = document.getElementById("btnSizeLarge");
 
 
     // ==========================================
-    // APLICAR TEMA
+    // VALORES
     // ==========================================
 
-    if (temaGuardado === "dark") {
-        root.setAttribute("data-theme", "dark");
-    } else {
-        root.removeAttribute("data-theme");
+    let temaGuardado = "light";
+    let fuenteGuardada = "'Poppins', sans-serif";
+    let escalaGuardada = "1rem";
+    let sonidoGuardado = "off";
+
+
+    // ==========================================
+    // LEER LOCALSTORAGE
+    // ==========================================
+
+    function cargarConfiguracionGuardada() {
+
+        temaGuardado =
+            localStorage.getItem("harvestx-tema") || "light";
+
+        fuenteGuardada =
+            localStorage.getItem("harvestx-fuente") ||
+            "'Poppins', sans-serif";
+
+        escalaGuardada =
+            localStorage.getItem("harvestx-escala") ||
+            "1rem";
+
+        sonidoGuardado =
+            localStorage.getItem("harvestx-sonido") ||
+            "off";
     }
 
 
     // ==========================================
-    // APLICAR FUENTE
+    // ACTUALIZAR BOTÓN ACTIVO
     // ==========================================
-
-    root.style.setProperty(
-        "--fuente-actual",
-        fuenteGuardada
-    );
-
-
-    // ==========================================
-    // APLICAR TAMAÑO DE TEXTO
-    // ==========================================
-
-    root.style.setProperty(
-        "--escala-texto",
-        escalaGuardada
-    );
-
-
-    // ==========================================
-    // CONTROLES DEL MODAL
-    // ==========================================
-
-    const themeToggle =
-        document.getElementById("themeToggle");
-
-    const fontSelect =
-        document.getElementById("fontSelect");
-
-    const soundToggle =
-        document.getElementById("soundToggle");
-
-    const btnSmall =
-        document.getElementById("btnSizeSmall");
-
-    const btnNormal =
-        document.getElementById("btnSizeNormal");
-
-    const btnLarge =
-        document.getElementById("btnSizeLarge");
-
-
-    // ==========================================
-    // TEMA
-    // ==========================================
-
-    if (themeToggle) {
-
-        themeToggle.checked =
-            temaGuardado === "dark";
-
-        themeToggle.addEventListener("change", (e) => {
-
-            if (e.target.checked) {
-
-                root.setAttribute(
-                    "data-theme",
-                    "dark"
-                );
-
-                localStorage.setItem(
-                    "harvestx-tema",
-                    "dark"
-                );
-
-            } else {
-
-                root.removeAttribute(
-                    "data-theme"
-                );
-
-                localStorage.setItem(
-                    "harvestx-tema",
-                    "light"
-                );
-
-            }
-
-        });
-
-    }
-
-
-    // ==========================================
-    // FUENTE
-    // ==========================================
-
-    if (fontSelect) {
-
-        fontSelect.value = fuenteGuardada;
-
-        fontSelect.addEventListener("change", (e) => {
-
-            const nuevaFuente =
-                e.target.value;
-
-            root.style.setProperty(
-                "--fuente-actual",
-                nuevaFuente
-            );
-
-            localStorage.setItem(
-                "harvestx-fuente",
-                nuevaFuente
-            );
-
-        });
-
-    }
-
-
-    // ==========================================
-    // TAMAÑO DE TEXTO
-    // ==========================================
-
-    const botones = [
-        btnSmall,
-        btnNormal,
-        btnLarge
-    ];
-
 
     function actualizarBotonActivo() {
 
-        botones.forEach(btn => {
+        [btnSmall, btnNormal, btnLarge].forEach(btn => {
 
             if (btn) {
                 btn.classList.remove("active");
@@ -173,72 +74,260 @@ document.addEventListener("DOMContentLoaded", () => {
 
             btnSmall.classList.add("active");
 
-        }
-
-        else if (
+        } else if (
             escalaGuardada === "1.15rem" &&
             btnLarge
         ) {
 
             btnLarge.classList.add("active");
 
-        }
-
-        else if (btnNormal) {
+        } else if (btnNormal) {
 
             btnNormal.classList.add("active");
 
         }
+    }
+
+
+    // ==========================================
+    // ACTUALIZAR CONTROLES
+    // ==========================================
+
+    function actualizarControles() {
+
+        if (themeToggle) {
+
+            themeToggle.checked =
+                temaGuardado === "dark";
+
+        }
+
+
+        if (fontSelect) {
+
+            fontSelect.value =
+                fuenteGuardada;
+
+        }
+
+
+        if (soundToggle) {
+
+            soundToggle.checked =
+                sonidoGuardado === "on";
+
+        }
+
+
+        actualizarBotonActivo();
+    }
+
+
+    // ==========================================
+    // APLICAR CONFIGURACIÓN
+    // ==========================================
+
+    function aplicarConfiguracion() {
+
+        // IMPORTANTE:
+        // Siempre volver a leer LocalStorage
+        cargarConfiguracionGuardada();
+
+
+        // TEMA
+        if (temaGuardado === "dark") {
+
+            root.setAttribute(
+                "data-theme",
+                "dark"
+            );
+
+        } else {
+
+            root.removeAttribute(
+                "data-theme"
+            );
+
+        }
+
+
+        // FUENTE
+        root.style.setProperty(
+            "--fuente-actual",
+            fuenteGuardada
+        );
+
+
+        // TAMAÑO
+        root.style.setProperty(
+            "--escala-texto",
+            escalaGuardada
+        );
+
+
+        // Actualizar controles
+        actualizarControles();
+    }
+
+
+    // ==========================================
+    // APLICAR AL CARGAR
+    // ==========================================
+
+    aplicarConfiguracion();
+
+
+    // ==========================================
+    // ABRIR CONFIGURACIÓN
+    // ==========================================
+
+    if (openSettings && settingsModal) {
+
+        openSettings.addEventListener("click", (e) => {
+
+            e.preventDefault();
+
+            cargarConfiguracionGuardada();
+
+            actualizarControles();
+
+            settingsModal.classList.add("active");
+
+        });
 
     }
 
 
-    actualizarBotonActivo();
+    // ==========================================
+    // CERRAR CONFIGURACIÓN
+    // ==========================================
+
+    if (closeSettings && settingsModal) {
+
+        closeSettings.addEventListener("click", () => {
+
+            settingsModal.classList.remove("active");
+
+        });
+
+    }
+
+
+    // ==========================================
+    // CERRAR AL HACER CLICK AFUERA
+    // ==========================================
+
+    if (settingsModal) {
+
+        settingsModal.addEventListener("click", (e) => {
+
+            if (e.target === settingsModal) {
+
+                settingsModal.classList.remove("active");
+
+            }
+
+        });
+
+    }
+
+
+    // ==========================================
+    // TEMA
+    // ==========================================
+
+    if (themeToggle) {
+
+        themeToggle.addEventListener("change", (e) => {
+
+            temaGuardado =
+                e.target.checked
+                    ? "dark"
+                    : "light";
+
+
+            localStorage.setItem(
+                "harvestx-tema",
+                temaGuardado
+            );
+
+
+            aplicarConfiguracion();
+
+        });
+
+    }
+
+
+    // ==========================================
+    // FUENTE
+    // ==========================================
+
+    if (fontSelect) {
+
+        fontSelect.addEventListener("change", (e) => {
+
+            fuenteGuardada =
+                e.target.value;
+
+
+            localStorage.setItem(
+                "harvestx-fuente",
+                fuenteGuardada
+            );
+
+
+            aplicarConfiguracion();
+
+        });
+
+    }
+
+
+    // ==========================================
+    // TAMAÑO
+    // ==========================================
+
+    const botones = [
+        btnSmall,
+        btnNormal,
+        btnLarge
+    ];
 
 
     botones.forEach(btn => {
 
         if (!btn) return;
 
+
         btn.addEventListener("click", () => {
 
-            botones.forEach(b => {
-
-                if (b) {
-                    b.classList.remove("active");
-                }
-
-            });
-
-            btn.classList.add("active");
-
-
-            let escala = "1rem";
-
-
             if (btn.id === "btnSizeSmall") {
-                escala = "0.85rem";
+
+                escalaGuardada = "0.85rem";
+
             }
 
             else if (btn.id === "btnSizeNormal") {
-                escala = "1rem";
+
+                escalaGuardada = "1rem";
+
             }
 
             else if (btn.id === "btnSizeLarge") {
-                escala = "1.15rem";
+
+                escalaGuardada = "1.15rem";
+
             }
-
-
-            root.style.setProperty(
-                "--escala-texto",
-                escala
-            );
 
 
             localStorage.setItem(
                 "harvestx-escala",
-                escala
+                escalaGuardada
             );
+
+
+            aplicarConfiguracion();
 
         });
 
@@ -251,75 +340,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (soundToggle) {
 
-        soundToggle.checked =
-            sonidoGuardado === "on";
-
         soundToggle.addEventListener("change", (e) => {
 
-            const estado =
-                e.target.checked ? "on" : "off";
+            sonidoGuardado =
+                e.target.checked
+                    ? "on"
+                    : "off";
+
 
             localStorage.setItem(
                 "harvestx-sonido",
-                estado
+                sonidoGuardado
             );
 
         });
 
     }
 
-// ==========================================
-// ABRIR / CERRAR CONFIGURACIÓN
-// ==========================================
 
-const openSettings =
-    document.getElementById("openSettings");
+    // ==========================================
+    // SINCRONIZACIÓN ENTRE PESTAÑAS
+    // ==========================================
 
-const settingsModal =
-    document.getElementById("settingsModal");
+    window.addEventListener("storage", (e) => {
 
-const closeSettings =
-    document.getElementById("closeSettings");
+        if (
+            e.key === "harvestx-tema" ||
+            e.key === "harvestx-fuente" ||
+            e.key === "harvestx-escala" ||
+            e.key === "harvestx-sonido"
+        ) {
 
-
-if (openSettings && settingsModal) {
-
-    openSettings.addEventListener("click", (e) => {
-
-        e.preventDefault();
-
-        settingsModal.classList.add("active");
-
-    });
-
-}
-
-
-if (closeSettings && settingsModal) {
-
-    closeSettings.addEventListener("click", () => {
-
-        settingsModal.classList.remove("active");
-
-    });
-
-}
-
-
-// Cerrar haciendo clic fuera del modal
-
-if (settingsModal) {
-
-    settingsModal.addEventListener("click", (e) => {
-
-        if (e.target === settingsModal) {
-
-            settingsModal.classList.remove("active");
+            aplicarConfiguracion();
 
         }
 
     });
-
-}
 
 });
