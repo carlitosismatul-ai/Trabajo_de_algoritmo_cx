@@ -420,3 +420,197 @@ input:checked + .slider:before { transform: translateX(20px); }
 .btn-guardar:hover {
     opacity: 0.9;
 }
+/* ==========================================
+   BÚSQUEDA DE CULTIVOS
+   ========================================== */
+
+.busqueda-cultivo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 15px;
+}
+
+.busqueda-cultivo label {
+    font-size: 0.8rem;
+    color: var(--texto-oscuro);
+    font-weight: 600;
+}
+
+.input-busqueda-cultivo {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-busqueda-cultivo i {
+    position: absolute;
+    left: 12px;
+    color: var(--texto-claro);
+    font-size: 0.85rem;
+}
+
+.input-busqueda-cultivo input {
+    width: 100%;
+    padding: 10px 12px 10px 35px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-radius: 8px;
+    background: var(--fondo-tarjeta);
+    color: var(--texto-oscuro);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    transition: var(--transicion);
+}
+
+.input-busqueda-cultivo input:focus {
+    border-color: var(--verde-activo);
+}
+
+/* ==========================================
+   RESULTADOS DEL CATÁLOGO
+   ========================================== */
+
+.resultados-cultivos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.resultado-cultivo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    background: var(--fondo-tarjeta);
+    cursor: pointer;
+    transition: var(--transicion);
+}
+
+.resultado-cultivo:hover {
+    border-color: var(--verde-activo);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+.resultado-cultivo img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: var(--bg-light-green);
+}
+
+.resultado-cultivo-info {
+    flex: 1;
+}
+
+.resultado-cultivo-info h4 {
+    font-size: 0.85rem;
+    color: var(--texto-oscuro);
+    margin-bottom: 3px;
+}
+
+.resultado-cultivo-info p {
+    font-size: 0.7rem;
+    color: var(--texto-claro);
+    margin: 2px 0;
+}
+
+.resultado-cultivo-info .descripcion {
+    margin-top: 5px;
+}
+
+.resultado-cultivo-flecha {
+    color: var(--verde-activo);
+    font-size: 0.9rem;
+}
+
+/* ==========================================
+   MENSAJE DE BÚSQUEDA
+   ========================================== */
+
+.mensaje-busqueda {
+    text-align: center;
+    padding: 20px;
+    color: var(--texto-claro);
+}
+
+.mensaje-busqueda i {
+    font-size: 25px;
+    color: var(--verde-activo);
+    margin-bottom: 8px;
+}
+
+.mensaje-busqueda p {
+    font-size: 0.75rem;
+}
+
+/* ==========================================
+   SEPARADOR
+   ========================================== */
+
+.separador-cultivo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0;
+    color: var(--texto-claro);
+    font-size: 0.7rem;
+}
+
+.separador-cultivo::before,
+.separador-cultivo::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(128, 128, 128, 0.2);
+}
+
+/* ==========================================
+   PERSONALIZADO
+   ========================================== */
+
+.btn-personalizado-cultivo {
+    width: 100%;
+    border: 1px dashed var(--verde-activo);
+    background: transparent;
+    color: var(--verde-activo);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: var(--transicion);
+}
+
+.btn-personalizado-cultivo:hover {
+    background: var(--bg-light-green);
+}
+/* ==========================================
+   IMAGEN DEL CULTIVO EN LA TARJETA
+   ========================================== */
+
+.cultivo-icono {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-light-green);
+}
+
+.cultivo-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

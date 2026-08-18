@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Cultivos - HarvestX</title>
 
-    <!-- CSS principal de HarvestX -->
+    <!-- CSS PRINCIPAL -->
     <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
 
-    <!-- Iconos -->
+    <!-- ICONOS -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+    <!-- ==========================================
+         ESTILOS EXCLUSIVOS DE CULTIVOS
+         ========================================== -->
+
     <style>
-        /* ==========================================
-           ESTILOS EXCLUSIVOS DE LA PÁGINA CULTIVOS
-           ========================================== */
 
         .cultivos-container {
             display: flex;
@@ -44,11 +47,15 @@
             width: 55px;
             height: 55px;
             min-width: 55px;
+
             border-radius: 12px;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             font-size: 25px;
+
             background: var(--bg-light-green);
         }
 
@@ -60,6 +67,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             gap: 10px;
             margin-bottom: 8px;
         }
@@ -93,11 +101,16 @@
 
         .estado-activo {
             font-size: 0.7rem;
+
             color: var(--text-green);
             background: var(--bg-light-green);
+
             padding: 5px 10px;
+
             border-radius: 20px;
+
             font-weight: 600;
+
             white-space: nowrap;
         }
 
@@ -109,12 +122,16 @@
         .btn-cultivo {
             width: 35px;
             height: 35px;
+
             border: none;
             border-radius: 8px;
+
             cursor: pointer;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             transition: 0.2s;
         }
 
@@ -138,14 +155,20 @@
 
         .btn-agregar-cultivo {
             border: 1px solid var(--verde-activo);
+
             background: transparent;
             color: var(--verde-activo);
+
             padding: 8px 14px;
+
             border-radius: 8px;
+
             cursor: pointer;
+
             font-family: inherit;
             font-size: 0.8rem;
             font-weight: 500;
+
             transition: 0.2s;
         }
 
@@ -154,7 +177,6 @@
             color: white;
         }
 
-        /* Responsive */
         @media (max-width: 700px) {
 
             .cultivo-card {
@@ -174,507 +196,733 @@
             .cultivo-acciones {
                 flex-direction: column;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="dashboard-container">
 
-        <!-- ==========================================
-             BARRA LATERAL
-             ========================================== -->
+<!-- =====================================================
+     CONTENEDOR GENERAL
+     ===================================================== -->
 
-        <aside class="sidebar">
+<div class="dashboard-container">
 
-            <div class="sidebar-header">
 
-                <div class="logo-wrapper">
+    <!-- =================================================
+         SIDEBAR
+         ================================================= -->
 
-                    <i class="fa-solid fa-leaf logo-icon"></i>
+    <aside class="sidebar" id="sidebar">
 
-                    <div class="logo-text">
-                        <h2>HarvestX</h2>
-                        <span>Sistema Inteligente</span>
-                    </div>
+
+        <!-- LOGO -->
+
+        <div class="sidebar-header">
+
+            <div class="logo-wrapper">
+
+                <i class="fa-solid fa-leaf logo-icon"></i>
+
+                <div class="logo-text">
+
+                    <h2>HarvestX</h2>
+
+                    <span>Sistema Inteligente</span>
 
                 </div>
 
             </div>
-
-
-            <nav class="sidebar-nav">
-
-                <!-- Dashboard -->
-                <a href="inicio.html" class="nav-link">
-
-                    <i class="fa-solid fa-house"></i>
-
-                    <span class="nav-text">
-                        Dashboard
-                    </span>
-
-                </a>
-
-                <!-- Gestión -->
-                <div class="nav-category">
-                    <span class="nav-text">
-                        GESTIÓN
-                    </span>
-                </div>
-                
-               <a href="fincas.html" class="nav-link">
-
-    <i class="fa-solid fa-mountain-sun"></i>
-
-    <span class="nav-text">
-        Fincas
-    </span>
-
-</a>
-
-
-
-
-                <!-- Cultivos -->
-                <a href="#" class="nav-link active">
-
-                    <i class="fa-solid fa-seedling"></i>
-
-                    <span class="nav-text">
-                        Cultivos
-                    </span>
-
-                </a>
-
-
-                <!-- Riego -->
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-droplet"></i>
-
-                    <span class="nav-text">
-                        Programación de Riego
-                    </span>
-
-                </a>
-
-
-                <!-- Labores -->
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-tractor"></i>
-
-                    <span class="nav-text">
-                        Labores del Campo
-                    </span>
-
-                </a>
-
-
-                <!-- Clima -->
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-cloud-sun"></i>
-
-                    <span class="nav-text">
-                        Monitoreo Climático
-                    </span>
-
-                </a>
-
-
-                <!-- Alertas -->
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-bell"></i>
-
-                    <span class="nav-text">
-                        Alertas
-                    </span>
-
-                </a>
-
-
-                <!-- Reportes -->
-                <div class="nav-category">
-
-                    <span class="nav-text">
-                        REPORTES
-                    </span>
-
-                </div>
-
-
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-chart-column"></i>
-
-                    <span class="nav-text">
-                        Reportes y Estadísticas
-                    </span>
-
-                </a>
-
-
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-
-                    <span class="nav-text">
-                        Historial de Actividades
-                    </span>
-
-                </a>
-
-
-                <!-- Sistema -->
-                <div class="nav-category">
-
-                    <span class="nav-text">
-                        SISTEMA
-                    </span>
-
-                </div>
-
-
-                <a href="#" class="nav-link">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    <span class="nav-text">
-                        Usuarios
-                    </span>
-
-                </a>
-
-            </nav>
-
-
-            <!-- Cerrar sesión -->
-            <div class="sidebar-footer">
-
-                <a href="../../login.html" class="nav-link logout">
-
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
-                    <span class="nav-text">
-                        Cerrar Sesión
-                    </span>
-
-                </a>
-
-            </div>
-
-        </aside>
-
-
-        <!-- ==========================================
-             CONTENIDO PRINCIPAL
-             ========================================== -->
-
-        <main class="main-content">
-
-
-            <!-- CABECERA -->
-            <header class="topbar">
-
-                <div class="left-controls">
-
-                    <div class="header-title">
-
-                        <div>
-
-                            <h1>🌱 Cultivos</h1>
-
-                            <p>
-                                Información y administración de cultivos
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Usuario -->
-                <div class="user-info">
-
-                    <div class="profile">
-
-                        <img
-                            src="../../IMG/juan.jpg"
-                            alt="Perfil"
-                            class="avatar-img"
-                        >
-
-                        <div class="user-details">
-
-                            <span class="name">
-                                Juan Pérez
-                            </span>
-
-                            <span class="role">
-                                Administrador
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </header>
-
-
-            <!-- ==========================================
-                 CATÁLOGO
-                 ========================================== -->
-
-            <section class="content-grid">
-
-                <div class="card">
-
-
-                    <!-- Encabezado -->
-                    <div class="card-header">
-
-                        <div>
-
-                            <h3>
-                                Catálogo de Cultivos
-                            </h3>
-
-                            <p style="
-                                font-size: 0.75rem;
-                                color: var(--texto-claro);
-                                margin-top: 4px;
-                            ">
-                                Consulta y administra los cultivos registrados.
-                            </p>
-
-                        </div>
-
-
-                        <!-- Botón agregar -->
-                        <button
-                            class="btn-agregar-cultivo"
-                            id="btnAgregarCultivo"
-                        >
-
-                            <i class="fa-solid fa-plus"></i>
-
-                            Agregar cultivo
-
-                        </button>
-
-                    </div>
-<!-- ==================================
-     LISTA DE CULTIVOS
-     ================================== -->
-
-<div class="cultivos-container">
-</div>
-
-</div>
-
-</section>            
-                                 
-            <!-- ==========================================
-     MODAL AGREGAR CULTIVO
-     ========================================== -->
-
-<div class="modal-cultivo-overlay" id="modalCultivo">
-
-    <div class="modal-cultivo">
-
-        <!-- Encabezado -->
-
-        <div class="modal-header-cultivo">
-<h3 id="tituloModalCultivo">
-    <i class="fa-solid fa-seedling"></i>
-    Agregar cultivo
-</h3>
-
-            <button
-                type="button"
-                class="btn-cerrar-modal"
-                id="btnCerrarModal"
-                title="Cerrar"
-            >
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
 
         </div>
 
 
-        <!-- Formulario -->
+        <!-- =================================================
+             NAVEGACIÓN
+             ================================================= -->
 
-        <form
-            class="form-cultivo"
-            id="formCultivo"
-        >
-
-            <!-- Nombre -->
-
-            <div class="form-grupo">
-
-                <label for="nombreCultivo">
-                    Nombre del cultivo
-                </label>
-
-                <input
-                    type="text"
-                    id="nombreCultivo"
-                    placeholder="Ej. Tomate"
-                    required
-                >
-
-            </div>
+        <nav class="sidebar-nav">
 
 
-            <!-- Tipo -->
+            <!-- DASHBOARD -->
 
-            <div class="form-grupo">
+            <a href="inicio.html" class="nav-link">
 
-                <label for="tipoCultivo">
-                    Tipo de cultivo
-                </label>
+                <i class="fa-solid fa-house"></i>
 
-                <select
-                    id="tipoCultivo"
-                    required
-                >
+                <span class="nav-text">
+                    Dashboard
+                </span>
 
-                    <option value="">
-                        Selecciona un tipo
-                    </option>
+            </a>
 
-                    <option value="Hortaliza">
-                        Hortaliza
-                    </option>
 
-                    <option value="Cereal">
-                        Cereal
-                    </option>
+            <!-- GESTIÓN -->
 
-                    <option value="Frutal">
-                        Frutal
-                    </option>
+            <div class="nav-category">
 
-                    <option value="Leguminosa">
-                        Leguminosa
-                    </option>
-
-                    <option value="Cultivo permanente">
-                        Cultivo permanente
-                    </option>
-
-                    <option value="Otro">
-                        Otro
-                    </option>
-
-                </select>
+                <span class="nav-text">
+                    GESTIÓN
+                </span>
 
             </div>
 
 
-            <!-- Agua -->
+            <!-- FINCAS -->
 
-            <div class="form-grupo">
+            <a href="fincas.html" class="nav-link">
 
-                <label for="aguaCultivo">
-                    Necesidad de agua
-                </label>
+                <i class="fa-solid fa-mountain-sun"></i>
 
-                <select
-                    id="aguaCultivo"
-                    required
-                >
+                <span class="nav-text">
+                    Fincas
+                </span>
 
-                    <option value="">
-                        Selecciona un nivel
-                    </option>
+            </a>
 
-                    <option value="Baja">
-                        Baja
-                    </option>
 
-                    <option value="Media">
-                        Media
-                    </option>
+            <!-- CULTIVOS -->
 
-                    <option value="Alta">
-                        Alta
-                    </option>
+            <a href="cultivos.html" class="nav-link active">
 
-                </select>
+                <i class="fa-solid fa-seedling"></i>
+
+                <span class="nav-text">
+                    Cultivos
+                </span>
+
+            </a>
+
+
+            <!-- RIEGO -->
+
+            <a href="programacion_de_riego.html" class="nav-link">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <span class="nav-text">
+                    Programación de Riego
+                </span>
+
+            </a>
+
+
+            <!-- LABORES -->
+
+            <a href="labores_del_campo.html" class="nav-link">
+
+                <i class="fa-solid fa-tractor"></i>
+
+                <span class="nav-text">
+                    Labores del Campo
+                </span>
+
+            </a>
+
+
+            <!-- MONITOREO -->
+
+            <a href="monitoreo_climatico.html" class="nav-link">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                <span class="nav-text">
+                    Monitoreo Climático
+                </span>
+
+            </a>
+
+
+            <!-- ALERTAS -->
+
+            <a href="alertas.html" class="nav-link">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <span class="nav-text">
+                    Alertas
+                </span>
+
+            </a>
+
+
+            <!-- REPORTES -->
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    REPORTES
+                </span>
 
             </div>
 
 
-            <!-- Cosecha -->
+            <!-- REPORTES Y ESTADÍSTICAS -->
 
-            <div class="form-grupo">
+            <a href="reportes_y_estadisticas.html" class="nav-link">
 
-                <label for="cosechaCultivo">
-                    Tiempo estimado de cosecha
-                </label>
+                <i class="fa-solid fa-chart-column"></i>
 
-                <input
-                    type="text"
-                    id="cosechaCultivo"
-                    placeholder="Ej. 60 - 80 días"
-                    required
-                >
+                <span class="nav-text">
+                    Reportes y Estadísticas
+                </span>
+
+            </a>
+
+
+            <!-- HISTORIAL -->
+
+            <a href="historial.html" class="nav-link">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                <span class="nav-text">
+                    Historial de Actividades
+                </span>
+
+            </a>
+
+
+            <!-- SISTEMA -->
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    SISTEMA
+                </span>
+
+            </div>
+
+
+            <!-- USUARIOS -->
+
+            <a href="#" class="nav-link">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span class="nav-text">
+                    Usuarios
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             CERRAR SESIÓN
+             ================================================= -->
+
+        <div class="sidebar-footer">
+
+            <a href="../../login.html"
+               class="nav-link logout">
+
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <span class="nav-text">
+                    Cerrar Sesión
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =================================================
+         CONTENIDO PRINCIPAL
+         ================================================= -->
+
+    <main class="main-content"
+          id="mainContent">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="topbar">
+
+
+            <div class="left-controls">
+
+
+                <!-- BOTÓN SIDEBAR DESKTOP -->
+
+                <div class="menu-toggle-desktop"
+                     id="toggleSidebarDesktop">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </div>
+
+
+                <!-- BOTÓN SIDEBAR MÓVIL -->
+
+                <div class="menu-toggle-mobile"
+                     id="menuToggleMobile">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </div>
+
+
+                <!-- TÍTULO -->
+
+                <div class="header-title">
+
+                    <div>
+
+                        <h1>🌱 Cultivos</h1>
+
+                        <p>
+                            Información y administración de cultivos
+                        </p>
+
+                    </div>
+
+                </div>
+
 
             </div>
 
 
-            <!-- Botones -->
+            <!-- USUARIO -->
 
-            <div class="modal-acciones">
+            <div class="user-info">
 
-                <button
-                    type="button"
-                    class="btn-modal btn-cancelar"
-                    id="btnCancelarCultivo"
-                >
-                    Cancelar
-                </button>
+                <div class="notifications">
 
-                <button 
-    type="submit" 
-    class="btn-modal btn-guardar"
-    id="btnGuardarCultivo"
->
-    <i class="fa-solid fa-plus"></i> 
-    Guardar cultivo
-</button>
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="badge">
+                        3
+                    </span>
+
+                </div>
+
+
+                <div class="profile">
+
+                    <img
+                        src="../../IMG/juan.jpg"
+                        alt="Perfil"
+                        class="avatar-img"
+                    >
+
+                    <div class="user-details">
+
+                        <span class="name">
+                            Juan Pérez
+                        </span>
+
+                        <span class="role">
+                            Administrador
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </form>
 
-    </div>
+        </header>
+
+
+
+        <!-- =================================================
+             CONTENIDO DE CULTIVOS
+             ================================================= -->
+
+        <section class="content-grid">
+
+
+            <div class="card">
+
+
+                <!-- ENCABEZADO -->
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Catálogo de Cultivos
+                        </h3>
+
+                        <p style="
+                            font-size: 0.75rem;
+                            color: var(--texto-claro);
+                            margin-top: 4px;
+                        ">
+
+                            Consulta y administra los cultivos registrados.
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- AGREGAR -->
+
+                    <button
+                        class="btn-agregar-cultivo"
+                        id="btnAgregarCultivo">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Agregar cultivo
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     LISTA DE CULTIVOS
+                     ================================================= -->
+
+                <div class="cultivos-container"
+                     id="listaCultivos">
+
+                    <!-- cultivos.js los cargará aquí -->
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MODAL AGREGAR CULTIVO
+             ================================================= -->
+
+        <div class="modal-cultivo-overlay"
+             id="modalCultivo">
+
+
+            <div class="modal-cultivo">
+
+
+                <!-- HEADER MODAL -->
+
+                <div class="modal-header-cultivo">
+
+                    <h3 id="tituloModalCultivo">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                        Agregar cultivo
+
+                    </h3>
+
+
+                    <button
+                        type="button"
+                        class="btn-cerrar-modal"
+                        id="btnCerrarModal"
+                        title="Cerrar">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BUSCAR CULTIVO
+                     ================================================= -->
+
+                <div id="vistaBusquedaCultivo">
+
+
+                    <div class="busqueda-cultivo">
+
+                        <label for="buscarCultivo">
+
+                            Buscar cultivo
+
+                        </label>
+
+
+                        <div class="input-busqueda-cultivo">
+
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            <input
+                                type="text"
+                                id="buscarCultivo"
+                                placeholder="Ej. Tomate, Maíz, Café..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- RESULTADOS -->
+
+                    <div
+                        class="resultados-cultivos"
+                        id="resultadosCultivos">
+
+                        <div class="mensaje-busqueda">
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                            <p>
+                                Escribe el nombre de un cultivo para buscar.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SEPARADOR -->
+
+                    <div class="separador-cultivo">
+
+                        <span>O</span>
+
+                    </div>
+
+
+
+                    <!-- PERSONALIZADO -->
+
+                    <button
+                        type="button"
+                        class="btn-personalizado-cultivo"
+                        id="btnPersonalizadoCultivo">
+
+                        <i class="fa-solid fa-pen-to-square"></i>
+
+                        Registrar cultivo personalizado
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     REGISTRO PERSONALIZADO
+                     ================================================= -->
+
+                <div
+                    id="vistaPersonalizadoCultivo"
+                    style="display: none;"
+                >
+
+
+                    <form
+                        class="form-cultivo"
+                        id="formCultivo">
+
+
+                        <!-- NOMBRE -->
+
+                        <div class="form-grupo">
+
+                            <label for="nombreCultivo">
+                                Nombre del cultivo
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nombreCultivo"
+                                placeholder="Ej. Tomate"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- TIPO -->
+
+                        <div class="form-grupo">
+
+                            <label for="tipoCultivo">
+                                Tipo de cultivo
+                            </label>
+
+                            <select
+                                id="tipoCultivo"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona un tipo
+                                </option>
+
+                                <option value="Hortaliza">
+                                    Hortaliza
+                                </option>
+
+                                <option value="Cereal">
+                                    Cereal
+                                </option>
+
+                                <option value="Frutal">
+                                    Frutal
+                                </option>
+
+                                <option value="Leguminosa">
+                                    Leguminosa
+                                </option>
+
+                                <option value="Cultivo permanente">
+                                    Cultivo permanente
+                                </option>
+
+                                <option value="Otro">
+                                    Otro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- AGUA -->
+
+                        <div class="form-grupo">
+
+                            <label for="aguaCultivo">
+                                Necesidad de agua
+                            </label>
+
+                            <select
+                                id="aguaCultivo"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona un nivel
+                                </option>
+
+                                <option value="Baja">
+                                    Baja
+                                </option>
+
+                                <option value="Media">
+                                    Media
+                                </option>
+
+                                <option value="Alta">
+                                    Alta
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- COSECHA -->
+
+                        <div class="form-grupo">
+
+                            <label for="cosechaCultivo">
+                                Tiempo estimado de cosecha
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cosechaCultivo"
+                                placeholder="Ej. 60 - 80 días"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- BOTONES -->
+
+                        <div class="modal-acciones">
+
+
+                            <button
+                                type="button"
+                                class="btn-modal btn-cancelar"
+                                id="btnVolverBusquedaCultivo">
+
+                                <i class="fa-solid fa-arrow-left"></i>
+
+                                Volver
+
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="btn-modal btn-guardar"
+                                id="btnGuardarCultivo">
+
+                                <i class="fa-solid fa-plus"></i>
+
+                                Guardar cultivo
+
+                            </button>
+
+
+                        </div>
+
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
 
 </div>
 
-        </main>
 
-    </div>
-    <script>
-    console.log("CULTIVOS: HTML cargado");
-    console.log("openSettings:", document.getElementById("openSettings"));
-    console.log("settingsModal:", document.getElementById("settingsModal"));
-</script>
 
-<script src="../../JS/paginas/configuracion.js"></script>
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script src="../../JS/paginas/administrador.js"></script>
+
 <script src="../../JS/paginas/cultivos.js"></script>
 
+
 </body>
+
 </html>

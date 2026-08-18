@@ -5,6 +5,7 @@ import mysql.connector
 app = Flask(__name__)
 CORS(app)
 
+
 # ==========================================
 # CONEXIÓN CON MYSQL
 # ==========================================
@@ -53,21 +54,26 @@ def agregar_cultivo():
     agua = datos["agua"]
     cosecha = datos["cosecha"]
 
+    # ID del cultivo que viene del catálogo
+    # Puede ser NULL si es personalizado
+    catalogo_cultivo_id = datos.get("catalogo_cultivo_id")
+
     conexion = conectar_bd()
 
     cursor = conexion.cursor()
 
     sql = """
         INSERT INTO cultivos
-        (nombre, tipo, agua, cosecha)
-        VALUES (%s, %s, %s, %s)
+        (nombre, tipo, agua, cosecha, catalogo_cultivo_id)
+        VALUES (%s, %s, %s, %s, %s)
     """
 
     valores = (
         nombre,
         tipo,
         agua,
-        cosecha
+        cosecha,
+        catalogo_cultivo_id
     )
 
     cursor.execute(sql, valores)
@@ -81,6 +87,7 @@ def agregar_cultivo():
         "mensaje": "Cultivo agregado correctamente"
     })
 
+
 # ==========================================
 # OBTENER CULTIVOS
 # ==========================================
@@ -92,7 +99,23 @@ def obtener_cultivos():
 
     cursor = conexion.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM cultivos")
+    sql = """
+        SELECT 
+            cultivos.id,
+            cultivos.nombre,
+            cultivos.tipo,
+            cultivos.agua,
+            cultivos.cosecha,
+            cultivos.estado,
+            cultivos.finca_id,
+            cultivos.catalogo_cultivo_id,
+            catalogo_cultivos.imagen
+        FROM cultivos
+        LEFT JOIN catalogo_cultivos
+            ON cultivos.catalogo_cultivo_id = catalogo_cultivos.id
+    """
+
+    cursor.execute(sql)
 
     cultivos = cursor.fetchall()
 
@@ -100,6 +123,35 @@ def obtener_cultivos():
     conexion.close()
 
     return jsonify(cultivos)
+
+# ==========================================
+# BUSCAR CULTIVOS DEL CATÁLOGO
+# ==========================================
+
+@app.route("/catalogo-cultivos", methods=["GET"])
+def obtener_catalogo_cultivos():
+
+    buscar = request.args.get("buscar", "")
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor(dictionary=True)
+
+    sql = """
+        SELECT *
+        FROM catalogo_cultivos
+        WHERE nombre LIKE %s
+    """
+
+    cursor.execute(sql, (f"%{buscar}%",))
+
+    cultivos = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify(cultivos)
+
 
 # ==========================================
 # OBTENER UN CULTIVO POR ID
@@ -113,7 +165,8 @@ def obtener_cultivo(id):
     cursor = conexion.cursor(dictionary=True)
 
     sql = """
-        SELECT * FROM cultivos
+        SELECT *
+        FROM cultivos
         WHERE id = %s
     """
 
@@ -132,6 +185,7 @@ def obtener_cultivo(id):
 
     return jsonify(cultivo)
 
+
 # ==========================================
 # EDITAR CULTIVO
 # ==========================================
@@ -147,6 +201,7 @@ def editar_cultivo(id):
     cosecha = datos["cosecha"]
 
     conexion = conectar_bd()
+
     cursor = conexion.cursor()
 
     sql = """
@@ -176,6 +231,8 @@ def editar_cultivo(id):
     return jsonify({
         "mensaje": "Cultivo actualizado correctamente"
     })
+
+
 # ==========================================
 # ELIMINAR CULTIVO
 # ==========================================
@@ -184,6 +241,7 @@ def editar_cultivo(id):
 def eliminar_cultivo(id):
 
     conexion = conectar_bd()
+
     cursor = conexion.cursor()
 
     sql = """
@@ -211,6 +269,8 @@ def eliminar_cultivo(id):
     return jsonify({
         "mensaje": "Cultivo eliminado correctamente"
     })
+
+
 # ==========================================
 # EJECUTAR SERVIDOR
 # ==========================================
