@@ -37,116 +37,186 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- MODAL DE CONFIGURACIÓN -->
-    <!-- ========================================== -->
+<!-- ========================================== -->
+<!-- MODAL DE CONFIGURACIÓN -->
+<!-- ========================================== -->
 
-    <div id="settingsModal" class="modal-overlay">
+<div id="settingsModal" class="modal-overlay">
 
-        <div class="modal-content">
+    <div class="modal-content">
 
-            <div class="modal-header">
+        <div class="modal-header">
 
-                <h2>Ajustes del Sistema</h2>
+            <h2>Ajustes del Sistema</h2>
 
-                <i class="fa-solid fa-xmark close-modal"
-                    id="closeSettings"></i>
+            <i class="fa-solid fa-xmark close-modal"
+                id="closeSettings"></i>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <!-- ================================== -->
+            <!-- TEMA -->
+            <!-- ================================== -->
+
+            <div class="setting-group">
+
+                <label>Tema Oscuro</label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                        id="themeToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- ================================== -->
+            <!-- SONIDO -->
+            <!-- ================================== -->
+
+            <div class="setting-group">
+
+                <label>Sonido</label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                        id="soundToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
 
             </div>
 
 
-            <div class="modal-body">
+<!-- ================================== -->
+<!-- VOZ DEL ASISTENTE -->
+<!-- ================================== -->
 
-                <div class="setting-group">
+<div class="setting-group">
 
-                    <label>Tema Oscuro</label>
+    <label>
+        Voz del asistente
+    </label>
 
-                    <label class="switch">
+    <span style="font-size: 0.9rem; color: var(--texto-claro);">
+        🎙️ Asistente HarvestX
+    </span>
 
-                        <input type="checkbox"
-                            id="themeToggle">
-
-                        <span class="slider round"></span>
-
-                    </label>
-
-                </div>
-
-
-                <div class="setting-group">
-
-                    <label>Sonido</label>
-
-                    <label class="switch">
-
-                        <input type="checkbox"
-                            id="soundToggle">
-
-                        <span class="slider round"></span>
-
-                    </label>
-
-                </div>
+</div>
 
 
-                <div class="setting-group">
+            <!-- ================================== -->
+            <!-- PROBAR VOZ -->
+            <!-- ================================== -->
 
-                    <label>Fuente de Letra</label>
+            <div class="setting-group">
 
-                    <select id="fontSelect"
-                        class="form-select">
+                <label>
+                    Probar voz
+                </label>
 
-                        <option value="'Poppins', sans-serif">
-                            Poppins
-                        </option>
+                <button
+                    type="button"
+                    id="testVoiceButton"
+                    class="btn-size">
 
-                        <option value="'Arial', sans-serif">
-                            Arial
-                        </option>
+                    🔊 Probar voz
 
-                        <option value="'Courier New', monospace">
-                            Courier New
-                        </option>
+                </button>
 
-                        <option value="'Times New Roman', serif">
-                            Times New Roman
-                        </option>
-
-                    </select>
-
-                </div>
+            </div>
 
 
-                <div class="setting-group">
+            <!-- ================================== -->
+            <!-- FUENTE -->
+            <!-- ================================== -->
 
-                    <label>Tamaño de Letra</label>
+            <div class="setting-group">
 
-                    <div class="size-controls">
+                <label>
+                    Fuente de Letra
+                </label>
 
-                        <button id="btnSizeSmall"
-                            class="btn-size">
-                            A-
-                        </button>
+                <select id="fontSelect"
+                    class="form-select">
 
-                        <button id="btnSizeNormal"
-                            class="btn-size active">
-                            A
-                        </button>
+                    <option value="'Poppins', sans-serif">
+                        Poppins
+                    </option>
 
-                        <button id="btnSizeLarge"
-                            class="btn-size">
-                            A+
-                        </button>
+                    <option value="'Arial', sans-serif">
+                        Arial
+                    </option>
 
-                    </div>
+                    <option value="'Courier New', monospace">
+                        Courier New
+                    </option>
+
+                    <option value="'Times New Roman', serif">
+                        Times New Roman
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ================================== -->
+            <!-- TAMAÑO DE LETRA -->
+            <!-- ================================== -->
+
+            <div class="setting-group">
+
+                <label>
+                    Tamaño de Letra
+                </label>
+
+                <div class="size-controls">
+
+                    <button
+                        id="btnSizeSmall"
+                        class="btn-size">
+
+                        A-
+
+                    </button>
+
+                    <button
+                        id="btnSizeNormal"
+                        class="btn-size active">
+
+                        A
+
+                    </button>
+
+                    <button
+                        id="btnSizeLarge"
+                        class="btn-size">
+
+                        A+
+
+                    </button>
 
                 </div>
 
             </div>
+
 
         </div>
 
     </div>
+
+</div>
 
 
     <!-- ========================================== -->

@@ -1,5 +1,14 @@
-const bgMusic = new Audio("song/mc.mp3");
+// ==========================================
+// HARVESTX - JAVASCRIPT USUARIO NORMAL
+// ==========================================
+
+const bgMusic = new Audio("../../song/mc.mp3");
 bgMusic.loop = true;
+
+
+// ==========================================
+// INICIO
+// ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -10,23 +19,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const usuarioGuardado =
         localStorage.getItem("usuarioHarvestX");
 
-    // Si no existe una sesión
+
+    // Si no existe sesión
     if (!usuarioGuardado) {
 
         console.warn("No hay una sesión activa.");
 
-        window.location.href =
-            "../../login.html";
+        window.location.href = "../../login.html";
 
         return;
     }
+
+
+    // ==========================================
+    // LEER DATOS DEL USUARIO
+    // ==========================================
 
     let usuarioActual;
 
     try {
 
-        usuarioActual =
-            JSON.parse(usuarioGuardado);
+        usuarioActual = JSON.parse(usuarioGuardado);
 
     } catch (error) {
 
@@ -35,32 +48,28 @@ document.addEventListener("DOMContentLoaded", () => {
             error
         );
 
-        localStorage.removeItem(
-            "usuarioHarvestX"
-        );
+        localStorage.removeItem("usuarioHarvestX");
 
-        window.location.href =
-            "../../login.html";
+        window.location.href = "../../login.html";
 
         return;
     }
 
 
     // ==========================================
-    // VERIFICAR ROL DE USUARIO
+    // VERIFICAR ROL
     // ==========================================
 
     if (
-        usuarioActual.rol !==
-        "usuario"
+        !usuarioActual.rol ||
+        usuarioActual.rol.toLowerCase() !== "usuario"
     ) {
 
         console.warn(
             "El usuario no tiene permisos para esta sección."
         );
 
-        window.location.href =
-            "../../login.html";
+        window.location.href = "../../login.html";
 
         return;
     }
@@ -83,25 +92,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             nombreBienvenida.textContent =
                 `¡Bienvenido, ${usuarioActual.nombre}! 👋`;
-
         }
+
 
         if (nombreUsuario) {
 
             nombreUsuario.textContent =
                 usuarioActual.nombre;
-
         }
 
     }
 
 
     // ==========================================
-    // CONFIGURACIÓN PERMANENTE
+    // CONFIGURACIÓN GUARDADA
     // ==========================================
 
     const htmlElement =
         document.documentElement;
+
 
     const temaGuardado =
         localStorage.getItem("temaHarvestX");
@@ -171,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader =
         document.getElementById("loader");
 
+
     setTimeout(() => {
 
         if (loader) {
@@ -179,11 +189,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
         document
             .querySelectorAll(".fade-up")
-            .forEach(el =>
-                el.classList.add("visible")
-            );
+            .forEach(element => {
+
+                element.classList.add("visible");
+
+            });
+
 
         initCharts();
 
@@ -219,6 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                 }
+
 
                 if (mainContent) {
 
@@ -387,6 +402,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
+    // CERRAR MODAL AL HACER CLIC AFUERA
+    // ==========================================
+
+    if (settingsModal) {
+
+        settingsModal.addEventListener(
+            "click",
+            (e) => {
+
+                if (e.target === settingsModal) {
+
+                    settingsModal.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // ==========================================
     // TEMA OSCURO
     // ==========================================
 
@@ -468,10 +507,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         "on"
                     );
 
+
                     bgMusic.play().catch(error => {
 
-                        console.error(
-                            "Error al reproducir el audio:",
+                        console.warn(
+                            "El navegador bloqueó el audio hasta que exista interacción del usuario.",
                             error
                         );
 
@@ -521,10 +561,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const nuevaFuente =
                     e.target.value;
 
+
                 htmlElement.style.setProperty(
                     "--fuente-actual",
                     nuevaFuente
                 );
+
 
                 localStorage.setItem(
                     "fuenteHarvestX",
@@ -553,11 +595,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             (e) => {
 
-                btnsSize.forEach(b =>
+                btnsSize.forEach(b => {
+
                     b.classList.remove(
                         "active"
-                    )
-                );
+                    );
+
+                });
+
 
                 e.currentTarget.classList.add(
                     "active"
@@ -567,36 +612,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 const sizeId =
                     e.currentTarget.id;
 
+
                 let nuevoTamano;
 
 
-                if (
-                    sizeId ===
-                    "btnSizeSmall"
-                ) {
+                if (sizeId === "btnSizeSmall") {
 
-                    nuevoTamano =
-                        "0.85rem";
+                    nuevoTamano = "0.85rem";
 
                 }
 
                 else if (
-                    sizeId ===
-                    "btnSizeNormal"
+                    sizeId === "btnSizeNormal"
                 ) {
 
-                    nuevoTamano =
-                        "1rem";
+                    nuevoTamano = "1rem";
 
                 }
 
                 else if (
-                    sizeId ===
-                    "btnSizeLarge"
+                    sizeId === "btnSizeLarge"
                 ) {
 
-                    nuevoTamano =
-                        "1.15rem";
+                    nuevoTamano = "1.15rem";
 
                 }
 
@@ -607,6 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         "--escala-texto",
                         nuevoTamano
                     );
+
 
                     localStorage.setItem(
                         "escalaHarvestX",
@@ -622,7 +661,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // ENLACES SIDEBAR
+    // ENLACES DEL SIDEBAR
     // ==========================================
 
     const navLinks =
@@ -635,13 +674,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         link.addEventListener(
             "click",
-            function() {
+            function () {
 
-                navLinks.forEach(nav =>
+                navLinks.forEach(nav => {
+
                     nav.classList.remove(
                         "active"
-                    )
-                );
+                    );
+
+                });
+
 
                 this.classList.add(
                     "active"
@@ -659,13 +701,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function initCharts() {
 
-        if (
-            typeof Chart ===
-            "undefined"
-        ) {
+        if (typeof Chart === "undefined") {
+
+            console.warn(
+                "Chart.js no está disponible."
+            );
 
             return;
-
         }
 
 
@@ -702,10 +744,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     data: {
 
                         labels: [
-                            "Tomate 45%",
-                            "Maíz 30%",
-                            "Café 15%",
-                            "Lechuga 10%"
+                            "Tomate",
+                            "Maíz",
+                            "Café",
+                            "Lechuga"
                         ],
 
                         datasets: [{
@@ -797,8 +839,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         datasets: [{
 
-                            label:
-                                "Rendimiento",
+                            label: "Rendimiento",
 
                             data: [
                                 1000,
@@ -884,8 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         datasets: [{
 
-                            label:
-                                "Humedad",
+                            label: "Humedad",
 
                             data: [
                                 75,
@@ -920,6 +960,18 @@ document.addEventListener("DOMContentLoaded", () => {
                             legend: {
 
                                 display: false
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                max: 100
 
                             }
 

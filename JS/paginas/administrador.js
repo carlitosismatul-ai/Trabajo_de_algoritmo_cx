@@ -1,741 +1,1115 @@
-const bgMusic = new Audio("song/mc.mp3");
-bgMusic.loop = true;
+// ==========================================
+// VOZ DEL ASISTENTE HARVESTX
+// ==========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+// Archivo de voz masculina
+// song está en la raíz del proyecto
+const vozBienvenida = new Audio("../../song/bienvenida.mp3");
+
+vozBienvenida.volume = 1;
+
+
+// ==========================================
+// REPRODUCIR BIENVENIDA
+// ==========================================
+
+function reproducirBienvenida() {
+
+    // Reiniciar el audio por si ya estaba reproduciéndose
+    vozBienvenida.pause();
+
+    vozBienvenida.currentTime = 0;
+
+    vozBienvenida.play()
+        .catch(error => {
+
+            console.warn(
+                "No se pudo reproducir la voz de bienvenida:",
+                error
+            );
+
+        });
+
+}
+
+
+// ==========================================
+// DETENER BIENVENIDA
+// ==========================================
+
+function detenerBienvenida() {
+
+    vozBienvenida.pause();
+
+    vozBienvenida.currentTime = 0;
+
+}
+
+
+// ==========================================
+// MENSAJE DE BIENVENIDA
+// ==========================================
+
+function bienvenidaAdministrador() {
+
+    reproducirBienvenida();
+
+}
+
+
+// ==========================================
+// INICIO
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
         // ==========================================
-    // USUARIO LOGUEADO
-    // ==========================================
+        // USUARIO LOGUEADO
+        // ==========================================
 
-    const usuarioGuardado =
-        localStorage.getItem("usuarioHarvestX");
-
-    if (!usuarioGuardado) {
-
-        console.warn(
-            "No hay una sesión activa."
-        );
-
-        window.location.href =
-            "../../login.html";
-
-        return;
-
-    }
-
-    let usuarioActual;
-
-    try {
-
-        usuarioActual =
-            JSON.parse(usuarioGuardado);
-
-    } catch (error) {
-
-        console.error(
-            "Error al leer los datos del usuario:",
-            error
-        );
-
-        localStorage.removeItem(
-            "usuarioHarvestX"
-        );
-
-        window.location.href =
-            "../../login.html";
-
-        return;
-
-    }
+        const usuarioGuardado =
+            localStorage.getItem(
+                "usuarioHarvestX"
+            );
 
 
-    // ==========================================
-    // MOSTRAR NOMBRE DEL ADMINISTRADOR
-    // ==========================================
+        if (!usuarioGuardado) {
 
-    const nombreBienvenida =
-        document.getElementById("nombreBienvenida");
+            console.warn(
+                "No hay una sesión activa."
+            );
 
-    const nombreUsuario =
-        document.getElementById("nombreUsuario");
+            window.location.href =
+                "../../login.html";
 
-
-    if (usuarioActual.nombre) {
-
-        if (nombreBienvenida) {
-
-            nombreBienvenida.textContent =
-                `¡Bienvenido, ${usuarioActual.nombre}! 👋`;
+            return;
 
         }
 
-        if (nombreUsuario) {
 
-            nombreUsuario.textContent =
-                usuarioActual.nombre;
+        let usuarioActual;
+
+
+        try {
+
+            usuarioActual =
+                JSON.parse(
+                    usuarioGuardado
+                );
 
         }
 
-    }
+        catch (error) {
 
+            console.error(
+                "Error al leer los datos del usuario:",
+                error
+            );
 
-    // ==========================================
-    // VERIFICAR ROL
-    // ==========================================
+            localStorage.removeItem(
+                "usuarioHarvestX"
+            );
 
-    if (
-        usuarioActual.rol !==
-        "administrador"
-    ) {
+            window.location.href =
+                "../../login.html";
 
-        console.warn(
-            "El usuario no tiene permisos de administrador."
-        );
+            return;
 
-        localStorage.removeItem(
-            "usuarioHarvestX"
-        );
-
-        window.location.href =
-            "../../login.html";
-
-        return;
-
-    }
-
-    // ==========================================
-    // CONFIGURACIÓN PERMANENTE
-    // ==========================================
-
-    const htmlElement = document.documentElement;
-
-    // Recuperar configuración guardada
-    const temaGuardado = localStorage.getItem("temaHarvestX");
-    const fuenteGuardada = localStorage.getItem("fuenteHarvestX");
-    const escalaGuardada = localStorage.getItem("escalaHarvestX");
-    const sonidoGuardado = localStorage.getItem("sonidoHarvestX");
-
-    // Tema
-    if (temaGuardado === "dark") {
-        htmlElement.setAttribute("data-theme", "dark");
-    } else {
-        htmlElement.removeAttribute("data-theme");
-    }
-
-    // Fuente
-    if (fuenteGuardada) {
-        htmlElement.style.setProperty(
-            "--fuente-actual",
-            fuenteGuardada
-        );
-    }
-
-    // Tamaño
-    if (escalaGuardada) {
-        htmlElement.style.setProperty(
-            "--escala-texto",
-            escalaGuardada
-        );
-    }
-
-
-    // ==========================================
-    // LOADER
-    // ==========================================
-
-    const loader = document.getElementById("loader");
-
-    setTimeout(() => {
-
-        if (loader) {
-            loader.classList.add("hidden");
         }
 
-        document
-            .querySelectorAll(".fade-up")
-            .forEach(el => el.classList.add("visible"));
 
-        initCharts();
+        // ==========================================
+        // VERIFICAR ROL
+        // ==========================================
 
-    }, 1000);
+        if (
+            usuarioActual.rol !==
+            "administrador"
+        ) {
 
+            console.warn(
+                "El usuario no tiene permisos de administrador."
+            );
 
-    // ==========================================
-    // SIDEBAR
-    // ==========================================
+            localStorage.removeItem(
+                "usuarioHarvestX"
+            );
 
-    const sidebar = document.getElementById("sidebar");
-    const mainContent = document.getElementById("mainContent");
-    const toggleSidebarDesktop =
-        document.getElementById("toggleSidebarDesktop");
+            window.location.href =
+                "../../login.html";
 
-    if (toggleSidebarDesktop) {
+            return;
 
-        toggleSidebarDesktop.addEventListener("click", () => {
-
-            sidebar.classList.toggle("collapsed");
-            mainContent.classList.toggle("expanded");
-
-        });
-
-    }
+        }
 
 
-    const menuToggleMobile =
-        document.getElementById("menuToggleMobile");
+        // ==========================================
+        // MOSTRAR NOMBRE
+        // ==========================================
 
-    const closeSidebarMobile =
-        document.getElementById("closeSidebarMobile");
-
-
-    if (menuToggleMobile) {
-
-        menuToggleMobile.addEventListener("click", () => {
-
-            sidebar.classList.add("active");
-
-        });
-
-    }
+        const nombreBienvenida =
+            document.getElementById(
+                "nombreBienvenida"
+            );
 
 
-    if (closeSidebarMobile) {
-
-        closeSidebarMobile.addEventListener("click", () => {
-
-            sidebar.classList.remove("active");
-
-        });
-
-    }
+        const nombreUsuario =
+            document.getElementById(
+                "nombreUsuario"
+            );
 
 
-    // Cerrar sidebar móvil al hacer clic afuera
+        if (usuarioActual.nombre) {
 
-    document.addEventListener("click", (e) => {
+            if (nombreBienvenida) {
 
-        if (window.innerWidth <= 768) {
+                nombreBienvenida.textContent =
+                    `¡Bienvenido, ${usuarioActual.nombre}! 👋`;
+
+            }
+
+
+            if (nombreUsuario) {
+
+                nombreUsuario.textContent =
+                    usuarioActual.nombre;
+
+            }
+
+        }
+
+
+        // ==========================================
+        // CONFIGURACIÓN
+        // ==========================================
+
+        const htmlElement =
+            document.documentElement;
+
+
+        const temaGuardado =
+            localStorage.getItem(
+                "temaHarvestX"
+            );
+
+
+        const fuenteGuardada =
+            localStorage.getItem(
+                "fuenteHarvestX"
+            );
+
+
+        const escalaGuardada =
+            localStorage.getItem(
+                "escalaHarvestX"
+            );
+
+
+        // ==========================================
+        // TEMA
+        // ==========================================
+
+        if (
+            temaGuardado ===
+            "dark"
+        ) {
+
+            htmlElement.setAttribute(
+                "data-theme",
+                "dark"
+            );
+
+        }
+
+        else {
+
+            htmlElement.removeAttribute(
+                "data-theme"
+            );
+
+        }
+
+
+        // ==========================================
+        // FUENTE
+        // ==========================================
+
+        if (fuenteGuardada) {
+
+            htmlElement.style.setProperty(
+                "--fuente-actual",
+                fuenteGuardada
+            );
+
+        }
+
+
+        // ==========================================
+        // TAMAÑO
+        // ==========================================
+
+        if (escalaGuardada) {
+
+            htmlElement.style.setProperty(
+                "--escala-texto",
+                escalaGuardada
+            );
+
+        }
+
+
+        // ==========================================
+        // LOADER
+        // ==========================================
+
+        const loader =
+            document.getElementById(
+                "loader"
+            );
+
+
+        setTimeout(() => {
+
+            if (loader) {
+
+                loader.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            document
+                .querySelectorAll(".fade-up")
+                .forEach(el =>
+                    el.classList.add(
+                        "visible"
+                    )
+                );
+
+
+            initCharts();
+
+
+            // ======================================
+            // BIENVENIDA POR VOZ
+            // ======================================
 
             if (
-                sidebar &&
-                sidebar.classList.contains("active") &&
-                menuToggleMobile
+                localStorage.getItem(
+                    "sonidoHarvestX"
+                ) === "on"
             ) {
 
+                setTimeout(() => {
+
+                    bienvenidaAdministrador();
+
+                }, 500);
+
+            }
+
+
+        }, 1000);
+
+
+        // ==========================================
+        // SIDEBAR
+        // ==========================================
+
+        const sidebar =
+            document.getElementById(
+                "sidebar"
+            );
+
+
+        const mainContent =
+            document.getElementById(
+                "mainContent"
+            );
+
+
+        const toggleSidebarDesktop =
+            document.getElementById(
+                "toggleSidebarDesktop"
+            );
+
+
+        if (toggleSidebarDesktop) {
+
+            toggleSidebarDesktop.addEventListener(
+                "click",
+                () => {
+
+                    if (sidebar) {
+
+                        sidebar.classList.toggle(
+                            "collapsed"
+                        );
+
+                    }
+
+
+                    if (mainContent) {
+
+                        mainContent.classList.toggle(
+                            "expanded"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // MENÚ MÓVIL
+        // ==========================================
+
+        const menuToggleMobile =
+            document.getElementById(
+                "menuToggleMobile"
+            );
+
+
+        const closeSidebarMobile =
+            document.getElementById(
+                "closeSidebarMobile"
+            );
+
+
+        if (menuToggleMobile) {
+
+            menuToggleMobile.addEventListener(
+                "click",
+                () => {
+
+                    if (sidebar) {
+
+                        sidebar.classList.add(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        if (closeSidebarMobile) {
+
+            closeSidebarMobile.addEventListener(
+                "click",
+                () => {
+
+                    if (sidebar) {
+
+                        sidebar.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // CERRAR SIDEBAR AFUERA
+        // ==========================================
+
+        document.addEventListener(
+            "click",
+            (e) => {
+
                 if (
-                    !sidebar.contains(e.target) &&
-                    !menuToggleMobile.contains(e.target)
+                    window.innerWidth <=
+                    768
                 ) {
 
-                    sidebar.classList.remove("active");
+                    if (
+                        sidebar &&
+                        sidebar.classList.contains(
+                            "active"
+                        ) &&
+                        menuToggleMobile
+                    ) {
+
+                        if (
+                            !sidebar.contains(
+                                e.target
+                            ) &&
+                            !menuToggleMobile.contains(
+                                e.target
+                            )
+                        ) {
+
+                            sidebar.classList.remove(
+                                "active"
+                            );
+
+                        }
+
+                    }
 
                 }
 
             }
-
-        }
-
-    });
-
-
-    // ==========================================
-    // MODAL CONFIGURACIÓN
-    // ==========================================
-
-    const settingsModal =
-        document.getElementById("settingsModal");
-
-    const openSettings =
-        document.getElementById("openSettings");
-
-    const closeSettings =
-        document.getElementById("closeSettings");
-
-
-    if (openSettings) {
-
-        openSettings.addEventListener("click", (e) => {
-
-            e.preventDefault();
-
-            if (settingsModal) {
-                settingsModal.classList.add("active");
-            }
-
-        });
-
-    }
-
-
-    if (closeSettings) {
-
-        closeSettings.addEventListener("click", () => {
-
-            if (settingsModal) {
-                settingsModal.classList.remove("active");
-            }
-
-        });
-
-    }
-
-
-    // ==========================================
-    // TEMA OSCURO
-    // ==========================================
-
-    const themeToggle =
-        document.getElementById("themeToggle");
-
-
-    if (themeToggle) {
-
-        // Mostrar estado guardado
-
-        themeToggle.checked =
-            localStorage.getItem("temaHarvestX") === "dark";
-
-
-        themeToggle.addEventListener("change", (e) => {
-
-            if (e.target.checked) {
-
-                htmlElement.setAttribute(
-                    "data-theme",
-                    "dark"
-                );
-
-                localStorage.setItem(
-                    "temaHarvestX",
-                    "dark"
-                );
-
-            } else {
-
-                htmlElement.removeAttribute(
-                    "data-theme"
-                );
-
-                localStorage.setItem(
-                    "temaHarvestX",
-                    "light"
-                );
-
-            }
-
-        });
-
-    }
-
-
-    // ==========================================
-    // SONIDO
-    // ==========================================
-
-    const soundToggle =
-        document.getElementById("soundToggle");
-
-
-    if (soundToggle) {
-
-        soundToggle.checked =
-            localStorage.getItem("sonidoHarvestX") === "on";
-
-
-        soundToggle.addEventListener("change", (e) => {
-
-            if (e.target.checked) {
-
-                localStorage.setItem(
-                    "sonidoHarvestX",
-                    "on"
-                );
-
-                bgMusic.play().catch(error => {
-
-                    console.error(
-                        "Error al reproducir el audio:",
-                        error
-                    );
-
-                });
-
-            } else {
-
-                localStorage.setItem(
-                    "sonidoHarvestX",
-                    "off"
-                );
-
-                bgMusic.pause();
-
-            }
-
-        });
-
-    }
-
-
-    // ==========================================
-    // FUENTE
-    // ==========================================
-
-    const fontSelect =
-        document.getElementById("fontSelect");
-
-
-    if (fontSelect) {
-
-        if (fuenteGuardada) {
-            fontSelect.value = fuenteGuardada;
-        }
-
-
-        fontSelect.addEventListener("change", (e) => {
-
-            const nuevaFuente = e.target.value;
-
-            htmlElement.style.setProperty(
-                "--fuente-actual",
-                nuevaFuente
-            );
-
-            localStorage.setItem(
-                "fuenteHarvestX",
-                nuevaFuente
-            );
-
-        });
-
-    }
-
-
-    // ==========================================
-    // TAMAÑO DE LETRA
-    // ==========================================
-
-    const btnsSize =
-        document.querySelectorAll(".btn-size");
-
-
-    btnsSize.forEach(btn => {
-
-        btn.addEventListener("click", (e) => {
-
-            btnsSize.forEach(b =>
-                b.classList.remove("active")
-            );
-
-            e.currentTarget.classList.add("active");
-
-
-            const sizeId =
-                e.currentTarget.id;
-
-            let nuevoTamano;
-
-
-            if (sizeId === "btnSizeSmall") {
-
-                nuevoTamano = "0.85rem";
-
-            }
-
-            else if (sizeId === "btnSizeNormal") {
-
-                nuevoTamano = "1rem";
-
-            }
-
-            else if (sizeId === "btnSizeLarge") {
-
-                nuevoTamano = "1.15rem";
-
-            }
-
-
-            if (nuevoTamano) {
-
-                htmlElement.style.setProperty(
-                    "--escala-texto",
-                    nuevoTamano
-                );
-
-                localStorage.setItem(
-                    "escalaHarvestX",
-                    nuevoTamano
-                );
-
-            }
-
-        });
-
-    });
-
-
-    // ==========================================
-    // ENLACES SIDEBAR
-    // ==========================================
-
-    const navLinks =
-        document.querySelectorAll(
-            ".sidebar-nav .nav-link"
         );
 
 
-    navLinks.forEach(link => {
+        // ==========================================
+        // MODAL CONFIGURACIÓN
+        // ==========================================
 
-        link.addEventListener("click", function() {
-
-            navLinks.forEach(nav =>
-                nav.classList.remove("active")
+        const settingsModal =
+            document.getElementById(
+                "settingsModal"
             );
 
-            this.classList.add("active");
 
-        });
+        const openSettings =
+            document.getElementById(
+                "openSettings"
+            );
 
-    });
+
+        const closeSettings =
+            document.getElementById(
+                "closeSettings"
+            );
 
 
-    // ==========================================
-    // CHART.JS
-    // ==========================================
+        if (openSettings) {
 
-    function initCharts() {
+            openSettings.addEventListener(
+                "click",
+                (e) => {
 
-        if (typeof Chart === "undefined") {
-            return;
+                    e.preventDefault();
+
+                    if (settingsModal) {
+
+                        settingsModal.classList.add(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
         }
 
 
-        Chart.defaults.font.family =
-            getComputedStyle(document.documentElement)
-                .getPropertyValue("--fuente-actual");
+        if (closeSettings) {
+
+            closeSettings.addEventListener(
+                "click",
+                () => {
+
+                    if (settingsModal) {
+
+                        settingsModal.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
 
 
-        Chart.defaults.color = "#636e72";
+        // ==========================================
+        // TEMA OSCURO
+        // ==========================================
+
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
+            );
 
 
-        // Producción
+        if (themeToggle) {
 
-        const ctxProduction =
-            document.getElementById("productionChart");
+            themeToggle.checked =
+                localStorage.getItem(
+                    "temaHarvestX"
+                ) === "dark";
 
 
-        if (ctxProduction) {
+            themeToggle.addEventListener(
+                "change",
+                (e) => {
 
-            new Chart(ctxProduction, {
+                    if (e.target.checked) {
 
-                type: "doughnut",
+                        htmlElement.setAttribute(
+                            "data-theme",
+                            "dark"
+                        );
 
-                data: {
 
-                    labels: [
-                        "Tomate 45%",
-                        "Maíz 30%",
-                        "Café 15%",
-                        "Lechuga 10%"
-                    ],
+                        localStorage.setItem(
+                            "temaHarvestX",
+                            "dark"
+                        );
 
-                    datasets: [{
+                    }
 
-                        data: [
-                            45,
-                            30,
-                            15,
-                            10
-                        ],
+                    else {
 
-                        backgroundColor: [
-                            "#4CAF50",
-                            "#fbc02d",
-                            "#81c784",
-                            "#64b5f6"
-                        ],
+                        htmlElement.removeAttribute(
+                            "data-theme"
+                        );
 
-                        borderWidth: 0,
 
-                        hoverOffset: 4
+                        localStorage.setItem(
+                            "temaHarvestX",
+                            "light"
+                        );
 
-                    }]
+                    }
 
-                },
+                }
+            );
 
-                options: {
+        }
 
-                    responsive: true,
 
-                    maintainAspectRatio: false,
+        // ==========================================
+        // SONIDO
+        // ==========================================
 
-                    cutout: "65%",
+        const soundToggle =
+            document.getElementById(
+                "soundToggle"
+            );
 
-                    plugins: {
 
-                        legend: {
+        if (soundToggle) {
 
-                            position: "right",
+            soundToggle.checked =
+                localStorage.getItem(
+                    "sonidoHarvestX"
+                ) === "on";
 
-                            labels: {
 
-                                boxWidth: 10,
+            soundToggle.addEventListener(
+                "change",
+                (e) => {
 
-                                usePointStyle: true
+                    if (e.target.checked) {
+
+                        localStorage.setItem(
+                            "sonidoHarvestX",
+                            "on"
+                        );
+
+
+                        // Reproducir voz
+                        bienvenidaAdministrador();
+
+                    }
+
+                    else {
+
+                        localStorage.setItem(
+                            "sonidoHarvestX",
+                            "off"
+                        );
+
+
+                        // Detener voz
+                        detenerBienvenida();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // BOTÓN PROBAR VOZ
+        // ==========================================
+
+        const testVoiceButton =
+            document.getElementById(
+                "testVoiceButton"
+            );
+
+
+        if (testVoiceButton) {
+
+            testVoiceButton.addEventListener(
+                "click",
+                () => {
+
+                    bienvenidaAdministrador();
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // FUENTE
+        // ==========================================
+
+        const fontSelect =
+            document.getElementById(
+                "fontSelect"
+            );
+
+
+        if (fontSelect) {
+
+            if (fuenteGuardada) {
+
+                fontSelect.value =
+                    fuenteGuardada;
+
+            }
+
+
+            fontSelect.addEventListener(
+                "change",
+                (e) => {
+
+                    const nuevaFuente =
+                        e.target.value;
+
+
+                    htmlElement.style.setProperty(
+                        "--fuente-actual",
+                        nuevaFuente
+                    );
+
+
+                    localStorage.setItem(
+                        "fuenteHarvestX",
+                        nuevaFuente
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // TAMAÑO DE LETRA
+        // ==========================================
+
+        const btnsSize =
+            document.querySelectorAll(
+                ".btn-size"
+            );
+
+
+        btnsSize.forEach(btn => {
+
+            btn.addEventListener(
+                "click",
+                (e) => {
+
+                    btnsSize.forEach(b =>
+                        b.classList.remove(
+                            "active"
+                        )
+                    );
+
+
+                    e.currentTarget.classList.add(
+                        "active"
+                    );
+
+
+                    const sizeId =
+                        e.currentTarget.id;
+
+
+                    let nuevoTamano;
+
+
+                    if (
+                        sizeId ===
+                        "btnSizeSmall"
+                    ) {
+
+                        nuevoTamano =
+                            "0.85rem";
+
+                    }
+
+                    else if (
+                        sizeId ===
+                        "btnSizeNormal"
+                    ) {
+
+                        nuevoTamano =
+                            "1rem";
+
+                    }
+
+                    else if (
+                        sizeId ===
+                        "btnSizeLarge"
+                    ) {
+
+                        nuevoTamano =
+                            "1.15rem";
+
+                    }
+
+
+                    if (nuevoTamano) {
+
+                        htmlElement.style.setProperty(
+                            "--escala-texto",
+                            nuevoTamano
+                        );
+
+
+                        localStorage.setItem(
+                            "escalaHarvestX",
+                            nuevoTamano
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+        // ==========================================
+        // ENLACES SIDEBAR
+        // ==========================================
+
+        const navLinks =
+            document.querySelectorAll(
+                ".sidebar-nav .nav-link"
+            );
+
+
+        navLinks.forEach(link => {
+
+            link.addEventListener(
+                "click",
+                function() {
+
+                    navLinks.forEach(nav =>
+                        nav.classList.remove(
+                            "active"
+                        )
+                    );
+
+
+                    this.classList.add(
+                        "active"
+                    );
+
+                }
+            );
+
+        });
+
+
+        // ==========================================
+        // CHART.JS
+        // ==========================================
+
+        function initCharts() {
+
+            if (
+                typeof Chart ===
+                "undefined"
+            ) {
+
+                return;
+
+            }
+
+
+            Chart.defaults.font.family =
+                getComputedStyle(
+                    document.documentElement
+                ).getPropertyValue(
+                    "--fuente-actual"
+                );
+
+
+            Chart.defaults.color =
+                "#636e72";
+
+
+            // ======================================
+            // PRODUCCIÓN
+            // ======================================
+
+            const ctxProduction =
+                document.getElementById(
+                    "productionChart"
+                );
+
+
+            if (ctxProduction) {
+
+                new Chart(
+                    ctxProduction,
+                    {
+
+                        type: "doughnut",
+
+                        data: {
+
+                            labels: [
+                                "Tomate 45%",
+                                "Maíz 30%",
+                                "Café 15%",
+                                "Lechuga 10%"
+                            ],
+
+                            datasets: [{
+
+                                data: [
+                                    45,
+                                    30,
+                                    15,
+                                    10
+                                ],
+
+                                backgroundColor: [
+                                    "#4CAF50",
+                                    "#fbc02d",
+                                    "#81c784",
+                                    "#64b5f6"
+                                ],
+
+                                borderWidth: 0,
+
+                                hoverOffset: 4
+
+                            }]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            cutout: "65%",
+
+                            plugins: {
+
+                                legend: {
+
+                                    position: "right",
+
+                                    labels: {
+
+                                        boxWidth: 10,
+
+                                        usePointStyle: true
+
+                                    }
+
+                                }
 
                             }
 
                         }
 
                     }
+                );
 
-                }
-
-            });
-
-        }
+            }
 
 
-        // Rendimiento
+            // ======================================
+            // RENDIMIENTO
+            // ======================================
 
-        const ctxYield =
-            document.getElementById("yieldChart");
+            const ctxYield =
+                document.getElementById(
+                    "yieldChart"
+                );
 
 
-        if (ctxYield) {
+            if (ctxYield) {
 
-            new Chart(ctxYield, {
+                new Chart(
+                    ctxYield,
+                    {
 
-                type: "line",
+                        type: "line",
 
-                data: {
+                        data: {
 
-                    labels: [
-                        "Ene",
-                        "Feb",
-                        "Mar",
-                        "Abr",
-                        "May",
-                        "Jun"
-                    ],
+                            labels: [
+                                "Ene",
+                                "Feb",
+                                "Mar",
+                                "Abr",
+                                "May",
+                                "Jun"
+                            ],
 
-                    datasets: [{
+                            datasets: [{
 
-                        label: "Rendimiento",
+                                label:
+                                    "Rendimiento",
 
-                        data: [
-                            1000,
-                            3000,
-                            4000,
-                            3800,
-                            6000,
-                            8000
-                        ],
+                                data: [
+                                    1000,
+                                    3000,
+                                    4000,
+                                    3800,
+                                    6000,
+                                    8000
+                                ],
 
-                        borderColor: "#2196F3",
+                                borderColor:
+                                    "#2196F3",
 
-                        backgroundColor: "#2196F3",
+                                backgroundColor:
+                                    "#2196F3",
 
-                        borderWidth: 2,
+                                borderWidth: 2,
 
-                        tension: 0.4,
+                                tension: 0.4,
 
-                        pointBackgroundColor: "#fff",
+                                pointBackgroundColor:
+                                    "#fff",
 
-                        pointBorderColor: "#2196F3",
+                                pointBorderColor:
+                                    "#2196F3",
 
-                        pointRadius: 4
+                                pointRadius: 4
 
-                    }]
+                            }]
 
-                },
+                        },
 
-                options: {
+                        options: {
 
-                    responsive: true,
+                            responsive: true,
 
-                    maintainAspectRatio: false,
+                            maintainAspectRatio: false,
 
-                    plugins: {
+                            plugins: {
 
-                        legend: {
-                            display: false
+                                legend: {
+
+                                    display: false
+
+                                }
+
+                            }
+
                         }
 
                     }
+                );
 
-                }
-
-            });
-
-        }
+            }
 
 
-        // Humedad
+            // ======================================
+            // HUMEDAD
+            // ======================================
 
-        const ctxMoisture =
-            document.getElementById("moistureChart");
+            const ctxMoisture =
+                document.getElementById(
+                    "moistureChart"
+                );
 
 
-        if (ctxMoisture) {
+            if (ctxMoisture) {
 
-            new Chart(ctxMoisture, {
+                new Chart(
+                    ctxMoisture,
+                    {
 
-                type: "bar",
+                        type: "bar",
 
-                data: {
+                        data: {
 
-                    labels: [
-                        "Sector A",
-                        "Sector B",
-                        "Sector C",
-                        "Sector D"
-                    ],
+                            labels: [
+                                "Sector A",
+                                "Sector B",
+                                "Sector C",
+                                "Sector D"
+                            ],
 
-                    datasets: [{
+                            datasets: [{
 
-                        label: "Humedad",
+                                label:
+                                    "Humedad",
 
-                        data: [
-                            75,
-                            60,
-                            80,
-                            45
-                        ],
+                                data: [
+                                    75,
+                                    60,
+                                    80,
+                                    45
+                                ],
 
-                        backgroundColor: [
-                            "#2196F3",
-                            "#4CAF50",
-                            "#1976D2",
-                            "#fbc02d"
-                        ],
+                                backgroundColor: [
+                                    "#2196F3",
+                                    "#4CAF50",
+                                    "#1976D2",
+                                    "#fbc02d"
+                                ],
 
-                        borderRadius: 4,
+                                borderRadius: 4,
 
-                        barPercentage: 0.5
+                                barPercentage: 0.5
 
-                    }]
+                            }]
 
-                },
+                        },
 
-                options: {
+                        options: {
 
-                    responsive: true,
+                            responsive: true,
 
-                    maintainAspectRatio: false,
+                            maintainAspectRatio: false,
 
-                    plugins: {
+                            plugins: {
 
-                        legend: {
-                            display: false
+                                legend: {
+
+                                    display: false
+
+                                }
+
+                            }
+
                         }
 
                     }
+                );
 
-                }
-
-            });
+            }
 
         }
 
     }
-
-});
+);
