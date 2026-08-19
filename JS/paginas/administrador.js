@@ -2,6 +2,105 @@ const bgMusic = new Audio("song/mc.mp3");
 bgMusic.loop = true;
 
 document.addEventListener("DOMContentLoaded", () => {
+        // ==========================================
+    // USUARIO LOGUEADO
+    // ==========================================
+
+    const usuarioGuardado =
+        localStorage.getItem("usuarioHarvestX");
+
+    if (!usuarioGuardado) {
+
+        console.warn(
+            "No hay una sesión activa."
+        );
+
+        window.location.href =
+            "../../login.html";
+
+        return;
+
+    }
+
+    let usuarioActual;
+
+    try {
+
+        usuarioActual =
+            JSON.parse(usuarioGuardado);
+
+    } catch (error) {
+
+        console.error(
+            "Error al leer los datos del usuario:",
+            error
+        );
+
+        localStorage.removeItem(
+            "usuarioHarvestX"
+        );
+
+        window.location.href =
+            "../../login.html";
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // MOSTRAR NOMBRE DEL ADMINISTRADOR
+    // ==========================================
+
+    const nombreBienvenida =
+        document.getElementById("nombreBienvenida");
+
+    const nombreUsuario =
+        document.getElementById("nombreUsuario");
+
+
+    if (usuarioActual.nombre) {
+
+        if (nombreBienvenida) {
+
+            nombreBienvenida.textContent =
+                `¡Bienvenido, ${usuarioActual.nombre}! 👋`;
+
+        }
+
+        if (nombreUsuario) {
+
+            nombreUsuario.textContent =
+                usuarioActual.nombre;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // VERIFICAR ROL
+    // ==========================================
+
+    if (
+        usuarioActual.rol !==
+        "administrador"
+    ) {
+
+        console.warn(
+            "El usuario no tiene permisos de administrador."
+        );
+
+        localStorage.removeItem(
+            "usuarioHarvestX"
+        );
+
+        window.location.href =
+            "../../login.html";
+
+        return;
+
+    }
 
     // ==========================================
     // CONFIGURACIÓN PERMANENTE

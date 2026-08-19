@@ -12,20 +12,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (menuIcon && navbar) {
 
         menuIcon.addEventListener("click", () => {
+
             navbar.classList.toggle("active");
 
             if (navbar.classList.contains("active")) {
+
                 menuIcon.classList.replace("fa-bars", "fa-xmark");
+
             } else {
+
                 menuIcon.classList.replace("fa-xmark", "fa-bars");
+
             }
+
         });
 
         navLinks.forEach(link => {
+
             link.addEventListener("click", () => {
+
                 navbar.classList.remove("active");
-                menuIcon.classList.replace("fa-xmark", "fa-bars");
+
+                menuIcon.classList.replace(
+                    "fa-xmark",
+                    "fa-bars"
+                );
+
             });
+
         });
 
         document.addEventListener("click", (e) => {
@@ -36,16 +50,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 !navbar.contains(e.target) &&
                 e.target !== menuIcon
             ) {
+
                 navbar.classList.remove("active");
-                menuIcon.classList.replace("fa-xmark", "fa-bars");
+
+                menuIcon.classList.replace(
+                    "fa-xmark",
+                    "fa-bars"
+                );
+
             }
 
         });
+
     }
 
 
     /* =========================================================
-       HEADER AL HACER SCROLL
+       HEADER SCROLL
     ========================================================= */
 
     if (header) {
@@ -53,9 +74,13 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("scroll", () => {
 
             if (window.scrollY > 50) {
+
                 header.classList.add("scrolled");
+
             } else {
+
                 header.classList.remove("scrolled");
+
             }
 
         });
@@ -73,24 +98,32 @@ document.addEventListener("DOMContentLoaded", () => {
         threshold: 0.15
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver(
+        (entries, observer) => {
 
-        entries.forEach(entry => {
+            entries.forEach(entry => {
 
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-            }
+                if (entry.isIntersecting) {
 
-        });
+                    entry.target.classList.add("visible");
 
-    }, observerOptions);
+                    observer.unobserve(entry.target);
+
+                }
+
+            });
+
+        },
+        observerOptions
+    );
 
     const elementosAnimados =
         document.querySelectorAll(".fade-up, .fade-in");
 
     elementosAnimados.forEach(el => {
+
         observer.observe(el);
+
     });
 
 
@@ -98,7 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
        BOTÓN SABER MÁS
     ========================================================= */
 
-    const btnSaberMas = document.getElementById("btnSaberMas");
+    const btnSaberMas =
+        document.getElementById("btnSaberMas");
 
     if (btnSaberMas) {
 
@@ -108,9 +142,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("seccion-cards");
 
             if (seccionCards) {
+
                 seccionCards.scrollIntoView({
                     behavior: "smooth"
                 });
+
             }
 
         });
@@ -122,7 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
        ELEMENTOS DEL LOGIN
     ========================================================= */
 
-    const modal = document.getElementById("modal");
+    const modal =
+        document.getElementById("modal");
 
     const abrirLogin =
         document.getElementById("abrirLogin");
@@ -132,21 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cerrar =
         document.getElementById("cerrar");
-
-    const vistaPerfiles =
-        document.getElementById("vista-perfiles");
-
-    const vistaLogin =
-        document.getElementById("vista-login");
-
-    const perfilesItems =
-        document.querySelectorAll(".perfil-item");
-
-    const btnVolver =
-        document.getElementById("btn-volver");
-
-    const textoPerfilSeleccionado =
-        document.getElementById("texto-perfil-seleccionado");
 
     const ingresar =
         document.getElementById("ingresar");
@@ -160,56 +182,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const mensajeError =
         document.getElementById("mensaje-error");
 
-
-    /* =========================================================
-       PERFIL ACTUAL
-    ========================================================= */
-
-    let perfilActivo = "";
+    const btnRegistro =
+        document.getElementById("btnRegistro");
 
 
     /* =========================================================
-       USUARIOS DEL SISTEMA
-       
-       Cada perfil tiene:
-       - usuario
-       - contraseña
-       - ruta
+       ELEMENTOS DEL REGISTRO
     ========================================================= */
 
-    const usuarios = {
+    const registroNombre =
+        document.getElementById("registroNombre");
 
-        administrador: {
-            usuario: "admin",
-            password: "1234",
-            ruta: "Perfiles/administrador/inicio.html"
-        },
+    const registroUsuario =
+        document.getElementById("registroUsuario");
 
-        agricultor: {
-            usuario: "agricultor",
-            password: "1234",
-            ruta: "Perfiles/agricultor/inicio.html"
-        },
+    const registroPassword =
+        document.getElementById("registroPassword");
 
-        supervisor: {
-            usuario: "supervisor",
-            password: "1234",
-            ruta: "Perfiles/supervisor/inicio.html"
-        },
+    const registroPasswordConfirmar =
+        document.getElementById("registroPasswordConfirmar");
 
-        tecnico: {
-            usuario: "tecnico",
-            password: "1234",
-            ruta: "Perfiles/tecnico/inicio.html"
-        },
+    const mensajeRegistro =
+        document.getElementById("mensaje-registro");
 
-        invitado: {
-            usuario: "invitado",
-            password: "1234",
-            ruta: "Perfiles/invitado/inicio.html"
-        }
+    const btnCrearCuenta =
+        document.getElementById("btnCrearCuenta");
 
-    };
+    const btnVolverRegistro =
+        document.getElementById("btnVolverRegistro");
 
 
     /* =========================================================
@@ -222,8 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         modal.classList.add("active");
 
-        mostrarVistaPerfiles();
-
         if (navbar && menuIcon) {
 
             navbar.classList.remove("active");
@@ -234,6 +232,18 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         }
+
+        mostrarLogin();
+
+        setTimeout(() => {
+
+            if (usuario) {
+
+                usuario.focus();
+
+            }
+
+        }, 300);
 
     }
 
@@ -248,119 +258,114 @@ document.addEventListener("DOMContentLoaded", () => {
 
         modal.classList.remove("active");
 
-    }
-
-
-    /* =========================================================
-       EVENTOS DEL MODAL
-    ========================================================= */
-
-    if (abrirLogin) {
-        abrirLogin.addEventListener(
-            "click",
-            abrirModal
-        );
-    }
-
-    if (btnLogin) {
-        btnLogin.addEventListener(
-            "click",
-            abrirModal
-        );
-    }
-
-    if (cerrar) {
-        cerrar.addEventListener(
-            "click",
-            cerrarModal
-        );
-    }
-
-
-    /* =========================================================
-       CERRAR MODAL AL HACER CLICK FUERA
-    ========================================================= */
-
-    if (modal) {
-
-        window.addEventListener("click", (e) => {
-
-            if (e.target === modal) {
-                cerrarModal();
-            }
-
-        });
+        limpiarTodo();
 
     }
 
 
     /* =========================================================
-       MOSTRAR PERFILES
+       LIMPIAR TODO
     ========================================================= */
 
-    function mostrarVistaPerfiles() {
+    function limpiarTodo() {
 
-        if (mensajeError) {
-            mensajeError.textContent = "";
-        }
+        limpiarLogin();
+        limpiarRegistro();
+
+    }
+
+
+    /* =========================================================
+       LIMPIAR LOGIN
+    ========================================================= */
+
+    function limpiarLogin() {
 
         if (usuario) {
+
             usuario.value = "";
+
         }
 
         if (password) {
+
             password.value = "";
-        }
-
-        if (vistaLogin) {
-
-            vistaLogin.classList.remove(
-                "vista-activa"
-            );
-
-            vistaLogin.classList.add(
-                "vista-oculta"
-            );
 
         }
 
-        if (vistaPerfiles) {
+        if (mensajeError) {
 
-            vistaPerfiles.classList.remove(
-                "vista-oculta"
-            );
-
-            vistaPerfiles.classList.add(
-                "vista-activa"
-            );
+            mensajeError.textContent = "";
+            mensajeError.style.color = "";
 
         }
 
-        perfilActivo = "";
+        restaurarBotonLogin();
 
     }
 
 
     /* =========================================================
-       MOSTRAR LOGIN DEL PERFIL SELECCIONADO
+       LIMPIAR REGISTRO
     ========================================================= */
 
-    function mostrarVistaLogin(nombrePerfil) {
+    function limpiarRegistro() {
 
-        perfilActivo = nombrePerfil.toLowerCase();
+        if (registroNombre) {
 
-        if (textoPerfilSeleccionado) {
-            textoPerfilSeleccionado.textContent =
-                nombrePerfil;
+            registroNombre.value = "";
+
         }
 
-        if (vistaPerfiles) {
+        if (registroUsuario) {
 
-            vistaPerfiles.classList.remove(
+            registroUsuario.value = "";
+
+        }
+
+        if (registroPassword) {
+
+            registroPassword.value = "";
+
+        }
+
+        if (registroPasswordConfirmar) {
+
+            registroPasswordConfirmar.value = "";
+
+        }
+
+        if (mensajeRegistro) {
+
+            mensajeRegistro.textContent = "";
+            mensajeRegistro.style.color = "";
+
+        }
+
+        restaurarBotonRegistro();
+
+    }
+
+
+    /* =========================================================
+       MOSTRAR LOGIN
+    ========================================================= */
+
+    function mostrarLogin() {
+
+        const vistaLogin =
+            document.getElementById("vista-login");
+
+        const vistaRegistro =
+            document.getElementById("vista-registro");
+
+        if (vistaRegistro) {
+
+            vistaRegistro.classList.remove(
                 "vista-activa"
             );
 
-            vistaPerfiles.classList.add(
+            vistaRegistro.classList.add(
                 "vista-oculta"
             );
 
@@ -378,10 +383,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+        limpiarRegistro();
+
+        if (mensajeError) {
+
+            mensajeError.textContent = "";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       MOSTRAR REGISTRO
+    ========================================================= */
+
+    function mostrarRegistro() {
+
+        const vistaLogin =
+            document.getElementById("vista-login");
+
+        const vistaRegistro =
+            document.getElementById("vista-registro");
+
+        if (vistaLogin) {
+
+            vistaLogin.classList.remove(
+                "vista-activa"
+            );
+
+            vistaLogin.classList.add(
+                "vista-oculta"
+            );
+
+        }
+
+        if (vistaRegistro) {
+
+            vistaRegistro.classList.remove(
+                "vista-oculta"
+            );
+
+            vistaRegistro.classList.add(
+                "vista-activa"
+            );
+
+        }
+
+        limpiarLogin();
+
         setTimeout(() => {
 
-            if (usuario) {
-                usuario.focus();
+            if (registroNombre) {
+
+                registroNombre.focus();
+
             }
 
         }, 300);
@@ -390,47 +446,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       SELECCIONAR PERFIL
+       EVENTOS DEL MODAL
     ========================================================= */
 
-    perfilesItems.forEach(item => {
+    if (abrirLogin) {
 
-        item.addEventListener("click", () => {
-
-            const nombrePerfil =
-                item.getAttribute("data-perfil");
-
-            if (nombrePerfil) {
-                mostrarVistaLogin(nombrePerfil);
-            }
-
-        });
-
-    });
-
-
-    /* =========================================================
-       BOTÓN VOLVER
-    ========================================================= */
-
-    if (btnVolver) {
-
-        btnVolver.addEventListener(
+        abrirLogin.addEventListener(
             "click",
-            mostrarVistaPerfiles
+            abrirModal
+        );
+
+    }
+
+    if (btnLogin) {
+
+        btnLogin.addEventListener(
+            "click",
+            abrirModal
+        );
+
+    }
+
+    if (cerrar) {
+
+        cerrar.addEventListener(
+            "click",
+            cerrarModal
         );
 
     }
 
 
     /* =========================================================
-       INICIAR SESIÓN
+       CERRAR AL HACER CLICK FUERA
     ========================================================= */
 
-    function iniciarSesion() {
+    if (modal) {
+
+        window.addEventListener("click", (e) => {
+
+            if (e.target === modal) {
+
+                cerrarModal();
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================================================
+       INICIAR SESIÓN
+       
+       FLASK + MYSQL
+    ========================================================= */
+
+    async function iniciarSesion() {
 
         if (!usuario || !password) {
+
             return;
+
         }
 
         const user =
@@ -453,6 +530,7 @@ document.addEventListener("DOMContentLoaded", () => {
             usuario.focus();
 
             return;
+
         }
 
 
@@ -469,86 +547,183 @@ document.addEventListener("DOMContentLoaded", () => {
             password.focus();
 
             return;
+
         }
 
 
         /* -----------------------------------------
-           BUSCAR PERFIL
+           MOSTRAR CARGANDO
         ----------------------------------------- */
 
-        const datosUsuario =
-            usuarios[perfilActivo];
+        if (ingresar) {
+
+            ingresar.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+
+            ingresar.disabled = true;
+
+        }
 
 
-        if (!datosUsuario) {
+        try {
 
-            mostrarError(
-                "El perfil seleccionado no es válido."
+            const respuesta = await fetch(
+                "http://127.0.0.1:5000/login",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        usuario: user,
+
+                        contrasena: pass
+
+                    })
+
+                }
             );
 
-            return;
+
+            const datos =
+                await respuesta.json();
+
+
+            /* -------------------------------------
+               LOGIN CORRECTO
+            ------------------------------------- */
+
+            if (
+                respuesta.ok &&
+                datos.exito
+            ) {
+
+                if (mensajeError) {
+
+                    mensajeError.style.color =
+                        "#4CAF50";
+
+                    mensajeError.textContent =
+                        datos.mensaje;
+
+                }
+
+
+                const usuarioLogueado =
+                    datos.usuario;
+
+
+                /* ---------------------------------
+                   GUARDAR SESIÓN
+                --------------------------------- */
+
+                localStorage.setItem(
+                    "usuarioHarvestX",
+                    JSON.stringify(
+                        usuarioLogueado
+                    )
+                );
+
+
+                /* ---------------------------------
+                   DETERMINAR RUTA SEGÚN ROL
+                --------------------------------- */
+
+                let ruta = "";
+
+
+                if (
+                    usuarioLogueado.rol ===
+                    "administrador"
+                ) {
+
+                    ruta =
+                        "Perfiles/administrador/inicio.html";
+
+                }
+
+                else if (
+                    usuarioLogueado.rol ===
+                    "usuario"
+                ) {
+
+                    ruta =
+                        "Perfiles/Usuarios/inicio.html";
+
+                }
+
+                else {
+
+                    mostrarError(
+                        "El rol del usuario no es válido."
+                    );
+
+                    restaurarBotonLogin();
+
+                    return;
+
+                }
+
+
+                /* ---------------------------------
+                   REDIRECCIÓN
+                --------------------------------- */
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        ruta;
+
+                }, 700);
+
+            }
+
+
+            /* -------------------------------------
+               LOGIN INCORRECTO
+            ------------------------------------- */
+
+            else {
+
+                mostrarError(
+                    datos.mensaje ||
+                    "Usuario o contraseña incorrectos."
+                );
+
+                password.value = "";
+
+                password.focus();
+
+                restaurarBotonLogin();
+
+            }
+
         }
 
 
         /* -----------------------------------------
-           COMPROBAR CREDENCIALES
+           ERROR DE CONEXIÓN
         ----------------------------------------- */
 
-        if (
-            user === datosUsuario.usuario &&
-            pass === datosUsuario.password
-        ) {
+        catch (error) {
 
-            /* -------------------------------
-               CREDENCIALES CORRECTAS
-            -------------------------------- */
-
-            if (mensajeError) {
-
-                mensajeError.style.color =
-                    "#4CAF50";
-
-                mensajeError.textContent =
-                    `Credenciales correctas para ${perfilActivo}.`;
-
-            }
-
-
-            if (ingresar) {
-
-                ingresar.innerHTML =
-                    '<i class="fa-solid fa-spinner fa-spin"></i> Ingresando...';
-
-                ingresar.disabled = true;
-
-            }
-
-
-            /* -------------------------------
-               REDIRECCIONAR
-            -------------------------------- */
-
-            setTimeout(() => {
-
-                window.location.href =
-                    datosUsuario.ruta;
-
-            }, 1200);
-
-
-        } else {
-
-            /* -------------------------------
-               CREDENCIALES INCORRECTAS
-            -------------------------------- */
-
-            mostrarError(
-                "Usuario o contraseña incorrectos."
+            console.error(
+                "Error al conectar con Flask:",
+                error
             );
 
-            password.value = "";
+            mostrarError(
+                "No se pudo conectar con el servidor."
+            );
 
-            password.focus();
+            restaurarBotonLogin();
 
         }
 
@@ -556,7 +731,383 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       MOSTRAR ERROR
+       REGISTRAR USUARIO
+       
+       FLASK + MYSQL
+    ========================================================= */
+
+    async function registrarUsuario() {
+
+        if (
+            !registroNombre ||
+            !registroUsuario ||
+            !registroPassword ||
+            !registroPasswordConfirmar
+        ) {
+
+            console.error(
+                "No se encontraron todos los campos del registro."
+            );
+
+            return;
+
+        }
+
+
+        const nombre =
+            registroNombre.value.trim();
+
+        const user =
+            registroUsuario.value.trim();
+
+        const pass =
+            registroPassword.value.trim();
+
+        const confirmar =
+            registroPasswordConfirmar.value.trim();
+
+
+        /* -----------------------------------------
+           VALIDAR NOMBRE
+        ----------------------------------------- */
+
+        if (nombre === "") {
+
+            mostrarErrorRegistro(
+                "Por favor, ingrese su nombre."
+            );
+
+            registroNombre.focus();
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           VALIDAR USUARIO
+        ----------------------------------------- */
+
+        if (user === "") {
+
+            mostrarErrorRegistro(
+                "Por favor, ingrese un nombre de usuario."
+            );
+
+            registroUsuario.focus();
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           VALIDAR CONTRASEÑA
+        ----------------------------------------- */
+
+        if (pass === "") {
+
+            mostrarErrorRegistro(
+                "Por favor, ingrese una contraseña."
+            );
+
+            registroPassword.focus();
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           LONGITUD MÍNIMA
+        ----------------------------------------- */
+
+        if (pass.length < 4) {
+
+            mostrarErrorRegistro(
+                "La contraseña debe tener al menos 4 caracteres."
+            );
+
+            registroPassword.focus();
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           CONFIRMAR CONTRASEÑA
+        ----------------------------------------- */
+
+        if (confirmar === "") {
+
+            mostrarErrorRegistro(
+                "Por favor, confirme su contraseña."
+            );
+
+            registroPasswordConfirmar.focus();
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           COMPROBAR CONTRASEÑAS
+        ----------------------------------------- */
+
+        if (pass !== confirmar) {
+
+            mostrarErrorRegistro(
+                "Las contraseñas no coinciden."
+            );
+
+            registroPasswordConfirmar.value = "";
+
+            registroPasswordConfirmar.focus();
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           MOSTRAR CARGANDO
+        ----------------------------------------- */
+
+        if (btnCrearCuenta) {
+
+            btnCrearCuenta.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin"></i> Creando cuenta...';
+
+            btnCrearCuenta.disabled = true;
+
+        }
+
+        if (mensajeRegistro) {
+
+            mensajeRegistro.textContent = "";
+
+        }
+
+
+        try {
+
+            /* -------------------------------------
+               ENVIAR REGISTRO A FLASK
+            ------------------------------------- */
+
+            const respuesta = await fetch(
+                "http://127.0.0.1:5000/registro",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        nombre: nombre,
+
+                        usuario: user,
+
+                        contrasena: pass
+
+                    })
+
+                }
+            );
+
+
+            const datos =
+                await respuesta.json();
+
+
+            /* -------------------------------------
+               REGISTRO CORRECTO
+            ------------------------------------- */
+
+            if (
+                respuesta.ok &&
+                datos.exito
+            ) {
+
+                if (mensajeRegistro) {
+
+                    mensajeRegistro.style.color =
+                        "#4CAF50";
+
+                    mensajeRegistro.textContent =
+                        datos.mensaje;
+
+                }
+
+
+                if (btnCrearCuenta) {
+
+                    btnCrearCuenta.innerHTML =
+                        '<i class="fa-solid fa-check"></i> Cuenta creada';
+
+                }
+
+
+                /* ---------------------------------
+                   USUARIO CREADO
+                --------------------------------- */
+
+                const usuarioCreado =
+                    datos.usuario;
+
+
+                /* ---------------------------------
+                   GUARDAR SESIÓN
+                --------------------------------- */
+
+                localStorage.setItem(
+                    "usuarioHarvestX",
+                    JSON.stringify(
+                        usuarioCreado
+                    )
+                );
+
+
+                /* ---------------------------------
+                   DETERMINAR RUTA SEGÚN ROL
+                --------------------------------- */
+
+                let ruta = "";
+
+
+                if (
+                    usuarioCreado.rol ===
+                    "administrador"
+                ) {
+
+                    ruta =
+                        "Perfiles/administrador/inicio.html";
+
+                }
+
+                else if (
+                    usuarioCreado.rol ===
+                    "usuario"
+                ) {
+
+                    ruta =
+                        "Perfiles/Usuarios/inicio.html";
+
+                }
+
+                else {
+
+                    mostrarErrorRegistro(
+                        "El rol del usuario no es válido."
+                    );
+
+                    restaurarBotonRegistro();
+
+                    return;
+
+                }
+
+
+                /* ---------------------------------
+                   REDIRECCIÓN
+                --------------------------------- */
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        ruta;
+
+                }, 700);
+
+            }
+
+
+            /* -------------------------------------
+               ERROR DE REGISTRO
+            ------------------------------------- */
+
+            else {
+
+                mostrarErrorRegistro(
+                    datos.mensaje ||
+                    "No se pudo crear la cuenta."
+                );
+
+                restaurarBotonRegistro();
+
+            }
+
+        }
+
+
+        /* -----------------------------------------
+           ERROR DE CONEXIÓN
+        ----------------------------------------- */
+
+        catch (error) {
+
+            console.error(
+                "Error al registrar usuario:",
+                error
+            );
+
+            mostrarErrorRegistro(
+                "No se pudo conectar con el servidor."
+            );
+
+            restaurarBotonRegistro();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RESTAURAR BOTÓN LOGIN
+    ========================================================= */
+
+    function restaurarBotonLogin() {
+
+        if (ingresar) {
+
+            ingresar.innerHTML =
+                '<i class="fa-solid fa-right-to-bracket"></i> Ingresar';
+
+            ingresar.disabled = false;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RESTAURAR BOTÓN REGISTRO
+    ========================================================= */
+
+    function restaurarBotonRegistro() {
+
+        if (btnCrearCuenta) {
+
+            btnCrearCuenta.innerHTML =
+                '<i class="fa-solid fa-user-plus"></i> Crear cuenta';
+
+            btnCrearCuenta.disabled = false;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       MOSTRAR ERROR LOGIN
     ========================================================= */
 
     function mostrarError(mensaje) {
@@ -569,45 +1120,71 @@ document.addEventListener("DOMContentLoaded", () => {
         mensajeError.textContent =
             mensaje;
 
+        animarLogin();
+
+    }
+
+
+    /* =========================================================
+       MOSTRAR ERROR REGISTRO
+    ========================================================= */
+
+    function mostrarErrorRegistro(mensaje) {
+
+        if (!mensajeRegistro) return;
+
+        mensajeRegistro.style.color =
+            "#f44336";
+
+        mensajeRegistro.textContent =
+            mensaje;
+
+        animarLogin();
+
+    }
+
+
+    /* =========================================================
+       ANIMACIÓN DE ERROR
+    ========================================================= */
+
+    function animarLogin() {
 
         const loginBox =
             document.querySelector(".login");
 
+        if (!loginBox) return;
 
-        if (loginBox) {
+        loginBox.style.transform =
+            "translateX(-10px)";
+
+        setTimeout(() => {
+
+            loginBox.style.transform =
+                "translateX(10px)";
+
+        }, 50);
+
+        setTimeout(() => {
 
             loginBox.style.transform =
                 "translateX(-10px)";
 
-            setTimeout(() => {
+        }, 100);
 
-                loginBox.style.transform =
-                    "translateX(10px)";
+        setTimeout(() => {
 
-            }, 50);
+            loginBox.style.transform =
+                "translateX(10px)";
 
-            setTimeout(() => {
+        }, 150);
 
-                loginBox.style.transform =
-                    "translateX(-10px)";
+        setTimeout(() => {
 
-            }, 100);
+            loginBox.style.transform =
+                "translateX(0)";
 
-            setTimeout(() => {
-
-                loginBox.style.transform =
-                    "translateX(10px)";
-
-            }, 150);
-
-            setTimeout(() => {
-
-                loginBox.style.transform =
-                    "translateX(0)";
-
-            }, 200);
-
-        }
+        }, 200);
 
     }
 
@@ -627,19 +1204,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
+       BOTÓN "CREAR UNA CUENTA"
+       
+       LOGIN → REGISTRO
+    ========================================================= */
+
+    if (btnRegistro) {
+
+        btnRegistro.addEventListener(
+            "click",
+            mostrarRegistro
+        );
+
+    }
+
+
+    /* =========================================================
+       BOTÓN "CREAR CUENTA"
+       
+       FORMULARIO → FLASK
+    ========================================================= */
+
+    if (btnCrearCuenta) {
+
+        btnCrearCuenta.addEventListener(
+            "click",
+            registrarUsuario
+        );
+
+    }
+
+
+    /* =========================================================
+       BOTÓN VOLVER AL LOGIN
+    ========================================================= */
+
+    if (btnVolverRegistro) {
+
+        btnVolverRegistro.addEventListener(
+            "click",
+            mostrarLogin
+        );
+
+    }
+
+
+    /* =========================================================
        ENTER EN USUARIO
     ========================================================= */
 
     if (usuario) {
 
         usuario.addEventListener(
-            "keypress",
+            "keydown",
             (e) => {
 
                 if (e.key === "Enter") {
 
                     if (password) {
+
                         password.focus();
+
                     }
 
                 }
@@ -657,16 +1282,73 @@ document.addEventListener("DOMContentLoaded", () => {
     if (password) {
 
         password.addEventListener(
-            "keypress",
+            "keydown",
             (e) => {
 
                 if (e.key === "Enter") {
+
                     iniciarSesion();
+
                 }
 
             }
         );
 
     }
+
+
+    /* =========================================================
+       ENTER EN CAMPOS DE REGISTRO
+    ========================================================= */
+
+    const camposRegistro = [
+
+        registroNombre,
+        registroUsuario,
+        registroPassword,
+        registroPasswordConfirmar
+
+    ];
+
+
+    camposRegistro.forEach((campo, indice) => {
+
+        if (!campo) return;
+
+        campo.addEventListener(
+            "keydown",
+            (e) => {
+
+                if (e.key === "Enter") {
+
+                    e.preventDefault();
+
+
+                    if (
+                        indice ===
+                        camposRegistro.length - 1
+                    ) {
+
+                        registrarUsuario();
+
+                    } else {
+
+                        const siguiente =
+                            camposRegistro[indice + 1];
+
+                        if (siguiente) {
+
+                            siguiente.focus();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    });
 
 });

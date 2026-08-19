@@ -5,22 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin - HarvestX</title>
+    <title>HarvestX - Usuario</title>
 
     <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-    <!-- ========================================== -->
-    <!-- LOADER -->
-    <!-- ========================================== -->
+    <!-- ==========================================
+         LOADER
+    =========================================== -->
 
     <div id="loader" class="loader-container">
 
@@ -37,9 +36,9 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- MODAL DE CONFIGURACIÓN -->
-    <!-- ========================================== -->
+    <!-- ==========================================
+         MODAL DE CONFIGURACIÓN
+    =========================================== -->
 
     <div id="settingsModal" class="modal-overlay">
 
@@ -50,10 +49,9 @@
                 <h2>Ajustes del Sistema</h2>
 
                 <i class="fa-solid fa-xmark close-modal"
-                    id="closeSettings"></i>
+                   id="closeSettings"></i>
 
             </div>
-
 
             <div class="modal-body">
 
@@ -64,7 +62,7 @@
                     <label class="switch">
 
                         <input type="checkbox"
-                            id="themeToggle">
+                               id="themeToggle">
 
                         <span class="slider round"></span>
 
@@ -80,7 +78,7 @@
                     <label class="switch">
 
                         <input type="checkbox"
-                            id="soundToggle">
+                               id="soundToggle">
 
                         <span class="slider round"></span>
 
@@ -94,7 +92,7 @@
                     <label>Fuente de Letra</label>
 
                     <select id="fontSelect"
-                        class="form-select">
+                            class="form-select">
 
                         <option value="'Poppins', sans-serif">
                             Poppins
@@ -124,17 +122,17 @@
                     <div class="size-controls">
 
                         <button id="btnSizeSmall"
-                            class="btn-size">
+                                class="btn-size">
                             A-
                         </button>
 
                         <button id="btnSizeNormal"
-                            class="btn-size active">
+                                class="btn-size active">
                             A
                         </button>
 
                         <button id="btnSizeLarge"
-                            class="btn-size">
+                                class="btn-size">
                             A+
                         </button>
 
@@ -149,16 +147,16 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- DASHBOARD -->
-    <!-- ========================================== -->
+    <!-- ==========================================
+         DASHBOARD
+    =========================================== -->
 
     <div class="dashboard-container">
 
 
-        <!-- ====================================== -->
-        <!-- SIDEBAR -->
-        <!-- ====================================== -->
+        <!-- ======================================
+             SIDEBAR
+        ======================================= -->
 
         <aside class="sidebar" id="sidebar">
 
@@ -179,8 +177,9 @@
                 </div>
 
 
-                <i class="fa-solid fa-xmark close-sidebar-mobile"
-                    id="closeSidebarMobile"></i>
+                <i class="fa-solid fa-xmark
+                          close-sidebar-mobile"
+                   id="closeSidebarMobile"></i>
 
             </div>
 
@@ -190,8 +189,8 @@
 
                 <!-- DASHBOARD -->
 
-                <a href="inicio.html"
-                    class="nav-link active">
+                <a href="usuario.html"
+                   class="nav-link active">
 
                     <i class="fa-solid fa-house"></i>
 
@@ -207,38 +206,38 @@
                 <div class="nav-category">
 
                     <span class="nav-text">
-                        GESTIÓN
+                        MI AGRICULTURA
                     </span>
 
                 </div>
 
 
                 <a href="fincas.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-mountain-sun"></i>
 
                     <span class="nav-text">
-                        Fincas
+                        Mis Fincas
                     </span>
 
                 </a>
 
 
                 <a href="cultivos.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-seedling"></i>
 
                     <span class="nav-text">
-                        Cultivos
+                        Mis Cultivos
                     </span>
 
                 </a>
 
 
                 <a href="programacion_de_riego.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-droplet"></i>
 
@@ -250,7 +249,7 @@
 
 
                 <a href="labores_del_campo.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-tractor"></i>
 
@@ -262,7 +261,7 @@
 
 
                 <a href="monitoreo_climatico.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-cloud-sun"></i>
 
@@ -274,12 +273,12 @@
 
 
                 <a href="alertas.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-bell"></i>
 
                     <span class="nav-text">
-                        Alertas
+                        Mis Alertas
                     </span>
 
                 </a>
@@ -290,14 +289,14 @@
                 <div class="nav-category">
 
                     <span class="nav-text">
-                        REPORTES
+                        INFORMACIÓN
                     </span>
 
                 </div>
 
 
                 <a href="reportes_y_estadisticas.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-chart-column"></i>
 
@@ -309,12 +308,12 @@
 
 
                 <a href="historial.html"
-                    class="nav-link">
+                   class="nav-link">
 
                     <i class="fa-solid fa-clock-rotate-left"></i>
 
                     <span class="nav-text">
-                        Historial de Actividades
+                        Historial
                     </span>
 
                 </a>
@@ -332,20 +331,8 @@
 
 
                 <a href="#"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    <span class="nav-text">
-                        Usuarios
-                    </span>
-
-                </a>
-
-
-                <a href="#"
-                    class="nav-link"
-                    id="openSettings">
+                   class="nav-link"
+                   id="openSettings">
 
                     <i class="fa-solid fa-gear"></i>
 
@@ -364,9 +351,10 @@
             <div class="sidebar-footer">
 
                 <a href="../../login.html"
-                    class="nav-link logout">
+                   class="nav-link logout">
 
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <i class="fa-solid
+                              fa-arrow-right-from-bracket"></i>
 
                     <span class="nav-text">
                         Cerrar Sesión
@@ -379,17 +367,18 @@
         </aside>
 
 
-        <!-- ====================================== -->
-        <!-- CONTENIDO PRINCIPAL -->
-        <!-- ====================================== -->
+
+        <!-- ======================================
+             CONTENIDO PRINCIPAL
+        ======================================= -->
 
         <main class="main-content"
-            id="mainContent">
+              id="mainContent">
 
 
-            <!-- ================================== -->
-            <!-- TOPBAR -->
-            <!-- ================================== -->
+            <!-- ==================================
+                 TOPBAR
+            =================================== -->
 
             <header class="topbar">
 
@@ -397,63 +386,46 @@
                 <div class="left-controls">
 
 
-                    <!-- Botón escritorio -->
-
                     <div class="menu-toggle-desktop"
-                        id="toggleSidebarDesktop">
+                         id="toggleSidebarDesktop">
 
                         <i class="fa-solid fa-bars"></i>
 
                     </div>
 
-
-                    <!-- Botón móvil -->
 
                     <div class="menu-toggle-mobile"
-                        id="menuToggleMobile">
+                         id="menuToggleMobile">
 
                         <i class="fa-solid fa-bars"></i>
 
                     </div>
 
-
-                    <!-- Bienvenida -->
 
                     <div class="header-title">
 
                         <div>
 
-                            <!--
-                                administrador.js
-                                colocará aquí el nombre
-                                del usuario automáticamente.
-                            -->
-
                             <h1 id="nombreBienvenida">
                                 ¡Bienvenido! 👋
                             </h1>
 
-
                             <p>
-                                Administrador del Sistema
+                                Panel de Usuario
                             </p>
 
                         </div>
 
                     </div>
 
-
                 </div>
 
 
-                <!-- ================================= -->
+
                 <!-- INFORMACIÓN DEL USUARIO -->
-                <!-- ================================= -->
 
                 <div class="user-info">
 
-
-                    <!-- NOTIFICACIONES -->
 
                     <div class="notifications">
 
@@ -466,16 +438,8 @@
                     </div>
 
 
-                    <!-- PERFIL -->
-
                     <div class="profile">
 
-
-                        <!--
-                            Esta imagen puede cambiarse
-                            posteriormente por la foto
-                            real del usuario.
-                        -->
 
                         <img
                             src="../../IMG/juan.jpg"
@@ -486,29 +450,18 @@
 
                         <div class="user-details">
 
-
-                            <!--
-                                administrador.js
-                                colocará aquí el nombre.
-                            -->
-
                             <span
                                 class="name"
                                 id="nombreUsuario">
-
                                 Usuario
-
                             </span>
-
 
                             <span class="role">
-
-                                Administrador
-
+                                Usuario
                             </span>
 
-
                         </div>
+
 
                     </div>
 
@@ -517,16 +470,17 @@
             </header>
 
 
-            <!-- ====================================== -->
-            <!-- CONTENIDO -->
-            <!-- ====================================== -->
+
+            <!-- ==================================
+                 CONTENIDO
+            =================================== -->
 
             <section class="content-grid">
 
 
-                <!-- ================================== -->
-                <!-- ESTADÍSTICAS -->
-                <!-- ================================== -->
+                <!-- =================================
+                     ESTADÍSTICAS
+                ================================== -->
 
                 <div class="stats-grid fade-up delay-1">
 
@@ -534,151 +488,162 @@
                     <div class="stat-card card-solid-green">
 
                         <div class="stat-icon">
-                            <i class="fa-solid fa-house-chimney"></i>
+
+                            <i class="fa-solid
+                                      fa-house-chimney"></i>
+
                         </div>
 
                         <div class="stat-info">
 
                             <span>
-                                Fincas Registradas
+                                Mis Fincas
                             </span>
 
-                            <h3>18</h3>
+                            <h3>0</h3>
 
                             <small>
-                                +2 este mes
+                                Registradas
                             </small>
 
                         </div>
 
                     </div>
+
 
 
                     <div class="stat-card bg-light-green">
 
                         <div class="stat-icon text-green">
 
-                            <i class="fa-solid fa-leaf"></i>
+                            <i class="fa-solid
+                                      fa-seedling"></i>
 
                         </div>
 
                         <div class="stat-info">
 
                             <span>
-                                Cultivos Activos
+                                Mis Cultivos
                             </span>
 
-                            <h3>32</h3>
+                            <h3>0</h3>
 
                             <small class="text-green">
-                                +5 este mes
+                                Activos
                             </small>
 
                         </div>
 
                     </div>
+
 
 
                     <div class="stat-card bg-light-blue">
 
                         <div class="stat-icon text-blue">
 
-                            <i class="fa-solid fa-droplet"></i>
+                            <i class="fa-solid
+                                      fa-droplet"></i>
 
                         </div>
 
                         <div class="stat-info">
 
                             <span>
-                                Humedad Promedio
+                                Humedad
                             </span>
 
-                            <h3>68%</h3>
+                            <h3>--%</h3>
 
                             <small>
-                                Óptimo
+                                Estado del suelo
                             </small>
 
                         </div>
 
                     </div>
+
 
 
                     <div class="stat-card bg-light-yellow">
 
                         <div class="stat-icon text-yellow">
 
-                            <i class="fa-solid fa-temperature-half"></i>
+                            <i class="fa-solid
+                                      fa-temperature-half"></i>
 
                         </div>
 
                         <div class="stat-info">
 
                             <span>
-                                Temperatura Actual
+                                Temperatura
                             </span>
 
-                            <h3>24°C</h3>
+                            <h3>--°C</h3>
 
                             <small>
-                                Óptimo
+                                Clima actual
                             </small>
 
                         </div>
 
                     </div>
+
 
 
                     <div class="stat-card bg-light-red">
 
                         <div class="stat-icon text-red">
 
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <i class="fa-solid
+                                      fa-bell"></i>
 
                         </div>
 
                         <div class="stat-info">
 
                             <span>
-                                Alertas Pendientes
+                                Mis Alertas
                             </span>
 
-                            <h3>3</h3>
+                            <h3>0</h3>
 
                             <small class="text-red">
-                                Requieren atención
+                                Pendientes
                             </small>
 
                         </div>
 
                     </div>
 
-
                 </div>
 
 
-                <!-- ================================== -->
-                <!-- COLUMNAS PRINCIPALES -->
-                <!-- ================================== -->
+
+                <!-- =================================
+                     COLUMNAS PRINCIPALES
+                ================================== -->
 
                 <div class="main-columns fade-up delay-2">
 
 
-                    <!-- ================================= -->
                     <!-- CULTIVOS -->
-                    <!-- ================================= -->
 
                     <div class="card">
 
                         <div class="card-header">
 
                             <h3>
-                                Estado de Cultivos Principales
+                                Mis Cultivos
                             </h3>
 
-                            <a href="#"
-                                class="link-more">
+                            <a href="cultivos.html"
+                               class="link-more">
+
                                 Ver todos
+
                             </a>
 
                         </div>
@@ -691,147 +656,43 @@
 
                                 <div class="crop-icon-small">
 
-                                    <i class="fa-solid fa-apple-whole text-red"></i>
+                                    <i class="fa-solid
+                                              fa-seedling
+                                              text-green"></i>
 
                                 </div>
+
 
                                 <div class="crop-details">
 
                                     <div class="crop-title-row">
 
                                         <h4>
-                                            Tomate - Finca El Paraíso
+                                            Sin cultivos registrados
                                         </h4>
 
-                                        <span class="crop-status text-green">
-                                            Saludable
+                                        <span class="crop-status
+                                                     text-gray">
+
+                                            Pendiente
+
                                         </span>
 
                                     </div>
 
-                                    <div class="progress-bar">
-
-                                        <div class="progress bg-green"
-                                            style="width: 85%;"></div>
-
-                                    </div>
-
-                                    <div class="crop-percentage">
-                                        85%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-wheat-awn text-yellow"></i>
-
-                                </div>
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Maíz - Finca San José
-                                        </h4>
-
-                                        <span class="crop-status text-gray">
-                                            Riego requerido
-                                        </span>
-
-                                    </div>
 
                                     <div class="progress-bar">
 
-                                        <div class="progress bg-yellow"
-                                            style="width: 60%;"></div>
+                                        <div
+                                            class="progress bg-green"
+                                            style="width: 0%;">
+                                        </div>
 
                                     </div>
+
 
                                     <div class="crop-percentage">
-                                        60%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-seedling text-dark-green"></i>
-
-                                </div>
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Café - Finca La Esperanza
-                                        </h4>
-
-                                        <span class="crop-status text-green">
-                                            Saludable
-                                        </span>
-
-                                    </div>
-
-                                    <div class="progress-bar">
-
-                                        <div class="progress bg-green"
-                                            style="width: 90%;"></div>
-
-                                    </div>
-
-                                    <div class="crop-percentage">
-                                        90%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-leaf text-light-green"></i>
-
-                                </div>
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Lechuga - Finca Los Andes
-                                        </h4>
-
-                                        <span class="crop-status text-gray">
-                                            Atención requerida
-                                        </span>
-
-                                    </div>
-
-                                    <div class="progress-bar">
-
-                                        <div class="progress bg-orange"
-                                            style="width: 40%;"></div>
-
-                                    </div>
-
-                                    <div class="crop-percentage">
-                                        40%
+                                        0%
                                     </div>
 
                                 </div>
@@ -844,15 +705,18 @@
                     </div>
 
 
-                    <!-- ================================= -->
+
                     <!-- CLIMA -->
-                    <!-- ================================= -->
 
                     <div class="card no-padding">
 
 
                         <div class="card-header padding-card"
-                            style="display:flex; justify-content:space-between; align-items:center;">
+                             style="
+                             display:flex;
+                             justify-content:space-between;
+                             align-items:center;
+                             ">
 
                             <h3>
                                 Clima Local
@@ -860,7 +724,11 @@
 
                             <span
                                 id="relojSistema"
-                                style="font-family:monospace; font-weight:bold; color:var(--text-blue);">
+                                style="
+                                font-family:monospace;
+                                font-weight:bold;
+                                color:var(--text-blue);
+                                ">
 
                                 --:--:--
 
@@ -872,12 +740,27 @@
                         <div
                             id="climaEstado"
                             class="padding-card"
-                            style="text-align:center; color:var(--texto-claro); min-height:200px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
+                            style="
+                            text-align:center;
+                            color:var(--texto-claro);
+                            min-height:200px;
+                            display:flex;
+                            flex-direction:column;
+                            justify-content:center;
+                            align-items:center;
+                            gap:10px;
+                            ">
 
                             <i
-                                class="fa-solid fa-location-crosshairs fa-spin"
-                                style="font-size:2rem; color:var(--verde-activo);">
+                                class="fa-solid
+                                       fa-location-crosshairs
+                                       fa-spin"
+                                style="
+                                font-size:2rem;
+                                color:var(--verde-activo);
+                                ">
                             </i>
+
 
                             <p id="climaMensaje">
                                 Detectando tu ubicación...
@@ -886,15 +769,23 @@
                         </div>
 
 
+                        <!-- CLIMA -->
+
                         <div
                             id="climaContenido"
                             class="weather-widget"
                             style="display:none;">
 
-                            <div
-                                style="font-size:0.85rem; margin-bottom:15px; opacity:0.9;">
 
-                                <i class="fa-solid fa-location-dot"></i>
+                            <div
+                                style="
+                                font-size:0.85rem;
+                                margin-bottom:15px;
+                                opacity:0.9;
+                                ">
+
+                                <i class="fa-solid
+                                          fa-location-dot"></i>
 
                                 <span id="climaUbicacion">
                                     Ubicación desconocida
@@ -905,10 +796,14 @@
 
                             <div class="weather-main">
 
+
                                 <i
                                     id="climaIcono"
-                                    class="fa-solid fa-sun weather-icon-large">
+                                    class="fa-solid
+                                           fa-sun
+                                           weather-icon-large">
                                 </i>
+
 
                                 <div class="weather-info-main">
 
@@ -924,8 +819,7 @@
                                         Sensación:
                                         <span id="climaSensacion">
                                             --
-                                        </span>
-                                        °C
+                                        </span>°C
                                     </p>
 
                                 </div>
@@ -935,6 +829,7 @@
 
                             <div class="weather-details">
 
+
                                 <div>
 
                                     <i class="fa-solid fa-wind"></i>
@@ -942,6 +837,7 @@
                                     <span id="climaViento">
                                         --
                                     </span>
+
                                     km/h
 
                                     <br>
@@ -955,12 +851,12 @@
 
                                 <div>
 
-                                    <i class="fa-solid fa-droplet"></i>
+                                    <i class="fa-solid
+                                              fa-droplet"></i>
 
                                     <span id="climaHumedad">
                                         --
-                                    </span>
-                                    %
+                                    </span>%
 
                                     <br>
 
@@ -973,12 +869,12 @@
 
                                 <div>
 
-                                    <i class="fa-solid fa-umbrella"></i>
+                                    <i class="fa-solid
+                                              fa-umbrella"></i>
 
                                     <span id="climaProbLluvia">
                                         --
-                                    </span>
-                                    %
+                                    </span>%
 
                                     <br>
 
@@ -988,24 +884,31 @@
 
                                 </div>
 
+
                             </div>
 
 
                             <div
-                                style="margin-top:15px; font-size:0.7rem; display:flex; justify-content:space-between; opacity:0.7; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px;">
+                                style="
+                                margin-top:15px;
+                                font-size:0.7rem;
+                                display:flex;
+                                justify-content:space-between;
+                                opacity:0.7;
+                                border-top:1px solid
+                                rgba(255,255,255,0.2);
+                                padding-top:10px;
+                                ">
 
                                 <span id="climaFecha">
                                     --
                                 </span>
 
                                 <span>
-
                                     Act:
-
                                     <span id="climaUltimaAct">
                                         --:--
                                     </span>
-
                                 </span>
 
                             </div>
@@ -1022,13 +925,11 @@
 
                         </div>
 
-
                     </div>
 
 
-                    <!-- ================================= -->
+
                     <!-- ACTIVIDAD -->
-                    <!-- ================================= -->
 
                     <div class="card">
 
@@ -1036,11 +937,11 @@
                         <div class="card-header">
 
                             <h3>
-                                Actividad Reciente
+                                Mi Actividad Reciente
                             </h3>
 
-                            <a href="#"
-                                class="link-more">
+                            <a href="historial.html"
+                               class="link-more">
 
                                 Ver todas
 
@@ -1054,26 +955,32 @@
 
                             <div class="activity-item">
 
-                                <div class="activity-icon bg-light-green text-green">
+                                <div
+                                    class="activity-icon
+                                           bg-light-green
+                                           text-green">
 
-                                    <i class="fa-solid fa-droplet"></i>
+                                    <i class="fa-solid
+                                              fa-seedling"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
                                     <h4>
-                                        Riego programado
+                                        Bienvenido a HarvestX
                                     </h4>
 
                                     <p>
-                                        Finca El Paraíso - Sector A
+                                        Comienza registrando tu primera finca.
                                     </p>
 
                                 </div>
 
+
                                 <span class="activity-time">
-                                    Hace 2 horas
+                                    Ahora
                                 </span>
 
                             </div>
@@ -1081,107 +988,32 @@
 
                             <div class="activity-item">
 
-                                <div class="activity-icon bg-light-green text-green">
+                                <div
+                                    class="activity-icon
+                                           bg-light-blue
+                                           text-blue">
 
-                                    <i class="fa-solid fa-seedling"></i>
+                                    <i class="fa-solid
+                                              fa-cloud-sun"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
                                     <h4>
-                                        Cosecha registrada
+                                        Monitoreo climático
                                     </h4>
 
                                     <p>
-                                        Tomate - 120 kg
+                                        Consulta las condiciones actuales.
                                     </p>
 
                                 </div>
 
-                                <span class="activity-time">
-                                    Hace 4 horas
-                                </span>
-
-                            </div>
-
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-green text-green">
-
-                                    <i class="fa-solid fa-flask"></i>
-
-                                </div>
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Análisis de suelo
-                                    </h4>
-
-                                    <p>
-                                        Finca San José - Completado
-                                    </p>
-
-                                </div>
 
                                 <span class="activity-time">
-                                    Hace 6 horas
-                                </span>
-
-                            </div>
-
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-red text-red">
-
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                                </div>
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Alerta de plaga
-                                    </h4>
-
-                                    <p>
-                                        Pulgón detectado en Maíz
-                                    </p>
-
-                                </div>
-
-                                <span class="activity-time">
-                                    Hace 8 horas
-                                </span>
-
-                            </div>
-
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-green text-green">
-
-                                    <i class="fa-solid fa-leaf"></i>
-
-                                </div>
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Fertilización aplicada
-                                    </h4>
-
-                                    <p>
-                                        Finca La Esperanza
-                                    </p>
-
-                                </div>
-
-                                <span class="activity-time">
-                                    Hace 1 día
+                                    Disponible
                                 </span>
 
                             </div>
@@ -1195,17 +1027,20 @@
                 </div>
 
 
-                <!-- ================================== -->
-                <!-- GRÁFICOS -->
-                <!-- ================================== -->
 
-                <div class="card charts-card fade-up delay-3">
+                <!-- =================================
+                     GRÁFICOS
+                ================================== -->
+
+                <div
+                    class="card charts-card
+                           fade-up delay-3">
 
 
                     <div class="card-header">
 
                         <h3>
-                            Gráficos y Estadísticas
+                            Mis Estadísticas
                         </h3>
 
                     </div>
@@ -1217,12 +1052,16 @@
                         <div class="chart-box">
 
                             <h4>
-                                Producción por Cultivo (Este mes)
+                                Producción por Cultivo
                             </h4>
 
-                            <div class="chart-wrapper pie-wrapper">
+                            <div
+                                class="chart-wrapper
+                                       pie-wrapper">
 
-                                <canvas id="productionChart"></canvas>
+                                <canvas
+                                    id="productionChart">
+                                </canvas>
 
                             </div>
 
@@ -1237,7 +1076,9 @@
 
                             <div class="chart-wrapper">
 
-                                <canvas id="yieldChart"></canvas>
+                                <canvas
+                                    id="yieldChart">
+                                </canvas>
 
                             </div>
 
@@ -1247,12 +1088,14 @@
                         <div class="chart-box">
 
                             <h4>
-                                Humedad del Suelo por Sector
+                                Humedad del Suelo
                             </h4>
 
                             <div class="chart-wrapper">
 
-                                <canvas id="moistureChart"></canvas>
+                                <canvas
+                                    id="moistureChart">
+                                </canvas>
 
                             </div>
 
@@ -1271,13 +1114,14 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT -->
-    <!-- ========================================== -->
+
+    <!-- ==========================================
+         SCRIPTS
+    =========================================== -->
 
     <script src="../../JS/paginas/configuracion.js"></script>
 
-    <script src="../../JS/paginas/administrador.js"></script>
+    <script src="../../JS/paginas/usuario.js"></script>
 
     <script src="../../JS/paginas/clima.js"></script>
 

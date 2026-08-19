@@ -1,188 +1,701 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+
+    <title>HarvestX</title>
+
     <link rel="stylesheet" href="CSS/paginas/login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
+
 <body>
 
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header id="header">
+
         <div class="logo">
+
             <i class="fa-solid fa-seedling"></i>
+
             <center>
+
                 <div>
-                <h2>HarvestX</h2>
-                <span>+1000 LAURA</span>
-            </div>
+
+                    <h2>HarvestX</h2>
+
+                    <span>+1000 LAURA</span>
+
+                </div>
+
             </center>
+
             <i class="fa-solid fa-leaf"></i>
+
         </div>
+
 
         <nav id="navbar">
+
             <a href="#">Inicio</a>
+
             <a href="#seccion-cards">Servicios</a>
+
             <a href="#">Cultivos</a>
+
             <a href="#">Contacto</a>
-            
-            <button id="btnLogin" class="btn-primary">
-                <i class="fa-solid fa-user"></i> Iniciar sesión
+
+            <button id="btnLogin"
+                    class="btn-primary">
+
+                <i class="fa-solid fa-user"></i>
+
+                Iniciar sesión
+
             </button>
+
         </nav>
 
-        <i class="fa-solid fa-bars menu-icon" id="menu-icon"></i>
+
+        <i class="fa-solid fa-bars menu-icon"
+           id="menu-icon"></i>
+
     </header>
 
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
     <section class="hero">
+
         <div class="overlay"></div>
+
         <div class="contenido">
+
             <div class="texto">
-                <h1 class="fade-in">Monitorea tus cultivos con precisión</h1>
+
+                <h1 class="fade-in">
+
+                    Monitorea tus cultivos con precisión
+
+                </h1>
+
+
                 <p class="fade-in">
-                    Optimiza el riego, controla la humedad, administra tus plantas y mejora la producción desde cualquier dispositivo.
+
+                    Optimiza el riego, controla la humedad,
+                    administra tus plantas y mejora la producción
+                    desde cualquier dispositivo.
+
                 </p>
+
+
                 <div class="botones fade-in">
-                    <button id="abrirLogin" class="btn-primary">
-                        <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+
+                    <button id="abrirLogin"
+                            class="btn-primary">
+
+                        <i class="fa-solid fa-right-to-bracket"></i>
+
+                        Iniciar sesión
+
                     </button>
-                    <button class="secundario" id="btnSaberMas">Saber más</button>
+
+
+                    <button class="secundario"
+                            id="btnSaberMas">
+
+                        Saber más
+
+                    </button>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <section class="cards-section" id="seccion-cards">
+
+
+    <!-- =====================================================
+         SOLUCIONES
+         ===================================================== -->
+
+    <section class="cards-section"
+             id="seccion-cards">
+
         <div class="section-title fade-up">
+
             <h2>Nuestras Soluciones</h2>
-            <p>Tecnología de punta al servicio del campo</p>
+
+            <p>
+                Tecnología de punta al servicio del campo
+            </p>
+
         </div>
-        
+
+
         <div class="cards">
+
+
+            <!-- RIEGO -->
+
             <div class="card fade-up">
-                <div class="icon-wrapper"><i class="fa-solid fa-droplet"></i></div>
+
+                <div class="icon-wrapper">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                </div>
+
                 <h3>Riego Inteligente</h3>
-                <p>Control del agua en tiempo real para optimizar cada gota.</p>
+
+                <p>
+                    Control del agua en tiempo real
+                    para optimizar cada gota.
+                </p>
+
             </div>
+
+
+
+            <!-- CLIMA -->
+
             <div class="card fade-up delay-1">
-                <div class="icon-wrapper"><i class="fa-solid fa-temperature-half"></i></div>
+
+                <div class="icon-wrapper">
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+                </div>
+
                 <h3>Clima y Suelo</h3>
-                <p>Sensores avanzados para monitorear temperatura y humedad.</p>
+
+                <p>
+                    Sensores avanzados para monitorear
+                    temperatura y humedad.
+                </p>
+
             </div>
+
+
+
+            <!-- CULTIVOS -->
+
             <div class="card fade-up delay-2">
-                <div class="icon-wrapper"><i class="fa-solid fa-leaf"></i></div>
+
+                <div class="icon-wrapper">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                </div>
+
                 <h3>Cultivos</h3>
-                <p>Seguimiento detallado del crecimiento y salud de las plantas.</p>
+
+                <p>
+                    Seguimiento detallado del crecimiento
+                    y salud de las plantas.
+                </p>
+
             </div>
+
+
+
+            <!-- ESTADÍSTICAS -->
+
             <div class="card fade-up delay-3">
-                <div class="icon-wrapper"><i class="fa-solid fa-chart-line"></i></div>
+
+                <div class="icon-wrapper">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
                 <h3>Estadísticas</h3>
-                <p>Reportes automáticos y análisis predictivo de tu cosecha.</p>
+
+                <p>
+                    Reportes automáticos y análisis
+                    predictivo de tu cosecha.
+                </p>
+
             </div>
+
+
         </div>
+
     </section>
 
-    <div class="modal" id="modal">
 
-        <div class="login" id="modal-container">
-            <span class="cerrar" id="cerrar">&times;</span>
-            
-             <div id="vista-perfiles" class="vista-activa">
-                <div class="login-header">
-                    <h2>Selecciona tu perfil</h2>
-                    <p>Elige tu rol para ingresar al sistema</p>
-                </div>
-                
-                <div class="perfiles-grid">
-                    <div class="perfil-item" data-perfil="Administrador">
-                        <div class="perfil-img">
- 
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Administrador">
-                        </div>
-                        <span>Administrador</span>
-                    </div>
-                    <div class="perfil-item" data-perfil="Agricultor">
-                        <div class="perfil-img">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3060/3060233.png" alt="Agricultor">
-                        </div>
-                        <span>Agricultor</span>
-                    </div>
-                    <div class="perfil-item" data-perfil="Técnico Agrícola">
-                        <div class="perfil-img">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2942/2942821.png" alt="Técnico">
-                        </div>
-                        <span>Técnico Agrícola</span>
-                    </div>
-                    <div class="perfil-item" data-perfil="Supervisor">
-                        <div class="perfil-img">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2065/2065064.png" alt="Supervisor">
-                        </div>
-                        <span>Supervisor</span>
-                    </div>
-                    <div class="perfil-item" data-perfil="Invitado">
-                        <div class="perfil-img">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2550/2550260.png" alt="Invitado">
-                        </div>
-                        <span>Invitado</span>
-                    </div>
-                </div>
-            </div>
 
-            <div id="vista-login" class="vista-oculta">
-                <button id="btn-volver" class="btn-volver"><i class="fa-solid fa-arrow-left"></i></button>
-                
+    <!-- =====================================================
+         MODAL
+         ===================================================== -->
+
+    <div class="modal"
+         id="modal">
+
+
+        <div class="login"
+             id="modal-container">
+
+
+            <!-- CERRAR -->
+
+            <span class="cerrar"
+                  id="cerrar">
+
+                &times;
+
+            </span>
+
+
+
+            <!-- =================================================
+                 VISTA LOGIN
+                 ================================================= -->
+
+            <div id="vista-login"
+                 class="vista-activa">
+
+
                 <div class="login-header">
+
                     <i class="fa-solid fa-seedling"></i>
-                    <h2>Bienvenido</h2>
-                    <p>Iniciando sesión como: <strong id="texto-perfil-seleccionado" style="color: var(--verde-claro);"></strong></p>
+
+
+                    <h2>
+
+                        Bienvenido a HarvestX
+
+                    </h2>
+
+
+                    <p>
+
+                        Inicia sesión para continuar
+
+                    </p>
+
                 </div>
-                
+
+
+
+                <!-- =================================================
+                     USUARIO
+                     ================================================= -->
+
                 <div class="grupo">
-                    <label>Usuario</label>
+
+                    <label>
+
+                        Usuario
+
+                    </label>
+
+
                     <div class="input-container">
+
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" id="usuario" placeholder="Ingrese su usuario">
+
+
+                        <input
+                            type="text"
+                            id="usuario"
+                            placeholder="Ingrese su usuario"
+                            autocomplete="username">
+
                     </div>
+
                 </div>
+
+
+
+                <!-- =================================================
+                     CONTRASEÑA
+                     ================================================= -->
 
                 <div class="grupo">
-                    <label>Contraseña</label>
+
+                    <label>
+
+                        Contraseña
+
+                    </label>
+
+
                     <div class="input-container">
+
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="password" placeholder="Ingrese su contraseña">
+
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Ingrese su contraseña"
+                            autocomplete="current-password">
+
                     </div>
+
                 </div>
 
-                <span id="mensaje-error" class="mensaje-error"></span>
 
-                <button id="ingresar" class="btn-primary w-100">Ingresar</button>
+
+                <!-- =================================================
+                     MENSAJE
+                     ================================================= -->
+
+                <span id="mensaje-error"
+                      class="mensaje-error">
+
+                </span>
+
+
+
+                <!-- =================================================
+                     INGRESAR
+                     ================================================= -->
+
+                <button id="ingresar"
+                        class="btn-primary w-100">
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    Ingresar
+
+                </button>
+
+
+
+                <!-- =================================================
+                     CREAR CUENTA
+                     ================================================= -->
+
+                <div class="registro">
+
+                    <p>
+
+                        ¿No tienes una cuenta?
+
+                    </p>
+
+
+                    <button id="btnRegistro"
+                            type="button">
+
+                        Crear una cuenta
+
+                    </button>
+
+                </div>
+
+
             </div>
-            
+
+
+
+            <!-- =================================================
+                 VISTA REGISTRO
+                 ================================================= -->
+
+            <div id="vista-registro"
+                 class="vista-oculta">
+
+
+                <!-- VOLVER -->
+
+                <button id="btnVolverRegistro"
+                        class="btn-volver"
+                        type="button">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                </button>
+
+
+
+                <div class="login-header">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+
+                    <h2>
+
+                        Crear cuenta
+
+                    </h2>
+
+
+                    <p>
+
+                        Regístrate en HarvestX
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     NOMBRE
+                     ================================================= -->
+
+                <div class="grupo">
+
+                    <label>
+
+                        Nombre completo
+
+                    </label>
+
+
+                    <div class="input-container">
+
+                        <i class="fa-solid fa-user"></i>
+
+
+                        <input
+                            type="text"
+                            id="registroNombre"
+                            placeholder="Ingrese su nombre">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     USUARIO
+                     ================================================= -->
+
+                <div class="grupo">
+
+                    <label>
+
+                        Usuario
+
+                    </label>
+
+
+                    <div class="input-container">
+
+                        <i class="fa-solid fa-at"></i>
+
+
+                        <input
+                            type="text"
+                            id="registroUsuario"
+                            placeholder="Cree su usuario"
+                            autocomplete="username">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CONTRASEÑA
+                     ================================================= -->
+
+                <div class="grupo">
+
+                    <label>
+
+                        Contraseña
+
+                    </label>
+
+
+                    <div class="input-container">
+
+                        <i class="fa-solid fa-lock"></i>
+
+
+                        <input
+                            type="password"
+                            id="registroPassword"
+                            placeholder="Cree una contraseña"
+                            autocomplete="new-password">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CONFIRMAR CONTRASEÑA
+                     ================================================= -->
+
+                <div class="grupo">
+
+                    <label>
+
+                        Confirmar contraseña
+
+                    </label>
+
+
+                    <div class="input-container">
+
+                        <i class="fa-solid fa-lock"></i>
+
+
+                        <input
+                            type="password"
+                            id="registroPasswordConfirmar"
+                            placeholder="Repita la contraseña"
+                            autocomplete="new-password">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MENSAJE REGISTRO
+                     ================================================= -->
+
+                <span id="mensaje-registro"
+                      class="mensaje-error">
+
+                </span>
+
+
+
+                <!-- =================================================
+                     BOTÓN REGISTRARSE
+                     ================================================= -->
+
+                <button id="btnCrearCuenta"
+                        class="btn-primary w-100"
+                        type="button">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Crear cuenta
+
+                </button>
+
+
+            </div>
+
+
         </div>
+
     </div>
 
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
     <footer>
+
         <div class="footer-content">
+
+
             <div class="footer-logo">
+
                 <i class="fa-solid fa-seedling"></i>
-                <h3>Cosecha Inteligente</h3>
+
+                <h3>
+
+                    Cosecha Inteligente
+
+                </h3>
+
                 <i class="fa-solid fa-leaf"></i>
+
             </div>
-            <p>Impulsando la agricultura del futuro mediante tecnología, datos y sustentabilidad.</p>
+
+
+            <p>
+
+                Impulsando la agricultura del futuro
+                mediante tecnología, datos y sustentabilidad.
+
+            </p>
+
+
             <div class="redes">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-tiktok"></i></a>
-                <a href="https://youtu.be/lSD_L-xic9o?si=frboTk2zhpgnrWSw"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.instagram.com/reel/Da5yPpnIbcM/?igsh=MWIwcmQ1ZGh2amNlZA=="><i class="fab fa-instagram"></i></a>
-                <a href="https://github.com/carlitosismatul-ai/Trabajo_de_algoritmo_cx"><i class="fab fa-github"></i></a>
+
+                <a href="#">
+
+                    <i class="fab fa-facebook"></i>
+
+                </a>
+
+
+                <a href="#">
+
+                    <i class="fab fa-tiktok"></i>
+
+                </a>
+
+
+                <a href="https://youtu.be/lSD_L-xic9o?si=frboTk2zhpgnrWSw">
+
+                    <i class="fab fa-youtube"></i>
+
+                </a>
+
+
+                <a href="https://www.instagram.com/reel/Da5yPpnIbcM/?igsh=MWIwcmQ1ZGh2amNlZA==">
+
+                    <i class="fab fa-instagram"></i>
+
+                </a>
+
+
+                <a href="https://github.com/carlitosismatul-ai/Trabajo_de_algoritmo_cx">
+
+                    <i class="fab fa-github"></i>
+
+                </a>
+
             </div>
+
         </div>
+
+
         <div class="footer-bottom">
-            <p>© 2026 Todos los derechos reservados.</p>
+
+            <p>
+
+                © 2026 Todos los derechos reservados.
+
+            </p>
+
         </div>
+
     </footer>
 
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
     <script src="Js/paginas/login.js"></script>
+
 </body>
+
 </html>
