@@ -2,17 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================================
        CONFIGURACIÓN DEL SERVIDOR
-       
-       En PC:
-       http://127.0.0.1:5000
-
-       En celular:
-       http://IP-DE-LA-PC:5000
-       
-       Así funciona en ambos sin cambiar el código otra vez.
     ========================================================= */
 
-const API_URL = "http://192.168.2.11:5000";
+const API_URL = "http://127.0.0.1:5000";
 
     /* =========================================================
        MENÚ DE NAVEGACIÓN
