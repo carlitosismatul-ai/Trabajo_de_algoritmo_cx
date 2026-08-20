@@ -1,6 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================================
+       CONFIGURACIÓN DEL SERVIDOR
+       
+       En PC:
+       http://127.0.0.1:5000
+
+       En celular:
+       http://IP-DE-LA-PC:5000
+       
+       Así funciona en ambos sin cambiar el código otra vez.
+    ========================================================= */
+
+const API_URL = "http://192.168.2.11:5000";
+
+    /* =========================================================
        MENÚ DE NAVEGACIÓN
     ========================================================= */
 
@@ -16,13 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
             navbar.classList.toggle("active");
 
             if (navbar.classList.contains("active")) {
-
                 menuIcon.classList.replace("fa-bars", "fa-xmark");
-
             } else {
-
                 menuIcon.classList.replace("fa-xmark", "fa-bars");
-
             }
 
         });
@@ -74,13 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("scroll", () => {
 
             if (window.scrollY > 50) {
-
                 header.classList.add("scrolled");
-
             } else {
-
                 header.classList.remove("scrolled");
-
             }
 
         });
@@ -121,9 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".fade-up, .fade-in");
 
     elementosAnimados.forEach(el => {
-
         observer.observe(el);
-
     });
 
 
@@ -238,9 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
 
             if (usuario) {
-
                 usuario.focus();
-
             }
 
         }, 300);
@@ -282,15 +284,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function limpiarLogin() {
 
         if (usuario) {
-
             usuario.value = "";
-
         }
 
         if (password) {
-
             password.value = "";
-
         }
 
         if (mensajeError) {
@@ -312,27 +310,19 @@ document.addEventListener("DOMContentLoaded", () => {
     function limpiarRegistro() {
 
         if (registroNombre) {
-
             registroNombre.value = "";
-
         }
 
         if (registroUsuario) {
-
             registroUsuario.value = "";
-
         }
 
         if (registroPassword) {
-
             registroPassword.value = "";
-
         }
 
         if (registroPasswordConfirmar) {
-
             registroPasswordConfirmar.value = "";
-
         }
 
         if (mensajeRegistro) {
@@ -386,9 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
         limpiarRegistro();
 
         if (mensajeError) {
-
             mensajeError.textContent = "";
-
         }
 
     }
@@ -435,9 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
 
             if (registroNombre) {
-
                 registroNombre.focus();
-
             }
 
         }, 300);
@@ -450,30 +436,24 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================================================= */
 
     if (abrirLogin) {
-
         abrirLogin.addEventListener(
             "click",
             abrirModal
         );
-
     }
 
     if (btnLogin) {
-
         btnLogin.addEventListener(
             "click",
             abrirModal
         );
-
     }
 
     if (cerrar) {
-
         cerrar.addEventListener(
             "click",
             cerrarModal
         );
-
     }
 
 
@@ -486,9 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("click", (e) => {
 
             if (e.target === modal) {
-
                 cerrarModal();
-
             }
 
         });
@@ -498,16 +476,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================================
        INICIAR SESIÓN
-       
        FLASK + MYSQL
     ========================================================= */
 
     async function iniciarSesion() {
 
         if (!usuario || !password) {
-
             return;
-
         }
 
         const user =
@@ -516,10 +491,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const pass =
             password.value.trim();
 
-
-        /* -----------------------------------------
-           VALIDAR USUARIO
-        ----------------------------------------- */
 
         if (user === "") {
 
@@ -530,13 +501,8 @@ document.addEventListener("DOMContentLoaded", () => {
             usuario.focus();
 
             return;
-
         }
 
-
-        /* -----------------------------------------
-           VALIDAR CONTRASEÑA
-        ----------------------------------------- */
 
         if (pass === "") {
 
@@ -547,13 +513,8 @@ document.addEventListener("DOMContentLoaded", () => {
             password.focus();
 
             return;
-
         }
 
-
-        /* -----------------------------------------
-           MOSTRAR CARGANDO
-        ----------------------------------------- */
 
         if (ingresar) {
 
@@ -568,22 +529,19 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             const respuesta = await fetch(
-                "http://127.0.0.1:5000/login",
+                `${API_URL}/login`,
                 {
 
                     method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body: JSON.stringify({
 
                         usuario: user,
-
                         contrasena: pass
 
                     })
@@ -595,10 +553,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const datos =
                 await respuesta.json();
 
-
-            /* -------------------------------------
-               LOGIN CORRECTO
-            ------------------------------------- */
 
             if (
                 respuesta.ok &&
@@ -620,10 +574,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     datos.usuario;
 
 
-                /* ---------------------------------
-                   GUARDAR SESIÓN
-                --------------------------------- */
-
                 localStorage.setItem(
                     "usuarioHarvestX",
                     JSON.stringify(
@@ -631,10 +581,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     )
                 );
 
-
-                /* ---------------------------------
-                   DETERMINAR RUTA SEGÚN ROL
-                --------------------------------- */
 
                 let ruta = "";
 
@@ -672,10 +618,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* ---------------------------------
-                   REDIRECCIÓN
-                --------------------------------- */
-
                 setTimeout(() => {
 
                     window.location.href =
@@ -684,11 +626,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 700);
 
             }
-
-
-            /* -------------------------------------
-               LOGIN INCORRECTO
-            ------------------------------------- */
 
             else {
 
@@ -706,11 +643,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         }
-
-
-        /* -----------------------------------------
-           ERROR DE CONEXIÓN
-        ----------------------------------------- */
 
         catch (error) {
 
@@ -732,7 +664,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================================
        REGISTRAR USUARIO
-       
        FLASK + MYSQL
     ========================================================= */
 
@@ -767,10 +698,6 @@ document.addEventListener("DOMContentLoaded", () => {
             registroPasswordConfirmar.value.trim();
 
 
-        /* -----------------------------------------
-           VALIDAR NOMBRE
-        ----------------------------------------- */
-
         if (nombre === "") {
 
             mostrarErrorRegistro(
@@ -783,10 +710,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-        /* -----------------------------------------
-           VALIDAR USUARIO
-        ----------------------------------------- */
 
         if (user === "") {
 
@@ -801,10 +724,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* -----------------------------------------
-           VALIDAR CONTRASEÑA
-        ----------------------------------------- */
-
         if (pass === "") {
 
             mostrarErrorRegistro(
@@ -817,10 +736,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-        /* -----------------------------------------
-           LONGITUD MÍNIMA
-        ----------------------------------------- */
 
         if (pass.length < 4) {
 
@@ -835,10 +750,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* -----------------------------------------
-           CONFIRMAR CONTRASEÑA
-        ----------------------------------------- */
-
         if (confirmar === "") {
 
             mostrarErrorRegistro(
@@ -851,10 +762,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-        /* -----------------------------------------
-           COMPROBAR CONTRASEÑAS
-        ----------------------------------------- */
 
         if (pass !== confirmar) {
 
@@ -871,10 +778,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* -----------------------------------------
-           MOSTRAR CARGANDO
-        ----------------------------------------- */
-
         if (btnCrearCuenta) {
 
             btnCrearCuenta.innerHTML =
@@ -885,20 +788,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (mensajeRegistro) {
-
             mensajeRegistro.textContent = "";
-
         }
 
 
         try {
 
-            /* -------------------------------------
-               ENVIAR REGISTRO A FLASK
-            ------------------------------------- */
-
             const respuesta = await fetch(
-                "http://127.0.0.1:5000/registro",
+                `${API_URL}/registro`,
                 {
 
                     method: "POST",
@@ -913,9 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({
 
                         nombre: nombre,
-
                         usuario: user,
-
                         contrasena: pass
 
                     })
@@ -927,10 +822,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const datos =
                 await respuesta.json();
 
-
-            /* -------------------------------------
-               REGISTRO CORRECTO
-            ------------------------------------- */
 
             if (
                 respuesta.ok &&
@@ -956,17 +847,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* ---------------------------------
-                   USUARIO CREADO
-                --------------------------------- */
-
                 const usuarioCreado =
                     datos.usuario;
 
-
-                /* ---------------------------------
-                   GUARDAR SESIÓN
-                --------------------------------- */
 
                 localStorage.setItem(
                     "usuarioHarvestX",
@@ -975,10 +858,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     )
                 );
 
-
-                /* ---------------------------------
-                   DETERMINAR RUTA SEGÚN ROL
-                --------------------------------- */
 
                 let ruta = "";
 
@@ -1016,10 +895,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* ---------------------------------
-                   REDIRECCIÓN
-                --------------------------------- */
-
                 setTimeout(() => {
 
                     window.location.href =
@@ -1028,11 +903,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 700);
 
             }
-
-
-            /* -------------------------------------
-               ERROR DE REGISTRO
-            ------------------------------------- */
 
             else {
 
@@ -1046,11 +916,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         }
-
-
-        /* -----------------------------------------
-           ERROR DE CONEXIÓN
-        ----------------------------------------- */
 
         catch (error) {
 
@@ -1159,31 +1024,23 @@ document.addEventListener("DOMContentLoaded", () => {
             "translateX(-10px)";
 
         setTimeout(() => {
-
             loginBox.style.transform =
                 "translateX(10px)";
-
         }, 50);
 
         setTimeout(() => {
-
             loginBox.style.transform =
                 "translateX(-10px)";
-
         }, 100);
 
         setTimeout(() => {
-
             loginBox.style.transform =
                 "translateX(10px)";
-
         }, 150);
 
         setTimeout(() => {
-
             loginBox.style.transform =
                 "translateX(0)";
-
         }, 200);
 
     }
@@ -1204,9 +1061,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       BOTÓN "CREAR UNA CUENTA"
-       
-       LOGIN → REGISTRO
+       CREAR UNA CUENTA
     ========================================================= */
 
     if (btnRegistro) {
@@ -1220,9 +1075,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       BOTÓN "CREAR CUENTA"
-       
-       FORMULARIO → FLASK
+       CREAR CUENTA
     ========================================================= */
 
     if (btnCrearCuenta) {
@@ -1236,7 +1089,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       BOTÓN VOLVER AL LOGIN
+       VOLVER AL LOGIN
     ========================================================= */
 
     if (btnVolverRegistro) {
@@ -1262,9 +1115,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (e.key === "Enter") {
 
                     if (password) {
-
                         password.focus();
-
                     }
 
                 }
@@ -1286,9 +1137,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (e) => {
 
                 if (e.key === "Enter") {
-
                     iniciarSesion();
-
                 }
 
             }
@@ -1337,9 +1186,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             camposRegistro[indice + 1];
 
                         if (siguiente) {
-
                             siguiente.focus();
-
                         }
 
                     }

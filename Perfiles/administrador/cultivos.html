@@ -47,15 +47,11 @@
             width: 55px;
             height: 55px;
             min-width: 55px;
-
             border-radius: 12px;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
             font-size: 25px;
-
             background: var(--bg-light-green);
         }
 
@@ -67,7 +63,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             gap: 10px;
             margin-bottom: 8px;
         }
@@ -101,16 +96,11 @@
 
         .estado-activo {
             font-size: 0.7rem;
-
             color: var(--text-green);
             background: var(--bg-light-green);
-
             padding: 5px 10px;
-
             border-radius: 20px;
-
             font-weight: 600;
-
             white-space: nowrap;
         }
 
@@ -122,16 +112,12 @@
         .btn-cultivo {
             width: 35px;
             height: 35px;
-
             border: none;
             border-radius: 8px;
-
             cursor: pointer;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
             transition: 0.2s;
         }
 
@@ -155,20 +141,14 @@
 
         .btn-agregar-cultivo {
             border: 1px solid var(--verde-activo);
-
             background: transparent;
             color: var(--verde-activo);
-
             padding: 8px 14px;
-
             border-radius: 8px;
-
             cursor: pointer;
-
             font-family: inherit;
             font-size: 0.8rem;
             font-weight: 500;
-
             transition: 0.2s;
         }
 
@@ -207,16 +187,331 @@
 <body>
 
 
+<!-- =========================================================
+     MODAL DE CONFIGURACIÓN
+========================================================= -->
+
+<div id="settingsModal" class="modal-overlay">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Ajustes del Sistema</h2>
+
+            <i class="fa-solid fa-xmark close-modal"
+               id="closeSettings"></i>
+
+        </div>
+
+        <div class="modal-body">
+
+            <!-- TEMA -->
+
+            <div class="setting-group">
+
+                <label>Tema Oscuro</label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                           id="themeToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- SONIDO -->
+
+            <div class="setting-group">
+
+                <label>Sonido</label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                           id="soundToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- VOZ -->
+
+            <div class="setting-group">
+
+                <label>
+                    Voz del asistente
+                </label>
+
+                <span style="font-size:0.9rem; color:var(--texto-claro);">
+                    🎙️ Asistente HarvestX
+                </span>
+
+            </div>
+
+
+            <!-- PROBAR VOZ -->
+
+            <div class="setting-group">
+
+                <label>
+                    Probar voz
+                </label>
+
+                <button
+                    type="button"
+                    id="testVoiceButton"
+                    class="btn-size">
+
+                    🔊 Probar voz
+
+                </button>
+
+            </div>
+
+
+            <!-- FUENTE -->
+
+            <div class="setting-group">
+
+                <label>
+                    Fuente de Letra
+                </label>
+
+                <select id="fontSelect"
+                        class="form-select">
+
+                    <option value="'Poppins', sans-serif">
+                        Poppins
+                    </option>
+
+                    <option value="'Arial', sans-serif">
+                        Arial
+                    </option>
+
+                    <option value="'Courier New', monospace">
+                        Courier New
+                    </option>
+
+                    <option value="'Times New Roman', serif">
+                        Times New Roman
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TAMAÑO -->
+
+            <div class="setting-group">
+
+                <label>
+                    Tamaño de Letra
+                </label>
+
+                <div class="size-controls">
+
+                    <button
+                        id="btnSizeSmall"
+                        class="btn-size">
+
+                        A-
+
+                    </button>
+
+                    <button
+                        id="btnSizeNormal"
+                        class="btn-size active">
+
+                        A
+
+                    </button>
+
+                    <button
+                        id="btnSizeLarge"
+                        class="btn-size">
+
+                        A+
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DE PERFIL
+========================================================= -->
+
+<div id="profileModal" class="modal-overlay">
+
+    <div class="modal-content profile-modal">
+
+        <!-- ENCABEZADO -->
+
+        <div class="modal-header">
+
+            <h2>Mi Perfil</h2>
+
+            <i class="fa-solid fa-xmark close-modal"
+               id="closeProfile"></i>
+
+        </div>
+
+
+        <!-- CUERPO -->
+
+        <div class="modal-body">
+
+            <!-- FOTO -->
+
+            <div class="profile-photo-section">
+
+                <div class="profile-photo-wrapper">
+
+                    <div id="profilePhotoPreview"
+                         class="profile-photo-preview">
+
+                        U
+
+                    </div>
+
+
+                    <label for="profilePhotoInput"
+                           class="change-photo-button">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/*"
+                        hidden>
+
+                </div>
+
+
+                <p class="profile-photo-text">
+
+                    Haz clic en la cámara para cambiar tu foto
+
+                </p>
+
+            </div>
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="profile-form">
+
+                <div class="profile-field">
+
+                    <label for="profileNombre">
+                        Nombre completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileNombre"
+                        placeholder="Nombre completo">
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label for="profileUsuario">
+                        Nombre de usuario
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileUsuario"
+                        readonly>
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label for="profileRol">
+                        Rol
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileRol"
+                        readonly>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+
+            <div class="profile-actions">
+
+                <button
+                    type="button"
+                    id="cancelProfile"
+                    class="btn-modal btn-cancelar">
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="saveProfile"
+                    class="btn-modal btn-guardar">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Guardar cambios
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
 <!-- =====================================================
      CONTENEDOR GENERAL
-     ===================================================== -->
+===================================================== -->
 
 <div class="dashboard-container">
 
 
     <!-- =================================================
          SIDEBAR
-         ================================================= -->
+    ================================================= -->
 
     <aside class="sidebar" id="sidebar">
 
@@ -239,19 +534,24 @@
 
             </div>
 
+
+            <i class="fa-solid fa-xmark close-sidebar-mobile"
+               id="closeSidebarMobile"></i>
+
         </div>
 
 
         <!-- =================================================
              NAVEGACIÓN
-             ================================================= -->
+        ================================================= -->
 
         <nav class="sidebar-nav">
 
 
             <!-- DASHBOARD -->
 
-            <a href="inicio.html" class="nav-link">
+            <a href="inicio.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-house"></i>
 
@@ -275,7 +575,8 @@
 
             <!-- FINCAS -->
 
-            <a href="fincas.html" class="nav-link">
+            <a href="fincas.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-mountain-sun"></i>
 
@@ -288,7 +589,8 @@
 
             <!-- CULTIVOS -->
 
-            <a href="cultivos.html" class="nav-link active">
+            <a href="cultivos.html"
+               class="nav-link active">
 
                 <i class="fa-solid fa-seedling"></i>
 
@@ -301,7 +603,8 @@
 
             <!-- RIEGO -->
 
-            <a href="programacion_de_riego.html" class="nav-link">
+            <a href="programacion_de_riego.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-droplet"></i>
 
@@ -314,7 +617,8 @@
 
             <!-- LABORES -->
 
-            <a href="labores_del_campo.html" class="nav-link">
+            <a href="labores_del_campo.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-tractor"></i>
 
@@ -327,7 +631,8 @@
 
             <!-- MONITOREO -->
 
-            <a href="monitoreo_climatico.html" class="nav-link">
+            <a href="monitoreo_climatico.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-cloud-sun"></i>
 
@@ -340,7 +645,8 @@
 
             <!-- ALERTAS -->
 
-            <a href="alertas.html" class="nav-link">
+            <a href="alertas.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-bell"></i>
 
@@ -364,7 +670,8 @@
 
             <!-- REPORTES Y ESTADÍSTICAS -->
 
-            <a href="reportes_y_estadisticas.html" class="nav-link">
+            <a href="reportes_y_estadisticas.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-chart-column"></i>
 
@@ -377,7 +684,8 @@
 
             <!-- HISTORIAL -->
 
-            <a href="historial.html" class="nav-link">
+            <a href="historial.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-clock-rotate-left"></i>
 
@@ -401,7 +709,8 @@
 
             <!-- USUARIOS -->
 
-            <a href="#" class="nav-link">
+            <a href="usuarios.html"
+               class="nav-link">
 
                 <i class="fa-solid fa-user"></i>
 
@@ -412,17 +721,33 @@
             </a>
 
 
+            <!-- CONFIGURACIÓN -->
+
+            <a href="#"
+               class="nav-link"
+               id="openSettings">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span class="nav-text">
+                    Configuración
+                </span>
+
+            </a>
+
+
         </nav>
 
 
         <!-- =================================================
              CERRAR SESIÓN
-             ================================================= -->
+        ================================================= -->
 
         <div class="sidebar-footer">
 
             <a href="../../login.html"
-               class="nav-link logout">
+               class="nav-link logout"
+               id="cerrarSesion">
 
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
 
@@ -441,7 +766,7 @@
 
     <!-- =================================================
          CONTENIDO PRINCIPAL
-         ================================================= -->
+    ================================================= -->
 
     <main class="main-content"
           id="mainContent">
@@ -449,7 +774,7 @@
 
         <!-- =================================================
              HEADER
-             ================================================= -->
+        ================================================= -->
 
         <header class="topbar">
 
@@ -497,9 +822,14 @@
             </div>
 
 
-            <!-- USUARIO -->
+            <!-- =================================================
+                 USUARIO
+            ================================================= -->
 
             <div class="user-info">
+
+
+                <!-- NOTIFICACIONES -->
 
                 <div class="notifications">
 
@@ -512,30 +842,49 @@
                 </div>
 
 
-                <div class="profile">
+                <!-- AVATAR -->
+
+                <div
+                    class="avatar"
+                    id="openProfile"
+                    aria-label="Abrir perfil"
+                    title="Abrir mi perfil"
+                    style="cursor:pointer;">
 
                     <img
-                        src="../../IMG/juan.jpg"
-                        alt="Perfil"
+                        id="avatarImagen"
                         class="avatar-img"
-                    >
-
-                    <div class="user-details">
-
-                        <span class="name">
-                            Juan Pérez
-                        </span>
-
-                        <span class="role">
-                            Administrador
-                        </span>
-
-                    </div>
+                        src=""
+                        alt="Foto de perfil">
 
                 </div>
 
-            </div>
 
+                <!-- INFORMACIÓN -->
+
+                <div class="user-details">
+
+                    <span
+                        class="name"
+                        id="nombreUsuario">
+
+                        Usuario
+
+                    </span>
+
+
+                    <span
+                        class="role"
+                        id="rolUsuario">
+
+                        Administrador
+
+                    </span>
+
+                </div>
+
+
+            </div>
 
         </header>
 
@@ -543,7 +892,7 @@
 
         <!-- =================================================
              CONTENIDO DE CULTIVOS
-             ================================================= -->
+        ================================================= -->
 
         <section class="content-grid">
 
@@ -592,7 +941,7 @@
 
                 <!-- =================================================
                      LISTA DE CULTIVOS
-                     ================================================= -->
+                ================================================= -->
 
                 <div class="cultivos-container"
                      id="listaCultivos">
@@ -611,7 +960,7 @@
 
         <!-- =================================================
              MODAL AGREGAR CULTIVO
-             ================================================= -->
+        ================================================= -->
 
         <div class="modal-cultivo-overlay"
              id="modalCultivo">
@@ -649,7 +998,7 @@
 
                 <!-- =================================================
                      BUSCAR CULTIVO
-                     ================================================= -->
+                ================================================= -->
 
                 <div id="vistaBusquedaCultivo">
 
@@ -730,7 +1079,7 @@
 
                 <!-- =================================================
                      REGISTRO PERSONALIZADO
-                     ================================================= -->
+                ================================================= -->
 
                 <div
                     id="vistaPersonalizadoCultivo"
@@ -915,8 +1264,10 @@
 
 
 <!-- =====================================================
-     JAVASCRIPT
-     ===================================================== -->
+     JAVASCRIPT GENERAL
+===================================================== -->
+
+<script src="../../JS/paginas/configuracion.js"></script>
 
 <script src="../../JS/paginas/administrador.js"></script>
 

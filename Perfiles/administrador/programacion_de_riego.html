@@ -9,7 +9,8 @@
     <title>HarvestX</title>
 
     <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+    <link rel="stylesheet"
+          href="../../CSS/paginas/administrador.css">
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet"
@@ -17,21 +18,383 @@
 
 </head>
 
+
 <body>
 
 
-<!-- =====================================================
-     CONTENEDOR PRINCIPAL
-===================================================== -->
+<!-- =========================================================
+     LOADER
+========================================================= -->
+
+<div id="loader" class="loader-container">
+
+    <div class="loader">
+
+        <i class="fa-solid fa-seedling loader-icon"></i>
+
+        <div class="spinner"></div>
+
+        <p>Cargando tu cosecha...</p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DE CONFIGURACIÓN
+========================================================= -->
+
+<div id="settingsModal" class="modal-overlay">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Ajustes del Sistema</h2>
+
+            <i class="fa-solid fa-xmark close-modal"
+               id="closeSettings"></i>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <!-- TEMA -->
+
+            <div class="setting-group">
+
+                <label>
+                    Tema Oscuro
+                </label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                           id="themeToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- SONIDO -->
+
+            <div class="setting-group">
+
+                <label>
+                    Sonido
+                </label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                           id="soundToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- VOZ -->
+
+            <div class="setting-group">
+
+                <label>
+                    Voz del asistente
+                </label>
+
+                <span style="font-size:0.9rem; color:var(--texto-claro);">
+                    🎙️ Asistente HarvestX
+                </span>
+
+            </div>
+
+
+            <!-- PROBAR VOZ -->
+
+            <div class="setting-group">
+
+                <label>
+                    Probar voz
+                </label>
+
+                <button
+                    type="button"
+                    id="testVoiceButton"
+                    class="btn-size">
+
+                    🔊 Probar voz
+
+                </button>
+
+            </div>
+
+
+            <!-- FUENTE -->
+
+            <div class="setting-group">
+
+                <label>
+                    Fuente de Letra
+                </label>
+
+                <select id="fontSelect"
+                        class="form-select">
+
+                    <option value="'Poppins', sans-serif">
+                        Poppins
+                    </option>
+
+                    <option value="'Arial', sans-serif">
+                        Arial
+                    </option>
+
+                    <option value="'Courier New', monospace">
+                        Courier New
+                    </option>
+
+                    <option value="'Times New Roman', serif">
+                        Times New Roman
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TAMAÑO -->
+
+            <div class="setting-group">
+
+                <label>
+                    Tamaño de Letra
+                </label>
+
+                <div class="size-controls">
+
+                    <button
+                        id="btnSizeSmall"
+                        class="btn-size">
+
+                        A-
+
+                    </button>
+
+                    <button
+                        id="btnSizeNormal"
+                        class="btn-size active">
+
+                        A
+
+                    </button>
+
+                    <button
+                        id="btnSizeLarge"
+                        class="btn-size">
+
+                        A+
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DE PERFIL
+========================================================= -->
+
+<div id="profileModal"
+     class="modal-overlay">
+
+    <div class="modal-content profile-modal">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="modal-header">
+
+            <h2>
+                Mi Perfil
+            </h2>
+
+            <i class="fa-solid fa-xmark close-modal"
+               id="closeProfile"></i>
+
+        </div>
+
+
+        <!-- CUERPO -->
+
+        <div class="modal-body">
+
+
+            <!-- FOTO -->
+
+            <div class="profile-photo-section">
+
+                <div class="profile-photo-wrapper">
+
+                    <div id="profilePhotoPreview"
+                         class="profile-photo-preview">
+
+                        U
+
+                    </div>
+
+
+                    <label
+                        for="profilePhotoInput"
+                        class="change-photo-button">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/*"
+                        hidden>
+
+                </div>
+
+
+                <p class="profile-photo-text">
+
+                    Haz clic en la cámara para cambiar tu foto
+
+                </p>
+
+            </div>
+
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="profile-form">
+
+
+                <!-- NOMBRE -->
+
+                <div class="profile-field">
+
+                    <label for="profileNombre">
+                        Nombre completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileNombre"
+                        placeholder="Nombre completo">
+
+                </div>
+
+
+                <!-- USUARIO -->
+
+                <div class="profile-field">
+
+                    <label for="profileUsuario">
+                        Nombre de usuario
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileUsuario"
+                        readonly>
+
+                </div>
+
+
+                <!-- ROL -->
+
+                <div class="profile-field">
+
+                    <label for="profileRol">
+                        Rol
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileRol"
+                        readonly>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- BOTONES -->
+
+            <div class="profile-actions">
+
+                <button
+                    type="button"
+                    id="cancelProfile"
+                    class="btn-modal btn-cancelar">
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="saveProfile"
+                    class="btn-modal btn-guardar">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Guardar cambios
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
 
 <div class="dashboard-container">
 
 
-    <!-- =================================================
-         BARRA LATERAL
-    ================================================== -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar"
+           id="sidebar">
+
 
         <!-- CABECERA -->
 
@@ -43,18 +406,25 @@
 
                 <div class="logo-text">
 
-                    <h2>HarvestX</h2>
+                    <h2>
+                        HarvestX
+                    </h2>
 
-                    <span>Sistema Inteligente</span>
+                    <span>
+                        Sistema Inteligente
+                    </span>
 
                 </div>
 
             </div>
 
+
             <i class="fa-solid fa-xmark close-sidebar-mobile"
-               id="closeSidebarMobile"></i>
+               id="closeSidebarMobile">
+            </i>
 
         </div>
+
 
 
         <!-- =================================================
@@ -76,6 +446,7 @@
                 </span>
 
             </a>
+
 
 
             <!-- GESTIÓN -->
@@ -120,7 +491,7 @@
             <!-- RIEGO -->
 
             <a href="programacion_de_riego.html"
-               class="nav-link active">
+               class="nav-link">
 
                 <i class="fa-solid fa-droplet"></i>
 
@@ -173,6 +544,7 @@
             </a>
 
 
+
             <!-- REPORTES -->
 
             <div class="nav-category">
@@ -183,8 +555,6 @@
 
             </div>
 
-
-            <!-- REPORTES Y ESTADÍSTICAS -->
 
             <a href="reportes_y_estadisticas.html"
                class="nav-link">
@@ -198,8 +568,6 @@
             </a>
 
 
-            <!-- HISTORIAL -->
-
             <a href="historial.html"
                class="nav-link">
 
@@ -210,6 +578,7 @@
                 </span>
 
             </a>
+
 
 
             <!-- SISTEMA -->
@@ -225,7 +594,7 @@
 
             <!-- USUARIOS -->
 
-            <a href="#"
+            <a href="usuarios.html"
                class="nav-link">
 
                 <i class="fa-solid fa-user"></i>
@@ -237,18 +606,32 @@
             </a>
 
 
-    
+            <!-- CONFIGURACIÓN -->
+
+            <a href="#"
+               class="nav-link"
+               id="openSettings">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span class="nav-text">
+                    Configuración
+                </span>
+
+            </a>
+
+
         </nav>
 
 
-        <!-- =================================================
-             CERRAR SESIÓN
-        ================================================== -->
+
+        <!-- CERRAR SESIÓN -->
 
         <div class="sidebar-footer">
 
             <a href="../../login.html"
-               class="nav-link logout">
+               class="nav-link logout"
+               id="cerrarSesion">
 
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
 
@@ -273,16 +656,18 @@
 
 
         <!-- =================================================
-             HEADER
+             TOPBAR
         ================================================== -->
 
         <header class="topbar">
 
 
+            <!-- IZQUIERDA -->
+
             <div class="left-controls">
 
 
-                <!-- MENÚ DESKTOP -->
+                <!-- DESKTOP -->
 
                 <div class="menu-toggle-desktop"
                      id="toggleSidebarDesktop">
@@ -292,7 +677,7 @@
                 </div>
 
 
-                <!-- MENÚ MÓVIL -->
+                <!-- MÓVIL -->
 
                 <div class="menu-toggle-mobile"
                      id="menuToggleMobile">
@@ -320,12 +705,19 @@
 
                 </div>
 
+
             </div>
 
 
-            <!-- USUARIO -->
+
+            <!-- =================================================
+                 INFORMACIÓN DEL USUARIO
+            ================================================== -->
 
             <div class="user-info">
+
+
+                <!-- NOTIFICACIONES -->
 
                 <div class="notifications">
 
@@ -338,25 +730,49 @@
                 </div>
 
 
-                <div class="profile">
 
-                    <img src="../../IMG/juan.jpg"
-                         alt="Perfil"
-                         class="avatar-img">
+                <!-- PERFIL -->
 
-                    <div class="user-details">
+                <div
+                    class="avatar"
+                    id="openProfile"
+                    aria-label="Abrir perfil"
+                    title="Abrir mi perfil"
+                    style="cursor:pointer;">
 
-                        <span class="name">
-                            Juan Pérez
-                        </span>
-
-                        <span class="role">
-                            Administrador
-                        </span>
-
-                    </div>
+                    <img
+                        id="avatarImagen"
+                        class="avatar-img"
+                        src=""
+                        alt="Foto de perfil">
 
                 </div>
+
+
+
+                <!-- INFORMACIÓN -->
+
+                <div class="user-details">
+
+                    <span
+                        class="name"
+                        id="nombreUsuario">
+
+                        Usuario
+
+                    </span>
+
+
+                    <span
+                        class="role"
+                        id="rolUsuario">
+
+                        Administrador
+
+                    </span>
+
+                </div>
+
 
             </div>
 
@@ -364,31 +780,34 @@
 
 
 
-        <!-- =================================================
+        <!-- =====================================================
              CONTENIDO DEL MÓDULO
-        ================================================== -->
+        ====================================================== -->
 
         <section class="content-grid">
 
 
-            <div class="card"
-                 style="
-                    min-height: 500px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    text-align: center;
-                 ">
+            <div
+                class="card"
+                style="
+                    min-height:500px;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    text-align:center;
+                ">
 
 
                 <div>
 
 
-                    <i class="fa-solid fa-seedling"
-                       style="
-                            font-size: 60px;
-                            margin-bottom: 20px;
-                       ">
+                    <i
+                        class="fa-solid fa-seedling"
+                        style="
+                            font-size:60px;
+                            margin-bottom:20px;
+                        ">
+
                     </i>
 
 
@@ -414,13 +833,14 @@
 
     </main>
 
+
 </div>
 
 
 
-<!-- =====================================================
-     JAVASCRIPT GENERAL
-===================================================== -->
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
 <script src="../../JS/paginas/configuracion.js"></script>
 

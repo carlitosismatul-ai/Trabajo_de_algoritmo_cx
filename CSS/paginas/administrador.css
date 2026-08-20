@@ -614,3 +614,217 @@ input:checked + .slider:before { transform: translateX(20px); }
     object-fit: cover;
     display: block;
 }
+/* ==========================================
+   MODAL DE PERFIL
+   ========================================== */
+
+.profile-modal {
+    max-width: 450px;
+}
+
+
+/* ==========================================
+   FOTO DE PERFIL
+   ========================================== */
+
+.profile-photo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.profile-photo-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+
+.profile-photo-preview {
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+
+    background: var(--verde-activo);
+    color: #ffffff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 36px;
+    font-weight: 700;
+
+    overflow: hidden;
+
+    background-size: cover;
+    background-position: center;
+
+    box-shadow: var(--sombra-fuerte);
+}
+
+
+.change-photo-button {
+    position: absolute;
+
+    right: -2px;
+    bottom: -2px;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    background: var(--verde-activo);
+    color: #ffffff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    border: 3px solid var(--fondo-tarjeta);
+
+    transition: var(--transicion);
+}
+
+
+.change-photo-button:hover {
+    transform: scale(1.1);
+}
+
+
+.change-photo-button i {
+    font-size: 13px;
+}
+
+
+.profile-photo-text {
+    margin-top: 12px;
+
+    font-size: 0.7rem;
+
+    color: var(--texto-claro);
+
+    text-align: center;
+}
+
+
+/* ==========================================
+   CAMPOS DEL PERFIL
+   ========================================== */
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+.profile-field label {
+    font-size: 0.8rem;
+
+    color: var(--texto-oscuro);
+
+    font-weight: 600;
+}
+
+
+.profile-field input {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: 1px solid rgba(128, 128, 128, 0.25);
+
+    border-radius: 8px;
+
+    background: var(--fondo-tarjeta);
+
+    color: var(--texto-oscuro);
+
+    font-family: inherit;
+
+    font-size: 0.85rem;
+
+    outline: none;
+
+    transition: var(--transicion);
+}
+
+
+.profile-field input:focus {
+    border-color: var(--verde-activo);
+}
+
+
+.profile-field input[readonly] {
+    background: rgba(128, 128, 128, 0.08);
+
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   BOTONES DEL PERFIL
+   ========================================== */
+
+.profile-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+[data-theme="dark"] .profile-field input {
+    background: #2a2a2a;
+
+    color: #ffffff;
+
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+
+[data-theme="dark"] .profile-field input[readonly] {
+    background: #242424;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 480px) {
+
+    .profile-modal {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+
+    .profile-actions .btn-modal {
+        width: 100%;
+    }
+
+}

@@ -2,7 +2,9 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Admin - HarvestX</title>
@@ -12,11 +14,13 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
+
 <body>
+
 
     <!-- ========================================== -->
     <!-- LOADER -->
@@ -37,186 +41,336 @@
     </div>
 
 
-<!-- ========================================== -->
-<!-- MODAL DE CONFIGURACIÓN -->
-<!-- ========================================== -->
 
-<div id="settingsModal" class="modal-overlay">
+    <!-- ========================================== -->
+    <!-- MODAL DE CONFIGURACIÓN -->
+    <!-- ========================================== -->
 
-    <div class="modal-content">
+    <div id="settingsModal" class="modal-overlay">
 
-        <div class="modal-header">
+        <div class="modal-content">
 
-            <h2>Ajustes del Sistema</h2>
+            <div class="modal-header">
 
-            <i class="fa-solid fa-xmark close-modal"
-                id="closeSettings"></i>
+                <h2>Ajustes del Sistema</h2>
 
-        </div>
-
-
-        <div class="modal-body">
-
-
-            <!-- ================================== -->
-            <!-- TEMA -->
-            <!-- ================================== -->
-
-            <div class="setting-group">
-
-                <label>Tema Oscuro</label>
-
-                <label class="switch">
-
-                    <input type="checkbox"
-                        id="themeToggle">
-
-                    <span class="slider round"></span>
-
-                </label>
+                <i class="fa-solid fa-xmark close-modal"
+                    id="closeSettings"></i>
 
             </div>
 
 
-            <!-- ================================== -->
-            <!-- SONIDO -->
-            <!-- ================================== -->
-
-            <div class="setting-group">
-
-                <label>Sonido</label>
-
-                <label class="switch">
-
-                    <input type="checkbox"
-                        id="soundToggle">
-
-                    <span class="slider round"></span>
-
-                </label>
-
-            </div>
+            <div class="modal-body">
 
 
-<!-- ================================== -->
-<!-- VOZ DEL ASISTENTE -->
-<!-- ================================== -->
+                <!-- TEMA -->
 
-<div class="setting-group">
+                <div class="setting-group">
 
-    <label>
-        Voz del asistente
-    </label>
+                    <label>Tema Oscuro</label>
 
-    <span style="font-size: 0.9rem; color: var(--texto-claro);">
-        🎙️ Asistente HarvestX
-    </span>
+                    <label class="switch">
 
-</div>
+                        <input type="checkbox"
+                            id="themeToggle">
 
+                        <span class="slider round"></span>
 
-            <!-- ================================== -->
-            <!-- PROBAR VOZ -->
-            <!-- ================================== -->
+                    </label>
 
-            <div class="setting-group">
-
-                <label>
-                    Probar voz
-                </label>
-
-                <button
-                    type="button"
-                    id="testVoiceButton"
-                    class="btn-size">
-
-                    🔊 Probar voz
-
-                </button>
-
-            </div>
+                </div>
 
 
-            <!-- ================================== -->
-            <!-- FUENTE -->
-            <!-- ================================== -->
+                <!-- SONIDO -->
 
-            <div class="setting-group">
+                <div class="setting-group">
 
-                <label>
-                    Fuente de Letra
-                </label>
+                    <label>Sonido</label>
 
-                <select id="fontSelect"
-                    class="form-select">
+                    <label class="switch">
 
-                    <option value="'Poppins', sans-serif">
-                        Poppins
-                    </option>
+                        <input type="checkbox"
+                            id="soundToggle">
 
-                    <option value="'Arial', sans-serif">
-                        Arial
-                    </option>
+                        <span class="slider round"></span>
 
-                    <option value="'Courier New', monospace">
-                        Courier New
-                    </option>
+                    </label>
 
-                    <option value="'Times New Roman', serif">
-                        Times New Roman
-                    </option>
-
-                </select>
-
-            </div>
+                </div>
 
 
-            <!-- ================================== -->
-            <!-- TAMAÑO DE LETRA -->
-            <!-- ================================== -->
+                <!-- VOZ -->
 
-            <div class="setting-group">
+                <div class="setting-group">
 
-                <label>
-                    Tamaño de Letra
-                </label>
+                    <label>
+                        Voz del asistente
+                    </label>
 
-                <div class="size-controls">
+                    <span style="font-size:0.9rem; color:var(--texto-claro);">
+                        🎙️ Asistente HarvestX
+                    </span>
+
+                </div>
+
+
+                <!-- PROBAR VOZ -->
+
+                <div class="setting-group">
+
+                    <label>
+                        Probar voz
+                    </label>
 
                     <button
-                        id="btnSizeSmall"
+                        type="button"
+                        id="testVoiceButton"
                         class="btn-size">
 
-                        A-
-
-                    </button>
-
-                    <button
-                        id="btnSizeNormal"
-                        class="btn-size active">
-
-                        A
-
-                    </button>
-
-                    <button
-                        id="btnSizeLarge"
-                        class="btn-size">
-
-                        A+
+                        🔊 Probar voz
 
                     </button>
 
                 </div>
 
-            </div>
 
+                <!-- FUENTE -->
+
+                <div class="setting-group">
+
+                    <label>
+                        Fuente de Letra
+                    </label>
+
+                    <select id="fontSelect"
+                        class="form-select">
+
+                        <option value="'Poppins', sans-serif">
+                            Poppins
+                        </option>
+
+                        <option value="'Arial', sans-serif">
+                            Arial
+                        </option>
+
+                        <option value="'Courier New', monospace">
+                            Courier New
+                        </option>
+
+                        <option value="'Times New Roman', serif">
+                            Times New Roman
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- TAMAÑO -->
+
+                <div class="setting-group">
+
+                    <label>
+                        Tamaño de Letra
+                    </label>
+
+                    <div class="size-controls">
+
+                        <button
+                            id="btnSizeSmall"
+                            class="btn-size">
+
+                            A-
+
+                        </button>
+
+                        <button
+                            id="btnSizeNormal"
+                            class="btn-size active">
+
+                            A
+
+                        </button>
+
+                        <button
+                            id="btnSizeLarge"
+                            class="btn-size">
+
+                            A+
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+
+
+    <!-- ========================================== -->
+    <!-- MODAL DE PERFIL -->
+    <!-- ========================================== -->
+
+    <div id="profileModal" class="modal-overlay">
+
+        <div class="modal-content profile-modal">
+
+
+            <!-- ENCABEZADO -->
+
+            <div class="modal-header">
+
+                <h2>Mi Perfil</h2>
+
+                <i class="fa-solid fa-xmark close-modal"
+                    id="closeProfile"></i>
+
+            </div>
+
+
+            <!-- CUERPO -->
+
+            <div class="modal-body">
+
+
+                <!-- FOTO -->
+
+                <div class="profile-photo-section">
+
+                    <div class="profile-photo-wrapper">
+
+                        <div id="profilePhotoPreview"
+                            class="profile-photo-preview">
+
+                            U
+
+                        </div>
+
+
+                        <label for="profilePhotoInput"
+                            class="change-photo-button">
+
+                            <i class="fa-solid fa-camera"></i>
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="profilePhotoInput"
+                            accept="image/*"
+                            hidden>
+
+                    </div>
+
+
+                    <p class="profile-photo-text">
+
+                        Haz clic en la cámara para cambiar tu foto
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- INFORMACIÓN -->
+
+                <div class="profile-form">
+
+
+                    <!-- NOMBRE -->
+
+                    <div class="profile-field">
+
+                        <label for="profileNombre">
+                            Nombre completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileNombre"
+                            placeholder="Nombre completo">
+
+                    </div>
+
+
+                    <!-- USUARIO -->
+
+                    <div class="profile-field">
+
+                        <label for="profileUsuario">
+                            Nombre de usuario
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileUsuario"
+                            readonly>
+
+                    </div>
+
+
+                    <!-- ROL -->
+
+                    <div class="profile-field">
+
+                        <label for="profileRol">
+                            Rol
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileRol"
+                            readonly>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BOTONES -->
+
+                <div class="profile-actions">
+
+                    <button
+                        type="button"
+                        id="cancelProfile"
+                        class="btn-modal btn-cancelar">
+
+                        Cancelar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="saveProfile"
+                        class="btn-modal btn-guardar">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Guardar cambios
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
 
 
     <!-- ========================================== -->
@@ -231,6 +385,7 @@
         <!-- ====================================== -->
 
         <aside class="sidebar" id="sidebar">
+
 
             <div class="sidebar-header">
 
@@ -255,6 +410,9 @@
             </div>
 
 
+
+            <!-- NAVEGACIÓN -->
+
             <nav class="sidebar-nav">
 
 
@@ -270,6 +428,7 @@
                     </span>
 
                 </a>
+
 
 
                 <!-- GESTIÓN -->
@@ -355,6 +514,7 @@
                 </a>
 
 
+
                 <!-- REPORTES -->
 
                 <div class="nav-category">
@@ -388,6 +548,7 @@
                     </span>
 
                 </a>
+
 
 
                 <!-- SISTEMA -->
@@ -429,12 +590,14 @@
             </nav>
 
 
+
             <!-- CERRAR SESIÓN -->
 
             <div class="sidebar-footer">
 
                 <a href="../../login.html"
-                    class="nav-link logout">
+                   class="nav-link logout"
+                   id="cerrarSesion">
 
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
 
@@ -446,7 +609,9 @@
 
             </div>
 
+
         </aside>
+
 
 
         <!-- ====================================== -->
@@ -457,6 +622,7 @@
             id="mainContent">
 
 
+
             <!-- ================================== -->
             <!-- TOPBAR -->
             <!-- ================================== -->
@@ -464,10 +630,12 @@
             <header class="topbar">
 
 
+                <!-- IZQUIERDA -->
+
                 <div class="left-controls">
 
 
-                    <!-- Botón escritorio -->
+                    <!-- ESCRITORIO -->
 
                     <div class="menu-toggle-desktop"
                         id="toggleSidebarDesktop">
@@ -477,7 +645,7 @@
                     </div>
 
 
-                    <!-- Botón móvil -->
+                    <!-- MÓVIL -->
 
                     <div class="menu-toggle-mobile"
                         id="menuToggleMobile">
@@ -487,20 +655,16 @@
                     </div>
 
 
-                    <!-- Bienvenida -->
+                    <!-- BIENVENIDA -->
 
                     <div class="header-title">
 
                         <div>
 
-                            <!--
-                                administrador.js
-                                colocará aquí el nombre
-                                del usuario automáticamente.
-                            -->
-
                             <h1 id="nombreBienvenida">
+
                                 ¡Bienvenido! 👋
+
                             </h1>
 
 
@@ -514,6 +678,7 @@
 
 
                 </div>
+
 
 
                 <!-- ================================= -->
@@ -536,55 +701,55 @@
                     </div>
 
 
-                    <!-- PERFIL -->
 
-                    <div class="profile">
+                    <!-- AVATAR -->
 
-
-                        <!--
-                            Esta imagen puede cambiarse
-                            posteriormente por la foto
-                            real del usuario.
-                        -->
+                    <div
+                        class="avatar"
+                        id="openProfile"
+                        aria-label="Abrir perfil"
+                        title="Abrir mi perfil"
+                        style="cursor:pointer;">
 
                         <img
-                            src="../../IMG/juan.jpg"
-                            alt="Perfil"
+                            id="avatarImagen"
                             class="avatar-img"
-                        >
-
-
-                        <div class="user-details">
-
-
-                            <!--
-                                administrador.js
-                                colocará aquí el nombre.
-                            -->
-
-                            <span
-                                class="name"
-                                id="nombreUsuario">
-
-                                Usuario
-
-                            </span>
-
-
-                            <span class="role">
-
-                                Administrador
-
-                            </span>
-
-
-                        </div>
+                            src=""
+                            alt="Foto de perfil">
 
                     </div>
 
+
+
+                    <!-- INFORMACIÓN -->
+
+                    <div class="user-details">
+
+                        <span
+                            class="name"
+                            id="nombreUsuario">
+
+                            Usuario
+
+                        </span>
+
+
+                        <span
+                            class="role"
+                            id="rolUsuario">
+
+                            Administrador
+
+                        </span>
+
+                    </div>
+
+
                 </div>
 
+
             </header>
+
 
 
             <!-- ====================================== -->
@@ -601,10 +766,14 @@
                 <div class="stats-grid fade-up delay-1">
 
 
+                    <!-- FINCAS -->
+
                     <div class="stat-card card-solid-green">
 
                         <div class="stat-icon">
+
                             <i class="fa-solid fa-house-chimney"></i>
+
                         </div>
 
                         <div class="stat-info">
@@ -613,7 +782,9 @@
                                 Fincas Registradas
                             </span>
 
-                            <h3>18</h3>
+                            <h3>
+                                18
+                            </h3>
 
                             <small>
                                 +2 este mes
@@ -623,6 +794,9 @@
 
                     </div>
 
+
+
+                    <!-- CULTIVOS -->
 
                     <div class="stat-card bg-light-green">
 
@@ -635,19 +809,24 @@
                         <div class="stat-info">
 
                             <span>
-                                Cultivos Activos
+                                Cultivos Registrados
                             </span>
 
-                            <h3>32</h3>
+                            <h3 id="totalCultivos">
+                                --
+                            </h3>
 
                             <small class="text-green">
-                                +5 este mes
+                                En el sistema
                             </small>
 
                         </div>
 
                     </div>
 
+
+
+                    <!-- HUMEDAD -->
 
                     <div class="stat-card bg-light-blue">
 
@@ -663,7 +842,9 @@
                                 Humedad Promedio
                             </span>
 
-                            <h3>68%</h3>
+                            <h3>
+                                68%
+                            </h3>
 
                             <small>
                                 Óptimo
@@ -673,6 +854,9 @@
 
                     </div>
 
+
+
+                    <!-- TEMPERATURA -->
 
                     <div class="stat-card bg-light-yellow">
 
@@ -688,7 +872,9 @@
                                 Temperatura Actual
                             </span>
 
-                            <h3>24°C</h3>
+                            <h3>
+                                24°C
+                            </h3>
 
                             <small>
                                 Óptimo
@@ -698,6 +884,9 @@
 
                     </div>
 
+
+
+                    <!-- ALERTAS -->
 
                     <div class="stat-card bg-light-red">
 
@@ -713,7 +902,9 @@
                                 Alertas Pendientes
                             </span>
 
-                            <h3>3</h3>
+                            <h3>
+                                3
+                            </h3>
 
                             <small class="text-red">
                                 Requieren atención
@@ -727,11 +918,13 @@
                 </div>
 
 
+
                 <!-- ================================== -->
                 <!-- COLUMNAS PRINCIPALES -->
                 <!-- ================================== -->
 
                 <div class="main-columns fade-up delay-2">
+
 
 
                     <!-- ================================= -->
@@ -748,7 +941,9 @@
 
                             <a href="#"
                                 class="link-more">
+
                                 Ver todos
+
                             </a>
 
                         </div>
@@ -757,6 +952,8 @@
                         <div class="crop-list">
 
 
+                            <!-- TOMATE -->
+
                             <div class="crop-item">
 
                                 <div class="crop-icon-small">
@@ -764,6 +961,7 @@
                                     <i class="fa-solid fa-apple-whole text-red"></i>
 
                                 </div>
+
 
                                 <div class="crop-details">
 
@@ -779,12 +977,17 @@
 
                                     </div>
 
+
                                     <div class="progress-bar">
 
-                                        <div class="progress bg-green"
-                                            style="width: 85%;"></div>
+                                        <div
+                                            class="progress bg-green"
+                                            style="width:85%;">
+
+                                        </div>
 
                                     </div>
+
 
                                     <div class="crop-percentage">
                                         85%
@@ -795,6 +998,9 @@
                             </div>
 
 
+
+                            <!-- MAÍZ -->
+
                             <div class="crop-item">
 
                                 <div class="crop-icon-small">
@@ -802,6 +1008,7 @@
                                     <i class="fa-solid fa-wheat-awn text-yellow"></i>
 
                                 </div>
+
 
                                 <div class="crop-details">
 
@@ -817,12 +1024,17 @@
 
                                     </div>
 
+
                                     <div class="progress-bar">
 
-                                        <div class="progress bg-yellow"
-                                            style="width: 60%;"></div>
+                                        <div
+                                            class="progress bg-yellow"
+                                            style="width:60%;">
+
+                                        </div>
 
                                     </div>
+
 
                                     <div class="crop-percentage">
                                         60%
@@ -833,6 +1045,9 @@
                             </div>
 
 
+
+                            <!-- CAFÉ -->
+
                             <div class="crop-item">
 
                                 <div class="crop-icon-small">
@@ -840,6 +1055,7 @@
                                     <i class="fa-solid fa-seedling text-dark-green"></i>
 
                                 </div>
+
 
                                 <div class="crop-details">
 
@@ -855,12 +1071,17 @@
 
                                     </div>
 
+
                                     <div class="progress-bar">
 
-                                        <div class="progress bg-green"
-                                            style="width: 90%;"></div>
+                                        <div
+                                            class="progress bg-green"
+                                            style="width:90%;">
+
+                                        </div>
 
                                     </div>
+
 
                                     <div class="crop-percentage">
                                         90%
@@ -871,6 +1092,9 @@
                             </div>
 
 
+
+                            <!-- LECHUGA -->
+
                             <div class="crop-item">
 
                                 <div class="crop-icon-small">
@@ -878,6 +1102,7 @@
                                     <i class="fa-solid fa-leaf text-light-green"></i>
 
                                 </div>
+
 
                                 <div class="crop-details">
 
@@ -893,12 +1118,17 @@
 
                                     </div>
 
+
                                     <div class="progress-bar">
 
-                                        <div class="progress bg-orange"
-                                            style="width: 40%;"></div>
+                                        <div
+                                            class="progress bg-orange"
+                                            style="width:40%;">
+
+                                        </div>
 
                                     </div>
+
 
                                     <div class="crop-percentage">
                                         40%
@@ -914,6 +1144,7 @@
                     </div>
 
 
+
                     <!-- ================================= -->
                     <!-- CLIMA -->
                     <!-- ================================= -->
@@ -921,12 +1152,14 @@
                     <div class="card no-padding">
 
 
-                        <div class="card-header padding-card"
+                        <div
+                            class="card-header padding-card"
                             style="display:flex; justify-content:space-between; align-items:center;">
 
                             <h3>
                                 Clima Local
                             </h3>
+
 
                             <span
                                 id="relojSistema"
@@ -939,6 +1172,9 @@
                         </div>
 
 
+
+                        <!-- ESTADO -->
+
                         <div
                             id="climaEstado"
                             class="padding-card"
@@ -947,19 +1183,27 @@
                             <i
                                 class="fa-solid fa-location-crosshairs fa-spin"
                                 style="font-size:2rem; color:var(--verde-activo);">
+
                             </i>
 
+
                             <p id="climaMensaje">
+
                                 Detectando tu ubicación...
+
                             </p>
 
                         </div>
 
 
+
+                        <!-- CONTENIDO -->
+
                         <div
                             id="climaContenido"
                             class="weather-widget"
                             style="display:none;">
+
 
                             <div
                                 style="font-size:0.85rem; margin-bottom:15px; opacity:0.9;">
@@ -973,12 +1217,16 @@
                             </div>
 
 
+
                             <div class="weather-main">
+
 
                                 <i
                                     id="climaIcono"
                                     class="fa-solid fa-sun weather-icon-large">
+
                                 </i>
+
 
                                 <div class="weather-info-main">
 
@@ -991,19 +1239,28 @@
                                     </h1>
 
                                     <p>
+
                                         Sensación:
+
                                         <span id="climaSensacion">
                                             --
                                         </span>
+
                                         °C
+
                                     </p>
 
                                 </div>
 
+
                             </div>
 
 
+
+                            <!-- DETALLES -->
+
                             <div class="weather-details">
+
 
                                 <div>
 
@@ -1012,6 +1269,7 @@
                                     <span id="climaViento">
                                         --
                                     </span>
+
                                     km/h
 
                                     <br>
@@ -1023,6 +1281,7 @@
                                 </div>
 
 
+
                                 <div>
 
                                     <i class="fa-solid fa-droplet"></i>
@@ -1030,6 +1289,7 @@
                                     <span id="climaHumedad">
                                         --
                                     </span>
+
                                     %
 
                                     <br>
@@ -1041,6 +1301,7 @@
                                 </div>
 
 
+
                                 <div>
 
                                     <i class="fa-solid fa-umbrella"></i>
@@ -1048,6 +1309,7 @@
                                     <span id="climaProbLluvia">
                                         --
                                     </span>
+
                                     %
 
                                     <br>
@@ -1058,8 +1320,12 @@
 
                                 </div>
 
+
                             </div>
 
+
+
+                            <!-- ACTUALIZACIÓN -->
 
                             <div
                                 style="margin-top:15px; font-size:0.7rem; display:flex; justify-content:space-between; opacity:0.7; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px;">
@@ -1080,7 +1346,9 @@
 
                             </div>
 
+
                         </div>
+
 
 
                         <!-- PRONÓSTICO -->
@@ -1094,6 +1362,7 @@
 
 
                     </div>
+
 
 
                     <!-- ================================= -->
@@ -1119,8 +1388,11 @@
                         </div>
 
 
+
                         <div class="activity-list">
 
+
+                            <!-- ACTIVIDAD 1 -->
 
                             <div class="activity-item">
 
@@ -1129,6 +1401,7 @@
                                     <i class="fa-solid fa-droplet"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
@@ -1142,12 +1415,16 @@
 
                                 </div>
 
+
                                 <span class="activity-time">
                                     Hace 2 horas
                                 </span>
 
                             </div>
 
+
+
+                            <!-- ACTIVIDAD 2 -->
 
                             <div class="activity-item">
 
@@ -1156,6 +1433,7 @@
                                     <i class="fa-solid fa-seedling"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
@@ -1169,12 +1447,16 @@
 
                                 </div>
 
+
                                 <span class="activity-time">
                                     Hace 4 horas
                                 </span>
 
                             </div>
 
+
+
+                            <!-- ACTIVIDAD 3 -->
 
                             <div class="activity-item">
 
@@ -1183,6 +1465,7 @@
                                     <i class="fa-solid fa-flask"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
@@ -1196,12 +1479,16 @@
 
                                 </div>
 
+
                                 <span class="activity-time">
                                     Hace 6 horas
                                 </span>
 
                             </div>
 
+
+
+                            <!-- ACTIVIDAD 4 -->
 
                             <div class="activity-item">
 
@@ -1210,6 +1497,7 @@
                                     <i class="fa-solid fa-triangle-exclamation"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
@@ -1223,12 +1511,16 @@
 
                                 </div>
 
+
                                 <span class="activity-time">
                                     Hace 8 horas
                                 </span>
 
                             </div>
 
+
+
+                            <!-- ACTIVIDAD 5 -->
 
                             <div class="activity-item">
 
@@ -1237,6 +1529,7 @@
                                     <i class="fa-solid fa-leaf"></i>
 
                                 </div>
+
 
                                 <div class="activity-info">
 
@@ -1249,6 +1542,7 @@
                                     </p>
 
                                 </div>
+
 
                                 <span class="activity-time">
                                     Hace 1 día
@@ -1263,6 +1557,7 @@
 
 
                 </div>
+
 
 
                 <!-- ================================== -->
@@ -1281,8 +1576,11 @@
                     </div>
 
 
+
                     <div class="charts-container">
 
+
+                        <!-- PRODUCCIÓN -->
 
                         <div class="chart-box">
 
@@ -1299,6 +1597,9 @@
                         </div>
 
 
+
+                        <!-- RENDIMIENTO -->
+
                         <div class="chart-box">
 
                             <h4>
@@ -1313,6 +1614,9 @@
 
                         </div>
 
+
+
+                        <!-- HUMEDAD -->
 
                         <div class="chart-box">
 
@@ -1336,9 +1640,11 @@
 
             </section>
 
+
         </main>
 
     </div>
+
 
 
     <!-- ========================================== -->
@@ -1350,6 +1656,75 @@
     <script src="../../JS/paginas/administrador.js"></script>
 
     <script src="../../JS/paginas/clima.js"></script>
+
+
+
+    <!-- ========================================== -->
+    <!-- TOTAL DE CULTIVOS -->
+    <!-- ========================================== -->
+
+    <script>
+
+        async function cargarTotalCultivos() {
+
+            try {
+
+                const respuesta = await fetch(
+                    "http://127.0.0.1:5000/cultivos"
+                );
+
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        "Error al obtener cultivos"
+                    );
+
+                }
+
+
+                const cultivos =
+                    await respuesta.json();
+
+
+                const totalCultivos =
+                    document.getElementById(
+                        "totalCultivos"
+                    );
+
+
+                totalCultivos.textContent =
+                    cultivos.length;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error cargando cultivos:",
+                    error
+                );
+
+
+                const totalCultivos =
+                    document.getElementById(
+                        "totalCultivos"
+                    );
+
+
+                totalCultivos.textContent = "0";
+
+            }
+
+        }
+
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            cargarTotalCultivos
+        );
+
+    </script>
 
 
 </body>

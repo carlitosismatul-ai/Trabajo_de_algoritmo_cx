@@ -1,9 +1,57 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import mysql.connector
+import os
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 CORS(app)
+
+
+# ==========================================
+# CONFIGURACIÓN DE ARCHIVOS
+# ==========================================
+
+CARPETA_IMAGENES = os.path.abspath(
+    os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "IMG"
+    )
+)
+
+
+# Crear carpeta IMG si no existe
+os.makedirs(
+    CARPETA_IMAGENES,
+    exist_ok=True
+)
+
+
+# ==========================================
+# SERVIR IMÁGENES DESDE FLASK
+# ==========================================
+
+@app.route("/IMG/<path:nombre_archivo>")
+def servir_imagen(nombre_archivo):
+
+    return send_from_directory(
+        CARPETA_IMAGENES,
+        nombre_archivo
+    )
+
+
+# ==========================================
+# EXTENSIONES PERMITIDAS
+# ==========================================
+
+EXTENSIONES_PERMITIDAS = {
+    "png",
+    "jpg",
+    "jpeg",
+    "webp"
+}
 
 
 # ==========================================
@@ -20,6 +68,24 @@ def conectar_bd():
     )
 
     return conexion
+
+
+# ==========================================
+# FUNCIONES PARA IMÁGENES
+# ==========================================
+
+def extension_permitida(nombre_archivo):
+
+    if "." not in nombre_archivo:
+        return False
+
+    extension = (
+        nombre_archivo
+        .rsplit(".", 1)[1]
+        .lower()
+    )
+
+    return extension in EXTENSIONES_PERMITIDAS
 
 
 # ==========================================
@@ -49,13 +115,17 @@ def iniciar_sesion():
 
     datos = request.get_json()
 
+    if not datos:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se recibieron datos."
+        }), 400
+
+
     usuario = datos.get("usuario")
     contrasena = datos.get("contrasena")
 
-
-    # ------------------------------------------
-    # VALIDAR DATOS
-    # ------------------------------------------
 
     if not usuario or not contrasena:
 
@@ -65,14 +135,12 @@ def iniciar_sesion():
         }), 400
 
 
-    conexion = conectar_bd()
+    usuario = usuario.strip()
 
+
+    conexion = conectar_bd()
     cursor = conexion.cursor(dictionary=True)
 
-
-    # ------------------------------------------
-    # BUSCAR USUARIO
-    # ------------------------------------------
 
     sql = """
         SELECT
@@ -81,12 +149,18 @@ def iniciar_sesion():
             usuario,
             contrasena,
             rol,
-            estado
+            estado,
+            foto
         FROM usuarios
         WHERE usuario = %s
     """
 
-    cursor.execute(sql, (usuario,))
+
+    cursor.execute(
+        sql,
+        (usuario,)
+    )
+
 
     usuario_bd = cursor.fetchone()
 
@@ -94,10 +168,6 @@ def iniciar_sesion():
     cursor.close()
     conexion.close()
 
-
-    # ------------------------------------------
-    # USUARIO NO EXISTE
-    # ------------------------------------------
 
     if usuario_bd is None:
 
@@ -107,10 +177,6 @@ def iniciar_sesion():
         }), 401
 
 
-    # ------------------------------------------
-    # VERIFICAR ESTADO
-    # ------------------------------------------
-
     if usuario_bd["estado"] != "activo":
 
         return jsonify({
@@ -119,10 +185,6 @@ def iniciar_sesion():
         }), 403
 
 
-    # ------------------------------------------
-    # VERIFICAR CONTRASEÑA
-    # ------------------------------------------
-
     if contrasena != usuario_bd["contrasena"]:
 
         return jsonify({
@@ -130,10 +192,6 @@ def iniciar_sesion():
             "mensaje": "Usuario o contraseña incorrectos."
         }), 401
 
-
-    # ------------------------------------------
-    # LOGIN CORRECTO
-    # ------------------------------------------
 
     return jsonify({
 
@@ -144,14 +202,11 @@ def iniciar_sesion():
         "usuario": {
 
             "id": usuario_bd["id"],
-
             "nombre": usuario_bd["nombre"],
-
             "usuario": usuario_bd["usuario"],
-
             "rol": usuario_bd["rol"],
-
-            "estado": usuario_bd["estado"]
+            "estado": usuario_bd["estado"],
+            "foto": usuario_bd["foto"]
 
         }
 
@@ -167,19 +222,18 @@ def registrar_usuario():
 
     datos = request.get_json()
 
+    if not datos:
 
-    # ------------------------------------------
-    # OBTENER DATOS
-    # ------------------------------------------
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se recibieron datos."
+        }), 400
+
 
     nombre = datos.get("nombre")
     usuario = datos.get("usuario")
     contrasena = datos.get("contrasena")
 
-
-    # ------------------------------------------
-    # VALIDAR CAMPOS
-    # ------------------------------------------
 
     if not nombre or not usuario or not contrasena:
 
@@ -189,16 +243,16 @@ def registrar_usuario():
         }), 400
 
 
-    # ------------------------------------------
-    # LIMPIAR DATOS
-    # ------------------------------------------
-
     nombre = nombre.strip()
     usuario = usuario.strip()
     contrasena = contrasena.strip()
 
 
-    if nombre == "" or usuario == "" or contrasena == "":
+    if (
+        nombre == ""
+        or usuario == ""
+        or contrasena == ""
+    ):
 
         return jsonify({
             "exito": False,
@@ -206,18 +260,9 @@ def registrar_usuario():
         }), 400
 
 
-    # ------------------------------------------
-    # CONEXIÓN
-    # ------------------------------------------
-
     conexion = conectar_bd()
-
     cursor = conexion.cursor(dictionary=True)
 
-
-    # ------------------------------------------
-    # COMPROBAR SI USUARIO YA EXISTE
-    # ------------------------------------------
 
     sql_buscar = """
         SELECT id
@@ -225,7 +270,12 @@ def registrar_usuario():
         WHERE usuario = %s
     """
 
-    cursor.execute(sql_buscar, (usuario,))
+
+    cursor.execute(
+        sql_buscar,
+        (usuario,)
+    )
+
 
     usuario_existente = cursor.fetchone()
 
@@ -241,13 +291,6 @@ def registrar_usuario():
         }), 409
 
 
-    # ------------------------------------------
-    # CREAR USUARIO
-    #
-    # IMPORTANTE:
-    # Todo registro público será usuario normal.
-    # ------------------------------------------
-
     sql_insertar = """
         INSERT INTO usuarios
         (
@@ -255,21 +298,28 @@ def registrar_usuario():
             usuario,
             contrasena,
             rol,
-            estado
+            estado,
+            foto
         )
-        VALUES (%s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s)
     """
+
 
     valores = (
         nombre,
         usuario,
         contrasena,
         "usuario",
-        "activo"
+        "activo",
+        None
     )
 
 
-    cursor.execute(sql_insertar, valores)
+    cursor.execute(
+        sql_insertar,
+        valores
+    )
+
 
     conexion.commit()
 
@@ -281,10 +331,6 @@ def registrar_usuario():
     conexion.close()
 
 
-    # ------------------------------------------
-    # RESPUESTA
-    # ------------------------------------------
-
     return jsonify({
 
         "exito": True,
@@ -294,14 +340,11 @@ def registrar_usuario():
         "usuario": {
 
             "id": nuevo_id,
-
             "nombre": nombre,
-
             "usuario": usuario,
-
             "rol": "usuario",
-
-            "estado": "activo"
+            "estado": "activo",
+            "foto": None
 
         }
 
@@ -309,26 +352,327 @@ def registrar_usuario():
 
 
 # ==========================================
+# ACTUALIZAR PERFIL
+# ==========================================
+
+@app.route(
+    "/usuarios/<int:id>/perfil",
+    methods=["PUT"]
+)
+def actualizar_perfil(id):
+
+    nombre = request.form.get(
+        "nombre",
+        ""
+    ).strip()
+
+
+    foto = request.files.get("foto")
+
+
+    # ==========================================
+    # VALIDAR NOMBRE
+    # ==========================================
+
+    if nombre == "":
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El nombre es obligatorio."
+        }), 400
+
+
+    if len(nombre) > 100:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El nombre no puede superar los 100 caracteres."
+        }), 400
+
+
+    # ==========================================
+    # CONEXIÓN
+    # ==========================================
+
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+
+
+    # ==========================================
+    # BUSCAR USUARIO
+    # ==========================================
+
+    sql_buscar = """
+        SELECT
+            id,
+            nombre,
+            usuario,
+            rol,
+            estado,
+            foto
+        FROM usuarios
+        WHERE id = %s
+    """
+
+
+    cursor.execute(
+        sql_buscar,
+        (id,)
+    )
+
+
+    usuario_bd = cursor.fetchone()
+
+
+    if usuario_bd is None:
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Usuario no encontrado."
+        }), 404
+
+
+    foto_actual = usuario_bd["foto"]
+
+
+    nueva_foto = foto_actual
+
+
+    # ==========================================
+    # PROCESAR NUEVA FOTO
+    # ==========================================
+
+    if foto:
+
+        if not foto.filename:
+
+            cursor.close()
+            conexion.close()
+
+            return jsonify({
+                "exito": False,
+                "mensaje": "No se seleccionó ninguna imagen."
+            }), 400
+
+
+        if not extension_permitida(
+            foto.filename
+        ):
+
+            cursor.close()
+            conexion.close()
+
+            return jsonify({
+                "exito": False,
+                "mensaje": (
+                    "Formato de imagen no permitido. "
+                    "Usa JPG, JPEG, PNG o WEBP."
+                )
+            }), 400
+
+
+        nombre_archivo = secure_filename(
+            foto.filename
+        )
+
+
+        if not nombre_archivo:
+
+            cursor.close()
+            conexion.close()
+
+            return jsonify({
+                "exito": False,
+                "mensaje": "El nombre de la imagen no es válido."
+            }), 400
+
+
+        extension = (
+            nombre_archivo
+            .rsplit(".", 1)[1]
+            .lower()
+        )
+
+
+        # ==========================================
+        # NOMBRE DEFINITIVO
+        # ==========================================
+
+        nuevo_nombre_archivo = (
+            f"perfil_{id}.{extension}"
+        )
+
+
+        ruta_archivo = os.path.join(
+            CARPETA_IMAGENES,
+            nuevo_nombre_archivo
+        )
+
+
+        # ==========================================
+        # GUARDAR FOTO
+        # ==========================================
+
+        foto.save(
+            ruta_archivo
+        )
+
+
+        nueva_foto = nuevo_nombre_archivo
+
+
+        # ==========================================
+        # ELIMINAR FOTO ANTERIOR
+        # ==========================================
+
+        if (
+            foto_actual
+            and foto_actual.startswith("perfil_")
+            and foto_actual != nuevo_nombre_archivo
+        ):
+
+            ruta_foto_anterior = os.path.join(
+                CARPETA_IMAGENES,
+                foto_actual
+            )
+
+
+            if os.path.exists(
+                ruta_foto_anterior
+            ):
+
+                try:
+
+                    os.remove(
+                        ruta_foto_anterior
+                    )
+
+                except OSError:
+
+                    pass
+
+
+    # ==========================================
+    # ACTUALIZAR MYSQL
+    # ==========================================
+
+    sql_actualizar = """
+        UPDATE usuarios
+        SET
+            nombre = %s,
+            foto = %s
+        WHERE id = %s
+    """
+
+
+    valores = (
+        nombre,
+        nueva_foto,
+        id
+    )
+
+
+    cursor.execute(
+        sql_actualizar,
+        valores
+    )
+
+
+    conexion.commit()
+
+
+    # ==========================================
+    # OBTENER USUARIO ACTUALIZADO
+    # ==========================================
+
+    sql_actualizado = """
+        SELECT
+            id,
+            nombre,
+            usuario,
+            rol,
+            estado,
+            foto
+        FROM usuarios
+        WHERE id = %s
+    """
+
+
+    cursor.execute(
+        sql_actualizado,
+        (id,)
+    )
+
+
+    usuario_actualizado = cursor.fetchone()
+
+
+    cursor.close()
+    conexion.close()
+
+
+    return jsonify({
+
+        "exito": True,
+
+        "mensaje": "Perfil actualizado correctamente.",
+
+        "usuario": usuario_actualizado
+
+    })
+
+
+# ==========================================
 # AGREGAR CULTIVO
 # ==========================================
 
-@app.route("/cultivos", methods=["POST"])
+@app.route(
+    "/cultivos",
+    methods=["POST"]
+)
 def agregar_cultivo():
 
     datos = request.get_json()
 
-    nombre = datos["nombre"]
-    tipo = datos["tipo"]
-    agua = datos["agua"]
-    cosecha = datos["cosecha"]
+    if not datos:
 
-    # ID del cultivo que viene del catálogo
-    # Puede ser NULL si es personalizado
-    catalogo_cultivo_id = datos.get("catalogo_cultivo_id")
+        return jsonify({
+            "mensaje": "No se recibieron datos."
+        }), 400
+
+
+    nombre = datos.get("nombre")
+    tipo = datos.get("tipo")
+    agua = datos.get("agua")
+    cosecha = datos.get("cosecha")
+
+
+    catalogo_cultivo_id = datos.get(
+        "catalogo_cultivo_id"
+    )
+
+
+    if (
+        not nombre
+        or not tipo
+        or not agua
+        or not cosecha
+    ):
+
+        return jsonify({
+            "mensaje": (
+                "Todos los campos del cultivo "
+                "son obligatorios."
+            )
+        }), 400
+
 
     conexion = conectar_bd()
-
     cursor = conexion.cursor()
+
 
     sql = """
         INSERT INTO cultivos
@@ -342,6 +686,7 @@ def agregar_cultivo():
         VALUES (%s, %s, %s, %s, %s)
     """
 
+
     valores = (
         nombre,
         tipo,
@@ -350,12 +695,19 @@ def agregar_cultivo():
         catalogo_cultivo_id
     )
 
-    cursor.execute(sql, valores)
+
+    cursor.execute(
+        sql,
+        valores
+    )
+
 
     conexion.commit()
 
+
     cursor.close()
     conexion.close()
+
 
     return jsonify({
         "mensaje": "Cultivo agregado correctamente"
@@ -366,12 +718,18 @@ def agregar_cultivo():
 # OBTENER CULTIVOS
 # ==========================================
 
-@app.route("/cultivos", methods=["GET"])
+@app.route(
+    "/cultivos",
+    methods=["GET"]
+)
 def obtener_cultivos():
 
     conexion = conectar_bd()
 
-    cursor = conexion.cursor(dictionary=True)
+    cursor = conexion.cursor(
+        dictionary=True
+    )
+
 
     sql = """
         SELECT
@@ -386,15 +744,20 @@ def obtener_cultivos():
             catalogo_cultivos.imagen
         FROM cultivos
         LEFT JOIN catalogo_cultivos
-            ON cultivos.catalogo_cultivo_id = catalogo_cultivos.id
+            ON cultivos.catalogo_cultivo_id =
+               catalogo_cultivos.id
     """
+
 
     cursor.execute(sql)
 
+
     cultivos = cursor.fetchall()
+
 
     cursor.close()
     conexion.close()
+
 
     return jsonify(cultivos)
 
@@ -403,14 +766,24 @@ def obtener_cultivos():
 # BUSCAR CULTIVOS DEL CATÁLOGO
 # ==========================================
 
-@app.route("/catalogo-cultivos", methods=["GET"])
+@app.route(
+    "/catalogo-cultivos",
+    methods=["GET"]
+)
 def obtener_catalogo_cultivos():
 
-    buscar = request.args.get("buscar", "")
+    buscar = request.args.get(
+        "buscar",
+        ""
+    )
+
 
     conexion = conectar_bd()
 
-    cursor = conexion.cursor(dictionary=True)
+    cursor = conexion.cursor(
+        dictionary=True
+    )
+
 
     sql = """
         SELECT *
@@ -418,26 +791,39 @@ def obtener_catalogo_cultivos():
         WHERE nombre LIKE %s
     """
 
-    cursor.execute(sql, (f"%{buscar}%",))
+
+    cursor.execute(
+        sql,
+        (f"%{buscar}%",)
+    )
+
 
     cultivos = cursor.fetchall()
 
+
     cursor.close()
     conexion.close()
+
 
     return jsonify(cultivos)
 
 
 # ==========================================
-# OBTENER UN CULTIVO POR ID
+# OBTENER UN CULTIVO
 # ==========================================
 
-@app.route("/cultivos/<int:id>", methods=["GET"])
+@app.route(
+    "/cultivos/<int:id>",
+    methods=["GET"]
+)
 def obtener_cultivo(id):
 
     conexion = conectar_bd()
 
-    cursor = conexion.cursor(dictionary=True)
+    cursor = conexion.cursor(
+        dictionary=True
+    )
+
 
     sql = """
         SELECT *
@@ -445,9 +831,15 @@ def obtener_cultivo(id):
         WHERE id = %s
     """
 
-    cursor.execute(sql, (id,))
+
+    cursor.execute(
+        sql,
+        (id,)
+    )
+
 
     cultivo = cursor.fetchone()
+
 
     cursor.close()
     conexion.close()
@@ -467,19 +859,46 @@ def obtener_cultivo(id):
 # EDITAR CULTIVO
 # ==========================================
 
-@app.route("/cultivos/<int:id>", methods=["PUT"])
+@app.route(
+    "/cultivos/<int:id>",
+    methods=["PUT"]
+)
 def editar_cultivo(id):
 
     datos = request.get_json()
 
-    nombre = datos["nombre"]
-    tipo = datos["tipo"]
-    agua = datos["agua"]
-    cosecha = datos["cosecha"]
+    if not datos:
+
+        return jsonify({
+            "mensaje": "No se recibieron datos."
+        }), 400
+
+
+    nombre = datos.get("nombre")
+    tipo = datos.get("tipo")
+    agua = datos.get("agua")
+    cosecha = datos.get("cosecha")
+
+
+    if (
+        not nombre
+        or not tipo
+        or not agua
+        or not cosecha
+    ):
+
+        return jsonify({
+            "mensaje": (
+                "Todos los campos del cultivo "
+                "son obligatorios."
+            )
+        }), 400
+
 
     conexion = conectar_bd()
 
     cursor = conexion.cursor()
+
 
     sql = """
         UPDATE cultivos
@@ -491,6 +910,7 @@ def editar_cultivo(id):
         WHERE id = %s
     """
 
+
     valores = (
         nombre,
         tipo,
@@ -499,40 +919,12 @@ def editar_cultivo(id):
         id
     )
 
-    cursor.execute(sql, valores)
 
-    conexion.commit()
+    cursor.execute(
+        sql,
+        valores
+    )
 
-    cursor.close()
-    conexion.close()
-
-    return jsonify({
-        "mensaje": "Cultivo actualizado correctamente"
-    })
-
-
-# ==========================================
-# ELIMINAR CULTIVO
-# ==========================================
-
-@app.route("/cultivos/<int:id>", methods=["DELETE"])
-def eliminar_cultivo(id):
-
-    conexion = conectar_bd()
-
-    cursor = conexion.cursor()
-
-    sql = """
-        DELETE FROM cultivos
-        WHERE id = %s
-    """
-
-    cursor.execute(sql, (id,))
-
-
-    # ------------------------------------------
-    # VERIFICAR SI EXISTÍA
-    # ------------------------------------------
 
     if cursor.rowcount == 0:
 
@@ -545,6 +937,56 @@ def eliminar_cultivo(id):
 
 
     conexion.commit()
+
+
+    cursor.close()
+    conexion.close()
+
+
+    return jsonify({
+        "mensaje": "Cultivo actualizado correctamente"
+    })
+
+
+# ==========================================
+# ELIMINAR CULTIVO
+# ==========================================
+
+@app.route(
+    "/cultivos/<int:id>",
+    methods=["DELETE"]
+)
+def eliminar_cultivo(id):
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor()
+
+
+    sql = """
+        DELETE FROM cultivos
+        WHERE id = %s
+    """
+
+
+    cursor.execute(
+        sql,
+        (id,)
+    )
+
+
+    if cursor.rowcount == 0:
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({
+            "mensaje": "Cultivo no encontrado"
+        }), 404
+
+
+    conexion.commit()
+
 
     cursor.close()
     conexion.close()
@@ -561,4 +1003,4 @@ def eliminar_cultivo(id):
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+   app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,10 +1,14 @@
 // ==========================================
+// HARVESTX - JAVASCRIPT ADMINISTRADOR
+// ==========================================
+
+
+// ==========================================
 // VOZ DEL ASISTENTE HARVESTX
 // ==========================================
 
-// Archivo de voz masculina
-// song está en la raíz del proyecto
-const vozBienvenida = new Audio("../../song/bienvenida.mp3");
+const vozBienvenida =
+    new Audio("../../song/bienvenida.mp3");
 
 vozBienvenida.volume = 1;
 
@@ -15,9 +19,7 @@ vozBienvenida.volume = 1;
 
 function reproducirBienvenida() {
 
-    // Reiniciar el audio por si ya estaba reproduciéndose
     vozBienvenida.pause();
-
     vozBienvenida.currentTime = 0;
 
     vozBienvenida.play()
@@ -40,19 +42,195 @@ function reproducirBienvenida() {
 function detenerBienvenida() {
 
     vozBienvenida.pause();
-
     vozBienvenida.currentTime = 0;
 
 }
 
 
 // ==========================================
-// MENSAJE DE BIENVENIDA
+// BIENVENIDA ADMINISTRADOR
 // ==========================================
 
 function bienvenidaAdministrador() {
 
     reproducirBienvenida();
+
+}
+
+
+// ==========================================
+// CONFIGURAR AVATAR
+// ==========================================
+
+function configurarAvatar(usuario) {
+
+    const avatar =
+        document.getElementById("openProfile");
+
+    const avatarImg =
+        document.getElementById("avatarImagen");
+
+    if (!avatar || !avatarImg) {
+        return;
+    }
+
+    const nombre =
+        usuario.nombre || "Usuario";
+
+    const inicial =
+        nombre
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+
+
+    // ==========================================
+    // FOTO DEL USUARIO
+    // ==========================================
+
+    const foto =
+        usuario.foto || null;
+
+
+    if (foto) {
+
+        const rutaFoto =
+            `http://127.0.0.1:5000/IMG/${foto}`;
+
+
+        avatarImg.src =
+            rutaFoto;
+
+
+        avatarImg.alt =
+            `Foto de perfil de ${nombre}`;
+
+
+        avatarImg.style.display =
+            "block";
+
+
+        avatar.style.display =
+            "flex";
+
+
+        avatar.style.alignItems =
+            "center";
+
+
+        avatar.style.justifyContent =
+            "center";
+
+
+        avatar.style.fontSize =
+            "";
+
+
+        avatar.style.fontWeight =
+            "";
+
+
+        avatar.style.backgroundImage =
+            "none";
+
+
+        avatarImg.onerror = () => {
+
+            console.error(
+                "No se pudo cargar la imagen:",
+                rutaFoto
+            );
+
+
+            avatarImg.style.display =
+                "none";
+
+
+            mostrarInicial(
+                avatar,
+                inicial
+            );
+
+        };
+
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // SIN FOTO
+    // ==========================================
+
+    avatarImg.src =
+        "";
+
+
+    avatarImg.style.display =
+        "none";
+
+
+    mostrarInicial(
+        avatar,
+        inicial
+    );
+
+}
+
+
+// ==========================================
+// MOSTRAR INICIAL
+// ==========================================
+
+function mostrarInicial(
+    avatar,
+    inicial
+) {
+
+    if (!avatar) {
+        return;
+    }
+
+
+    const avatarImg =
+        document.getElementById("avatarImagen");
+
+
+    if (avatarImg) {
+
+        avatarImg.style.display =
+            "none";
+
+    }
+
+
+    avatar.textContent =
+        inicial;
+
+
+    avatar.style.backgroundImage =
+        "none";
+
+
+    avatar.style.display =
+        "flex";
+
+
+    avatar.style.alignItems =
+        "center";
+
+
+    avatar.style.justifyContent =
+        "center";
+
+
+    avatar.style.fontWeight =
+        "700";
+
+
+    avatar.style.fontSize =
+        "20px";
 
 }
 
@@ -65,6 +243,7 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
+
         // ==========================================
         // USUARIO LOGUEADO
         // ==========================================
@@ -75,19 +254,29 @@ document.addEventListener(
             );
 
 
+        // ==========================================
+        // NO HAY SESIÓN
+        // ==========================================
+
         if (!usuarioGuardado) {
 
             console.warn(
                 "No hay una sesión activa."
             );
 
+
             window.location.href =
                 "../../login.html";
+
 
             return;
 
         }
 
+
+        // ==========================================
+        // LEER USUARIO
+        // ==========================================
 
         let usuarioActual;
 
@@ -108,12 +297,20 @@ document.addEventListener(
                 error
             );
 
+
             localStorage.removeItem(
                 "usuarioHarvestX"
             );
 
+
+            sessionStorage.removeItem(
+                "bienvenidaHarvestX"
+            );
+
+
             window.location.href =
                 "../../login.html";
+
 
             return;
 
@@ -125,7 +322,8 @@ document.addEventListener(
         // ==========================================
 
         if (
-            usuarioActual.rol !==
+            !usuarioActual.rol ||
+            usuarioActual.rol.toLowerCase() !==
             "administrador"
         ) {
 
@@ -133,12 +331,20 @@ document.addEventListener(
                 "El usuario no tiene permisos de administrador."
             );
 
+
             localStorage.removeItem(
                 "usuarioHarvestX"
             );
 
+
+            sessionStorage.removeItem(
+                "bienvenidaHarvestX"
+            );
+
+
             window.location.href =
                 "../../login.html";
+
 
             return;
 
@@ -161,24 +367,70 @@ document.addEventListener(
             );
 
 
-        if (usuarioActual.nombre) {
+        if (nombreBienvenida) {
 
-            if (nombreBienvenida) {
-
-                nombreBienvenida.textContent =
-                    `¡Bienvenido, ${usuarioActual.nombre}! 👋`;
-
-            }
-
-
-            if (nombreUsuario) {
-
-                nombreUsuario.textContent =
-                    usuarioActual.nombre;
-
-            }
+            nombreBienvenida.textContent =
+                `¡Bienvenido, ${usuarioActual.nombre || "Usuario"}! 👋`;
 
         }
+
+
+        if (nombreUsuario) {
+
+            nombreUsuario.textContent =
+                usuarioActual.nombre || "Usuario";
+
+        }
+
+
+        // ==========================================
+        // MOSTRAR ROL
+        // ==========================================
+
+        const rolUsuario =
+            document.getElementById(
+                "rolUsuario"
+            );
+
+
+        const rolTexto =
+            document.querySelector(
+                ".user-details .role"
+            );
+
+
+        const rol =
+            usuarioActual.rol || "usuario";
+
+
+        const rolFormateado =
+            rol.charAt(0).toUpperCase() +
+            rol.slice(1);
+
+
+        if (rolUsuario) {
+
+            rolUsuario.textContent =
+                rolFormateado;
+
+        }
+
+
+        if (rolTexto) {
+
+            rolTexto.textContent =
+                rolFormateado;
+
+        }
+
+
+        // ==========================================
+        // CONFIGURAR AVATAR
+        // ==========================================
+
+        configurarAvatar(
+            usuarioActual
+        );
 
 
         // ==========================================
@@ -283,25 +535,52 @@ document.addEventListener(
 
             document
                 .querySelectorAll(".fade-up")
-                .forEach(el =>
+                .forEach(el => {
+
                     el.classList.add(
                         "visible"
-                    )
-                );
+                    );
+
+                });
 
 
             initCharts();
 
 
             // ======================================
-            // BIENVENIDA POR VOZ
+            // VOZ DE BIENVENIDA
             // ======================================
 
-            if (
+            const sonidoActivado =
                 localStorage.getItem(
                     "sonidoHarvestX"
-                ) === "on"
+                ) === "on";
+
+
+            const bienvenidaReproducida =
+                sessionStorage.getItem(
+                    "bienvenidaHarvestX"
+                ) === "si";
+
+
+            /*
+             * La bienvenida se reproduce solamente
+             * una vez durante la sesión actual.
+             *
+             * sessionStorage permanece al cambiar
+             * entre las páginas del sistema.
+             */
+
+            if (
+                sonidoActivado &&
+                !bienvenidaReproducida
             ) {
+
+                sessionStorage.setItem(
+                    "bienvenidaHarvestX",
+                    "si"
+                );
+
 
                 setTimeout(() => {
 
@@ -423,7 +702,7 @@ document.addEventListener(
 
 
         // ==========================================
-        // CERRAR SIDEBAR AFUERA
+        // CERRAR SIDEBAR AL HACER CLICK AFUERA
         // ==========================================
 
         document.addEventListener(
@@ -467,6 +746,658 @@ document.addEventListener(
 
 
         // ==========================================
+        // MODAL PERFIL
+        // ==========================================
+
+        const profileModal =
+            document.getElementById(
+                "profileModal"
+            );
+
+
+        const openProfile =
+            document.getElementById(
+                "openProfile"
+            );
+
+
+        const closeProfile =
+            document.getElementById(
+                "closeProfile"
+            );
+
+
+        const cancelProfile =
+            document.getElementById(
+                "cancelProfile"
+            );
+
+
+        // ==========================================
+        // CAMPOS DEL PERFIL
+        // ==========================================
+
+        const profileNombre =
+            document.getElementById(
+                "profileNombre"
+            );
+
+
+        const profileUsuario =
+            document.getElementById(
+                "profileUsuario"
+            );
+
+
+        const profileRol =
+            document.getElementById(
+                "profileRol"
+            );
+
+
+        const profilePhotoPreview =
+            document.getElementById(
+                "profilePhotoPreview"
+            );
+
+
+        const profilePhotoInput =
+            document.getElementById(
+                "profilePhotoInput"
+            );
+
+
+        const saveProfile =
+            document.getElementById(
+                "saveProfile"
+            );
+
+
+        // ==========================================
+        // ABRIR PERFIL
+        // ==========================================
+
+        if (openProfile) {
+
+            openProfile.addEventListener(
+                "click",
+                () => {
+
+                    if (!profileModal) {
+                        return;
+                    }
+
+
+                    // --------------------------------------
+                    // CARGAR NOMBRE
+                    // --------------------------------------
+
+                    if (profileNombre) {
+
+                        profileNombre.value =
+                            usuarioActual.nombre || "";
+
+                    }
+
+
+                    // --------------------------------------
+                    // CARGAR USUARIO
+                    // --------------------------------------
+
+                    if (profileUsuario) {
+
+                        profileUsuario.value =
+                            usuarioActual.usuario || "";
+
+                    }
+
+
+                    // --------------------------------------
+                    // CARGAR ROL
+                    // --------------------------------------
+
+                    if (profileRol) {
+
+                        profileRol.value =
+                            rolFormateado;
+
+                    }
+
+
+                    // --------------------------------------
+                    // CARGAR FOTO
+                    // --------------------------------------
+
+                    cargarFotoPerfil(
+                        usuarioActual
+                    );
+
+
+                    profileModal.classList.add(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // CERRAR PERFIL
+        // ==========================================
+
+        function cerrarPerfil() {
+
+            if (profileModal) {
+
+                profileModal.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+
+
+        if (closeProfile) {
+
+            closeProfile.addEventListener(
+                "click",
+                cerrarPerfil
+            );
+
+        }
+
+
+        if (cancelProfile) {
+
+            cancelProfile.addEventListener(
+                "click",
+                cerrarPerfil
+            );
+
+        }
+
+
+        // ==========================================
+        // CERRAR PERFIL AL HACER CLICK AFUERA
+        // ==========================================
+
+        if (profileModal) {
+
+            profileModal.addEventListener(
+                "click",
+                (e) => {
+
+                    if (
+                        e.target ===
+                        profileModal
+                    ) {
+
+                        cerrarPerfil();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // CARGAR FOTO EN EL MODAL
+        // ==========================================
+
+        function cargarFotoPerfil(usuario) {
+
+            if (!profilePhotoPreview) {
+                return;
+            }
+
+
+            const nombre =
+                usuario.nombre ||
+                "Usuario";
+
+
+            const inicial =
+                nombre
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase();
+
+
+            profilePhotoPreview.textContent =
+                inicial;
+
+
+            profilePhotoPreview.style.backgroundImage =
+                "none";
+
+
+            const foto =
+                usuario.foto || null;
+
+
+            if (!foto) {
+                return;
+            }
+
+
+            let rutaFoto =
+                foto;
+
+
+            if (
+                !foto.startsWith("../") &&
+                !foto.startsWith("http") &&
+                !foto.startsWith("/")
+            ) {
+
+                rutaFoto =
+                    `http://127.0.0.1:5000/IMG/${foto}`;
+
+            }
+
+
+            profilePhotoPreview.textContent =
+                "";
+
+
+            profilePhotoPreview.style.backgroundImage =
+                `url("${rutaFoto}")`;
+
+
+            profilePhotoPreview.style.backgroundSize =
+                "cover";
+
+
+            profilePhotoPreview.style.backgroundPosition =
+                "center";
+
+        }
+
+
+        // ==========================================
+        // PREVISUALIZAR NUEVA FOTO
+        // ==========================================
+
+        if (profilePhotoInput) {
+
+            profilePhotoInput.addEventListener(
+                "change",
+                (e) => {
+
+                    const archivo =
+                        e.target.files[0];
+
+
+                    if (!archivo) {
+                        return;
+                    }
+
+
+                    // --------------------------------------
+                    // VALIDAR TIPO
+                    // --------------------------------------
+
+                    const tiposPermitidos = [
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp"
+                    ];
+
+
+                    if (
+                        !tiposPermitidos.includes(
+                            archivo.type
+                        )
+                    ) {
+
+                        alert(
+                            "Selecciona una imagen JPG, JPEG, PNG o WEBP."
+                        );
+
+
+                        profilePhotoInput.value =
+                            "";
+
+
+                        return;
+
+                    }
+
+
+                    // --------------------------------------
+                    // PREVISUALIZAR
+                    // --------------------------------------
+
+                    const lector =
+                        new FileReader();
+
+
+                    lector.onload =
+                        function(evento) {
+
+                            if (profilePhotoPreview) {
+
+                                profilePhotoPreview.textContent =
+                                    "";
+
+
+                                profilePhotoPreview.style.backgroundImage =
+                                    `url("${evento.target.result}")`;
+
+
+                                profilePhotoPreview.style.backgroundSize =
+                                    "cover";
+
+
+                                profilePhotoPreview.style.backgroundPosition =
+                                    "center";
+
+                            }
+
+                        };
+
+
+                    lector.readAsDataURL(
+                        archivo
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // GUARDAR CAMBIOS DEL PERFIL
+        // ==========================================
+
+        if (saveProfile) {
+
+            saveProfile.addEventListener(
+                "click",
+                async () => {
+
+                    // ==========================================
+                    // VALIDAR USUARIO
+                    // ==========================================
+
+                    if (
+                        !usuarioActual ||
+                        !usuarioActual.id
+                    ) {
+
+                        alert(
+                            "No se pudo identificar al usuario."
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    // ==========================================
+                    // OBTENER NOMBRE
+                    // ==========================================
+
+                    const nombre =
+                        profileNombre
+                            ? profileNombre.value.trim()
+                            : "";
+
+
+                    if (!nombre) {
+
+                        alert(
+                            "El nombre es obligatorio."
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    // ==========================================
+                    // EVITAR DOBLE CLICK
+                    // ==========================================
+
+                    saveProfile.disabled =
+                        true;
+
+
+                    const textoOriginal =
+                        saveProfile.innerHTML;
+
+
+                    saveProfile.innerHTML =
+                        "Guardando...";
+
+
+                    try {
+
+                        // ==========================================
+                        // CREAR FORMDATA
+                        // ==========================================
+
+                        const formData =
+                            new FormData();
+
+
+                        formData.append(
+                            "nombre",
+                            nombre
+                        );
+
+
+                        // ==========================================
+                        // AGREGAR FOTO
+                        // ==========================================
+
+                        if (
+                            profilePhotoInput &&
+                            profilePhotoInput.files &&
+                            profilePhotoInput.files.length > 0
+                        ) {
+
+                            const archivo =
+                                profilePhotoInput.files[0];
+
+
+                            const tiposPermitidos = [
+                                "image/jpeg",
+                                "image/png",
+                                "image/webp"
+                            ];
+
+
+                            if (
+                                !tiposPermitidos.includes(
+                                    archivo.type
+                                )
+                            ) {
+
+                                throw new Error(
+                                    "Selecciona una imagen JPG, JPEG, PNG o WEBP."
+                                );
+
+                            }
+
+
+                            formData.append(
+                                "foto",
+                                archivo
+                            );
+
+                        }
+
+
+                        // ==========================================
+                        // ENVIAR AL BACKEND
+                        // ==========================================
+
+                        const respuesta =
+                            await fetch(
+                                `http://127.0.0.1:5000/usuarios/${usuarioActual.id}/perfil`,
+                                {
+                                    method: "PUT",
+                                    body: formData
+                                }
+                            );
+
+
+                        // ==========================================
+                        // LEER RESPUESTA
+                        // ==========================================
+
+                        const resultado =
+                            await respuesta.json();
+
+
+                        // ==========================================
+                        // VERIFICAR RESPUESTA
+                        // ==========================================
+
+                        if (
+                            !respuesta.ok ||
+                            !resultado.exito
+                        ) {
+
+                            throw new Error(
+                                resultado.mensaje ||
+                                "No se pudo actualizar el perfil."
+                            );
+
+                        }
+
+
+                        // ==========================================
+                        // ACTUALIZAR USUARIO
+                        // ==========================================
+
+                        usuarioActual =
+                            resultado.usuario;
+
+
+                        // ==========================================
+                        // GUARDAR EN LOCALSTORAGE
+                        // ==========================================
+
+                        localStorage.setItem(
+                            "usuarioHarvestX",
+                            JSON.stringify(
+                                usuarioActual
+                            )
+                        );
+
+
+                        // ==========================================
+                        // ACTUALIZAR NOMBRE
+                        // ==========================================
+
+                        if (nombreBienvenida) {
+
+                            nombreBienvenida.textContent =
+                                `¡Bienvenido, ${usuarioActual.nombre || "Usuario"}! 👋`;
+
+                        }
+
+
+                        if (nombreUsuario) {
+
+                            nombreUsuario.textContent =
+                                usuarioActual.nombre || "Usuario";
+
+                        }
+
+
+                        // ==========================================
+                        // ACTUALIZAR AVATAR
+                        // ==========================================
+
+                        configurarAvatar(
+                            usuarioActual
+                        );
+
+
+                        // ==========================================
+                        // ACTUALIZAR FOTO DEL MODAL
+                        // ==========================================
+
+                        cargarFotoPerfil(
+                            usuarioActual
+                        );
+
+
+                        // ==========================================
+                        // LIMPIAR INPUT
+                        // ==========================================
+
+                        if (profilePhotoInput) {
+
+                            profilePhotoInput.value =
+                                "";
+
+                        }
+
+
+                        // ==========================================
+                        // CERRAR MODAL
+                        // ==========================================
+
+                        cerrarPerfil();
+
+
+                        // ==========================================
+                        // MENSAJE
+                        // ==========================================
+
+                        alert(
+                            "Perfil actualizado correctamente."
+                        );
+
+                    }
+
+
+                    catch (error) {
+
+                        console.error(
+                            "Error al actualizar el perfil:",
+                            error
+                        );
+
+
+                        alert(
+                            error.message ||
+                            "Ocurrió un error al actualizar el perfil."
+                        );
+
+                    }
+
+
+                    finally {
+
+                        saveProfile.disabled =
+                            false;
+
+
+                        saveProfile.innerHTML =
+                            textoOriginal;
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
         // MODAL CONFIGURACIÓN
         // ==========================================
 
@@ -496,6 +1427,7 @@ document.addEventListener(
 
                     e.preventDefault();
 
+
                     if (settingsModal) {
 
                         settingsModal.classList.add(
@@ -517,6 +1449,33 @@ document.addEventListener(
                 () => {
 
                     if (settingsModal) {
+
+                        settingsModal.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // CERRAR CONFIGURACIÓN AFUERA
+        // ==========================================
+
+        if (settingsModal) {
+
+            settingsModal.addEventListener(
+                "click",
+                (e) => {
+
+                    if (
+                        e.target ===
+                        settingsModal
+                    ) {
 
                         settingsModal.classList.remove(
                             "active"
@@ -617,7 +1576,6 @@ document.addEventListener(
                         );
 
 
-                        // Reproducir voz
                         bienvenidaAdministrador();
 
                     }
@@ -630,7 +1588,6 @@ document.addEventListener(
                         );
 
 
-                        // Detener voz
                         detenerBienvenida();
 
                     }
@@ -726,11 +1683,13 @@ document.addEventListener(
                 "click",
                 (e) => {
 
-                    btnsSize.forEach(b =>
+                    btnsSize.forEach(b => {
+
                         b.classList.remove(
                             "active"
-                        )
-                    );
+                        );
+
+                    });
 
 
                     e.currentTarget.classList.add(
@@ -813,11 +1772,13 @@ document.addEventListener(
                 "click",
                 function() {
 
-                    navLinks.forEach(nav =>
+                    navLinks.forEach(nav => {
+
                         nav.classList.remove(
                             "active"
-                        )
-                    );
+                        );
+
+                    });
 
 
                     this.classList.add(
@@ -828,6 +1789,40 @@ document.addEventListener(
             );
 
         });
+
+
+        // ==========================================
+        // CERRAR SESIÓN
+        // ==========================================
+
+        const cerrarSesion =
+            document.getElementById(
+                "cerrarSesion"
+            );
+
+
+        if (cerrarSesion) {
+
+            cerrarSesion.addEventListener(
+                "click",
+                () => {
+
+                    detenerBienvenida();
+
+
+                    localStorage.removeItem(
+                        "usuarioHarvestX"
+                    );
+
+
+                    sessionStorage.removeItem(
+                        "bienvenidaHarvestX"
+                    );
+
+                }
+            );
+
+        }
 
 
         // ==========================================
@@ -913,7 +1908,8 @@ document.addEventListener(
 
                             responsive: true,
 
-                            maintainAspectRatio: false,
+                            maintainAspectRatio:
+                                false,
 
                             cutout: "65%",
 
@@ -927,7 +1923,8 @@ document.addEventListener(
 
                                         boxWidth: 10,
 
-                                        usePointStyle: true
+                                        usePointStyle:
+                                            true
 
                                     }
 
@@ -1012,7 +2009,8 @@ document.addEventListener(
 
                             responsive: true,
 
-                            maintainAspectRatio: false,
+                            maintainAspectRatio:
+                                false,
 
                             plugins: {
 
@@ -1090,7 +2088,8 @@ document.addEventListener(
 
                             responsive: true,
 
-                            maintainAspectRatio: false,
+                            maintainAspectRatio:
+                                false,
 
                             plugins: {
 
