@@ -104,9 +104,9 @@ def inicio():
     return "No se pudo conectar con MySQL"
 
 
-# ==========================================
-# LOGIN DE USUARIOS
-# ==========================================
+# ==========================================================
+# LOGIN
+# ==========================================================
 
 @app.route("/login", methods=["POST"])
 def iniciar_sesion():
@@ -201,9 +201,9 @@ def iniciar_sesion():
     })
 
 
-# ==========================================
-# REGISTRO PÚBLICO DE USUARIOS
-# ==========================================
+# ==========================================================
+# REGISTRO DE USUARIOS
+# ==========================================================
 
 @app.route("/registro", methods=["POST"])
 def registrar_usuario():
@@ -323,9 +323,9 @@ def registrar_usuario():
     }), 201
 
 
-# ==========================================
-# OBTENER INFORMACIÓN DE USUARIO
-# ==========================================
+# ==========================================================
+# OBTENER USUARIO
+# ==========================================================
 
 @app.route(
     "/usuarios/<int:id>",
@@ -375,9 +375,9 @@ def obtener_usuario(id):
     })
 
 
-# ==========================================
+# ==========================================================
 # ACTUALIZAR PERFIL
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/usuarios/<int:id>/perfil",
@@ -587,9 +587,9 @@ def actualizar_perfil(id):
     })
 
 
-# ==========================================
+# ==========================================================
 # VERIFICAR USUARIO
-# ==========================================
+# ==========================================================
 
 def usuario_existe(usuario_id):
 
@@ -617,9 +617,42 @@ def usuario_existe(usuario_id):
     return usuario is not None
 
 
-# ==========================================
+# ==========================================================
+# VERIFICAR FINCA
+# ==========================================================
+
+def finca_existe(finca_id, usuario_id):
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor()
+
+    sql = """
+        SELECT id
+        FROM fincas
+        WHERE id = %s
+        AND usuario_id = %s
+    """
+
+    cursor.execute(
+        sql,
+        (
+            finca_id,
+            usuario_id
+        )
+    )
+
+    finca = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
+    return finca is not None
+
+
+# ==========================================================
 # AGREGAR CULTIVO
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/cultivos",
@@ -642,6 +675,8 @@ def agregar_cultivo():
     tipo = datos.get("tipo")
     agua = datos.get("agua")
     cosecha = datos.get("cosecha")
+
+    finca_id = datos.get("finca_id")
 
     catalogo_cultivo_id = datos.get(
         "catalogo_cultivo_id"
@@ -684,6 +719,25 @@ def agregar_cultivo():
             )
         }), 400
 
+    # ==========================================
+    # VALIDAR FINCA SI SE INDICA
+    # ==========================================
+
+    if finca_id is not None:
+
+        if not finca_existe(
+            finca_id,
+            usuario_id
+        ):
+
+            return jsonify({
+                "exito": False,
+                "mensaje": (
+                    "La finca no existe "
+                    "o no pertenece al usuario."
+                )
+            }), 400
+
     conexion = conectar_bd()
 
     cursor = conexion.cursor()
@@ -695,10 +749,11 @@ def agregar_cultivo():
             tipo,
             agua,
             cosecha,
+            finca_id,
             catalogo_cultivo_id,
             usuario_id
         )
-        VALUES (%s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 
     valores = (
@@ -706,6 +761,7 @@ def agregar_cultivo():
         tipo,
         agua,
         cosecha,
+        finca_id,
         catalogo_cultivo_id,
         usuario_id
     )
@@ -733,9 +789,9 @@ def agregar_cultivo():
     }), 201
 
 
-# ==========================================
+# ==========================================================
 # OBTENER CULTIVOS DEL USUARIO
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/cultivos",
@@ -794,9 +850,9 @@ def obtener_cultivos():
     return jsonify(cultivos)
 
 
-# ==========================================
+# ==========================================================
 # BUSCAR CULTIVOS DEL CATÁLOGO
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/catalogo-cultivos",
@@ -834,9 +890,9 @@ def obtener_catalogo_cultivos():
     return jsonify(cultivos)
 
 
-# ==========================================
+# ==========================================================
 # OBTENER UN CULTIVO DEL USUARIO
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/cultivos/<int:id>",
@@ -872,7 +928,10 @@ def obtener_cultivo(id):
 
     cursor.execute(
         sql,
-        (id, usuario_id)
+        (
+            id,
+            usuario_id
+        )
     )
 
     cultivo = cursor.fetchone()
@@ -890,9 +949,9 @@ def obtener_cultivo(id):
     return jsonify(cultivo)
 
 
-# ==========================================
+# ==========================================================
 # EDITAR CULTIVO DEL USUARIO
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/cultivos/<int:id>",
@@ -915,6 +974,8 @@ def editar_cultivo(id):
     tipo = datos.get("tipo")
     agua = datos.get("agua")
     cosecha = datos.get("cosecha")
+
+    finca_id = datos.get("finca_id")
 
     catalogo_cultivo_id = datos.get(
         "catalogo_cultivo_id"
@@ -942,6 +1003,25 @@ def editar_cultivo(id):
             )
         }), 400
 
+    # ==========================================
+    # VALIDAR FINCA
+    # ==========================================
+
+    if finca_id is not None:
+
+        if not finca_existe(
+            finca_id,
+            usuario_id
+        ):
+
+            return jsonify({
+                "exito": False,
+                "mensaje": (
+                    "La finca no existe "
+                    "o no pertenece al usuario."
+                )
+            }), 400
+
     conexion = conectar_bd()
 
     cursor = conexion.cursor()
@@ -953,6 +1033,7 @@ def editar_cultivo(id):
             tipo = %s,
             agua = %s,
             cosecha = %s,
+            finca_id = %s,
             catalogo_cultivo_id = %s
         WHERE id = %s
         AND usuario_id = %s
@@ -963,6 +1044,7 @@ def editar_cultivo(id):
         tipo,
         agua,
         cosecha,
+        finca_id,
         catalogo_cultivo_id,
         id,
         usuario_id
@@ -997,9 +1079,9 @@ def editar_cultivo(id):
     })
 
 
-# ==========================================
+# ==========================================================
 # ELIMINAR CULTIVO DEL USUARIO
-# ==========================================
+# ==========================================================
 
 @app.route(
     "/cultivos/<int:id>",
@@ -1031,7 +1113,10 @@ def eliminar_cultivo(id):
 
     cursor.execute(
         sql,
-        (id, usuario_id)
+        (
+            id,
+            usuario_id
+        )
     )
 
     if cursor.rowcount == 0:
@@ -1058,9 +1143,554 @@ def eliminar_cultivo(id):
     })
 
 
-# ==========================================
+# ==========================================================
+# ==========================================================
+#                 MÓDULO DE FINCAS
+# ==========================================================
+# ==========================================================
+
+
+# ==========================================================
+# AGREGAR FINCA
+# ==========================================================
+
+@app.route(
+    "/fincas",
+    methods=["POST"]
+)
+def agregar_finca():
+
+    datos = request.get_json()
+
+    if not datos:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se recibieron datos."
+        }), 400
+
+    usuario_id = datos.get("usuario_id")
+
+    nombre = datos.get("nombre")
+    ubicacion = datos.get("ubicacion")
+    area_total = datos.get("area_total")
+    descripcion = datos.get("descripcion")
+
+    # ==========================================
+    # VALIDAR USUARIO
+    # ==========================================
+
+    if not usuario_id:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Se necesita el usuario."
+        }), 400
+
+    if not usuario_existe(usuario_id):
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El usuario no existe o está inactivo."
+        }), 400
+
+    # ==========================================
+    # VALIDAR DATOS
+    # ==========================================
+
+    if not nombre or not ubicacion:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": (
+                "El nombre y la ubicación "
+                "son obligatorios."
+            )
+        }), 400
+
+    if area_total is None:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El área total es obligatoria."
+        }), 400
+
+    try:
+
+        area_total = float(area_total)
+
+    except (TypeError, ValueError):
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El área debe ser un número válido."
+        }), 400
+
+    if area_total <= 0:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El área debe ser mayor que 0."
+        }), 400
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor()
+
+    sql = """
+        INSERT INTO fincas
+        (
+            nombre,
+            ubicacion,
+            area_total,
+            descripcion,
+            usuario_id
+        )
+        VALUES (%s, %s, %s, %s, %s)
+    """
+
+    valores = (
+        nombre.strip(),
+        ubicacion.strip(),
+        area_total,
+        descripcion.strip() if descripcion else None,
+        usuario_id
+    )
+
+    cursor.execute(
+        sql,
+        valores
+    )
+
+    conexion.commit()
+
+    nuevo_id = cursor.lastrowid
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+
+        "exito": True,
+
+        "mensaje": "Finca agregada correctamente.",
+
+        "id": nuevo_id
+
+    }), 201
+
+
+# ==========================================================
+# OBTENER FINCAS DEL USUARIO
+# ==========================================================
+
+@app.route(
+    "/fincas",
+    methods=["GET"]
+)
+def obtener_fincas():
+
+    usuario_id = request.args.get(
+        "usuario_id",
+        type=int
+    )
+
+    if not usuario_id:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Se necesita el usuario."
+        }), 400
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor(
+        dictionary=True
+    )
+
+    sql = """
+        SELECT
+            id,
+            nombre,
+            ubicacion,
+            area_total,
+            descripcion,
+            usuario_id
+        FROM fincas
+        WHERE usuario_id = %s
+        ORDER BY id DESC
+    """
+
+    cursor.execute(
+        sql,
+        (usuario_id,)
+    )
+
+    fincas = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+
+        "exito": True,
+
+        "fincas": fincas
+
+    })
+
+
+# ==========================================================
+# OBTENER UNA FINCA DEL USUARIO
+# ==========================================================
+
+@app.route(
+    "/fincas/<int:id>",
+    methods=["GET"]
+)
+def obtener_finca(id):
+
+    usuario_id = request.args.get(
+        "usuario_id",
+        type=int
+    )
+
+    if not usuario_id:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Se necesita el usuario."
+        }), 400
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor(
+        dictionary=True
+    )
+
+    sql = """
+        SELECT
+            id,
+            nombre,
+            ubicacion,
+            area_total,
+            descripcion,
+            usuario_id
+        FROM fincas
+        WHERE id = %s
+        AND usuario_id = %s
+    """
+
+    cursor.execute(
+        sql,
+        (
+            id,
+            usuario_id
+        )
+    )
+
+    finca = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
+    if finca is None:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Finca no encontrada."
+        }), 404
+
+    return jsonify({
+
+        "exito": True,
+
+        "finca": finca
+
+    })
+
+
+# ==========================================================
+# EDITAR FINCA DEL USUARIO
+# ==========================================================
+
+@app.route(
+    "/fincas/<int:id>",
+    methods=["PUT"]
+)
+def editar_finca(id):
+
+    datos = request.get_json()
+
+    if not datos:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se recibieron datos."
+        }), 400
+
+    usuario_id = datos.get("usuario_id")
+
+    nombre = datos.get("nombre")
+    ubicacion = datos.get("ubicacion")
+    area_total = datos.get("area_total")
+    descripcion = datos.get("descripcion")
+
+    if not usuario_id:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Se necesita el usuario."
+        }), 400
+
+    if not nombre or not ubicacion:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": (
+                "El nombre y la ubicación "
+                "son obligatorios."
+            )
+        }), 400
+
+    if area_total is None:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El área total es obligatoria."
+        }), 400
+
+    try:
+
+        area_total = float(area_total)
+
+    except (TypeError, ValueError):
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El área debe ser un número válido."
+        }), 400
+
+    if area_total <= 0:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "El área debe ser mayor que 0."
+        }), 400
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor()
+
+    sql = """
+        UPDATE fincas
+        SET
+            nombre = %s,
+            ubicacion = %s,
+            area_total = %s,
+            descripcion = %s
+        WHERE id = %s
+        AND usuario_id = %s
+    """
+
+    valores = (
+        nombre.strip(),
+        ubicacion.strip(),
+        area_total,
+        descripcion.strip() if descripcion else None,
+        id,
+        usuario_id
+    )
+
+    cursor.execute(
+        sql,
+        valores
+    )
+
+    if cursor.rowcount == 0:
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Finca no encontrada."
+        }), 404
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+
+        "exito": True,
+
+        "mensaje": "Finca actualizada correctamente."
+
+    })
+
+
+# ==========================================================
+# ELIMINAR FINCA DEL USUARIO
+# ==========================================================
+
+@app.route(
+    "/fincas/<int:id>",
+    methods=["DELETE"]
+)
+def eliminar_finca(id):
+
+    usuario_id = request.args.get(
+        "usuario_id",
+        type=int
+    )
+
+    if not usuario_id:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Se necesita el usuario."
+        }), 400
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor()
+
+    sql = """
+        DELETE FROM fincas
+        WHERE id = %s
+        AND usuario_id = %s
+    """
+
+    cursor.execute(
+        sql,
+        (
+            id,
+            usuario_id
+        )
+    )
+
+    if cursor.rowcount == 0:
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Finca no encontrada."
+        }), 404
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+
+        "exito": True,
+
+        "mensaje": "Finca eliminada correctamente."
+
+    })
+
+
+# ==========================================================
+# ESTADÍSTICAS DE FINCAS
+# ==========================================================
+
+@app.route(
+    "/fincas/estadisticas",
+    methods=["GET"]
+)
+def estadisticas_fincas():
+
+    usuario_id = request.args.get(
+        "usuario_id",
+        type=int
+    )
+
+    if not usuario_id:
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "Se necesita el usuario."
+        }), 400
+
+    conexion = conectar_bd()
+
+    cursor = conexion.cursor(
+        dictionary=True
+    )
+
+    # ==========================================
+    # TOTAL DE FINCAS Y ÁREA
+    # ==========================================
+
+    sql_fincas = """
+        SELECT
+            COUNT(*) AS total_fincas,
+            COALESCE(
+                SUM(area_total),
+                0
+            ) AS area_total
+        FROM fincas
+        WHERE usuario_id = %s
+    """
+
+    cursor.execute(
+        sql_fincas,
+        (usuario_id,)
+    )
+
+    datos_fincas = cursor.fetchone()
+
+    # ==========================================
+    # CULTIVOS ACTIVOS
+    # ==========================================
+
+    sql_cultivos = """
+        SELECT
+            COUNT(*) AS cultivos_activos
+        FROM cultivos
+        WHERE usuario_id = %s
+        AND estado = 'Activo'
+    """
+
+    cursor.execute(
+        sql_cultivos,
+        (usuario_id,)
+    )
+
+    datos_cultivos = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
+    return jsonify({
+
+        "exito": True,
+
+        "estadisticas": {
+
+            "total_fincas": datos_fincas["total_fincas"],
+
+            "area_total": float(
+                datos_fincas["area_total"]
+            ),
+
+            "cultivos_activos": datos_cultivos[
+                "cultivos_activos"
+            ]
+
+        }
+
+    })
+
+
+# ==========================================================
 # EJECUTAR SERVIDOR
-# ==========================================
+# ==========================================================
 
 if __name__ == "__main__":
 

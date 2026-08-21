@@ -1,0 +1,1505 @@
+/* =========================================================
+   HARVESTX — FINCAS
+   Estilos exclusivos del módulo Fincas
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --finca-verde: #2e7d32;
+    --finca-verde-claro: #4caf50;
+    --finca-verde-suave: #f0fdf4;
+
+    --finca-azul: #1976d2;
+    --finca-azul-suave: #f0f7ff;
+
+    --finca-naranja: #f57c00;
+    --finca-naranja-suave: #fff7ed;
+
+    --finca-borde: rgba(128, 128, 128, 0.15);
+
+    --finca-sombra:
+        0 4px 18px rgba(0, 0, 0, 0.05);
+
+    --finca-sombra-hover:
+        0 12px 30px rgba(0, 0, 0, 0.10);
+
+    --finca-radio: 14px;
+
+}
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.fincas-page {
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.fincas-hero {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 24px 26px;
+
+    position: relative;
+    overflow: hidden;
+
+}
+
+
+.fincas-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -70px;
+    top: -90px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(76, 175, 80, 0.07);
+
+    pointer-events: none;
+
+}
+
+
+.fincas-hero-info {
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    position: relative;
+    z-index: 1;
+
+}
+
+
+.fincas-hero-icon {
+
+    width: 58px;
+    height: 58px;
+
+    min-width: 58px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 14px;
+
+    background: var(--finca-verde-suave);
+
+    color: var(--finca-verde);
+
+    font-size: 25px;
+
+}
+
+
+.fincas-kicker {
+
+    display: block;
+
+    font-size: 0.65rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    color: var(--finca-verde-claro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.fincas-hero h2 {
+
+    font-size: 1.25rem;
+
+    font-weight: 700;
+
+    color: var(--texto-oscuro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.fincas-hero p {
+
+    font-size: 0.78rem;
+
+    color: var(--texto-claro);
+
+}
+
+
+.btn-nueva-finca {
+
+    position: relative;
+
+    z-index: 2;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   ESTADÍSTICAS
+========================================================= */
+
+.fincas-stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+}
+
+
+.finca-stat-total,
+.finca-stat-area,
+.finca-stat-cultivos {
+
+    min-height: 145px;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+.finca-stat-total::before,
+.finca-stat-area::before,
+.finca-stat-cultivos::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+}
+
+
+/* TOTAL */
+
+.finca-stat-total {
+
+    background: #2e7d32;
+
+    color: white;
+
+}
+
+
+.finca-stat-total::before {
+
+    background: #66bb6a;
+
+}
+
+
+.finca-stat-total .stat-icon {
+
+    background:
+        rgba(255,255,255,0.16);
+
+    color: white;
+
+}
+
+
+.finca-stat-total .stat-info span,
+.finca-stat-total .stat-info h3,
+.finca-stat-total .stat-info small {
+
+    color: white;
+
+}
+
+
+/* ÁREA */
+
+.finca-stat-area {
+
+    background: var(--finca-verde-suave);
+
+}
+
+
+.finca-stat-area::before {
+
+    background: var(--finca-verde-claro);
+
+}
+
+
+.finca-stat-area .stat-icon {
+
+    background: white;
+
+    color: var(--finca-verde);
+
+}
+
+
+.finca-stat-area .stat-info h3 {
+
+    color: var(--finca-verde);
+
+}
+
+
+/* CULTIVOS */
+
+.finca-stat-cultivos {
+
+    background: var(--finca-azul-suave);
+
+}
+
+
+.finca-stat-cultivos::before {
+
+    background: var(--finca-azul);
+
+}
+
+
+.finca-stat-cultivos .stat-icon {
+
+    background: white;
+
+    color: var(--finca-azul);
+
+}
+
+
+.finca-stat-cultivos .stat-info h3 {
+
+    color: var(--finca-azul);
+
+}
+
+
+/* ICONOS */
+
+.finca-stat-total .stat-icon,
+.finca-stat-area .stat-icon,
+.finca-stat-cultivos .stat-icon {
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 11px;
+
+}
+
+
+/* =========================================================
+   LISTA DE FINCAS
+========================================================= */
+
+.fincas-list-card {
+
+    padding: 0;
+
+    overflow: hidden;
+
+}
+
+
+.fincas-list-header {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 22px 24px;
+
+    border-bottom:
+        1px solid var(--finca-borde);
+
+}
+
+
+.section-kicker {
+
+    display: block;
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+
+    color: var(--finca-verde-claro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.fincas-list-header h3 {
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    color: var(--texto-oscuro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.fincas-list-header p {
+
+    font-size: 0.75rem;
+
+    color: var(--texto-claro);
+
+}
+
+
+/* CONTADOR */
+
+.fincas-count {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: var(--finca-verde-suave);
+
+    color: var(--finca-verde);
+
+    font-size: 0.7rem;
+
+    font-weight: 500;
+
+}
+
+
+.fincas-count i {
+
+    font-size: 0.8rem;
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.fincas-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    padding: 22px 24px;
+
+}
+
+
+/* =========================================================
+   TARJETA FINCA
+========================================================= */
+
+.finca-card {
+
+    position: relative;
+
+    background: var(--fondo-tarjeta);
+
+    border:
+        1px solid var(--finca-borde);
+
+    border-radius: var(--finca-radio);
+
+    padding: 18px;
+
+    box-shadow: var(--finca-sombra);
+
+    transition: var(--transicion);
+
+    overflow: hidden;
+
+}
+
+
+.finca-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: var(--finca-sombra-hover);
+
+    border-color:
+        rgba(76, 175, 80, 0.30);
+
+}
+
+
+.finca-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: var(--finca-verde-claro);
+
+}
+
+
+/* =========================================================
+   HEADER TARJETA
+========================================================= */
+
+.finca-card-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+
+}
+
+
+.finca-card-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+}
+
+
+.finca-card-icon {
+
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 10px;
+
+    background: var(--finca-verde-suave);
+
+    color: var(--finca-verde);
+
+    font-size: 17px;
+
+}
+
+
+.finca-card-title h3 {
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    color: var(--texto-oscuro);
+
+    margin: 0;
+
+}
+
+
+.finca-card-title span {
+
+    display: block;
+
+    font-size: 0.68rem;
+
+    color: var(--texto-claro);
+
+    margin-top: 2px;
+
+}
+
+
+/* =========================================================
+   ACCIONES
+========================================================= */
+
+.finca-actions {
+
+    display: flex;
+
+    gap: 5px;
+
+}
+
+
+.finca-action-btn {
+
+    width: 30px;
+    height: 30px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--texto-claro);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: var(--transicion);
+
+}
+
+
+.finca-action-btn:hover {
+
+    background: var(--finca-verde-suave);
+
+    color: var(--finca-verde);
+
+}
+
+
+.finca-action-btn.delete:hover {
+
+    background: var(--bg-light-red);
+
+    color: var(--text-red);
+
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
+
+.finca-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+}
+
+
+.finca-info-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 0.75rem;
+
+    color: var(--texto-claro);
+
+}
+
+
+.finca-info-item i {
+
+    width: 20px;
+
+    color: var(--finca-verde-claro);
+
+    text-align: center;
+
+}
+
+
+.finca-info-item strong {
+
+    color: var(--texto-oscuro);
+
+    font-weight: 500;
+
+}
+
+
+/* =========================================================
+   DESCRIPCIÓN
+========================================================= */
+
+.finca-description {
+
+    margin-top: 15px;
+
+    padding-top: 13px;
+
+    border-top:
+        1px solid var(--finca-borde);
+
+    font-size: 0.7rem;
+
+    line-height: 1.6;
+
+    color: var(--texto-claro);
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.finca-card-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 16px;
+
+    padding-top: 13px;
+
+    border-top:
+        1px solid var(--finca-borde);
+
+}
+
+
+.finca-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    font-size: 0.72rem;
+
+    color: var(--texto-claro);
+
+}
+
+
+.finca-area i {
+
+    color: var(--finca-verde);
+
+}
+
+
+.finca-area strong {
+
+    color: var(--texto-oscuro);
+
+}
+
+
+/* =========================================================
+   ESTADO VACÍO
+========================================================= */
+
+.empty-state {
+
+    grid-column: 1 / -1;
+
+    min-height: 280px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 35px 20px;
+
+}
+
+
+.empty-state-icon {
+
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: var(--finca-verde-suave);
+
+    color: var(--finca-verde);
+
+    font-size: 28px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.empty-state h3 {
+
+    font-size: 0.95rem;
+
+    color: var(--texto-oscuro);
+
+    margin-bottom: 6px;
+
+}
+
+
+.empty-state p {
+
+    max-width: 400px;
+
+    font-size: 0.75rem;
+
+    color: var(--texto-claro);
+
+    line-height: 1.6;
+
+    margin-bottom: 18px;
+
+}
+
+
+/* =========================================================
+   MODAL DE FINCA
+   CORRECCIÓN PRINCIPAL:
+   FONDO SÓLIDO PARA EVITAR TRANSPARENCIA
+========================================================= */
+
+.finca-modal-overlay {
+
+    padding: 20px;
+
+}
+
+
+/*
+   IMPORTANTE:
+   Se fuerza el fondo del modal para evitar
+   que otro CSS global lo deje transparente.
+*/
+
+.finca-modal {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    background: #ffffff !important;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.20);
+
+    opacity: 1;
+
+}
+
+
+/* =========================================================
+   HEADER MODAL
+========================================================= */
+
+.finca-modal-header {
+
+    padding: 22px 24px;
+
+    margin-bottom: 0;
+
+    border-bottom:
+        1px solid var(--finca-borde);
+
+    background: #ffffff;
+
+}
+
+
+.finca-modal-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.finca-modal-icon {
+
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 11px;
+
+    background: var(--finca-verde-suave);
+
+    color: var(--finca-verde);
+
+    font-size: 18px;
+
+}
+
+
+.finca-modal-title > div:last-child > span {
+
+    display: block;
+
+    font-size: 0.6rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--finca-verde-claro);
+
+    margin-bottom: 2px;
+
+}
+
+
+.finca-modal-title h2 {
+
+    font-size: 1.05rem;
+
+    color: var(--texto-oscuro);
+
+    margin-bottom: 2px;
+
+}
+
+
+.finca-modal-title p {
+
+    font-size: 0.7rem;
+
+    color: var(--texto-claro);
+
+}
+
+
+/* =========================================================
+   BOTÓN CERRAR
+========================================================= */
+
+.finca-modal .modal-close {
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--texto-claro);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: var(--transicion);
+
+}
+
+
+.finca-modal .modal-close:hover {
+
+    background: var(--bg-light-red);
+
+    color: var(--text-red);
+
+}
+
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+#formFinca {
+
+    padding: 24px;
+
+    background: #ffffff;
+
+}
+
+
+.finca-form-group {
+
+    margin-bottom: 17px;
+
+}
+
+
+.finca-form-group label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 7px;
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+
+    color: var(--texto-oscuro);
+
+}
+
+
+.finca-form-group label i {
+
+    color: var(--finca-verde-claro);
+
+    font-size: 0.75rem;
+
+}
+
+
+.finca-form-group input,
+.finca-form-group textarea {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border:
+        1px solid var(--finca-borde);
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: var(--texto-oscuro);
+
+    font-family: inherit;
+
+    font-size: 0.8rem;
+
+    outline: none;
+
+    transition: var(--transicion);
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+}
+
+
+.finca-form-group input::placeholder,
+.finca-form-group textarea::placeholder {
+
+    color: var(--texto-muy-claro);
+
+}
+
+
+.finca-form-group input:focus,
+.finca-form-group textarea:focus {
+
+    border-color: var(--finca-verde-claro);
+
+    box-shadow:
+        0 0 0 3px rgba(76, 175, 80, 0.08);
+
+}
+
+
+/* =========================================================
+   INPUT CON UNIDAD
+========================================================= */
+
+.input-with-unit {
+
+    position: relative;
+
+}
+
+
+.input-with-unit input {
+
+    padding-right: 48px;
+
+}
+
+
+.input-with-unit span {
+
+    position: absolute;
+
+    right: 13px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+
+    color: var(--finca-verde);
+
+}
+
+
+#extensionFinca::-webkit-inner-spin-button,
+#extensionFinca::-webkit-outer-spin-button {
+
+    opacity: 1;
+
+}
+
+
+/* =========================================================
+   AYUDA
+========================================================= */
+
+.campo-ayuda {
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 0.65rem;
+
+    color: var(--texto-claro);
+
+}
+
+
+/* =========================================================
+   BOTONES MODAL
+========================================================= */
+
+.finca-modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding-top: 5px;
+
+}
+
+
+.finca-modal-actions button {
+
+    min-height: 38px;
+
+}
+
+
+/* =========================================================
+   MODO OSCURO
+========================================================= */
+
+[data-theme="dark"] {
+
+    --finca-sombra:
+        0 5px 20px rgba(0, 0, 0, 0.35);
+
+    --finca-sombra-hover:
+        0 12px 30px rgba(0, 0, 0, 0.50);
+
+}
+
+
+/*
+   CORRECCIÓN DEL MODAL EN DARK MODE
+*/
+
+[data-theme="dark"] .finca-modal {
+
+    background: #1f1f1f !important;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55);
+
+}
+
+
+[data-theme="dark"] .finca-modal-header {
+
+    background: #1f1f1f;
+
+    border-color:
+        rgba(255,255,255,0.08);
+
+}
+
+
+[data-theme="dark"] #formFinca {
+
+    background: #1f1f1f;
+
+}
+
+
+[data-theme="dark"] .finca-hero-icon {
+
+    background:
+        rgba(76, 175, 80, 0.12);
+
+}
+
+
+[data-theme="dark"] .finca-stat-area {
+
+    background:
+        rgba(56, 142, 60, 0.10);
+
+}
+
+
+[data-theme="dark"] .finca-stat-area .stat-icon,
+[data-theme="dark"] .finca-stat-cultivos .stat-icon {
+
+    background: #242424;
+
+}
+
+
+[data-theme="dark"] .finca-stat-cultivos {
+
+    background:
+        rgba(25, 118, 210, 0.10);
+
+}
+
+
+[data-theme="dark"] .fincas-count {
+
+    background:
+        rgba(76, 175, 80, 0.10);
+
+}
+
+
+[data-theme="dark"] .finca-card {
+
+    border-color:
+        rgba(255,255,255,0.08);
+
+}
+
+
+[data-theme="dark"] .finca-card-icon,
+[data-theme="dark"] .finca-modal-icon,
+[data-theme="dark"] .empty-state-icon {
+
+    background:
+        rgba(76, 175, 80, 0.10);
+
+}
+
+
+[data-theme="dark"] .finca-form-group input,
+[data-theme="dark"] .finca-form-group textarea {
+
+    background: #2a2a2a;
+
+    color: #ffffff;
+
+    border-color:
+        rgba(255,255,255,0.12);
+
+}
+
+
+[data-theme="dark"] .finca-form-group input::placeholder,
+[data-theme="dark"] .finca-form-group textarea::placeholder {
+
+    color: #888;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .fincas-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET PEQUEÑA
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .fincas-stats {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+    .fincas-hero {
+
+        align-items: flex-start;
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MÓVIL
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .fincas-hero {
+
+        flex-direction: column;
+
+        gap: 18px;
+
+    }
+
+
+    .btn-nueva-finca {
+
+        width: 100%;
+
+    }
+
+
+    .fincas-stats {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .fincas-grid {
+
+        grid-template-columns: 1fr;
+
+        padding: 18px;
+
+    }
+
+
+    .fincas-list-header {
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+    }
+
+
+    .fincas-count {
+
+        display: none;
+
+    }
+
+
+    .finca-modal {
+
+        max-height: 90vh;
+
+        overflow-y: auto;
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MÓVIL PEQUEÑO
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .fincas-hero {
+
+        padding: 20px;
+
+    }
+
+
+    .fincas-hero-info {
+
+        align-items: flex-start;
+
+    }
+
+
+    .fincas-hero-icon {
+
+        width: 48px;
+        height: 48px;
+
+        min-width: 48px;
+
+        font-size: 20px;
+
+    }
+
+
+    .fincas-hero h2 {
+
+        font-size: 1.05rem;
+
+    }
+
+
+    .fincas-hero p {
+
+        font-size: 0.7rem;
+
+    }
+
+
+    .fincas-list-header {
+
+        padding: 18px;
+
+    }
+
+
+    #formFinca {
+
+        padding: 20px;
+
+    }
+
+
+    .finca-modal-header {
+
+        padding: 18px 20px;
+
+    }
+
+
+    .finca-modal-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .finca-modal-actions button {
+
+        width: 100%;
+
+    }
+
+
+    .finca-card {
+
+        padding: 16px;
+
+    }
+
+}
