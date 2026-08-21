@@ -1,0 +1,1255 @@
+/* =========================================================
+   HARVESTX — MONITOREO CLIMÁTICO
+========================================================= */
+
+:root {
+
+    --clima-verde: #2e7d32;
+    --clima-verde-claro: #4caf50;
+    --clima-verde-suave: #f0fdf4;
+
+    --clima-azul: #1976d2;
+    --clima-azul-suave: #eff6ff;
+
+    --clima-celeste: #0288d1;
+    --clima-celeste-suave: #e0f7fa;
+
+    --clima-naranja: #f57c00;
+    --clima-naranja-suave: #fff7ed;
+
+    --clima-borde: rgba(128, 128, 128, 0.15);
+
+    --clima-sombra:
+        0 4px 18px rgba(0, 0, 0, 0.05);
+
+    --clima-sombra-hover:
+        0 10px 25px rgba(0, 0, 0, 0.09);
+
+}
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.clima-page {
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.clima-hero {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 24px 26px;
+
+    position: relative;
+    overflow: hidden;
+
+}
+
+
+.clima-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    right: -70px;
+    top: -100px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(76, 175, 80, 0.07);
+
+    pointer-events: none;
+
+}
+
+
+.clima-hero-info {
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    position: relative;
+    z-index: 1;
+
+}
+
+
+.clima-hero-icon {
+
+    width: 58px;
+    height: 58px;
+
+    min-width: 58px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 14px;
+
+    background:
+        var(--clima-verde-suave);
+
+    color:
+        var(--clima-verde);
+
+    font-size: 25px;
+
+}
+
+
+.clima-kicker {
+
+    display: block;
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    color:
+        var(--clima-verde-claro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.clima-hero h2 {
+
+    font-size: 1.25rem;
+
+    font-weight: 700;
+
+    color:
+        var(--texto-oscuro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.clima-hero p {
+
+    font-size: 0.78rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.clima-location {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    background:
+        var(--clima-verde-suave);
+
+    color:
+        var(--clima-verde);
+
+    position: relative;
+    z-index: 1;
+
+}
+
+
+.clima-location > i {
+
+    font-size: 18px;
+
+}
+
+
+.clima-location span {
+
+    display: block;
+
+    font-size: 0.62rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.clima-location strong {
+
+    display: block;
+
+    font-size: 0.75rem;
+
+}
+
+
+/* =========================================================
+   ESTADO DE CONEXIÓN
+========================================================= */
+
+.clima-status {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 18px;
+
+}
+
+
+.clima-status-left {
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 0.72rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #999;
+
+}
+
+
+.status-dot.online {
+
+    background: #4caf50;
+
+    box-shadow:
+        0 0 0 4px rgba(76,175,80,0.12);
+
+}
+
+
+.status-dot.offline {
+
+    background: #e53935;
+
+    box-shadow:
+        0 0 0 4px rgba(229,57,53,0.12);
+
+}
+
+
+.clima-update {
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 0.68rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.clima-update strong {
+
+    color:
+        var(--texto-oscuro);
+
+}
+
+
+/* =========================================================
+   TÍTULOS DE SECCIÓN
+========================================================= */
+
+.clima-section-title {
+
+    padding: 5px 2px;
+
+}
+
+
+.clima-section-title span {
+
+    display: block;
+
+    font-size: 0.61rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    color:
+        var(--clima-verde-claro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.clima-section-title h3 {
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    color:
+        var(--texto-oscuro);
+
+}
+
+
+/* =========================================================
+   TARJETAS ACTUALES
+========================================================= */
+
+.clima-current-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+
+}
+
+
+.clima-card {
+
+    min-height: 130px;
+
+    padding: 19px;
+
+    border-radius: 14px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow:
+        var(--clima-sombra);
+
+    transition:
+        var(--transicion);
+
+    background:
+        var(--fondo-tarjeta);
+
+    border:
+        1px solid var(--clima-borde);
+
+}
+
+
+.clima-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        var(--clima-sombra-hover);
+
+}
+
+
+.clima-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+}
+
+
+.clima-card-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 11px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 17px;
+
+    margin-bottom: 13px;
+
+}
+
+
+.clima-card-info span {
+
+    display: block;
+
+    font-size: 0.68rem;
+
+    color:
+        var(--texto-claro);
+
+    margin-bottom: 2px;
+
+}
+
+
+.clima-card-info strong {
+
+    display: block;
+
+    font-size: 1.35rem;
+
+    font-weight: 700;
+
+    margin-bottom: 2px;
+
+}
+
+
+.clima-card-info small {
+
+    display: block;
+
+    font-size: 0.63rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+/* TEMPERATURA */
+
+.clima-temperature {
+
+    background:
+        var(--clima-naranja-suave);
+
+}
+
+
+.clima-temperature::before {
+
+    background:
+        var(--clima-naranja);
+
+}
+
+
+.clima-temperature .clima-card-icon {
+
+    background:
+        white;
+
+    color:
+        var(--clima-naranja);
+
+}
+
+
+.clima-temperature .clima-card-info strong {
+
+    color:
+        var(--clima-naranja);
+
+}
+
+
+/* HUMEDAD */
+
+.clima-humidity {
+
+    background:
+        var(--clima-celeste-suave);
+
+}
+
+
+.clima-humidity::before {
+
+    background:
+        var(--clima-celeste);
+
+}
+
+
+.clima-humidity .clima-card-icon {
+
+    background:
+        white;
+
+    color:
+        var(--clima-celeste);
+
+}
+
+
+.clima-humidity .clima-card-info strong {
+
+    color:
+        var(--clima-celeste);
+
+}
+
+
+/* LLUVIA */
+
+.clima-rain {
+
+    background:
+        var(--clima-azul-suave);
+
+}
+
+
+.clima-rain::before {
+
+    background:
+        var(--clima-azul);
+
+}
+
+
+.clima-rain .clima-card-icon {
+
+    background:
+        white;
+
+    color:
+        var(--clima-azul);
+
+}
+
+
+.clima-rain .clima-card-info strong {
+
+    color:
+        var(--clima-azul);
+
+}
+
+
+/* VIENTO */
+
+.clima-wind {
+
+    background:
+        var(--clima-verde-suave);
+
+}
+
+
+.clima-wind::before {
+
+    background:
+        var(--clima-verde-claro);
+
+}
+
+
+.clima-wind .clima-card-icon {
+
+    background:
+        white;
+
+    color:
+        var(--clima-verde);
+
+}
+
+
+.clima-wind .clima-card-info strong {
+
+    color:
+        var(--clima-verde);
+
+}
+
+
+/* =========================================================
+   CLIMA PRINCIPAL
+========================================================= */
+
+.clima-main-card {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 25px;
+
+}
+
+
+.clima-main-weather {
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+
+.clima-weather-icon {
+
+    width: 78px;
+    height: 78px;
+
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        var(--clima-verde-suave);
+
+    color:
+        var(--clima-verde);
+
+    font-size: 34px;
+
+}
+
+
+.clima-weather-info span {
+
+    display: block;
+
+    font-size: 0.61rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color:
+        var(--clima-verde-claro);
+
+    margin-bottom: 4px;
+
+}
+
+
+.clima-weather-info h2 {
+
+    font-size: 1.2rem;
+
+    color:
+        var(--texto-oscuro);
+
+    margin-bottom: 4px;
+
+}
+
+
+.clima-weather-info p {
+
+    font-size: 0.72rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.clima-main-extra {
+
+    display: flex;
+
+    gap: 30px;
+
+}
+
+
+.clima-main-extra > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+}
+
+
+.clima-main-extra i {
+
+    color:
+        var(--clima-verde-claro);
+
+    font-size: 16px;
+
+}
+
+
+.clima-main-extra span {
+
+    font-size: 0.63rem;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.clima-main-extra strong {
+
+    font-size: 0.85rem;
+
+    color:
+        var(--texto-oscuro);
+
+}
+
+
+/* =========================================================
+   PRONÓSTICO
+========================================================= */
+
+.clima-forecast {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 14px;
+
+}
+
+
+.forecast-card {
+
+    padding: 18px;
+
+    border-radius: 13px;
+
+    background:
+        var(--fondo-tarjeta);
+
+    border:
+        1px solid var(--clima-borde);
+
+    box-shadow:
+        var(--clima-sombra);
+
+    text-align: center;
+
+}
+
+
+.forecast-card .forecast-day {
+
+    font-size: 0.7rem;
+
+    font-weight: 600;
+
+    color:
+        var(--texto-oscuro);
+
+    margin-bottom: 10px;
+
+}
+
+
+.forecast-card .forecast-icon {
+
+    font-size: 26px;
+
+    color:
+        var(--clima-verde);
+
+    margin-bottom: 10px;
+
+}
+
+
+.forecast-card .forecast-condition {
+
+    font-size: 0.65rem;
+
+    color:
+        var(--texto-claro);
+
+    min-height: 30px;
+
+}
+
+
+.forecast-temperature {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+}
+
+
+.forecast-max {
+
+    font-weight: 700;
+
+    color:
+        var(--texto-oscuro);
+
+}
+
+
+.forecast-min {
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+.forecast-rain {
+
+    display: block;
+
+    margin-top: 9px;
+
+    font-size: 0.62rem;
+
+    color:
+        var(--clima-azul);
+
+}
+
+
+/* =========================================================
+   CARGANDO
+========================================================= */
+
+.clima-loading {
+
+    grid-column: 1 / -1;
+
+    min-height: 130px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    color:
+        var(--texto-claro);
+
+    font-size: 0.75rem;
+
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
+
+.clima-info-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 17px 20px;
+
+}
+
+
+.clima-info-icon {
+
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 10px;
+
+    background:
+        var(--clima-verde-suave);
+
+    color:
+        var(--clima-verde);
+
+}
+
+
+.clima-info-card strong {
+
+    display: block;
+
+    font-size: 0.75rem;
+
+    color:
+        var(--texto-oscuro);
+
+    margin-bottom: 3px;
+
+}
+
+
+.clima-info-card p {
+
+    font-size: 0.67rem;
+
+    line-height: 1.5;
+
+    color:
+        var(--texto-claro);
+
+}
+
+
+/* =========================================================
+   MODO OSCURO
+========================================================= */
+
+[data-theme="dark"] {
+
+    --clima-sombra:
+        0 5px 20px rgba(0,0,0,0.35);
+
+    --clima-sombra-hover:
+        0 12px 30px rgba(0,0,0,0.50);
+
+}
+
+
+[data-theme="dark"] .clima-hero-icon {
+
+    background:
+        rgba(76,175,80,0.10);
+
+}
+
+
+[data-theme="dark"] .clima-location {
+
+    background:
+        rgba(76,175,80,0.10);
+
+}
+
+
+[data-theme="dark"] .clima-card {
+
+    border-color:
+        rgba(255,255,255,0.08);
+
+}
+
+
+[data-theme="dark"] .clima-temperature {
+
+    background:
+        rgba(245,124,0,0.08);
+
+}
+
+
+[data-theme="dark"] .clima-humidity {
+
+    background:
+        rgba(2,136,209,0.08);
+
+}
+
+
+[data-theme="dark"] .clima-rain {
+
+    background:
+        rgba(25,118,210,0.08);
+
+}
+
+
+[data-theme="dark"] .clima-wind {
+
+    background:
+        rgba(76,175,80,0.08);
+
+}
+
+
+[data-theme="dark"] .clima-card-icon {
+
+    background:
+        #242424;
+
+}
+
+
+[data-theme="dark"] .clima-weather-icon {
+
+    background:
+        rgba(76,175,80,0.10);
+
+}
+
+
+[data-theme="dark"] .forecast-card {
+
+    border-color:
+        rgba(255,255,255,0.08);
+
+}
+
+
+[data-theme="dark"] .clima-info-icon {
+
+    background:
+        rgba(76,175,80,0.10);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .clima-current-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .clima-forecast {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .clima-hero {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
+
+    }
+
+
+    .clima-location {
+
+        width: 100%;
+
+    }
+
+
+    .clima-main-card {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 25px;
+
+    }
+
+
+    .clima-main-extra {
+
+        width: 100%;
+
+        justify-content: space-around;
+
+    }
+
+
+    .clima-forecast {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .clima-current-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .clima-forecast {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .clima-status {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+
+    }
+
+
+    .clima-main-weather {
+
+        align-items: flex-start;
+
+    }
+
+
+    .clima-weather-icon {
+
+        width: 60px;
+        height: 60px;
+
+        min-width: 60px;
+
+        font-size: 25px;
+
+    }
+
+
+    .clima-main-extra {
+
+        gap: 15px;
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .clima-hero {
+
+        padding: 20px;
+
+    }
+
+
+    .clima-hero-info {
+
+        align-items: flex-start;
+
+    }
+
+
+    .clima-hero-icon {
+
+        width: 48px;
+        height: 48px;
+
+        min-width: 48px;
+
+        font-size: 20px;
+
+    }
+
+
+    .clima-hero h2 {
+
+        font-size: 1.05rem;
+
+    }
+
+
+    .clima-hero p {
+
+        font-size: 0.7rem;
+
+    }
+
+
+    .clima-main-card {
+
+        padding: 20px;
+
+    }
+
+
+    .clima-main-extra {
+
+        flex-wrap: wrap;
+
+        justify-content: flex-start;
+
+    }
+
+}
