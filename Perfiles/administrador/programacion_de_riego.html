@@ -2,851 +2,604 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarvestX - Programación de Riego</title>
 
-    <title>HarvestX</title>
-
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet"
-          href="../../CSS/paginas/administrador.css">
-
+    <!-- CSS PRINCIPAL Y DE RIEGO -->
+    <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+    
     <!-- FONT AWESOME -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+    <style>
+        /* Variables integradas de tu paleta personalizada */
+        :root {
+            --verde-barra: #1D4F37;
+            --verde-oscuro-contraste: #102B1B;
+            --fondo-pagina: #F2F9EF;
+            --texto-principal: #002300;
+            --barra-mes: #8EB156;
+            --dias-semana: #78916C;
+            --dia-cosecha: #D9FC8D;
+            --dias-no-seleccionados: #C4FFD4;
+            --fila-par: #D5FFFB;
+            --fila-impar: #E0FED4;
+            --estado-creciendo: #659C62;
+            --estado-alerta: #BF4842;
+        }
+
+        /* Estilos del Módulo de Riego */
+        .riego-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .metric-card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .metric-icon {
+            font-size: 24px;
+            color: var(--verde-barra);
+        }
+
+        .metric-data h4 {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .metric-data .val {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--texto-principal);
+        }
+
+        .main-riego-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .main-riego-grid { grid-template-columns: 1fr; }
+        }
+
+        .panel-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .panel-card h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--texto-principal);
+            border-bottom: 2px solid var(--fondo-pagina);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .btn-action {
+            width: 100%;
+            background-color: var(--verde-barra);
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: var(--verde-oscuro-contraste);
+        }
+
+        /* Calendario */
+        .cal-header {
+            background: var(--barra-mes);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .cal-days-title {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: var(--dias-semana);
+            color: white;
+            text-align: center;
+            font-size: 0.75rem;
+            padding: 5px 0;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            padding-top: 8px;
+        }
+
+        .cal-day {
+            background: var(--dias-no-seleccionados);
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .cal-day.programado { background: var(--dia-cosecha); font-weight: bold; }
+        .cal-day.hoy { background: var(--verde-barra); color: white; font-weight: bold; }
+
+        /* Auto Riego */
+        .auto-box {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .auto-icon-circle {
+            width: 70px;
+            height: 70px;
+            background: var(--verde-barra);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 10px;
+        }
+
+        .bottom-riego-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-riego-grid { grid-template-columns: 1fr; }
+        }
+
+        .riego-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .riego-table th {
+            background: var(--barra-mes);
+            color: white;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .riego-table tr:nth-child(even) { background: var(--fila-par); }
+        .riego-table tr:nth-child(odd) { background: var(--fila-impar); }
+        .riego-table td { padding: 8px; }
+    </style>
 </head>
-
 
 <body>
 
-
-<!-- =========================================================
-     LOADER
-========================================================= -->
-
+<!-- LOADER -->
 <div id="loader" class="loader-container">
-
     <div class="loader">
-
         <i class="fa-solid fa-seedling loader-icon"></i>
-
         <div class="spinner"></div>
-
         <p>Cargando tu cosecha...</p>
-
     </div>
-
 </div>
 
-
-
-<!-- =========================================================
-     MODAL DE CONFIGURACIÓN
-========================================================= -->
-
+<!-- MODAL AJUSTES -->
 <div id="settingsModal" class="modal-overlay">
-
     <div class="modal-content">
-
         <div class="modal-header">
-
             <h2>Ajustes del Sistema</h2>
-
-            <i class="fa-solid fa-xmark close-modal"
-               id="closeSettings"></i>
-
+            <i class="fa-solid fa-xmark close-modal" id="closeSettings"></i>
         </div>
-
-
         <div class="modal-body">
-
-
-            <!-- TEMA -->
-
             <div class="setting-group">
-
-                <label>
-                    Tema Oscuro
-                </label>
-
+                <label>Tema Oscuro</label>
                 <label class="switch">
-
-                    <input type="checkbox"
-                           id="themeToggle">
-
+                    <input type="checkbox" id="themeToggle">
                     <span class="slider round"></span>
-
                 </label>
-
             </div>
-
-
-            <!-- SONIDO -->
-
             <div class="setting-group">
-
-                <label>
-                    Sonido
-                </label>
-
+                <label>Sonido</label>
                 <label class="switch">
-
-                    <input type="checkbox"
-                           id="soundToggle">
-
+                    <input type="checkbox" id="soundToggle">
                     <span class="slider round"></span>
-
                 </label>
-
             </div>
-
-
-            <!-- VOZ -->
-
             <div class="setting-group">
-
-                <label>
-                    Voz del asistente
-                </label>
-
-                <span style="font-size:0.9rem; color:var(--texto-claro);">
-                    🎙️ Asistente HarvestX
-                </span>
-
+                <label>Voz del asistente</label>
+                <span style="font-size:0.9rem; color:var(--texto-claro);">🎙️ Asistente HarvestX</span>
             </div>
-
-
-            <!-- PROBAR VOZ -->
-
             <div class="setting-group">
-
-                <label>
-                    Probar voz
-                </label>
-
-                <button
-                    type="button"
-                    id="testVoiceButton"
-                    class="btn-size">
-
-                    🔊 Probar voz
-
-                </button>
-
+                <label>Probar voz</label>
+                <button type="button" id="testVoiceButton" class="btn-size">🔊 Probar voz</button>
             </div>
-
-
-            <!-- FUENTE -->
-
             <div class="setting-group">
-
-                <label>
-                    Fuente de Letra
-                </label>
-
-                <select id="fontSelect"
-                        class="form-select">
-
-                    <option value="'Poppins', sans-serif">
-                        Poppins
-                    </option>
-
-                    <option value="'Arial', sans-serif">
-                        Arial
-                    </option>
-
-                    <option value="'Courier New', monospace">
-                        Courier New
-                    </option>
-
-                    <option value="'Times New Roman', serif">
-                        Times New Roman
-                    </option>
-
+                <label>Fuente de Letra</label>
+                <select id="fontSelect" class="form-select">
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Arial', sans-serif">Arial</option>
+                    <option value="'Courier New', monospace">Courier New</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
                 </select>
-
             </div>
-
-
-            <!-- TAMAÑO -->
-
             <div class="setting-group">
-
-                <label>
-                    Tamaño de Letra
-                </label>
-
+                <label>Tamaño de Letra</label>
                 <div class="size-controls">
-
-                    <button
-                        id="btnSizeSmall"
-                        class="btn-size">
-
-                        A-
-
-                    </button>
-
-                    <button
-                        id="btnSizeNormal"
-                        class="btn-size active">
-
-                        A
-
-                    </button>
-
-                    <button
-                        id="btnSizeLarge"
-                        class="btn-size">
-
-                        A+
-
-                    </button>
-
+                    <button id="btnSizeSmall" class="btn-size">A-</button>
+                    <button id="btnSizeNormal" class="btn-size active">A</button>
+                    <button id="btnSizeLarge" class="btn-size">A+</button>
                 </div>
-
             </div>
-
-
         </div>
-
     </div>
-
 </div>
 
-
-
-<!-- =========================================================
-     MODAL DE PERFIL
-========================================================= -->
-
-<div id="profileModal"
-     class="modal-overlay">
-
+<!-- MODAL PERFIL -->
+<div id="profileModal" class="modal-overlay">
     <div class="modal-content profile-modal">
-
-
-        <!-- ENCABEZADO -->
-
         <div class="modal-header">
-
-            <h2>
-                Mi Perfil
-            </h2>
-
-            <i class="fa-solid fa-xmark close-modal"
-               id="closeProfile"></i>
-
+            <h2>Mi Perfil</h2>
+            <i class="fa-solid fa-xmark close-modal" id="closeProfile"></i>
         </div>
-
-
-        <!-- CUERPO -->
-
         <div class="modal-body">
-
-
-            <!-- FOTO -->
-
             <div class="profile-photo-section">
-
                 <div class="profile-photo-wrapper">
-
-                    <div id="profilePhotoPreview"
-                         class="profile-photo-preview">
-
-                        U
-
-                    </div>
-
-
-                    <label
-                        for="profilePhotoInput"
-                        class="change-photo-button">
-
+                    <div id="profilePhotoPreview" class="profile-photo-preview">U</div>
+                    <label for="profilePhotoInput" class="change-photo-button">
                         <i class="fa-solid fa-camera"></i>
-
                     </label>
-
-
-                    <input
-                        type="file"
-                        id="profilePhotoInput"
-                        accept="image/*"
-                        hidden>
-
+                    <input type="file" id="profilePhotoInput" accept="image/*" hidden>
                 </div>
-
-
-                <p class="profile-photo-text">
-
-                    Haz clic en la cámara para cambiar tu foto
-
-                </p>
-
+                <p class="profile-photo-text">Haz clic en la cámara para cambiar tu foto</p>
             </div>
-
-
-
-            <!-- INFORMACIÓN -->
-
             <div class="profile-form">
-
-
-                <!-- NOMBRE -->
-
                 <div class="profile-field">
-
-                    <label for="profileNombre">
-                        Nombre completo
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileNombre"
-                        placeholder="Nombre completo">
-
+                    <label for="profileNombre">Nombre completo</label>
+                    <input type="text" id="profileNombre" placeholder="Nombre completo">
                 </div>
-
-
-                <!-- USUARIO -->
-
                 <div class="profile-field">
-
-                    <label for="profileUsuario">
-                        Nombre de usuario
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileUsuario"
-                        readonly>
-
+                    <label for="profileUsuario">Nombre de usuario</label>
+                    <input type="text" id="profileUsuario" readonly>
                 </div>
-
-
-                <!-- ROL -->
-
                 <div class="profile-field">
-
-                    <label for="profileRol">
-                        Rol
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileRol"
-                        readonly>
-
+                    <label for="profileRol">Rol</label>
+                    <input type="text" id="profileRol" readonly>
                 </div>
-
-
             </div>
-
-
-
-            <!-- BOTONES -->
-
             <div class="profile-actions">
-
-                <button
-                    type="button"
-                    id="cancelProfile"
-                    class="btn-modal btn-cancelar">
-
-                    Cancelar
-
+                <button type="button" id="cancelProfile" class="btn-modal btn-cancelar">Cancelar</button>
+                <button type="button" id="saveProfile" class="btn-modal btn-guardar">
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
                 </button>
-
-
-                <button
-                    type="button"
-                    id="saveProfile"
-                    class="btn-modal btn-guardar">
-
-                    <i class="fa-solid fa-floppy-disk"></i>
-
-                    Guardar cambios
-
-                </button>
-
             </div>
-
-
         </div>
-
     </div>
-
 </div>
 
-
-
-<!-- =========================================================
-     DASHBOARD
-========================================================= -->
-
+<!-- DASHBOARD CONTAINER -->
 <div class="dashboard-container">
 
-
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <aside class="sidebar"
-           id="sidebar">
-
-
-        <!-- CABECERA -->
-
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-
             <div class="logo-wrapper">
-
                 <i class="fa-solid fa-leaf logo-icon"></i>
-
                 <div class="logo-text">
-
-                    <h2>
-                        HarvestX
-                    </h2>
-
-                    <span>
-                        Sistema Inteligente
-                    </span>
-
+                    <h2>HarvestX</h2>
+                    <span>Sistema Inteligente</span>
                 </div>
-
             </div>
-
-
-            <i class="fa-solid fa-xmark close-sidebar-mobile"
-               id="closeSidebarMobile">
-            </i>
-
+            <i class="fa-solid fa-xmark close-sidebar-mobile" id="closeSidebarMobile"></i>
         </div>
-
-
-
-        <!-- =================================================
-             NAVEGACIÓN
-        ================================================== -->
 
         <nav class="sidebar-nav">
-
-
-            <!-- DASHBOARD -->
-
-            <a href="inicio.html"
-               class="nav-link">
-
+            <a href="inicio.html" class="nav-link">
                 <i class="fa-solid fa-house"></i>
-
-                <span class="nav-text">
-                    Dashboard
-                </span>
-
+                <span class="nav-text">Dashboard</span>
             </a>
 
-
-
-            <!-- GESTIÓN -->
-
             <div class="nav-category">
-
-                <span class="nav-text">
-                    GESTIÓN
-                </span>
-
+                <span class="nav-text">GESTIÓN</span>
             </div>
 
-
-            <!-- FINCAS -->
-
-            <a href="fincas.html"
-               class="nav-link">
-
+            <a href="fincas.html" class="nav-link">
                 <i class="fa-solid fa-mountain-sun"></i>
-
-                <span class="nav-text">
-                    Fincas
-                </span>
-
+                <span class="nav-text">Fincas</span>
             </a>
 
-
-            <!-- CULTIVOS -->
-
-            <a href="cultivos.html"
-               class="nav-link">
-
+            <a href="cultivos.html" class="nav-link">
                 <i class="fa-solid fa-seedling"></i>
-
-                <span class="nav-text">
-                    Cultivos
-                </span>
-
+                <span class="nav-text">Cultivos</span>
             </a>
 
-
-            <!-- RIEGO -->
-
-            <a href="programacion_de_riego.html"
-               class="nav-link">
-
+            <a href="programacion_de_riego.html" class="nav-link active">
                 <i class="fa-solid fa-droplet"></i>
-
-                <span class="nav-text">
-                    Programación de Riego
-                </span>
-
+                <span class="nav-text">Programación de Riego</span>
             </a>
 
-
-            <!-- LABORES -->
-
-            <a href="labores_del_campo.html"
-               class="nav-link">
-
+            <a href="labores_del_campo.html" class="nav-link">
                 <i class="fa-solid fa-tractor"></i>
-
-                <span class="nav-text">
-                    Labores del Campo
-                </span>
-
+                <span class="nav-text">Labores del Campo</span>
             </a>
 
-
-            <!-- CLIMA -->
-
-            <a href="monitoreo_climatico.html"
-               class="nav-link">
-
+            <a href="monitoreo_climatico.html" class="nav-link">
                 <i class="fa-solid fa-cloud-sun"></i>
-
-                <span class="nav-text">
-                    Monitoreo Climático
-                </span>
-
+                <span class="nav-text">Monitoreo Climático</span>
             </a>
 
-
-            <!-- ALERTAS -->
-
-            <a href="alertas.html"
-               class="nav-link">
-
+            <a href="alertas.html" class="nav-link">
                 <i class="fa-solid fa-bell"></i>
-
-                <span class="nav-text">
-                    Alertas
-                </span>
-
+                <span class="nav-text">Alertas</span>
             </a>
 
-
-
-            <!-- REPORTES -->
-
             <div class="nav-category">
-
-                <span class="nav-text">
-                    REPORTES
-                </span>
-
+                <span class="nav-text">REPORTES</span>
             </div>
 
-
-            <a href="reportes_y_estadisticas.html"
-               class="nav-link">
-
+            <a href="reportes_y_estadisticas.html" class="nav-link">
                 <i class="fa-solid fa-chart-column"></i>
-
-                <span class="nav-text">
-                    Reportes y Estadísticas
-                </span>
-
+                <span class="nav-text">Reportes y Estadísticas</span>
             </a>
 
-
-            <a href="historial.html"
-               class="nav-link">
-
+            <a href="historial.html" class="nav-link">
                 <i class="fa-solid fa-clock-rotate-left"></i>
-
-                <span class="nav-text">
-                    Historial de Actividades
-                </span>
-
+                <span class="nav-text">Historial de Actividades</span>
             </a>
-
-
-
-            <!-- SISTEMA -->
 
             <div class="nav-category">
-
-                <span class="nav-text">
-                    SISTEMA
-                </span>
-
+                <span class="nav-text">SISTEMA</span>
             </div>
 
-
-            <!-- USUARIOS -->
-
-            <a href="usuarios.html"
-               class="nav-link">
-
+            <a href="usuarios.html" class="nav-link">
                 <i class="fa-solid fa-user"></i>
-
-                <span class="nav-text">
-                    Usuarios
-                </span>
-
+                <span class="nav-text">Usuarios</span>
             </a>
 
-
-            <!-- CONFIGURACIÓN -->
-
-            <a href="#"
-               class="nav-link"
-               id="openSettings">
-
+            <a href="#" class="nav-link" id="openSettings">
                 <i class="fa-solid fa-gear"></i>
-
-                <span class="nav-text">
-                    Configuración
-                </span>
-
+                <span class="nav-text">Configuración</span>
             </a>
-
-
         </nav>
 
-
-
-        <!-- CERRAR SESIÓN -->
-
         <div class="sidebar-footer">
-
-            <a href="../../login.html"
-               class="nav-link logout"
-               id="cerrarSesion">
-
+            <a href="../../login.html" class="nav-link logout" id="cerrarSesion">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
-                <span class="nav-text">
-                    Cerrar Sesión
-                </span>
-
+                <span class="nav-text">Cerrar Sesión</span>
             </a>
-
         </div>
-
     </aside>
 
-
-
-    <!-- =====================================================
-         CONTENIDO PRINCIPAL
-    ====================================================== -->
-
-    <main class="main-content"
-          id="mainContent">
-
-
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
 
         <header class="topbar">
-
-
-            <!-- IZQUIERDA -->
-
             <div class="left-controls">
-
-
-                <!-- DESKTOP -->
-
-                <div class="menu-toggle-desktop"
-                     id="toggleSidebarDesktop">
-
+                <div class="menu-toggle-desktop" id="toggleSidebarDesktop">
                     <i class="fa-solid fa-bars"></i>
-
                 </div>
-
-
-                <!-- MÓVIL -->
-
-                <div class="menu-toggle-mobile"
-                     id="menuToggleMobile">
-
+                <div class="menu-toggle-mobile" id="menuToggleMobile">
                     <i class="fa-solid fa-bars"></i>
-
                 </div>
-
-
-                <!-- TÍTULO -->
-
                 <div class="header-title">
-
                     <div>
+                        <h1>HarvestX 🌱</h1>
+                        <p>Sistema Inteligente de Gestión Agrícola</p>
+                    </div>
+                </div>
+            </div>
 
-                        <h1>
-                            HarvestX 🌱
-                        </h1>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
 
-                        <p>
-                            Sistema Inteligente de Gestión Agrícola
-                        </p>
+                <div class="avatar" id="openProfile" style="cursor:pointer;">
+                    <img id="avatarImagen" class="avatar-img" src="" alt="Foto de perfil">
+                </div>
 
+                <div class="user-details">
+                    <span class="name" id="nombreUsuario">Usuario</span>
+                    <span class="role" id="rolUsuario">Administrador</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MÓDULO PROGRAMACIÓN DE RIEGO REEMPLAZADO AQUÍ -->
+        <section class="content-grid">
+            <div class="riego-wrapper">
+                
+                <!-- Tarjetas Superiores -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <i class="fa-solid fa-droplet metric-icon"></i>
+                        <div class="metric-data">
+                            <h4>Humedad del suelo</h4>
+                            <div class="val">45%</div>
+                            <small style="color: var(--estado-creciendo)">Moderada</small>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fa-solid fa-temperature-half metric-icon"></i>
+                        <div class="metric-data">
+                            <h4>Temperatura</h4>
+                            <div class="val">28 °C</div>
+                            <small>Normal</small>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fa-solid fa-sun metric-icon"></i>
+                        <div class="metric-data">
+                            <h4>Clima actual</h4>
+                            <div class="val">Soleado</div>
+                            <small>0% lluvia</small>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fa-solid fa-circle-check metric-icon" style="color: var(--estado-creciendo);"></i>
+                        <div class="metric-data">
+                            <h4>Estado del riego</h4>
+                            <div class="val" style="font-size:1.1rem; color:var(--verde-barra);">Necesita riego</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque Central -->
+                <div class="main-riego-grid">
+                    
+                    <!-- Formulario -->
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-calendar-plus"></i> Programar riego</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Cultivo</label>
+                                <select class="form-control">
+                                    <option>Tomate</option>
+                                    <option>Lechuga</option>
+                                    <option>Chile pimiento</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="date" class="form-control" value="2026-08-30">
+                            </div>
+                            <div class="form-group">
+                                <label>Hora de inicio</label>
+                                <input type="time" class="form-control" value="06:00">
+                            </div>
+                            <div class="form-group">
+                                <label>Duración (minutos)</label>
+                                <input type="number" class="form-control" value="45">
+                            </div>
+                            <button type="button" class="btn-action">Guardar programación</button>
+                        </form>
+                    </div>
+
+                    <!-- Calendario -->
+                    <div class="panel-card" style="padding: 15px;">
+                        <div class="cal-header">Calendario de riego (Agosto 2026)</div>
+                        <div class="cal-days-title">
+                            <div>LUN</div><div>MAR</div><div>MIE</div><div>JUE</div><div>VIE</div><div>SAB</div><div>DOM</div>
+                        </div>
+                        <div class="cal-grid">
+                            <div class="cal-day">24</div>
+                            <div class="cal-day">25</div>
+                            <div class="cal-day">26</div>
+                            <div class="cal-day programado">27</div>
+                            <div class="cal-day">28</div>
+                            <div class="cal-day">29</div>
+                            <div class="cal-day hoy">30</div>
+                            <div class="cal-day">31</div>
+                        </div>
+                    </div>
+
+                    <!-- Automatización -->
+                    <div class="panel-card auto-box">
+                        <h3>Riego automático</h3>
+                        <div class="auto-icon-circle">
+                            <i class="fa-solid fa-shower"></i>
+                        </div>
+                        <h4 style="margin: 5px 0; color: var(--verde-barra);">Sistema activo</h4>
+                        <p style="font-size:0.8rem; color:#666; margin-bottom: 15px;">El sistema regará automáticamente según la programación.</p>
+                        <button class="btn-action" style="background-color: var(--estado-alerta);">Desactivar</button>
                     </div>
 
                 </div>
 
+                <!-- Bloque Inferior -->
+                <div class="bottom-riego-grid">
+                    
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-lightbulb"></i> Recomendación inteligente</h3>
+                        <div style="background-color: var(--fila-impar); border-left: 4px solid var(--verde-barra); padding: 12px; border-radius: 6px; font-size: 0.9rem;">
+                            El cultivo de <strong>tomate</strong> requiere riego en las próximas 3 horas debido a la baja humedad del suelo y la temperatura actual.
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-clock-history"></i> Historial de riegos</h3>
+                        <table class="riego-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Duración</th>
+                                    <th>Agua</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>30/08/2026</td>
+                                    <td>06:10 AM</td>
+                                    <td>40 min</td>
+                                    <td>120 L</td>
+                                </tr>
+                                <tr>
+                                    <td>28/08/2026</td>
+                                    <td>06:00 AM</td>
+                                    <td>45 min</td>
+                                    <td>130 L</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
 
             </div>
-
-
-
-            <!-- =================================================
-                 INFORMACIÓN DEL USUARIO
-            ================================================== -->
-
-            <div class="user-info">
-
-
-                <!-- NOTIFICACIONES -->
-
-                <div class="notifications">
-
-                    <i class="fa-regular fa-bell"></i>
-
-                    <span class="badge">
-                        3
-                    </span>
-
-                </div>
-
-
-
-                <!-- PERFIL -->
-
-                <div
-                    class="avatar"
-                    id="openProfile"
-                    aria-label="Abrir perfil"
-                    title="Abrir mi perfil"
-                    style="cursor:pointer;">
-
-                    <img
-                        id="avatarImagen"
-                        class="avatar-img"
-                        src=""
-                        alt="Foto de perfil">
-
-                </div>
-
-
-
-                <!-- INFORMACIÓN -->
-
-                <div class="user-details">
-
-                    <span
-                        class="name"
-                        id="nombreUsuario">
-
-                        Usuario
-
-                    </span>
-
-
-                    <span
-                        class="role"
-                        id="rolUsuario">
-
-                        Administrador
-
-                    </span>
-
-                </div>
-
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =====================================================
-             CONTENIDO DEL MÓDULO
-        ====================================================== -->
-
-        <section class="content-grid">
-
-
-            <div
-                class="card"
-                style="
-                    min-height:500px;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    text-align:center;
-                ">
-
-
-                <div>
-
-
-                    <i
-                        class="fa-solid fa-seedling"
-                        style="
-                            font-size:60px;
-                            margin-bottom:20px;
-                        ">
-
-                    </i>
-
-
-                    <h2>
-                        Módulo en desarrollo
-                    </h2>
-
-
-                    <p>
-                        Esta sección de HarvestX estará
-                        disponible próximamente.
-                    </p>
-
-
-                </div>
-
-
-            </div>
-
-
         </section>
-
 
     </main>
 
-
 </div>
 
-
-
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
 <script src="../../JS/paginas/configuracion.js"></script>
-
 <script src="../../JS/paginas/administrador.js"></script>
 
-
 </body>
-
 </html>

@@ -61,7 +61,7 @@ def conectar_bd():
     conexion = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Root",
+        password="",
         database="harvestx"
     )
 
