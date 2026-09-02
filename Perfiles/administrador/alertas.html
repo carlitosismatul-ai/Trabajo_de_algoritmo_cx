@@ -6,11 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HarvestX</title>
+    <title>Alertas - HarvestX</title>
 
     <!-- CSS PRINCIPAL -->
     <link rel="stylesheet"
           href="../../CSS/paginas/administrador.css">
+
+    <!-- CSS DEL MÓDULO -->
+    <link rel="stylesheet"
+          href="../../CSS/paginas/alertas.css">
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet"
@@ -533,7 +537,7 @@
             <!-- ALERTAS -->
 
             <a href="alertas.html"
-               class="nav-link">
+               class="nav-link active">
 
                 <i class="fa-solid fa-bell"></i>
 
@@ -556,6 +560,8 @@
             </div>
 
 
+            <!-- REPORTES Y ESTADÍSTICAS -->
+
             <a href="reportes_y_estadisticas.html"
                class="nav-link">
 
@@ -567,6 +573,8 @@
 
             </a>
 
+
+            <!-- HISTORIAL -->
 
             <a href="historial.html"
                class="nav-link">
@@ -719,12 +727,21 @@
 
                 <!-- NOTIFICACIONES -->
 
-                <div class="notifications">
+                <div class="notifications"
+                     id="notificationsButton"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Ver notificaciones"
+                     title="Ver notificaciones">
 
                     <i class="fa-regular fa-bell"></i>
 
-                    <span class="badge">
+                    <span class="badge"
+                          id="notificationBadge"
+                          aria-hidden="true">
+
                         3
+
                     </span>
 
                 </div>
@@ -781,49 +798,666 @@
 
 
         <!-- =====================================================
-             CONTENIDO DEL MÓDULO
+             CONTENIDO DE ALERTAS
         ====================================================== -->
 
-        <section class="content-grid">
+        <section class="alerts-page">
 
 
-            <div
-                class="card"
-                style="
-                    min-height:500px;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    text-align:center;
-                ">
+            <!-- ENCABEZADO DEL MÓDULO -->
+
+            <div class="alerts-header">
+
+                <div class="alerts-title">
+
+                    <div class="alerts-title-icon">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Centro de Alertas
+                        </h2>
+
+                        <p>
+                            Monitorea eventos importantes de tus
+                            cultivos, fincas y actividades agrícolas.
+                        </p>
+
+                    </div>
+
+                </div>
 
 
-                <div>
+                <!-- ACCIONES -->
+
+                <div class="alerts-actions">
+
+                    <button
+                        type="button"
+                        class="alerts-action-btn"
+                        id="markAllReadButton">
+
+                        <i class="fa-solid fa-check-double"></i>
+
+                        Marcar todo como leído
+
+                    </button>
+
+                </div>
+
+            </div>
 
 
-                    <i
-                        class="fa-solid fa-seedling"
-                        style="
-                            font-size:60px;
-                            margin-bottom:20px;
-                        ">
 
-                    </i>
+            <!-- =================================================
+                 RESUMEN
+            ================================================== -->
+
+            <div class="alerts-summary">
 
 
-                    <h2>
-                        Módulo en desarrollo
-                    </h2>
+                <!-- CRÍTICAS -->
+
+                <div class="alert-summary-card critical">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-circle-exclamation"></i>
+
+                    </div>
+
+                    <div class="summary-info">
+
+                        <span class="summary-number"
+                              id="criticalCount">
+
+                            3
+
+                        </span>
+
+                        <span class="summary-label">
+                            Críticas
+                        </span>
+
+                    </div>
+
+                </div>
 
 
-                    <p>
-                        Esta sección de HarvestX estará
-                        disponible próximamente.
-                    </p>
+
+                <!-- ADVERTENCIAS -->
+
+                <div class="alert-summary-card warning">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    </div>
+
+                    <div class="summary-info">
+
+                        <span class="summary-number"
+                              id="warningCount">
+
+                            5
+
+                        </span>
+
+                        <span class="summary-label">
+                            Advertencias
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PREVENTIVAS -->
+
+                <div class="alert-summary-card preventive">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+                    <div class="summary-info">
+
+                        <span class="summary-number"
+                              id="preventiveCount">
+
+                            2
+
+                        </span>
+
+                        <span class="summary-label">
+                            Preventivas
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RESUELTAS -->
+
+                <div class="alert-summary-card resolved">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div class="summary-info">
+
+                        <span class="summary-number"
+                              id="resolvedCount">
+
+                            12
+
+                        </span>
+
+                        <span class="summary-label">
+                            Resueltas
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FILTROS
+            ================================================== -->
+
+            <div class="alerts-toolbar">
+
+                <div class="alerts-section-title">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    <h3>
+                        Alertas recientes
+                    </h3>
+
+                </div>
+
+
+                <div class="alerts-filters">
+
+
+                    <!-- BUSCADOR -->
+
+                    <div class="alert-search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="alertSearch"
+                            placeholder="Buscar alerta...">
+
+                    </div>
+
+
+                    <!-- FILTRO NIVEL -->
+
+                    <select
+                        id="alertLevelFilter"
+                        class="alert-filter-select">
+
+                        <option value="todas">
+                            Todas las alertas
+                        </option>
+
+                        <option value="critica">
+                            Críticas
+                        </option>
+
+                        <option value="advertencia">
+                            Advertencias
+                        </option>
+
+                        <option value="preventiva">
+                            Preventivas
+                        </option>
+
+                        <option value="informacion">
+                            Información
+                        </option>
+
+                        <option value="resuelta">
+                            Resueltas
+                        </option>
+
+                    </select>
 
 
                 </div>
 
+            </div>
+
+
+
+            <!-- =================================================
+                 LISTA DE ALERTAS
+            ================================================== -->
+
+            <div class="alerts-list"
+                 id="alertsList">
+
+
+                <!-- =================================================
+                     ALERTA CRÍTICA
+                ================================================== -->
+
+                <article class="alert-item critical"
+                         data-level="critica">
+
+                    <div class="alert-item-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+
+                    <div class="alert-item-content">
+
+                        <div class="alert-item-top">
+
+                            <h4>
+                                Humedad crítica
+                            </h4>
+
+                            <span class="alert-level critical">
+                                CRÍTICA
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            El cultivo presenta un nivel de humedad
+                            inferior al recomendado.
+                        </p>
+
+
+                        <div class="alert-item-meta">
+
+                            <span>
+                                <i class="fa-solid fa-seedling"></i>
+                                Tomate
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-mountain-sun"></i>
+                                Finca Norte
+                            </span>
+
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                Hace 15 minutos
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-item-action">
+
+                        <button
+                            type="button"
+                            class="resolve-alert-btn">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Resolver
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================================
+                     ALERTA ADVERTENCIA
+                ================================================== -->
+
+                <article class="alert-item warning"
+                         data-level="advertencia">
+
+                    <div class="alert-item-icon">
+
+                        <i class="fa-solid fa-temperature-high"></i>
+
+                    </div>
+
+
+                    <div class="alert-item-content">
+
+                        <div class="alert-item-top">
+
+                            <h4>
+                                Temperatura elevada
+                            </h4>
+
+                            <span class="alert-level warning">
+                                ADVERTENCIA
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            Se detectó una temperatura superior al
+                            rango recomendado para el cultivo.
+                        </p>
+
+
+                        <div class="alert-item-meta">
+
+                            <span>
+                                <i class="fa-solid fa-seedling"></i>
+                                Maíz
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-mountain-sun"></i>
+                                Finca Central
+                            </span>
+
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                Hace 32 minutos
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-item-action">
+
+                        <button
+                            type="button"
+                            class="resolve-alert-btn">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Resolver
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================================
+                     ALERTA PREVENTIVA
+                ================================================== -->
+
+                <article class="alert-item preventive"
+                         data-level="preventiva">
+
+                    <div class="alert-item-icon">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+
+                    <div class="alert-item-content">
+
+                        <div class="alert-item-top">
+
+                            <h4>
+                                Riego próximo
+                            </h4>
+
+                            <span class="alert-level preventive">
+                                PREVENTIVA
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            El cultivo tiene un riego programado
+                            próximamente.
+                        </p>
+
+
+                        <div class="alert-item-meta">
+
+                            <span>
+                                <i class="fa-solid fa-seedling"></i>
+                                Lechuga
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-mountain-sun"></i>
+                                Parcela Sur
+                            </span>
+
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                En 45 minutos
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-item-action">
+
+                        <button
+                            type="button"
+                            class="resolve-alert-btn">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Resolver
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================================
+                     ALERTA INFORMACIÓN
+                ================================================== -->
+
+                <article class="alert-item information"
+                         data-level="informacion">
+
+                    <div class="alert-item-icon">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                    </div>
+
+
+                    <div class="alert-item-content">
+
+                        <div class="alert-item-top">
+
+                            <h4>
+                                Riego programado
+                            </h4>
+
+                            <span class="alert-level information">
+                                INFORMACIÓN
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            El sistema tiene programado un riego
+                            para el cultivo seleccionado.
+                        </p>
+
+
+                        <div class="alert-item-meta">
+
+                            <span>
+                                <i class="fa-solid fa-seedling"></i>
+                                Pepino
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-mountain-sun"></i>
+                                Finca Este
+                            </span>
+
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                Hace 1 hora
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-item-action">
+
+                        <button
+                            type="button"
+                            class="resolve-alert-btn">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Resolver
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================================
+                     ALERTA RESUELTA
+                ================================================== -->
+
+                <article class="alert-item resolved"
+                         data-level="resuelta">
+
+                    <div class="alert-item-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+
+                    <div class="alert-item-content">
+
+                        <div class="alert-item-top">
+
+                            <h4>
+                                Riego completado correctamente
+                            </h4>
+
+                            <span class="alert-level resolved">
+                                RESUELTA
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            El riego programado para el cultivo
+                            finalizó correctamente.
+                        </p>
+
+
+                        <div class="alert-item-meta">
+
+                            <span>
+                                <i class="fa-solid fa-seedling"></i>
+                                Brócoli
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-mountain-sun"></i>
+                                Finca Oeste
+                            </span>
+
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                Hace 2 horas
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-item-action">
+
+                        <span class="resolved-status">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Resuelta
+
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ESTADO VACÍO
+            ================================================== -->
+
+            <div class="alerts-empty"
+                 id="alertsEmpty"
+                 style="display:none;">
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-bell-slash"></i>
+
+                </div>
+
+                <h3>
+                    No hay alertas
+                </h3>
+
+                <p>
+                    No se encontraron alertas que coincidan
+                    con los filtros seleccionados.
+                </p>
 
             </div>
 
@@ -846,7 +1480,11 @@
 
 <script src="../../JS/paginas/administrador.js"></script>
 
+<!-- JS DEL MÓDULO -->
+<script src="../../JS/paginas/alertas.js"></script>
+
 
 </body>
 
 </html>
+
