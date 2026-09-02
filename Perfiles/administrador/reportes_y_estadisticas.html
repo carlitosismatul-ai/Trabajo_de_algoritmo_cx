@@ -6,11 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HarvestX</title>
+    <title>HarvestX - Reportes y Estadísticas</title>
 
     <!-- CSS PRINCIPAL -->
     <link rel="stylesheet"
           href="../../CSS/paginas/administrador.css">
+
+    <!-- CSS DEL MÓDULO -->
+    <link rel="stylesheet"
+          href="../../CSS/paginas/reportes_y_estadisticas.css">
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet"
@@ -556,8 +560,10 @@
             </div>
 
 
+            <!-- REPORTES Y ESTADÍSTICAS -->
+
             <a href="reportes_y_estadisticas.html"
-               class="nav-link">
+               class="nav-link active">
 
                 <i class="fa-solid fa-chart-column"></i>
 
@@ -567,6 +573,8 @@
 
             </a>
 
+
+            <!-- HISTORIAL -->
 
             <a href="historial.html"
                class="nav-link">
@@ -781,48 +789,715 @@
 
 
         <!-- =====================================================
-             CONTENIDO DEL MÓDULO
+             MÓDULO REPORTES Y ESTADÍSTICAS
         ====================================================== -->
 
-        <section class="content-grid">
+        <section class="reports-module">
 
 
-            <div
-                class="card"
-                style="
-                    min-height:500px;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    text-align:center;
-                ">
+            <!-- =================================================
+                 ENCABEZADO DEL MÓDULO
+            ================================================== -->
+
+            <div class="reports-header">
+
+                <div class="reports-title">
+
+                    <div class="reports-title-icon">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Reportes y Estadísticas
+                        </h2>
+
+                        <p>
+                            Analiza el rendimiento y actividad de tu producción agrícola
+                        </p>
+
+                    </div>
+
+                </div>
 
 
-                <div>
+                <div class="reports-date">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <span id="fechaActual">
+                        Hoy
+                    </span>
+
+                </div>
+
+            </div>
 
 
-                    <i
-                        class="fa-solid fa-seedling"
-                        style="
-                            font-size:60px;
-                            margin-bottom:20px;
-                        ">
 
-                    </i>
+            <!-- =================================================
+                 TARJETAS DE RESUMEN
+            ================================================== -->
+
+            <div class="stats-cards">
 
 
-                    <h2>
-                        Módulo en desarrollo
-                    </h2>
+                <!-- CULTIVOS -->
+
+                <div class="stat-card stat-cultivos">
+
+                    <div class="stat-card-icon">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+                    <div class="stat-card-info">
+
+                        <span class="stat-label">
+                            Cultivos activos
+                        </span>
+
+                        <strong id="totalCultivos">
+                            12
+                        </strong>
+
+                        <small>
+                            <i class="fa-solid fa-arrow-up"></i>
+                            En producción
+                        </small>
+
+                    </div>
+
+                </div>
 
 
-                    <p>
-                        Esta sección de HarvestX estará
-                        disponible próximamente.
-                    </p>
+
+                <!-- PRODUCCIÓN -->
+
+                <div class="stat-card stat-produccion">
+
+                    <div class="stat-card-icon">
+
+                        <i class="fa-solid fa-wheat-awn"></i>
+
+                    </div>
+
+                    <div class="stat-card-info">
+
+                        <span class="stat-label">
+                            Producción total
+                        </span>
+
+                        <strong id="produccionTotal">
+                            8.4 t
+                        </strong>
+
+                        <small>
+                            <i class="fa-solid fa-chart-line"></i>
+                            Rendimiento registrado
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AGUA -->
+
+                <div class="stat-card stat-agua">
+
+                    <div class="stat-card-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+                    <div class="stat-card-info">
+
+                        <span class="stat-label">
+                            Consumo de agua
+                        </span>
+
+                        <strong id="consumoAgua">
+                            24,500 L
+                        </strong>
+
+                        <small>
+                            <i class="fa-solid fa-gauge-high"></i>
+                            Período actual
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FINCAS -->
+
+                <div class="stat-card stat-fincas">
+
+                    <div class="stat-card-icon">
+
+                        <i class="fa-solid fa-mountain-sun"></i>
+
+                    </div>
+
+                    <div class="stat-card-info">
+
+                        <span class="stat-label">
+                            Fincas registradas
+                        </span>
+
+                        <strong id="totalFincas">
+                            5
+                        </strong>
+
+                        <small>
+                            <i class="fa-solid fa-location-dot"></i>
+                            Bajo gestión
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 GRÁFICOS
+            ================================================== -->
+
+            <div class="charts-grid">
+
+
+                <!-- PRODUCCIÓN -->
+
+                <div class="report-card chart-card production-chart-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <h3>
+                                <i class="fa-solid fa-chart-column"></i>
+                                Producción por cultivo
+                            </h3>
+
+                            <p>
+                                Comparación de producción registrada
+                            </p>
+
+                        </div>
+
+
+                        <select
+                            id="productionPeriod"
+                            class="report-select">
+
+                            <option value="month">
+                                Este mes
+                            </option>
+
+                            <option value="week">
+                                Esta semana
+                            </option>
+
+                            <option value="year">
+                                Este año
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="chart-container"
+                         id="productionChart">
+
+                        <div class="chart-placeholder">
+
+                            <i class="fa-solid fa-chart-column"></i>
+
+                            <span>
+                                Gráfico de producción
+                            </span>
+
+                            <small>
+                                Los datos aparecerán aquí
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DISTRIBUCIÓN -->
+
+                <div class="report-card chart-card distribution-chart-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <h3>
+                                <i class="fa-solid fa-chart-pie"></i>
+                                Distribución de cultivos
+                            </h3>
+
+                            <p>
+                                Cultivos registrados actualmente
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container"
+                         id="distributionChart">
+
+                        <div class="chart-placeholder">
+
+                            <i class="fa-solid fa-chart-pie"></i>
+
+                            <span>
+                                Distribución de cultivos
+                            </span>
+
+                            <small>
+                                Los datos aparecerán aquí
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CONSUMO DE AGUA -->
+
+                <div class="report-card chart-card water-chart-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <h3>
+                                <i class="fa-solid fa-droplet"></i>
+                                Consumo de agua
+                            </h3>
+
+                            <p>
+                                Uso de agua durante el período
+                            </p>
+
+                        </div>
+
+
+                        <select
+                            id="waterPeriod"
+                            class="report-select">
+
+                            <option value="week">
+                                Últimos 7 días
+                            </option>
+
+                            <option value="month">
+                                Último mes
+                            </option>
+
+                            <option value="year">
+                                Último año
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="chart-container"
+                         id="waterChart">
+
+                        <div class="chart-placeholder">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                            <span>
+                                Consumo de agua
+                            </span>
+
+                            <small>
+                                Los datos aparecerán aquí
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ACTIVIDAD -->
+
+                <div class="report-card chart-card activity-chart-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <h3>
+                                <i class="fa-solid fa-chart-line"></i>
+                                Actividad agrícola
+                            </h3>
+
+                            <p>
+                                Actividades realizadas recientemente
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container"
+                         id="activityChart">
+
+                        <div class="chart-placeholder">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                            <span>
+                                Actividad agrícola
+                            </span>
+
+                            <small>
+                                Los datos aparecerán aquí
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 GENERADOR DE REPORTES
+            ================================================== -->
+
+            <div class="report-generator">
+
+
+                <div class="generator-header">
+
+                    <div class="generator-icon">
+
+                        <i class="fa-solid fa-file-chart-column"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Generar reporte
+                        </h3>
+
+                        <p>
+                            Selecciona los parámetros para crear un reporte personalizado
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="generator-form">
+
+
+                    <!-- TIPO -->
+
+                    <div class="filter-group">
+
+                        <label for="reportType">
+                            <i class="fa-solid fa-file-lines"></i>
+                            Tipo de reporte
+                        </label>
+
+                        <select
+                            id="reportType"
+                            class="report-select">
+
+                            <option value="general">
+                                Reporte general
+                            </option>
+
+                            <option value="cultivos">
+                                Cultivos
+                            </option>
+
+                            <option value="fincas">
+                                Fincas
+                            </option>
+
+                            <option value="riego">
+                                Programación de riego
+                            </option>
+
+                            <option value="labores">
+                                Labores del campo
+                            </option>
+
+                            <option value="clima">
+                                Monitoreo climático
+                            </option>
+
+                            <option value="alertas">
+                                Alertas
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- PERÍODO -->
+
+                    <div class="filter-group">
+
+                        <label for="reportPeriod">
+                            <i class="fa-regular fa-calendar"></i>
+                            Período
+                        </label>
+
+                        <select
+                            id="reportPeriod"
+                            class="report-select">
+
+                            <option value="today">
+                                Hoy
+                            </option>
+
+                            <option value="week">
+                                Última semana
+                            </option>
+
+                            <option value="month"
+                                    selected>
+                                Último mes
+                            </option>
+
+                            <option value="year">
+                                Último año
+                            </option>
+
+                            <option value="custom">
+                                Personalizado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- CULTIVO -->
+
+                    <div class="filter-group">
+
+                        <label for="reportCrop">
+                            <i class="fa-solid fa-seedling"></i>
+                            Cultivo
+                        </label>
+
+                        <select
+                            id="reportCrop"
+                            class="report-select">
+
+                            <option value="all">
+                                Todos los cultivos
+                            </option>
+
+                            <option value="brocoli">
+                                Brócoli
+                            </option>
+
+                            <option value="tomate">
+                                Tomate
+                            </option>
+
+                            <option value="limon">
+                                Limón
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- FINCA -->
+
+                    <div class="filter-group">
+
+                        <label for="reportFarm">
+                            <i class="fa-solid fa-mountain-sun"></i>
+                            Finca
+                        </label>
+
+                        <select
+                            id="reportFarm"
+                            class="report-select">
+
+                            <option value="all">
+                                Todas las fincas
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- FECHAS PERSONALIZADAS -->
+
+                    <div class="custom-date-fields"
+                         id="customDateFields"
+                         hidden>
+
+                        <div class="filter-group">
+
+                            <label for="startDate">
+                                Fecha inicial
+                            </label>
+
+                            <input
+                                type="date"
+                                id="startDate"
+                                class="report-input">
+
+                        </div>
+
+
+                        <div class="filter-group">
+
+                            <label for="endDate">
+                                Fecha final
+                            </label>
+
+                            <input
+                                type="date"
+                                id="endDate"
+                                class="report-input">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ACCIONES -->
+
+                    <div class="generator-actions">
+
+                        <button
+                            type="button"
+                            id="generateReport"
+                            class="btn-generate">
+
+                            <i class="fa-solid fa-file-circle-check"></i>
+
+                            Generar reporte
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="printReport"
+                            class="btn-secondary-report">
+
+                            <i class="fa-solid fa-print"></i>
+
+                            Imprimir
+
+                        </button>
+
+                    </div>
 
 
                 </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ÚLTIMO REPORTE
+            ================================================== -->
+
+            <div class="recent-report-card">
+
+
+                <div class="recent-report-info">
+
+                    <div class="recent-report-icon">
+
+                        <i class="fa-solid fa-file-pdf"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="recent-label">
+                            Último reporte generado
+                        </span>
+
+                        <strong id="lastReportName">
+                            Aún no se ha generado ningún reporte
+                        </strong>
+
+                        <small id="lastReportDate">
+                            Selecciona los parámetros y genera tu primer reporte.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="downloadLastReport"
+                    class="btn-download-report"
+                    disabled>
+
+                    <i class="fa-solid fa-download"></i>
+
+                    Descargar
+
+                </button>
 
 
             </div>
@@ -846,7 +1521,11 @@
 
 <script src="../../JS/paginas/administrador.js"></script>
 
+<!-- JS DEL MÓDULO -->
+<script src="../../JS/paginas/reportes_y_estadisticas.js"></script>
+
 
 </body>
 
 </html>
+
