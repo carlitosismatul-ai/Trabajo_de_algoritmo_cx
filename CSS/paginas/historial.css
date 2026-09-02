@@ -1,0 +1,1212 @@
+/* =========================================================
+   HARVESTX — HISTORIAL DE ACTIVIDADES
+========================================================= */
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+========================================================= */
+
+.historial-module {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.historial-header {
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(46, 125, 50, 0.10);
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #f4faf5
+    );
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+
+.historial-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+
+.historial-title-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        #2e7d32,
+        #43a047
+    );
+
+    color: #ffffff;
+
+    font-size: 25px;
+
+    box-shadow:
+        0 8px 18px rgba(46, 125, 50, 0.25);
+}
+
+
+.historial-title h2 {
+    margin: 0 0 5px;
+    font-size: 1.45rem;
+    color: #263238;
+}
+
+
+.historial-title p {
+    margin: 0;
+    color: #78909c;
+    font-size: 0.92rem;
+}
+
+
+/* =========================================================
+   TARJETAS DE RESUMEN
+========================================================= */
+
+.historial-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+.historial-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-height: 105px;
+
+    padding: 18px;
+
+    border-radius: 17px;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.05);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.historial-stat-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.09);
+}
+
+
+/* ICONOS */
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 20px;
+}
+
+
+/* ACTIVIDADES */
+
+.activity-icon {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+
+/* SEMANA */
+
+.week-icon {
+    background: #ede7f6;
+    color: #6a1b9a;
+}
+
+
+/* RIEGO */
+
+.water-icon {
+    background: #e1f5fe;
+    color: #0288d1;
+}
+
+
+/* ALERTAS */
+
+.alert-icon {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+.stat-info span {
+    font-size: 0.82rem;
+    color: #78909c;
+}
+
+
+.stat-info strong {
+    font-size: 1.55rem;
+    color: #263238;
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.historial-filters {
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+
+.filters-header {
+    margin-bottom: 18px;
+}
+
+
+.filters-header h3 {
+    margin: 0 0 5px;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 1.05rem;
+
+    color: #263238;
+}
+
+
+.filters-header h3 i {
+    color: #2e7d32;
+}
+
+
+.filters-header p {
+    margin: 0;
+
+    font-size: 0.85rem;
+
+    color: #90a4ae;
+}
+
+
+.filters-grid {
+    display: grid;
+
+    grid-template-columns:
+        1.2fr
+        1fr
+        1fr
+        auto;
+
+    align-items: end;
+
+    gap: 16px;
+}
+
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+.filter-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+
+    color: #546e7a;
+}
+
+
+.filter-group .form-select,
+.filter-group .form-input {
+    width: 100%;
+
+    min-height: 43px;
+
+    border-radius: 10px;
+
+    border: 1px solid #dce5df;
+
+    background: #f9fbfa;
+
+    padding: 0 12px;
+
+    color: #37474f;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.filter-group .form-select:focus,
+.filter-group .form-input:focus {
+    border-color: #43a047;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(67, 160, 71, 0.12);
+}
+
+
+/* BOTÓN LIMPIAR */
+
+.filter-actions {
+    display: flex;
+    align-items: center;
+}
+
+
+.btn-filter-clear {
+    min-height: 43px;
+
+    padding: 0 16px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eceff1;
+
+    color: #546e7a;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.btn-filter-clear:hover {
+    background: #dfe5e8;
+    color: #263238;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CONTENEDOR DEL HISTORIAL
+========================================================= */
+
+.historial-container {
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   CABECERA DE LISTA
+========================================================= */
+
+.historial-list-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #edf1ee;
+}
+
+
+.historial-list-header h3 {
+    margin: 0 0 4px;
+
+    font-size: 1.15rem;
+
+    color: #263238;
+}
+
+
+.historial-list-header p {
+    margin: 0;
+
+    color: #90a4ae;
+
+    font-size: 0.82rem;
+}
+
+
+/* BOTÓN ACTUALIZAR */
+
+.btn-refresh {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    transition:
+        transform 0.25s ease,
+        background 0.2s ease;
+}
+
+
+.btn-refresh:hover {
+    transform: rotate(90deg);
+
+    background: #c8e6c9;
+}
+
+
+/* =========================================================
+   LISTA DE ACTIVIDADES
+========================================================= */
+
+.activity-history-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   ACTIVIDAD INDIVIDUAL
+========================================================= */
+
+.history-item {
+    display: grid;
+
+    grid-template-columns:
+        48px
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 17px;
+
+    border-radius: 14px;
+
+    background: #fafcfb;
+
+    border: 1px solid #edf1ee;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.history-item:hover {
+    transform: translateX(3px);
+
+    border-color: #c8e6c9;
+
+    box-shadow:
+        0 5px 16px rgba(46, 125, 50, 0.07);
+}
+
+
+/* =========================================================
+   ICONOS DEL HISTORIAL
+========================================================= */
+
+.history-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    font-size: 18px;
+}
+
+
+/* RIEGO */
+
+.history-riego {
+    background: #e1f5fe;
+    color: #0288d1;
+}
+
+
+/* CULTIVO */
+
+.history-cultivo {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+
+/* ALERTA */
+
+.history-alerta {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+
+/* LABOR */
+
+.history-labor {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+
+/* CLIMA */
+
+.history-clima {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+
+/* FINCA */
+
+.history-finca {
+    background: #efebe9;
+    color: #5d4037;
+}
+
+
+/* USUARIO */
+
+.history-usuario {
+    background: #ede7f6;
+    color: #6a1b9a;
+}
+
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.history-content {
+    min-width: 0;
+}
+
+
+.history-main {
+    display: flex;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-bottom: 5px;
+}
+
+
+.history-main h4 {
+    margin: 0;
+
+    font-size: 0.98rem;
+
+    color: #263238;
+}
+
+
+/* =========================================================
+   ETIQUETAS DE TIPO
+========================================================= */
+
+.history-type {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+}
+
+
+.type-riego {
+    background: #e1f5fe;
+    color: #0277bd;
+}
+
+
+.type-cultivo {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+
+.type-alerta {
+    background: #ffebee;
+    color: #c62828;
+}
+
+
+.type-labor {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+
+.type-clima {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+
+.type-finca {
+    background: #efebe9;
+    color: #4e342e;
+}
+
+
+.type-usuario {
+    background: #ede7f6;
+    color: #6a1b9a;
+}
+
+
+/* =========================================================
+   DESCRIPCIÓN
+========================================================= */
+
+.history-content > p {
+    margin: 0 0 9px;
+
+    font-size: 0.84rem;
+
+    line-height: 1.5;
+
+    color: #607d8b;
+}
+
+
+/* =========================================================
+   METADATOS
+========================================================= */
+
+.history-meta {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+}
+
+
+.history-meta span {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 0.72rem;
+
+    color: #90a4ae;
+}
+
+
+.history-meta i {
+    font-size: 0.72rem;
+
+    color: #78909c;
+}
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+.history-status {
+    align-self: start;
+
+    white-space: nowrap;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+}
+
+
+.status-completada {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+
+.status-atendida {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+
+.status-pendiente {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+
+/* =========================================================
+   SIN RESULTADOS
+========================================================= */
+
+.historial-empty {
+    text-align: center;
+
+    padding: 50px 20px;
+}
+
+
+.historial-empty i {
+    font-size: 42px;
+
+    color: #b0bec5;
+
+    margin-bottom: 15px;
+}
+
+
+.historial-empty h3 {
+    margin: 0 0 7px;
+
+    color: #455a64;
+}
+
+
+.historial-empty p {
+    margin: 0;
+
+    color: #90a4ae;
+
+    font-size: 0.85rem;
+}
+
+
+/* =========================================================
+   MODO OSCURO
+========================================================= */
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-header {
+
+    background: linear-gradient(
+        135deg,
+        #17231a,
+        #1c2b20
+    );
+
+    border-color: rgba(129, 199, 132, 0.12);
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-title h2,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-list-header h3,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .history-main h4,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .stat-info strong,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .filters-header h3 {
+
+    color: #ffffff;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-stat-card,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-filters,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-container {
+
+    background: #18211b;
+
+    border-color: rgba(255, 255, 255, 0.07);
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .history-item {
+
+    background: #202b23;
+
+    border-color: rgba(255, 255, 255, 0.07);
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .history-item:hover {
+
+    border-color: rgba(129, 199, 132, 0.3);
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .history-content > p {
+
+    color: #b0bec5;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .history-meta span {
+
+    color: #90a4ae;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .filter-group label {
+
+    color: #cfd8dc;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .filter-group .form-select,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .filter-group .form-input {
+
+    background: #202b23;
+
+    border-color: rgba(255, 255, 255, 0.1);
+
+    color: #ffffff;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .filter-group .form-select:focus,
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .filter-group .form-input:focus {
+
+    background: #253229;
+
+    border-color: #66bb6a;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-list-header {
+
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .btn-filter-clear {
+
+    background: #26332a;
+
+    color: #cfd8dc;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .btn-filter-clear:hover {
+
+    background: #334238;
+
+    color: #ffffff;
+}
+
+
+body:is(
+    .dark-mode,
+    .dark-theme,
+    .modo-oscuro,
+    [data-theme="dark"]
+) .historial-empty h3 {
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .historial-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .filters-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .filter-actions {
+        justify-content: flex-start;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MÓVIL
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .historial-header {
+        padding: 18px;
+    }
+
+
+    .historial-title {
+        align-items: flex-start;
+    }
+
+
+    .historial-title-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 20px;
+    }
+
+
+    .historial-title h2 {
+        font-size: 1.15rem;
+    }
+
+
+    .historial-title p {
+        font-size: 0.8rem;
+    }
+
+
+    .historial-stats {
+        grid-template-columns: 1fr;
+    }
+
+
+    .historial-filters,
+    .historial-container {
+        padding: 17px;
+    }
+
+
+    .filters-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .filter-actions {
+        width: 100%;
+    }
+
+
+    .btn-filter-clear {
+        width: 100%;
+    }
+
+
+    .history-item {
+        grid-template-columns:
+            42px
+            1fr;
+
+        align-items: start;
+
+        padding: 14px;
+    }
+
+
+    .history-icon {
+        width: 42px;
+        height: 42px;
+
+        font-size: 16px;
+    }
+
+
+    .history-status {
+        grid-column: 2;
+
+        justify-self: start;
+
+        margin-top: -5px;
+    }
+
+
+    .history-meta {
+        gap: 8px 12px;
+    }
+
+
+    .history-meta span {
+        font-size: 0.68rem;
+    }
+
+}
+
+
+/* =========================================================
+   MÓVILES PEQUEÑOS
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .historial-title {
+        gap: 12px;
+    }
+
+
+    .historial-title-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 12px;
+
+        font-size: 18px;
+    }
+
+
+    .historial-title h2 {
+        font-size: 1rem;
+    }
+
+
+    .historial-title p {
+        font-size: 0.75rem;
+    }
+
+
+    .historial-stat-card {
+        min-height: 90px;
+
+        padding: 14px;
+    }
+
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+
+    .stat-info strong {
+        font-size: 1.3rem;
+    }
+
+
+    .history-main {
+        gap: 6px;
+    }
+
+
+    .history-main h4 {
+        font-size: 0.9rem;
+    }
+
+
+    .history-content > p {
+        font-size: 0.78rem;
+    }
+
+}
