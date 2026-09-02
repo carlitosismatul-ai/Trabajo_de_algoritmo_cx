@@ -1,209 +1,654 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin - HarvestX</title>
+<title>Admin - HarvestX</title>
 
-    <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+<link rel="stylesheet" href="../../CSS/paginas/administrador.css">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+    /* =========================================================
+       DASHBOARD HARVESTX - ESTILO MODERNO
+       ========================================================= */
+
+    .content-grid {
+        position: relative;
+    }
+
+    /* =========================================================
+       TARJETAS DE ESTADÍSTICAS
+       ========================================================= */
+
+    .stats-grid {
+        gap: 18px;
+    }
+
+    .stat-card {
+        border-radius: 18px;
+        border: 1px solid rgba(46, 125, 50, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .stat-card::after {
+        content: "";
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        right: -30px;
+        top: -30px;
+        background: rgba(255, 255, 255, 0.22);
+        pointer-events: none;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+    }
+
+    .card-solid-green {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+    }
+
+    .bg-light-green {
+        background: linear-gradient(135deg, #d8f5df, #b9eac5);
+        color: #174d24;
+    }
+
+    .bg-light-blue {
+        background: linear-gradient(135deg, #d9efff, #b8ddf7);
+        color: #123e5c;
+    }
+
+    .bg-light-yellow {
+        background: linear-gradient(135deg, #fff0b8, #ffdc69);
+        color: #5d4700;
+    }
+
+    .bg-light-red {
+        background: linear-gradient(135deg, #ffd9d6, #ffb8b2);
+        color: #661b18;
+    }
+
+    .stat-icon {
+        border-radius: 14px;
+        position: relative;
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.45);
+    }
+
+    .stat-info {
+        position: relative;
+        z-index: 2;
+    }
+
+    .stat-info span {
+        font-weight: 650;
+    }
+
+    .stat-info h3 {
+        font-weight: 800;
+    }
+
+    .stat-info small {
+        font-weight: 600;
+    }
+
+    .card-solid-green .stat-info span,
+    .card-solid-green .stat-info h3,
+    .card-solid-green .stat-info small {
+        color: #ffffff !important;
+    }
+
+    .bg-light-green .stat-info span,
+    .bg-light-green .stat-info h3,
+    .bg-light-green .stat-info small {
+        color: #174d24 !important;
+    }
+
+    .bg-light-blue .stat-info span,
+    .bg-light-blue .stat-info h3,
+    .bg-light-blue .stat-info small {
+        color: #123e5c !important;
+    }
+
+    .bg-light-yellow .stat-info span,
+    .bg-light-yellow .stat-info h3,
+    .bg-light-yellow .stat-info small {
+        color: #5d4700 !important;
+    }
+
+    .bg-light-red .stat-info span,
+    .bg-light-red .stat-info h3,
+    .bg-light-red .stat-info small {
+        color: #661b18 !important;
+    }
+
+    .bg-light-green .stat-icon {
+        background: rgba(255, 255, 255, 0.58);
+    }
+
+    .bg-light-blue .stat-icon {
+        background: rgba(255, 255, 255, 0.58);
+    }
+
+    .bg-light-yellow .stat-icon {
+        background: rgba(255, 255, 255, 0.58);
+    }
+
+    .bg-light-red .stat-icon {
+        background: rgba(255, 255, 255, 0.58);
+    }
+
+    /* =========================================================
+       TARJETAS PRINCIPALES
+       ========================================================= */
+
+    .main-columns {
+        gap: 20px;
+    }
+
+    .card {
+        border-radius: 20px;
+        border: 1px solid rgba(46, 125, 50, 0.08);
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.045);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 20px 22px;
+    }
+
+    .card-header h3 {
+        font-weight: 700;
+        color: #111111;
+    }
+
+    .link-more {
+        color: #2e7d32;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .link-more:hover {
+        color: #1b5e20;
+    }
+
+    /* =========================================================
+       CULTIVOS
+       ========================================================= */
+
+    .crop-list {
+        padding: 0 22px 20px;
+    }
+
+    .crop-item {
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        transition: background 0.2s ease;
+    }
+
+    .crop-item:last-child {
+        border-bottom: none;
+    }
+
+    .crop-item:hover {
+        background: rgba(46, 125, 50, 0.025);
+    }
+
+    .crop-icon-small {
+        border-radius: 13px;
+        background: #f1f8f2;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .crop-title-row h4 {
+        font-weight: 650;
+        color: #111111;
+    }
+
+    .crop-percentage {
+        color: #333333;
+        font-weight: 600;
+    }
+
+    .progress-bar {
+        background: #edf1ed;
+        height: 8px;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress {
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    .bg-green {
+        background: linear-gradient(90deg, #2e7d32, #66bb6a);
+    }
+
+    .bg-yellow {
+        background: linear-gradient(90deg, #f9a825, #fdd835);
+    }
+
+    .bg-orange {
+        background: linear-gradient(90deg, #ef6c00, #ff9800);
+    }
+
+    /* =========================================================
+       CLIMA
+       ========================================================= */
+
+    .weather-widget {
+        margin: 0 18px 18px;
+        padding: 22px;
+        border-radius: 18px;
+        background:
+            linear-gradient(145deg, #1976d2, #2196f3 55%, #64b5f6);
+        color: white;
+        box-shadow: 0 10px 28px rgba(25, 118, 210, 0.18);
+    }
+
+    .weather-icon-large {
+        filter: drop-shadow(0 5px 8px rgba(0,0,0,0.12));
+    }
+
+    .weather-details {
+        background: rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 14px;
+        padding: 15px 10px;
+    }
+
+    .weather-forecast {
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    #climaEstado {
+        border-radius: 16px;
+        margin: 15px;
+        background: linear-gradient(135deg, #f2faf4, #edf7ff);
+    }
+
+    #climaEstado i {
+        filter: drop-shadow(0 5px 8px rgba(46, 125, 50, 0.15));
+    }
+
+    /* =========================================================
+       ACTIVIDAD
+       ========================================================= */
+
+    .activity-list {
+        padding: 0 22px 18px;
+    }
+
+    .activity-item {
+        padding: 13px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-icon {
+        border-radius: 12px;
+    }
+
+    .activity-info h4 {
+        color: #111111;
+    }
+
+    .activity-info p {
+        color: #444444;
+    }
+
+    .activity-time {
+        color: #555555;
+    }
+
+    /* =========================================================
+       GRÁFICOS
+       ========================================================= */
+
+    .charts-card {
+        margin-top: 2px;
+    }
+
+    .charts-card .card-header h3 {
+        color: #111111 !important;
+        font-weight: 750;
+    }
+
+    .charts-container {
+        gap: 20px;
+    }
+
+    .chart-box {
+        border-radius: 16px;
+        border: 1px solid rgba(46, 125, 50, 0.07);
+        background: linear-gradient(145deg, #ffffff, #f8fbf8);
+        padding: 18px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+    }
+
+    .chart-box h4 {
+        color: #111111 !important;
+        font-weight: 700;
+    }
+
+    /* =========================================================
+       DETALLES DE COLOR
+       ========================================================= */
+
+    .text-green {
+        color: #2e7d32 !important;
+    }
+
+    .text-dark-green {
+        color: #1b5e20 !important;
+    }
+
+    .text-light-green {
+        color: #66bb6a !important;
+    }
+
+    .text-blue {
+        color: #1976d2 !important;
+    }
+
+    .text-yellow {
+        color: #f9a825 !important;
+    }
+
+    .text-red {
+        color: #d32f2f !important;
+    }
+
+    .text-gray {
+        color: #555555 !important;
+    }
+
+    /* =========================================================
+       TOPBAR
+       ========================================================= */
+
+    .topbar {
+        box-shadow: 0 3px 18px rgba(0, 0, 0, 0.035);
+    }
+
+    .notifications {
+        transition: transform 0.2s ease;
+    }
+
+    .notifications:hover {
+        transform: translateY(-2px);
+    }
+
+    .badge {
+        background: #d32f2f !important;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .weather-widget {
+            margin: 0 12px 15px;
+            padding: 17px;
+        }
+
+        .card-header {
+            padding: 17px;
+        }
+
+        .crop-list,
+        .activity-list {
+            padding-left: 17px;
+            padding-right: 17px;
+        }
+
+    }
+/* =========================================================
+   HARVESTX - MODO OSCURO TARJETAS PRINCIPALES
+   ========================================================= */
+
+html[data-theme="dark"] .main-columns .card {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .main-columns .card .card-header h3 {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .main-columns .card .link-more {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .main-columns .card .crop-title-row h4 {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .main-columns .card .crop-percentage {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .main-columns .card .activity-info h4,
+html[data-theme="dark"] .main-columns .card .activity-info p,
+html[data-theme="dark"] .main-columns .card .activity-time {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .main-columns .card #climaEstado,
+html[data-theme="dark"] .main-columns .card #climaMensaje {
+    color: #ffffff !important;
+}
+
+/* SOLO TÍTULO DEL CUADRO DE GRÁFICOS EN MODO OSCURO */
+html[data-theme="dark"] .charts-card .card-header h3 {
+    color: #ffffff !important;
+}
+</style>
 
 </head>
 
-
 <body>
 
+<!-- ========================================== -->
+<!-- LOADER -->
+<!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- LOADER -->
-    <!-- ========================================== -->
+<div id="loader" class="loader-container">
 
-    <div id="loader" class="loader-container">
+    <div class="loader">
 
-        <div class="loader">
+        <i class="fa-solid fa-seedling loader-icon"></i>
 
-            <i class="fa-solid fa-seedling loader-icon"></i>
+        <div class="spinner"></div>
 
-            <div class="spinner"></div>
-
-            <p>Cargando tu cosecha...</p>
-
-        </div>
+        <p>Cargando tu cosecha...</p>
 
     </div>
 
+</div>
 
 
-    <!-- ========================================== -->
-    <!-- MODAL DE CONFIGURACIÓN -->
-    <!-- ========================================== -->
+<!-- ========================================== -->
+<!-- MODAL DE CONFIGURACIÓN -->
+<!-- ========================================== -->
 
-    <div id="settingsModal" class="modal-overlay">
+<div id="settingsModal" class="modal-overlay">
 
-        <div class="modal-content">
+    <div class="modal-content">
 
-            <div class="modal-header">
+        <div class="modal-header">
 
-                <h2>Ajustes del Sistema</h2>
+            <h2>Ajustes del Sistema</h2>
 
-                <i class="fa-solid fa-xmark close-modal"
-                    id="closeSettings"></i>
+            <i class="fa-solid fa-xmark close-modal"
+                id="closeSettings"></i>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div class="setting-group">
+
+                <label>Tema Oscuro</label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                        id="themeToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
 
             </div>
 
+            <div class="setting-group">
 
-            <div class="modal-body">
+                <label>Sonido</label>
 
+                <label class="switch">
 
-                <!-- TEMA -->
+                    <input type="checkbox"
+                        id="soundToggle">
 
-                <div class="setting-group">
+                    <span class="slider round"></span>
 
-                    <label>Tema Oscuro</label>
+                </label>
 
-                    <label class="switch">
+            </div>
 
-                        <input type="checkbox"
-                            id="themeToggle">
+            <div class="setting-group">
 
-                        <span class="slider round"></span>
+                <label>
+                    Voz del asistente
+                </label>
 
-                    </label>
+                <span style="font-size:0.9rem; color:var(--texto-claro);">
+                    🎙️ Asistente HarvestX
+                </span>
 
-                </div>
+            </div>
 
+            <div class="setting-group">
 
-                <!-- SONIDO -->
+                <label>
+                    Probar voz
+                </label>
 
-                <div class="setting-group">
+                <button
+                    type="button"
+                    id="testVoiceButton"
+                    class="btn-size">
 
-                    <label>Sonido</label>
+                    🔊 Probar voz
 
-                    <label class="switch">
+                </button>
 
-                        <input type="checkbox"
-                            id="soundToggle">
+            </div>
 
-                        <span class="slider round"></span>
+            <div class="setting-group">
 
-                    </label>
+                <label>
+                    Fuente de Letra
+                </label>
 
-                </div>
+                <select id="fontSelect"
+                    class="form-select">
 
+                    <option value="'Poppins', sans-serif">
+                        Poppins
+                    </option>
 
-                <!-- VOZ -->
+                    <option value="'Arial', sans-serif">
+                        Arial
+                    </option>
 
-                <div class="setting-group">
+                    <option value="'Courier New', monospace">
+                        Courier New
+                    </option>
 
-                    <label>
-                        Voz del asistente
-                    </label>
+                    <option value="'Times New Roman', serif">
+                        Times New Roman
+                    </option>
 
-                    <span style="font-size:0.9rem; color:var(--texto-claro);">
-                        🎙️ Asistente HarvestX
-                    </span>
+                </select>
 
-                </div>
+            </div>
 
+            <div class="setting-group">
 
-                <!-- PROBAR VOZ -->
+                <label>
+                    Tamaño de Letra
+                </label>
 
-                <div class="setting-group">
-
-                    <label>
-                        Probar voz
-                    </label>
+                <div class="size-controls">
 
                     <button
-                        type="button"
-                        id="testVoiceButton"
+                        id="btnSizeSmall"
                         class="btn-size">
 
-                        🔊 Probar voz
+                        A-
+
+                    </button>
+
+                    <button
+                        id="btnSizeNormal"
+                        class="btn-size active">
+
+                        A
+
+                    </button>
+
+                    <button
+                        id="btnSizeLarge"
+                        class="btn-size">
+
+                        A+
 
                     </button>
 
                 </div>
-
-
-                <!-- FUENTE -->
-
-                <div class="setting-group">
-
-                    <label>
-                        Fuente de Letra
-                    </label>
-
-                    <select id="fontSelect"
-                        class="form-select">
-
-                        <option value="'Poppins', sans-serif">
-                            Poppins
-                        </option>
-
-                        <option value="'Arial', sans-serif">
-                            Arial
-                        </option>
-
-                        <option value="'Courier New', monospace">
-                            Courier New
-                        </option>
-
-                        <option value="'Times New Roman', serif">
-                            Times New Roman
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- TAMAÑO -->
-
-                <div class="setting-group">
-
-                    <label>
-                        Tamaño de Letra
-                    </label>
-
-                    <div class="size-controls">
-
-                        <button
-                            id="btnSizeSmall"
-                            class="btn-size">
-
-                            A-
-
-                        </button>
-
-                        <button
-                            id="btnSizeNormal"
-                            class="btn-size active">
-
-                            A
-
-                        </button>
-
-                        <button
-                            id="btnSizeLarge"
-                            class="btn-size">
-
-                            A+
-
-                        </button>
-
-                    </div>
-
-                </div>
-
 
             </div>
 
@@ -211,159 +656,126 @@
 
     </div>
 
+</div>
 
 
-    <!-- ========================================== -->
-    <!-- MODAL DE PERFIL -->
-    <!-- ========================================== -->
+<!-- ========================================== -->
+<!-- MODAL DE PERFIL -->
+<!-- ========================================== -->
 
-    <div id="profileModal" class="modal-overlay">
+<div id="profileModal" class="modal-overlay">
 
-        <div class="modal-content profile-modal">
+    <div class="modal-content profile-modal">
 
+        <div class="modal-header">
 
-            <!-- ENCABEZADO -->
+            <h2>Mi Perfil</h2>
 
-            <div class="modal-header">
+            <i class="fa-solid fa-xmark close-modal"
+                id="closeProfile"></i>
 
-                <h2>Mi Perfil</h2>
+        </div>
 
-                <i class="fa-solid fa-xmark close-modal"
-                    id="closeProfile"></i>
+        <div class="modal-body">
+
+            <div class="profile-photo-section">
+
+                <div class="profile-photo-wrapper">
+
+                    <div id="profilePhotoPreview"
+                        class="profile-photo-preview">
+
+                        U
+
+                    </div>
+
+                    <label for="profilePhotoInput"
+                        class="change-photo-button">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/*"
+                        hidden>
+
+                </div>
+
+                <p class="profile-photo-text">
+
+                    Haz clic en la cámara para cambiar tu foto
+
+                </p>
 
             </div>
 
+            <div class="profile-form">
 
-            <!-- CUERPO -->
+                <div class="profile-field">
 
-            <div class="modal-body">
+                    <label for="profileNombre">
+                        Nombre completo
+                    </label>
 
-
-                <!-- FOTO -->
-
-                <div class="profile-photo-section">
-
-                    <div class="profile-photo-wrapper">
-
-                        <div id="profilePhotoPreview"
-                            class="profile-photo-preview">
-
-                            U
-
-                        </div>
-
-
-                        <label for="profilePhotoInput"
-                            class="change-photo-button">
-
-                            <i class="fa-solid fa-camera"></i>
-
-                        </label>
-
-
-                        <input
-                            type="file"
-                            id="profilePhotoInput"
-                            accept="image/*"
-                            hidden>
-
-                    </div>
-
-
-                    <p class="profile-photo-text">
-
-                        Haz clic en la cámara para cambiar tu foto
-
-                    </p>
+                    <input
+                        type="text"
+                        id="profileNombre"
+                        placeholder="Nombre completo">
 
                 </div>
 
+                <div class="profile-field">
 
+                    <label for="profileUsuario">
+                        Nombre de usuario
+                    </label>
 
-                <!-- INFORMACIÓN -->
-
-                <div class="profile-form">
-
-
-                    <!-- NOMBRE -->
-
-                    <div class="profile-field">
-
-                        <label for="profileNombre">
-                            Nombre completo
-                        </label>
-
-                        <input
-                            type="text"
-                            id="profileNombre"
-                            placeholder="Nombre completo">
-
-                    </div>
-
-
-                    <!-- USUARIO -->
-
-                    <div class="profile-field">
-
-                        <label for="profileUsuario">
-                            Nombre de usuario
-                        </label>
-
-                        <input
-                            type="text"
-                            id="profileUsuario"
-                            readonly>
-
-                    </div>
-
-
-                    <!-- ROL -->
-
-                    <div class="profile-field">
-
-                        <label for="profileRol">
-                            Rol
-                        </label>
-
-                        <input
-                            type="text"
-                            id="profileRol"
-                            readonly>
-
-                    </div>
-
+                    <input
+                        type="text"
+                        id="profileUsuario"
+                        readonly>
 
                 </div>
 
+                <div class="profile-field">
 
+                    <label for="profileRol">
+                        Rol
+                    </label>
 
-                <!-- BOTONES -->
-
-                <div class="profile-actions">
-
-                    <button
-                        type="button"
-                        id="cancelProfile"
-                        class="btn-modal btn-cancelar">
-
-                        Cancelar
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="saveProfile"
-                        class="btn-modal btn-guardar">
-
-                        <i class="fa-solid fa-floppy-disk"></i>
-
-                        Guardar cambios
-
-                    </button>
+                    <input
+                        type="text"
+                        id="profileRol"
+                        readonly>
 
                 </div>
 
+            </div>
+
+            <div class="profile-actions">
+
+                <button
+                    type="button"
+                    id="cancelProfile"
+                    class="btn-modal btn-cancelar">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="button"
+                    id="saveProfile"
+                    class="btn-modal btn-guardar">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Guardar cambios
+
+                </button>
 
             </div>
 
@@ -371,1362 +783,2551 @@
 
     </div>
 
+</div>
 
 
-    <!-- ========================================== -->
-    <!-- DASHBOARD -->
-    <!-- ========================================== -->
+<!-- ========================================== -->
+<!-- DASHBOARD -->
+<!-- ========================================== -->
 
-    <div class="dashboard-container">
+<div class="dashboard-container">
 
+    <!-- SIDEBAR -->
 
-        <!-- ====================================== -->
-        <!-- SIDEBAR -->
-        <!-- ====================================== -->
+    <aside class="sidebar" id="sidebar">
 
-        <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
 
+            <div class="logo-wrapper">
 
-            <div class="sidebar-header">
+                <i class="fa-solid fa-leaf logo-icon"></i>
 
-                <div class="logo-wrapper">
+                <div class="logo-text">
 
-                    <i class="fa-solid fa-leaf logo-icon"></i>
+                    <h2>HarvestX</h2>
 
-                    <div class="logo-text">
-
-                        <h2>HarvestX</h2>
-
-                        <span>Sistema Inteligente</span>
-
-                    </div>
+                    <span>Sistema Inteligente</span>
 
                 </div>
-
-
-                <i class="fa-solid fa-xmark close-sidebar-mobile"
-                    id="closeSidebarMobile"></i>
 
             </div>
 
+            <i class="fa-solid fa-xmark close-sidebar-mobile"
+                id="closeSidebarMobile"></i>
 
+        </div>
 
-            <!-- NAVEGACIÓN -->
+        <nav class="sidebar-nav">
 
-            <nav class="sidebar-nav">
+            <a href="inicio.html"
+                class="nav-link active">
 
+                <i class="fa-solid fa-house"></i>
 
-                <!-- DASHBOARD -->
+                <span class="nav-text">
+                    Dashboard
+                </span>
 
-                <a href="inicio.html"
-                    class="nav-link active">
+            </a>
 
-                    <i class="fa-solid fa-house"></i>
+            <div class="nav-category">
 
-                    <span class="nav-text">
-                        Dashboard
-                    </span>
-
-                </a>
-
-
-
-                <!-- GESTIÓN -->
-
-                <div class="nav-category">
-
-                    <span class="nav-text">
-                        GESTIÓN
-                    </span>
-
-                </div>
-
-
-                <a href="fincas.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-mountain-sun"></i>
-
-                    <span class="nav-text">
-                        Fincas
-                    </span>
-
-                </a>
-
-
-                <a href="cultivos.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-seedling"></i>
-
-                    <span class="nav-text">
-                        Cultivos
-                    </span>
-
-                </a>
-
-
-                <a href="programacion_de_riego.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-droplet"></i>
-
-                    <span class="nav-text">
-                        Programación de Riego
-                    </span>
-
-                </a>
-
-
-                <a href="labores_del_campo.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-tractor"></i>
-
-                    <span class="nav-text">
-                        Labores del Campo
-                    </span>
-
-                </a>
-
-
-                <a href="monitoreo_climatico.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-cloud-sun"></i>
-
-                    <span class="nav-text">
-                        Monitoreo Climático
-                    </span>
-
-                </a>
-
-
-                <a href="alertas.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-bell"></i>
-
-                    <span class="nav-text">
-                        Alertas
-                    </span>
-
-                </a>
-
-
-
-                <!-- REPORTES -->
-
-                <div class="nav-category">
-
-                    <span class="nav-text">
-                        REPORTES
-                    </span>
-
-                </div>
-
-
-                <a href="reportes_y_estadisticas.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-chart-column"></i>
-
-                    <span class="nav-text">
-                        Reportes y Estadísticas
-                    </span>
-
-                </a>
-
-
-                <a href="historial.html"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-
-                    <span class="nav-text">
-                        Historial de Actividades
-                    </span>
-
-                </a>
-
-
-
-                <!-- SISTEMA -->
-
-                <div class="nav-category">
-
-                    <span class="nav-text">
-                        SISTEMA
-                    </span>
-
-                </div>
-
-
-                <a href="#"
-                    class="nav-link">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    <span class="nav-text">
-                        Usuarios
-                    </span>
-
-                </a>
-
-
-                <a href="#"
-                    class="nav-link"
-                    id="openSettings">
-
-                    <i class="fa-solid fa-gear"></i>
-
-                    <span class="nav-text">
-                        Configuración
-                    </span>
-
-                </a>
-
-
-            </nav>
-
-
-
-            <!-- CERRAR SESIÓN -->
-
-            <div class="sidebar-footer">
-
-                <a href="../../login.html"
-                   class="nav-link logout"
-                   id="cerrarSesion">
-
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
-                    <span class="nav-text">
-                        Cerrar Sesión
-                    </span>
-
-                </a>
+                <span class="nav-text">
+                    GESTIÓN
+                </span>
 
             </div>
 
+            <a href="fincas.html"
+                class="nav-link">
 
-        </aside>
+                <i class="fa-solid fa-mountain-sun"></i>
+
+                <span class="nav-text">
+                    Fincas
+                </span>
+
+            </a>
+
+            <a href="cultivos.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <span class="nav-text">
+                    Cultivos
+                </span>
+
+            </a>
+
+            <a href="programacion_de_riego.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <span class="nav-text">
+                    Programación de Riego
+                </span>
+
+            </a>
+
+            <a href="labores_del_campo.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-tractor"></i>
+
+                <span class="nav-text">
+                    Labores del Campo
+                </span>
+
+            </a>
+
+            <a href="monitoreo_climatico.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                <span class="nav-text">
+                    Monitoreo Climático
+                </span>
+
+            </a>
+
+            <a href="alertas.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <span class="nav-text">
+                    Alertas
+                </span>
+
+            </a>
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    REPORTES
+                </span>
+
+            </div>
+
+            <a href="reportes_y_estadisticas.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                <span class="nav-text">
+                    Reportes y Estadísticas
+                </span>
+
+            </a>
+
+            <a href="historial.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                <span class="nav-text">
+                    Historial de Actividades
+                </span>
+
+            </a>
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    SISTEMA
+                </span>
+
+            </div>
+
+            <a href="usuarios.html"
+                class="nav-link">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span class="nav-text">
+                    Usuarios
+                </span>
+
+            </a>
+
+            <a href="#"
+                class="nav-link"
+                id="openSettings">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span class="nav-text">
+                    Configuración
+                </span>
+
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <a href="../../login.html"
+               class="nav-link logout"
+               id="cerrarSesion">
+
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <span class="nav-text">
+                    Cerrar Sesión
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
 
 
+    <!-- CONTENIDO PRINCIPAL -->
 
-        <!-- ====================================== -->
-        <!-- CONTENIDO PRINCIPAL -->
-        <!-- ====================================== -->
+    <main class="main-content"
+        id="mainContent">
 
-        <main class="main-content"
-            id="mainContent">
+        <!-- TOPBAR -->
 
+        <header class="topbar">
 
+            <div class="left-controls">
 
-            <!-- ================================== -->
-            <!-- TOPBAR -->
-            <!-- ================================== -->
+                <div class="menu-toggle-desktop"
+                    id="toggleSidebarDesktop">
 
-            <header class="topbar">
-
-
-                <!-- IZQUIERDA -->
-
-                <div class="left-controls">
-
-
-                    <!-- ESCRITORIO -->
-
-                    <div class="menu-toggle-desktop"
-                        id="toggleSidebarDesktop">
-
-                        <i class="fa-solid fa-bars"></i>
-
-                    </div>
-
-
-                    <!-- MÓVIL -->
-
-                    <div class="menu-toggle-mobile"
-                        id="menuToggleMobile">
-
-                        <i class="fa-solid fa-bars"></i>
-
-                    </div>
-
-
-                    <!-- BIENVENIDA -->
-
-                    <div class="header-title">
-
-                        <div>
-
-                            <h1 id="nombreBienvenida">
-
-                                ¡Bienvenido! 👋
-
-                            </h1>
-
-
-                            <p>
-                                Administrador del Sistema
-                            </p>
-
-                        </div>
-
-                    </div>
-
+                    <i class="fa-solid fa-bars"></i>
 
                 </div>
 
+                <div class="menu-toggle-mobile"
+                    id="menuToggleMobile">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </div>
+
+                <div class="header-title">
+
+                    <div>
+
+                        <h1 id="nombreBienvenida">
+
+                            ¡Bienvenido! 👋
+
+                        </h1>
+
+                        <p>
+                            Administrador del Sistema
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="user-info">
+
+                <div class="notifications">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="badge"
+                        id="contadorNotificaciones">
+
+                        3
+
+                    </span>
+
+                </div>
+
+                <div
+                    class="avatar"
+                    id="openProfile"
+                    aria-label="Abrir perfil"
+                    title="Abrir mi perfil"
+                    style="cursor:pointer;">
+
+                    <img
+                        id="avatarImagen"
+                        class="avatar-img"
+                        src=""
+                        alt="Foto de perfil">
+
+                </div>
+
+                <div class="user-details">
+
+                    <span
+                        class="name"
+                        id="nombreUsuario">
+
+                        Usuario
+
+                    </span>
+
+                    <span
+                        class="role"
+                        id="rolUsuario">
+
+                        Administrador
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
 
 
-                <!-- ================================= -->
-                <!-- INFORMACIÓN DEL USUARIO -->
-                <!-- ================================= -->
+        <!-- CONTENIDO -->
 
-                <div class="user-info">
+        <section class="content-grid">
 
+            <!-- ESTADÍSTICAS -->
 
-                    <!-- NOTIFICACIONES -->
+            <div class="stats-grid fade-up delay-1">
 
-                    <div class="notifications">
+                <div class="stat-card card-solid-green">
 
-                        <i class="fa-regular fa-bell"></i>
+                    <div class="stat-icon">
 
-                        <span class="badge">
+                        <i class="fa-solid fa-house-chimney"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Fincas Registradas
+                        </span>
+
+                        <h3 id="totalFincas">
+                            --
+                        </h3>
+
+                        <small id="detalleFincas">
+                            Cargando...
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card bg-light-green">
+
+                    <div class="stat-icon text-green">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Cultivos Registrados
+                        </span>
+
+                        <h3 id="totalCultivos">
+                            --
+                        </h3>
+
+                        <small class="text-green">
+                            En el sistema
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card bg-light-blue">
+
+                    <div class="stat-icon text-blue">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Humedad Actual
+                        </span>
+
+                        <h3 id="humedadActual">
+                            --%
+                        </h3>
+
+                        <small id="estadoHumedad">
+                            Obteniendo clima...
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card bg-light-yellow">
+
+                    <div class="stat-icon text-yellow">
+
+                        <i class="fa-solid fa-temperature-half"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Temperatura Actual
+                        </span>
+
+                        <h3 id="temperaturaActual">
+                            --°C
+                        </h3>
+
+                        <small id="estadoTemperatura">
+                            Obteniendo clima...
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card bg-light-red">
+
+                    <div class="stat-icon text-red">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Alertas Pendientes
+                        </span>
+
+                        <h3 id="totalAlertas">
                             3
-                        </span>
+                        </h3>
+
+                        <small class="text-red">
+                            Requieren atención
+                        </small>
 
                     </div>
-
-
-
-                    <!-- AVATAR -->
-
-                    <div
-                        class="avatar"
-                        id="openProfile"
-                        aria-label="Abrir perfil"
-                        title="Abrir mi perfil"
-                        style="cursor:pointer;">
-
-                        <img
-                            id="avatarImagen"
-                            class="avatar-img"
-                            src=""
-                            alt="Foto de perfil">
-
-                    </div>
-
-
-
-                    <!-- INFORMACIÓN -->
-
-                    <div class="user-details">
-
-                        <span
-                            class="name"
-                            id="nombreUsuario">
-
-                            Usuario
-
-                        </span>
-
-
-                        <span
-                            class="role"
-                            id="rolUsuario">
-
-                            Administrador
-
-                        </span>
-
-                    </div>
-
 
                 </div>
 
+            </div>
 
-            </header>
 
+            <!-- COLUMNAS PRINCIPALES -->
 
+            <div class="main-columns fade-up delay-2">
 
-            <!-- ====================================== -->
-            <!-- CONTENIDO -->
-            <!-- ====================================== -->
+                <!-- CULTIVOS -->
 
-            <section class="content-grid">
-
-
-                <!-- ================================== -->
-                <!-- ESTADÍSTICAS -->
-                <!-- ================================== -->
-
-                <div class="stats-grid fade-up delay-1">
-
-
-                    <!-- FINCAS -->
-
-                    <div class="stat-card card-solid-green">
-
-                        <div class="stat-icon">
-
-                            <i class="fa-solid fa-house-chimney"></i>
-
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                Fincas Registradas
-                            </span>
-
-                            <h3>
-                                18
-                            </h3>
-
-                            <small>
-                                +2 este mes
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- CULTIVOS -->
-
-                    <div class="stat-card bg-light-green">
-
-                        <div class="stat-icon text-green">
-
-                            <i class="fa-solid fa-leaf"></i>
-
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                Cultivos Registrados
-                            </span>
-
-                            <h3 id="totalCultivos">
-                                --
-                            </h3>
-
-                            <small class="text-green">
-                                En el sistema
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- HUMEDAD -->
-
-                    <div class="stat-card bg-light-blue">
-
-                        <div class="stat-icon text-blue">
-
-                            <i class="fa-solid fa-droplet"></i>
-
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                Humedad Promedio
-                            </span>
-
-                            <h3>
-                                68%
-                            </h3>
-
-                            <small>
-                                Óptimo
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- TEMPERATURA -->
-
-                    <div class="stat-card bg-light-yellow">
-
-                        <div class="stat-icon text-yellow">
-
-                            <i class="fa-solid fa-temperature-half"></i>
-
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                Temperatura Actual
-                            </span>
-
-                            <h3>
-                                24°C
-                            </h3>
-
-                            <small>
-                                Óptimo
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ALERTAS -->
-
-                    <div class="stat-card bg-light-red">
-
-                        <div class="stat-icon text-red">
-
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                Alertas Pendientes
-                            </span>
-
-                            <h3>
-                                3
-                            </h3>
-
-                            <small class="text-red">
-                                Requieren atención
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- ================================== -->
-                <!-- COLUMNAS PRINCIPALES -->
-                <!-- ================================== -->
-
-                <div class="main-columns fade-up delay-2">
-
-
-
-                    <!-- ================================= -->
-                    <!-- CULTIVOS -->
-                    <!-- ================================= -->
-
-                    <div class="card">
-
-                        <div class="card-header">
-
-                            <h3>
-                                Estado de Cultivos Principales
-                            </h3>
-
-                            <a href="#"
-                                class="link-more">
-
-                                Ver todos
-
-                            </a>
-
-                        </div>
-
-
-                        <div class="crop-list">
-
-
-                            <!-- TOMATE -->
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-apple-whole text-red"></i>
-
-                                </div>
-
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Tomate - Finca El Paraíso
-                                        </h4>
-
-                                        <span class="crop-status text-green">
-                                            Saludable
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="progress-bar">
-
-                                        <div
-                                            class="progress bg-green"
-                                            style="width:85%;">
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="crop-percentage">
-                                        85%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- MAÍZ -->
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-wheat-awn text-yellow"></i>
-
-                                </div>
-
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Maíz - Finca San José
-                                        </h4>
-
-                                        <span class="crop-status text-gray">
-                                            Riego requerido
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="progress-bar">
-
-                                        <div
-                                            class="progress bg-yellow"
-                                            style="width:60%;">
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="crop-percentage">
-                                        60%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- CAFÉ -->
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-seedling text-dark-green"></i>
-
-                                </div>
-
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Café - Finca La Esperanza
-                                        </h4>
-
-                                        <span class="crop-status text-green">
-                                            Saludable
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="progress-bar">
-
-                                        <div
-                                            class="progress bg-green"
-                                            style="width:90%;">
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="crop-percentage">
-                                        90%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- LECHUGA -->
-
-                            <div class="crop-item">
-
-                                <div class="crop-icon-small">
-
-                                    <i class="fa-solid fa-leaf text-light-green"></i>
-
-                                </div>
-
-
-                                <div class="crop-details">
-
-                                    <div class="crop-title-row">
-
-                                        <h4>
-                                            Lechuga - Finca Los Andes
-                                        </h4>
-
-                                        <span class="crop-status text-gray">
-                                            Atención requerida
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="progress-bar">
-
-                                        <div
-                                            class="progress bg-orange"
-                                            style="width:40%;">
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="crop-percentage">
-                                        40%
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ================================= -->
-                    <!-- CLIMA -->
-                    <!-- ================================= -->
-
-                    <div class="card no-padding">
-
-
-                        <div
-                            class="card-header padding-card"
-                            style="display:flex; justify-content:space-between; align-items:center;">
-
-                            <h3>
-                                Clima Local
-                            </h3>
-
-
-                            <span
-                                id="relojSistema"
-                                style="font-family:monospace; font-weight:bold; color:var(--text-blue);">
-
-                                --:--:--
-
-                            </span>
-
-                        </div>
-
-
-
-                        <!-- ESTADO -->
-
-                        <div
-                            id="climaEstado"
-                            class="padding-card"
-                            style="text-align:center; color:var(--texto-claro); min-height:200px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
-
-                            <i
-                                class="fa-solid fa-location-crosshairs fa-spin"
-                                style="font-size:2rem; color:var(--verde-activo);">
-
-                            </i>
-
-
-                            <p id="climaMensaje">
-
-                                Detectando tu ubicación...
-
-                            </p>
-
-                        </div>
-
-
-
-                        <!-- CONTENIDO -->
-
-                        <div
-                            id="climaContenido"
-                            class="weather-widget"
-                            style="display:none;">
-
-
-                            <div
-                                style="font-size:0.85rem; margin-bottom:15px; opacity:0.9;">
-
-                                <i class="fa-solid fa-location-dot"></i>
-
-                                <span id="climaUbicacion">
-                                    Ubicación desconocida
-                                </span>
-
-                            </div>
-
-
-
-                            <div class="weather-main">
-
-
-                                <i
-                                    id="climaIcono"
-                                    class="fa-solid fa-sun weather-icon-large">
-
-                                </i>
-
-
-                                <div class="weather-info-main">
-
-                                    <h2 id="climaEstadoTexto">
-                                        --
-                                    </h2>
-
-                                    <h1 id="climaTemp">
-                                        --°C
-                                    </h1>
-
-                                    <p>
-
-                                        Sensación:
-
-                                        <span id="climaSensacion">
-                                            --
-                                        </span>
-
-                                        °C
-
-                                    </p>
-
-                                </div>
-
-
-                            </div>
-
-
-
-                            <!-- DETALLES -->
-
-                            <div class="weather-details">
-
-
-                                <div>
-
-                                    <i class="fa-solid fa-wind"></i>
-
-                                    <span id="climaViento">
-                                        --
-                                    </span>
-
-                                    km/h
-
-                                    <br>
-
-                                    <small>
-                                        Viento
-                                    </small>
-
-                                </div>
-
-
-
-                                <div>
-
-                                    <i class="fa-solid fa-droplet"></i>
-
-                                    <span id="climaHumedad">
-                                        --
-                                    </span>
-
-                                    %
-
-                                    <br>
-
-                                    <small>
-                                        Humedad
-                                    </small>
-
-                                </div>
-
-
-
-                                <div>
-
-                                    <i class="fa-solid fa-umbrella"></i>
-
-                                    <span id="climaProbLluvia">
-                                        --
-                                    </span>
-
-                                    %
-
-                                    <br>
-
-                                    <small>
-                                        Lluvia
-                                    </small>
-
-                                </div>
-
-
-                            </div>
-
-
-
-                            <!-- ACTUALIZACIÓN -->
-
-                            <div
-                                style="margin-top:15px; font-size:0.7rem; display:flex; justify-content:space-between; opacity:0.7; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px;">
-
-                                <span id="climaFecha">
-                                    --
-                                </span>
-
-                                <span>
-
-                                    Act:
-
-                                    <span id="climaUltimaAct">
-                                        --:--
-                                    </span>
-
-                                </span>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- PRONÓSTICO -->
-
-                        <div
-                            id="climaPronostico"
-                            class="weather-forecast padding-card"
-                            style="display:none;">
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- ================================= -->
-                    <!-- ACTIVIDAD -->
-                    <!-- ================================= -->
-
-                    <div class="card">
-
-
-                        <div class="card-header">
-
-                            <h3>
-                                Actividad Reciente
-                            </h3>
-
-                            <a href="#"
-                                class="link-more">
-
-                                Ver todas
-
-                            </a>
-
-                        </div>
-
-
-
-                        <div class="activity-list">
-
-
-                            <!-- ACTIVIDAD 1 -->
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-green text-green">
-
-                                    <i class="fa-solid fa-droplet"></i>
-
-                                </div>
-
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Riego programado
-                                    </h4>
-
-                                    <p>
-                                        Finca El Paraíso - Sector A
-                                    </p>
-
-                                </div>
-
-
-                                <span class="activity-time">
-                                    Hace 2 horas
-                                </span>
-
-                            </div>
-
-
-
-                            <!-- ACTIVIDAD 2 -->
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-green text-green">
-
-                                    <i class="fa-solid fa-seedling"></i>
-
-                                </div>
-
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Cosecha registrada
-                                    </h4>
-
-                                    <p>
-                                        Tomate - 120 kg
-                                    </p>
-
-                                </div>
-
-
-                                <span class="activity-time">
-                                    Hace 4 horas
-                                </span>
-
-                            </div>
-
-
-
-                            <!-- ACTIVIDAD 3 -->
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-green text-green">
-
-                                    <i class="fa-solid fa-flask"></i>
-
-                                </div>
-
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Análisis de suelo
-                                    </h4>
-
-                                    <p>
-                                        Finca San José - Completado
-                                    </p>
-
-                                </div>
-
-
-                                <span class="activity-time">
-                                    Hace 6 horas
-                                </span>
-
-                            </div>
-
-
-
-                            <!-- ACTIVIDAD 4 -->
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-red text-red">
-
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                                </div>
-
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Alerta de plaga
-                                    </h4>
-
-                                    <p>
-                                        Pulgón detectado en Maíz
-                                    </p>
-
-                                </div>
-
-
-                                <span class="activity-time">
-                                    Hace 8 horas
-                                </span>
-
-                            </div>
-
-
-
-                            <!-- ACTIVIDAD 5 -->
-
-                            <div class="activity-item">
-
-                                <div class="activity-icon bg-light-green text-green">
-
-                                    <i class="fa-solid fa-leaf"></i>
-
-                                </div>
-
-
-                                <div class="activity-info">
-
-                                    <h4>
-                                        Fertilización aplicada
-                                    </h4>
-
-                                    <p>
-                                        Finca La Esperanza
-                                    </p>
-
-                                </div>
-
-
-                                <span class="activity-time">
-                                    Hace 1 día
-                                </span>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- ================================== -->
-                <!-- GRÁFICOS -->
-                <!-- ================================== -->
-
-                <div class="card charts-card fade-up delay-3">
-
+                <div class="card">
 
                     <div class="card-header">
 
                         <h3>
-                            Gráficos y Estadísticas
+                            Estado de Cultivos Principales
                         </h3>
+
+                        <a href="cultivos.html"
+                            class="link-more">
+
+                            Ver todos
+
+                        </a>
 
                     </div>
 
+                    <div
+                        class="crop-list"
+                        id="dashboardCultivos">
 
+                        <div
+                            style="padding:30px; text-align:center; color:var(--texto-claro);">
 
-                    <div class="charts-container">
+                            <i class="fa-solid fa-seedling fa-spin"></i>
 
-
-                        <!-- PRODUCCIÓN -->
-
-                        <div class="chart-box">
-
-                            <h4>
-                                Producción por Cultivo (Este mes)
-                            </h4>
-
-                            <div class="chart-wrapper pie-wrapper">
-
-                                <canvas id="productionChart"></canvas>
-
-                            </div>
+                            <p>Cargando cultivos...</p>
 
                         </div>
-
-
-
-                        <!-- RENDIMIENTO -->
-
-                        <div class="chart-box">
-
-                            <h4>
-                                Rendimiento por Hectárea
-                            </h4>
-
-                            <div class="chart-wrapper">
-
-                                <canvas id="yieldChart"></canvas>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- HUMEDAD -->
-
-                        <div class="chart-box">
-
-                            <h4>
-                                Humedad del Suelo por Sector
-                            </h4>
-
-                            <div class="chart-wrapper">
-
-                                <canvas id="moistureChart"></canvas>
-
-                            </div>
-
-                        </div>
-
 
                     </div>
 
                 </div>
 
 
-            </section>
+                <!-- CLIMA -->
+
+                <div class="card no-padding">
+
+                    <div
+                        class="card-header padding-card"
+                        style="display:flex; justify-content:space-between; align-items:center;">
+
+                        <h3>
+                            Clima Local
+                        </h3>
+
+                        <span
+                            id="relojSistema"
+                            style="font-family:monospace; font-weight:bold; color:#1976d2;">
+
+                            --:--:--
+
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="climaEstado"
+                        class="padding-card"
+                        style="text-align:center; color:var(--texto-claro); min-height:200px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
+
+                        <i
+                            class="fa-solid fa-location-crosshairs fa-spin"
+                            style="font-size:2rem; color:#2e7d32;">
+
+                        </i>
+
+                        <p id="climaMensaje">
+
+                            Detectando tu ubicación...
+
+                        </p>
+
+                    </div>
+
+                    <div
+                        id="climaContenido"
+                        class="weather-widget"
+                        style="display:none;">
+
+                        <div
+                            style="font-size:0.85rem; margin-bottom:15px; opacity:0.9;">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <span id="climaUbicacion">
+                                Ubicación desconocida
+                            </span>
+
+                        </div>
+
+                        <div class="weather-main">
+
+                            <i
+                                id="climaIcono"
+                                class="fa-solid fa-sun weather-icon-large">
+
+                            </i>
+
+                            <div class="weather-info-main">
+
+                                <h2 id="climaEstadoTexto">
+                                    --
+                                </h2>
+
+                                <h1 id="climaTemp">
+                                    --°C
+                                </h1>
+
+                                <p>
+
+                                    Sensación:
+
+                                    <span id="climaSensacion">
+                                        --
+                                    </span>
+
+                                    °C
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="weather-details">
+
+                            <div>
+
+                                <i class="fa-solid fa-wind"></i>
+
+                                <span id="climaViento">
+                                    --
+                                </span>
+
+                                km/h
+
+                                <br>
+
+                                <small>
+                                    Viento
+                                </small>
+
+                            </div>
+
+                            <div>
+
+                                <i class="fa-solid fa-droplet"></i>
+
+                                <span id="climaHumedad">
+                                    --
+                                </span>
+
+                                %
+
+                                <br>
+
+                                <small>
+                                    Humedad
+                                </small>
+
+                            </div>
+
+                            <div>
+
+                                <i class="fa-solid fa-umbrella"></i>
+
+                                <span id="climaProbLluvia">
+                                    --
+                                </span>
+
+                                %
+
+                                <br>
+
+                                <small>
+                                    Lluvia
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            style="margin-top:15px; font-size:0.7rem; display:flex; justify-content:space-between; opacity:0.7; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px;">
+
+                            <span id="climaFecha">
+                                --
+                            </span>
+
+                            <span>
+
+                                Act:
+
+                                <span id="climaUltimaAct">
+                                    --:--
+                                </span>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="climaPronostico"
+                        class="weather-forecast padding-card"
+                        style="display:none;">
+
+                    </div>
+
+                </div>
 
 
-        </main>
+                <!-- ACTIVIDAD -->
 
-    </div>
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            Actividad Reciente
+                        </h3>
+
+                        <a href="historial.html"
+                            class="link-more">
+
+                            Ver todas
+
+                        </a>
+
+                    </div>
+
+                    <div class="activity-list">
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon bg-light-green text-green">
+
+                                <i class="fa-solid fa-droplet"></i>
+
+                            </div>
+
+                            <div class="activity-info">
+
+                                <h4>
+                                    Riego programado
+                                </h4>
+
+                                <p>
+                                    Programación de riego
+                                </p>
+
+                            </div>
+
+                            <span class="activity-time">
+                                Sistema
+                            </span>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon bg-light-green text-green">
+
+                                <i class="fa-solid fa-seedling"></i>
+
+                            </div>
+
+                            <div class="activity-info">
+
+                                <h4>
+                                    Cultivos registrados
+                                </h4>
+
+                                <p id="actividadCultivos">
+                                    Consultando información...
+                                </p>
+
+                            </div>
+
+                            <span class="activity-time">
+                                Actual
+                            </span>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon bg-light-green text-green">
+
+                                <i class="fa-solid fa-mountain-sun"></i>
+
+                            </div>
+
+                            <div class="activity-info">
+
+                                <h4>
+                                    Fincas disponibles
+                                </h4>
+
+                                <p id="actividadFincas">
+                                    Consultando información...
+                                </p>
+
+                            </div>
+
+                            <span class="activity-time">
+                                Actual
+                            </span>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon bg-light-blue text-blue">
+
+                                <i class="fa-solid fa-cloud-sun"></i>
+
+                            </div>
+
+                            <div class="activity-info">
+
+                                <h4>
+                                    Monitoreo climático
+                                </h4>
+
+                                <p id="actividadClima">
+                                    Detectando condiciones...
+                                </p>
+
+                            </div>
+
+                            <span class="activity-time">
+                                Ahora
+                            </span>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon bg-light-green text-green">
+
+                                <i class="fa-solid fa-leaf"></i>
+
+                            </div>
+
+                            <div class="activity-info">
+
+                                <h4>
+                                    Sistema HarvestX
+                                </h4>
+
+                                <p>
+                                    Dashboard actualizado
+                                </p>
+
+                            </div>
+
+                            <span class="activity-time">
+                                Ahora
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
+            <!-- GRÁFICOS -->
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT -->
-    <!-- ========================================== -->
+            <div class="card charts-card fade-up delay-3">
 
-    <script src="../../JS/paginas/configuracion.js"></script>
+                <div class="card-header">
 
-    <script src="../../JS/paginas/administrador.js"></script>
+                    <h3>
+                        Gráficos y Estadísticas
+                    </h3>
 
-    <script src="../../JS/paginas/clima.js"></script>
+                </div>
+
+                <div class="charts-container">
+
+                    <div class="chart-box">
+
+                        <h4>
+                            Distribución de Cultivos
+                        </h4>
+
+                        <div class="chart-wrapper pie-wrapper">
+
+                            <canvas id="productionChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+                    <div class="chart-box">
+
+                        <h4>
+                            Fincas Registradas
+                        </h4>
+
+                        <div class="chart-wrapper">
+
+                            <canvas id="yieldChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+                    <div class="chart-box">
+
+                        <h4>
+                            Estado Climático Actual
+                        </h4>
+
+                        <div class="chart-wrapper">
+
+                            <canvas id="moistureChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
 
 
+<!-- ========================================== -->
+<!-- JAVASCRIPT GENERAL -->
+<!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- TOTAL DE CULTIVOS -->
-    <!-- ========================================== -->
+<script src="../../JS/paginas/configuracion.js"></script>
 
-    <script>
+<script src="../../JS/paginas/administrador.js"></script>
 
-        async function cargarTotalCultivos() {
 
-            try {
+<!-- ========================================== -->
+<!-- DASHBOARD HARVESTX -->
+<!-- ========================================== -->
 
-                const respuesta = await fetch(
-                    "http://127.0.0.1:5000/cultivos"
+<script>
+
+    const HARVESTX_API = "http://127.0.0.1:5000";
+
+    let usuarioDashboard = null;
+    let climaDashboard = null;
+
+    function obtenerUsuarioDashboard() {
+
+        try {
+
+            const datos =
+                localStorage.getItem("usuarioHarvestX");
+
+            if (!datos) {
+
+                console.warn(
+                    "No existe usuarioHarvestX en localStorage."
                 );
 
+                return null;
 
-                if (!respuesta.ok) {
+            }
 
-                    throw new Error(
-                        "Error al obtener cultivos"
+            return JSON.parse(datos);
+
+        } catch (error) {
+
+            console.error(
+                "Error leyendo usuario:",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
+
+    function cargarUsuarioDashboard() {
+
+        usuarioDashboard =
+            obtenerUsuarioDashboard();
+
+        if (!usuarioDashboard) {
+
+            return;
+
+        }
+
+        const nombre =
+            usuarioDashboard.nombre || "Usuario";
+
+        const usuario =
+            usuarioDashboard.usuario || "Usuario";
+
+        const rol =
+            usuarioDashboard.rol || "Administrador";
+
+        const nombreUsuario =
+            document.getElementById("nombreUsuario");
+
+        const nombreBienvenida =
+            document.getElementById("nombreBienvenida");
+
+        const rolUsuario =
+            document.getElementById("rolUsuario");
+
+        if (nombreUsuario) {
+
+            nombreUsuario.textContent =
+                nombre;
+
+        }
+
+        if (nombreBienvenida) {
+
+            nombreBienvenida.textContent =
+                `¡Bienvenido, ${nombre}! 👋`;
+
+        }
+
+        if (rolUsuario) {
+
+            rolUsuario.textContent =
+                rol;
+
+        }
+
+        const avatar =
+            document.getElementById("avatarImagen");
+
+        if (avatar && usuarioDashboard.foto) {
+
+            avatar.src =
+                `${HARVESTX_API}/IMG/${usuarioDashboard.foto}`;
+
+        }
+
+        const profileNombre =
+            document.getElementById("profileNombre");
+
+        const profileUsuario =
+            document.getElementById("profileUsuario");
+
+        const profileRol =
+            document.getElementById("profileRol");
+
+        if (profileNombre) {
+
+            profileNombre.value =
+                nombre;
+
+        }
+
+        if (profileUsuario) {
+
+            profileUsuario.value =
+                usuario;
+
+        }
+
+        if (profileRol) {
+
+            profileRol.value =
+                rol;
+
+        }
+
+    }
+
+    async function cargarDatosFincasDashboard() {
+
+        if (!usuarioDashboard?.id) {
+
+            return;
+
+        }
+
+        try {
+
+            const respuesta =
+                await fetch(
+                    `${HARVESTX_API}/fincas/estadisticas?usuario_id=${usuarioDashboard.id}`
+                );
+
+            if (!respuesta.ok) {
+
+                throw new Error(
+                    "No se pudieron obtener las estadísticas de fincas."
+                );
+
+            }
+
+            const datos =
+                await respuesta.json();
+
+            if (!datos.exito) {
+
+                throw new Error(
+                    datos.mensaje ||
+                    "Error en estadísticas."
+                );
+
+            }
+
+            const estadisticas =
+                datos.estadisticas;
+
+            const totalFincas =
+                document.getElementById(
+                    "totalFincas"
+                );
+
+            const detalleFincas =
+                document.getElementById(
+                    "detalleFincas"
+                );
+
+            const actividadFincas =
+                document.getElementById(
+                    "actividadFincas"
+                );
+
+            if (totalFincas) {
+
+                totalFincas.textContent =
+                    estadisticas.total_fincas ?? 0;
+
+            }
+
+            if (detalleFincas) {
+
+                detalleFincas.textContent =
+                    `${estadisticas.area_total ?? 0} ha registradas`;
+
+            }
+
+            if (actividadFincas) {
+
+                actividadFincas.textContent =
+                    `${estadisticas.total_fincas ?? 0} finca(s) registrada(s)`;
+
+            }
+
+            actualizarGraficoFincas(
+                estadisticas
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error cargando fincas:",
+                error
+            );
+
+            document.getElementById(
+                "totalFincas"
+            ).textContent = "0";
+
+            document.getElementById(
+                "detalleFincas"
+            ).textContent =
+                "Sin datos disponibles";
+
+        }
+
+    }
+
+    async function cargarDatosCultivosDashboard() {
+
+        if (!usuarioDashboard?.id) {
+
+            return;
+
+        }
+
+        try {
+
+            const respuesta =
+                await fetch(
+                    `${HARVESTX_API}/cultivos?usuario_id=${usuarioDashboard.id}`
+                );
+
+            if (!respuesta.ok) {
+
+                throw new Error(
+                    "No se pudieron obtener los cultivos."
+                );
+
+            }
+
+            const cultivos =
+                await respuesta.json();
+
+            const total =
+                Array.isArray(cultivos)
+                    ? cultivos.length
+                    : 0;
+
+            const totalCultivos =
+                document.getElementById(
+                    "totalCultivos"
+                );
+
+            if (totalCultivos) {
+
+                totalCultivos.textContent =
+                    total;
+
+            }
+
+            const actividadCultivos =
+                document.getElementById(
+                    "actividadCultivos"
+                );
+
+            if (actividadCultivos) {
+
+                actividadCultivos.textContent =
+                    total > 0
+                        ? `${total} cultivo(s) registrados`
+                        : "No hay cultivos registrados";
+
+            }
+
+            renderizarCultivosDashboard(
+                cultivos
+            );
+
+            actualizarGraficoCultivos(
+                cultivos
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error cargando cultivos:",
+                error
+            );
+
+            document.getElementById(
+                "totalCultivos"
+            ).textContent = "0";
+
+            document.getElementById(
+                "actividadCultivos"
+            ).textContent =
+                "No se pudieron cargar los cultivos";
+
+            renderizarCultivosDashboard([]);
+
+        }
+
+    }
+
+    function renderizarCultivosDashboard(
+        cultivos
+    ) {
+
+        const contenedor =
+            document.getElementById(
+                "dashboardCultivos"
+            );
+
+        if (!contenedor) {
+
+            return;
+
+        }
+
+        contenedor.innerHTML = "";
+
+        if (
+            !Array.isArray(cultivos) ||
+            cultivos.length === 0
+        ) {
+
+            contenedor.innerHTML = `
+
+                <div
+                    style="
+                        padding:35px 20px;
+                        text-align:center;
+                        color:var(--texto-claro);
+                    ">
+
+                    <i
+                        class="fa-solid fa-seedling"
+                        style="
+                            font-size:2rem;
+                            color:#66bb6a;
+                            margin-bottom:10px;
+                        ">
+                    </i>
+
+                    <p>
+                        Aún no tienes cultivos registrados.
+                    </p>
+
+                    <a
+                        href="cultivos.html"
+                        class="link-more">
+
+                        Registrar cultivo
+
+                    </a>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        const cultivosMostrar =
+            cultivos.slice(0, 5);
+
+        cultivosMostrar.forEach(
+            (cultivo, index) => {
+
+                const porcentaje =
+                    obtenerPorcentajeCultivo(
+                        cultivo
                     );
+
+                const estado =
+                    cultivo.estado ||
+                    "Activo";
+
+                const estadoTexto =
+                    String(estado).toLowerCase();
+
+                let claseEstado =
+                    "text-green";
+
+                let claseBarra =
+                    "bg-green";
+
+                if (
+                    estadoTexto.includes(
+                        "riego"
+                    )
+                ) {
+
+                    claseEstado =
+                        "text-yellow";
+
+                    claseBarra =
+                        "bg-yellow";
 
                 }
 
+                if (
+                    estadoTexto.includes(
+                        "atención"
+                    ) ||
+                    estadoTexto.includes(
+                        "alerta"
+                    )
+                ) {
 
-                const cultivos =
-                    await respuesta.json();
+                    claseEstado =
+                        "text-red";
 
+                    claseBarra =
+                        "bg-orange";
 
-                const totalCultivos =
-                    document.getElementById(
-                        "totalCultivos"
+                }
+
+                const iconos = [
+                    "fa-apple-whole",
+                    "fa-wheat-awn",
+                    "fa-seedling",
+                    "fa-leaf",
+                    "fa-carrot"
+                ];
+
+                const item =
+                    document.createElement(
+                        "div"
                     );
 
+                item.className =
+                    "crop-item";
 
-                totalCultivos.textContent =
-                    cultivos.length;
+                item.innerHTML = `
 
+                    <div class="crop-icon-small">
 
-            } catch (error) {
+                        <i
+                            class="fa-solid ${iconos[index % iconos.length]} ${claseEstado}">
+                        </i>
 
-                console.error(
-                    "Error cargando cultivos:",
-                    error
+                    </div>
+
+                    <div class="crop-details">
+
+                        <div class="crop-title-row">
+
+                            <h4>
+                                ${escaparHTML(
+                                    cultivo.nombre ||
+                                    "Cultivo"
+                                )}
+                            </h4>
+
+                            <span
+                                class="crop-status ${claseEstado}">
+
+                                ${escaparHTML(
+                                    estado
+                                )}
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div
+                                class="progress ${claseBarra}"
+                                style="width:${porcentaje}%;">
+
+                            </div>
+
+                        </div>
+
+                        <div class="crop-percentage">
+
+                            ${porcentaje}%
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                contenedor.appendChild(
+                    item
                 );
 
+            }
+        );
 
-                const totalCultivos =
-                    document.getElementById(
-                        "totalCultivos"
-                    );
+        if (cultivos.length > 5) {
 
+            const extra =
+                document.createElement(
+                    "div"
+                );
 
-                totalCultivos.textContent = "0";
+            extra.style.cssText =
+                "text-align:center;padding:15px 0 5px;";
+
+            extra.innerHTML = `
+
+                <a
+                    href="cultivos.html"
+                    class="link-more">
+
+                    Ver ${cultivos.length - 5}
+                    cultivos más
+
+                </a>
+
+            `;
+
+            contenedor.appendChild(
+                extra
+            );
+
+        }
+
+    }
+
+    function obtenerPorcentajeCultivo(
+        cultivo
+    ) {
+
+        const posiblesValores = [
+            cultivo.porcentaje,
+            cultivo.progreso,
+            cultivo.salud,
+            cultivo.estado_porcentaje
+        ];
+
+        for (
+            const valor
+            of posiblesValores
+        ) {
+
+            const numero =
+                Number(valor);
+
+            if (
+                Number.isFinite(numero) &&
+                numero >= 0 &&
+                numero <= 100
+            ) {
+
+                return Math.round(
+                    numero
+                );
 
             }
 
         }
 
+        return 70;
 
+    }
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            cargarTotalCultivos
+    function iniciarClimaDashboard() {
+
+        if (
+            !navigator.geolocation
+        ) {
+
+            mostrarErrorClima(
+                "Tu navegador no permite obtener la ubicación."
+            );
+
+            return;
+
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            posicion => {
+
+                const lat =
+                    posicion.coords.latitude;
+
+                const lon =
+                    posicion.coords.longitude;
+
+                obtenerClimaDashboard(
+                    lat,
+                    lon
+                );
+
+            },
+
+            error => {
+
+                console.warn(
+                    "Geolocalización:",
+                    error
+                );
+
+                mostrarErrorClima(
+                    "No se pudo obtener tu ubicación."
+                );
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000
+            }
         );
 
-    </script>
+    }
 
+    async function obtenerClimaDashboard(
+        lat,
+        lon
+    ) {
+
+        try {
+
+            const url =
+                "https://api.open-meteo.com/v1/forecast" +
+                `?latitude=${lat}` +
+                `&longitude=${lon}` +
+                "&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m" +
+                "&hourly=precipitation_probability" +
+                "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,sunrise,sunset" +
+                "&timezone=auto" +
+                "&forecast_days=5";
+
+            const respuesta =
+                await fetch(url);
+
+            if (!respuesta.ok) {
+
+                throw new Error(
+                    "No se pudo consultar el clima."
+                );
+
+            }
+
+            const datos =
+                await respuesta.json();
+
+            climaDashboard =
+                datos;
+
+            const ubicacion =
+                await obtenerUbicacionDashboard(
+                    lat,
+                    lon
+                );
+
+            mostrarClimaDashboard(
+                datos,
+                ubicacion
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error climático:",
+                error
+            );
+
+            mostrarErrorClima(
+                "No se pudo cargar la información climática."
+            );
+
+        }
+
+    }
+
+    async function obtenerUbicacionDashboard(
+        lat,
+        lon
+    ) {
+
+        try {
+
+            const respuesta =
+                await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`
+                );
+
+            if (!respuesta.ok) {
+
+                throw new Error(
+                    "Error de ubicación"
+                );
+
+            }
+
+            const datos =
+                await respuesta.json();
+
+            const address =
+                datos.address || {};
+
+            return (
+                address.city ||
+                address.town ||
+                address.municipality ||
+                address.village ||
+                address.county ||
+                "Ubicación actual"
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "No se pudo obtener nombre de ubicación:",
+                error
+            );
+
+            return "Ubicación actual";
+
+        }
+
+    }
+
+    function mostrarClimaDashboard(
+        datos,
+        ubicacion
+    ) {
+
+        const actual =
+            datos.current;
+
+        if (!actual) {
+
+            return;
+
+        }
+
+        const temperatura =
+            Math.round(
+                actual.temperature_2m
+            );
+
+        const sensacion =
+            Math.round(
+                actual.apparent_temperature
+            );
+
+        const humedad =
+            Math.round(
+                actual.relative_humidity_2m
+            );
+
+        const viento =
+            Math.round(
+                actual.wind_speed_10m
+            );
+
+        const lluvia =
+            obtenerProbabilidadLluvia(
+                datos
+            );
+
+        const clima =
+            interpretarClimaDashboard(
+                actual.weather_code
+            );
+
+        document.getElementById(
+            "climaEstado"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "climaContenido"
+        ).style.display =
+            "block";
+
+        document.getElementById(
+            "climaUbicacion"
+        ).textContent =
+            ubicacion;
+
+        document.getElementById(
+            "climaIcono"
+        ).className =
+            `fa-solid ${clima.icono} weather-icon-large`;
+
+        document.getElementById(
+            "climaEstadoTexto"
+        ).textContent =
+            clima.descripcion;
+
+        document.getElementById(
+            "climaTemp"
+        ).textContent =
+            `${temperatura}°C`;
+
+        document.getElementById(
+            "climaSensacion"
+        ).textContent =
+            sensacion;
+
+        document.getElementById(
+            "climaViento"
+        ).textContent =
+            viento;
+
+        document.getElementById(
+            "climaHumedad"
+        ).textContent =
+            humedad;
+
+        document.getElementById(
+            "climaProbLluvia"
+        ).textContent =
+            lluvia;
+
+        document.getElementById(
+            "climaFecha"
+        ).textContent =
+            new Date().toLocaleDateString(
+                "es-GT",
+                {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short"
+                }
+            );
+
+        document.getElementById(
+            "climaUltimaAct"
+        ).textContent =
+            new Date().toLocaleTimeString(
+                "es-GT",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+        document.getElementById(
+            "actividadClima"
+        ).textContent =
+            `${clima.descripcion}, ${temperatura}°C`;
+
+        document.getElementById(
+            "humedadActual"
+        ).textContent =
+            `${humedad}%`;
+
+        document.getElementById(
+            "temperaturaActual"
+        ).textContent =
+            `${temperatura}°C`;
+
+        document.getElementById(
+            "estadoHumedad"
+        ).textContent =
+            obtenerEstadoHumedad(
+                humedad
+            );
+
+        document.getElementById(
+            "estadoTemperatura"
+        ).textContent =
+            obtenerEstadoTemperatura(
+                temperatura
+            );
+
+        actualizarGraficoClima(
+            temperatura,
+            humedad,
+            lluvia
+        );
+
+    }
+
+    function obtenerProbabilidadLluvia(
+        datos
+    ) {
+
+        try {
+
+            const horaActual =
+                new Date()
+                    .getHours();
+
+            const horas =
+                datos.hourly
+                    ?.time || [];
+
+            const probabilidades =
+                datos.hourly
+                    ?.precipitation_probability ||
+                    [];
+
+            if (!horas.length) {
+
+                return 0;
+
+            }
+
+            let indice =
+                datos.hourly.time.findIndex(
+                    hora =>
+                        new Date(hora)
+                            .getHours() ===
+                        horaActual
+                );
+
+            if (indice < 0) {
+
+                indice = 0;
+
+            }
+
+            return Math.round(
+                probabilidades[indice] || 0
+            );
+
+        } catch {
+
+            return 0;
+
+        }
+
+    }
+
+    function interpretarClimaDashboard(
+        codigo
+    ) {
+
+        if (codigo === 0) {
+
+            return {
+                descripcion: "Despejado",
+                icono: "fa-sun"
+            };
+
+        }
+
+        if (
+            codigo === 1 ||
+            codigo === 2
+        ) {
+
+            return {
+                descripcion: "Parcialmente nublado",
+                icono: "fa-cloud-sun"
+            };
+
+        }
+
+        if (codigo === 3) {
+
+            return {
+                descripcion: "Nublado",
+                icono: "fa-cloud"
+            };
+
+        }
+
+        if (
+            codigo === 45 ||
+            codigo === 48
+        ) {
+
+            return {
+                descripcion: "Niebla",
+                icono: "fa-smog"
+            };
+
+        }
+
+        if (
+            codigo >= 51 &&
+            codigo <= 67
+        ) {
+
+            return {
+                descripcion: "Lluvia ligera",
+                icono: "fa-cloud-rain"
+            };
+
+        }
+
+        if (
+            codigo >= 71 &&
+            codigo <= 77
+        ) {
+
+            return {
+                descripcion: "Nieve",
+                icono: "fa-snowflake"
+            };
+
+        }
+
+        if (
+            codigo >= 80 &&
+            codigo <= 82
+        ) {
+
+            return {
+                descripcion: "Chubascos",
+                icono: "fa-cloud-showers-heavy"
+            };
+
+        }
+
+        if (
+            codigo >= 95
+        ) {
+
+            return {
+                descripcion: "Tormenta",
+                icono: "fa-cloud-bolt"
+            };
+
+        }
+
+        return {
+            descripcion: "Condiciones variables",
+            icono: "fa-cloud-sun"
+        };
+
+    }
+
+    function mostrarErrorClima(
+        mensaje
+    ) {
+
+        const estado =
+            document.getElementById(
+                "climaEstado"
+            );
+
+        if (estado) {
+
+            estado.style.display =
+                "flex";
+
+            estado.innerHTML = `
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="
+                        font-size:2rem;
+                        color:#f9a825;
+                    ">
+                </i>
+
+                <p>
+                    ${mensaje}
+                </p>
+
+            `;
+
+        }
+
+        document.getElementById(
+            "actividadClima"
+        ).textContent =
+            "Información no disponible";
+
+    }
+
+    function obtenerEstadoHumedad(
+        humedad
+    ) {
+
+        if (humedad < 40) {
+
+            return "Humedad baja";
+
+        }
+
+        if (humedad <= 70) {
+
+            return "Humedad adecuada";
+
+        }
+
+        return "Humedad alta";
+
+    }
+
+    function obtenerEstadoTemperatura(
+        temperatura
+    ) {
+
+        if (temperatura < 15) {
+
+            return "Temperatura baja";
+
+        }
+
+        if (temperatura <= 30) {
+
+            return "Condiciones favorables";
+
+        }
+
+        return "Temperatura alta";
+
+    }
+
+    /* =====================================================
+       GRÁFICOS
+       ===================================================== */
+
+    let graficoCultivos = null;
+    let graficoFincas = null;
+    let graficoClima = null;
+
+    function temaOscuroDashboard() {
+
+        return (
+            document.body.classList.contains("dark-mode") ||
+            document.body.classList.contains("dark-theme") ||
+            document.body.classList.contains("modo-oscuro") ||
+            document.documentElement.getAttribute("data-theme") === "dark"
+        );
+
+    }
+
+    function coloresGraficosDashboard() {
+
+        const oscuro =
+            temaOscuroDashboard();
+
+        return {
+
+            texto:
+                oscuro
+                    ? "#f1f5f2"
+                    : "#111111",
+
+            rejilla:
+                oscuro
+                    ? "rgba(255,255,255,0.12)"
+                    : "rgba(0,0,0,0.10)"
+
+        };
+
+    }
+
+    function actualizarTemaGraficosDashboard() {
+
+        const colores =
+            coloresGraficosDashboard();
+
+        [
+            graficoCultivos,
+            graficoFincas,
+            graficoClima
+        ].forEach(
+            grafico => {
+
+                if (!grafico) {
+
+                    return;
+
+                }
+
+                if (
+                    grafico.options.plugins &&
+                    grafico.options.plugins.legend &&
+                    grafico.options.plugins.legend.labels
+                ) {
+
+                    grafico.options.plugins.legend.labels.color =
+                        colores.texto;
+
+                }
+
+                if (grafico.options.scales) {
+
+                    if (grafico.options.scales.x) {
+
+                        grafico.options.scales.x.ticks.color =
+                            colores.texto;
+
+                        grafico.options.scales.x.grid.color =
+                            colores.rejilla;
+
+                    }
+
+                    if (grafico.options.scales.y) {
+
+                        grafico.options.scales.y.ticks.color =
+                            colores.texto;
+
+                        grafico.options.scales.y.grid.color =
+                            colores.rejilla;
+
+                    }
+
+                }
+
+                grafico.update();
+
+            }
+        );
+
+    }
+
+    function actualizarGraficoCultivos(
+        cultivos
+    ) {
+
+        const canvas =
+            document.getElementById(
+                "productionChart"
+            );
+
+        if (!canvas || !window.Chart) {
+
+            return;
+
+        }
+
+        const conteo = {};
+
+        cultivos.forEach(
+            cultivo => {
+
+                const nombre =
+                    cultivo.nombre ||
+                    "Sin nombre";
+
+                conteo[nombre] =
+                    (conteo[nombre] || 0) + 1;
+
+            }
+        );
+
+        const labels =
+            Object.keys(conteo);
+
+        const valores =
+            Object.values(conteo);
+
+        const colores =
+            coloresGraficosDashboard();
+
+        if (graficoCultivos) {
+
+            graficoCultivos.destroy();
+
+        }
+
+        graficoCultivos =
+            new Chart(
+                canvas,
+                {
+                    type: "doughnut",
+
+                    data: {
+                        labels:
+                            labels.length
+                                ? labels
+                                : ["Sin cultivos"],
+
+                        datasets: [
+                            {
+                                data:
+                                    valores.length
+                                        ? valores
+                                        : [1],
+
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+
+                    options: {
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+
+                                labels: {
+                                    color: colores.texto
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+
+    }
+
+    function actualizarGraficoFincas(
+        estadisticas
+    ) {
+
+        const canvas =
+            document.getElementById(
+                "yieldChart"
+            );
+
+        if (!canvas || !window.Chart) {
+
+            return;
+
+        }
+
+        const colores =
+            coloresGraficosDashboard();
+
+        if (graficoFincas) {
+
+            graficoFincas.destroy();
+
+        }
+
+        graficoFincas =
+            new Chart(
+                canvas,
+                {
+                    type: "bar",
+
+                    data: {
+                        labels: [
+                            "Fincas",
+                            "Cultivos activos"
+                        ],
+
+                        datasets: [
+                            {
+                                label:
+                                    "Cantidad",
+
+                                data: [
+                                    Number(
+                                        estadisticas.total_fincas || 0
+                                    ),
+
+                                    Number(
+                                        estadisticas.cultivos_activos || 0
+                                    )
+                                ],
+
+                                borderRadius: 8
+                            }
+                        ]
+                    },
+
+                    options: {
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: colores.texto
+                                },
+
+                                grid: {
+                                    color: colores.rejilla
+                                }
+                            },
+
+                            y: {
+                                beginAtZero: true,
+
+                                ticks: {
+                                    precision: 0,
+                                    color: colores.texto
+                                },
+
+                                grid: {
+                                    color: colores.rejilla
+                                }
+                            }
+                        },
+
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+
+    }
+
+    function actualizarGraficoClima(
+        temperatura,
+        humedad,
+        lluvia
+    ) {
+
+        const canvas =
+            document.getElementById(
+                "moistureChart"
+            );
+
+        if (!canvas || !window.Chart) {
+
+            return;
+
+        }
+
+        const colores =
+            coloresGraficosDashboard();
+
+        if (graficoClima) {
+
+            graficoClima.destroy();
+
+        }
+
+        graficoClima =
+            new Chart(
+                canvas,
+                {
+                    type: "bar",
+
+                    data: {
+                        labels: [
+                            "Temperatura °C",
+                            "Humedad %",
+                            "Lluvia %"
+                        ],
+
+                        datasets: [
+                            {
+                                label:
+                                    "Condición actual",
+
+                                data: [
+                                    temperatura,
+                                    humedad,
+                                    lluvia
+                                ],
+
+                                borderRadius: 8
+                            }
+                        ]
+                    },
+
+                    options: {
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: colores.texto
+                                },
+
+                                grid: {
+                                    color: colores.rejilla
+                                }
+                            },
+
+                            y: {
+                                beginAtZero: true,
+
+                                suggestedMax: 100,
+
+                                ticks: {
+                                    color: colores.texto
+                                },
+
+                                grid: {
+                                    color: colores.rejilla
+                                }
+                            }
+                        },
+
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+
+    }
+
+    /* =====================================================
+       RELOJ
+       ===================================================== */
+
+    function actualizarRelojDashboard() {
+
+        const reloj =
+            document.getElementById(
+                "relojSistema"
+            );
+
+        if (!reloj) {
+
+            return;
+
+        }
+
+        reloj.textContent =
+            new Date().toLocaleTimeString(
+                "es-GT",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            );
+
+    }
+
+    /* =====================================================
+       SEGURIDAD PARA TEXTO HTML
+       ===================================================== */
+
+    function escaparHTML(
+        texto
+    ) {
+
+        return String(texto)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+    /* =====================================================
+       INICIO DEL DASHBOARD
+       ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        async () => {
+
+            cargarUsuarioDashboard();
+
+            if (!usuarioDashboard?.id) {
+
+                console.warn(
+                    "No se encontró un usuario válido."
+                );
+
+                return;
+
+            }
+
+            await Promise.allSettled([
+
+                cargarDatosFincasDashboard(),
+
+                cargarDatosCultivosDashboard()
+
+            ]);
+
+            iniciarClimaDashboard();
+
+            actualizarRelojDashboard();
+
+            setInterval(
+                actualizarRelojDashboard,
+                1000
+            );
+
+        }
+    );
+
+    /* =====================================================
+       ACTUALIZAR CLIMA CADA 15 MINUTOS
+       ===================================================== */
+
+    setInterval(
+        () => {
+
+            if (
+                navigator.geolocation
+            ) {
+
+                navigator.geolocation.getCurrentPosition(
+                    posicion => {
+
+                        obtenerClimaDashboard(
+                            posicion.coords.latitude,
+                            posicion.coords.longitude
+                        );
+
+                    }
+                );
+
+            }
+
+        },
+        15 * 60 * 1000
+    );
+
+    /* =====================================================
+       ACTUALIZAR GRÁFICOS AL CAMBIAR DE TEMA
+       ===================================================== */
+
+    const observadorTemaDashboard =
+        new MutationObserver(
+            () => {
+
+                actualizarTemaGraficosDashboard();
+
+            }
+        );
+
+   observadorTemaDashboard.observe(
+    document.documentElement,
+        {
+            attributes: true,
+            attributeFilter: [
+                "class",
+                "data-theme"
+            ]
+        }
+    );
+
+</script>
 
 </body>
 
 </html>
+
