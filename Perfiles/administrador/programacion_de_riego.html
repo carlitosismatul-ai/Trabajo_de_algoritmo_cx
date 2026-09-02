@@ -174,10 +174,6 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 8px;
-            transition: background-color 0.2s ease;
-        }
-        .btn-action:hover {
-            opacity: 0.9;
         }
         .auto-box {
             text-align: center;
@@ -249,22 +245,9 @@
             color: var(--texto-principal);
         }
 
-        /* AISLAMIENTO DEL CALENDARIO Y ESTILOS DE NAVEGACIÓN */
+        /* AISLAMIENTO DEL CALENDARIO (Previene interferencias de fuentes globales) */
         .cal-panel, .cal-panel *:not(.fa-solid):not(.fa-regular):not(.fa-brands) {
             font-family: inherit;
-        }
-        .cal-nav-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--verde-barra);
-            font-size: 1rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        .cal-nav-btn:hover {
-            background-color: rgba(29, 79, 55, 0.1);
         }
     </style>
 </head>
@@ -551,11 +534,8 @@
                 </div>
                 <!-- CALENDARIO -->
                 <div class="panel-card cal-panel">
-                    <h3>&#128197; Calendario de riego</h3>
-                    
-                    <!-- Contenedor dinámico donde riego.js renderiza la barra del mes -->
-                    <div id="calHeaderBar"></div>
-
+                    <h3><i class="fa-solid fa-calendar-plus"></i> Programar riego</h3>
+                    <form id="formRiego">
                     <div class="cal-header-bar">
                         <div class="cal-days-title">
                             <div>LUN</div><div>MAR</div><div>MIE</div><div>JUE</div><div>VIE</div><div>SAB</div><div>DOM</div>
