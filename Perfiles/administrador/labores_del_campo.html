@@ -6,11 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HarvestX</title>
+    <title>HarvestX - Labores del Campo</title>
 
     <!-- CSS PRINCIPAL -->
     <link rel="stylesheet"
           href="../../CSS/paginas/administrador.css">
+
+    <!-- CSS DEL MÓDULO -->
+    <link rel="stylesheet"
+          href="../../CSS/paginas/labores_del_campo.css">
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet"
@@ -505,7 +509,7 @@
             <!-- LABORES -->
 
             <a href="labores_del_campo.html"
-               class="nav-link">
+               class="nav-link active">
 
                 <i class="fa-solid fa-tractor"></i>
 
@@ -556,6 +560,8 @@
             </div>
 
 
+            <!-- REPORTES Y ESTADÍSTICAS -->
+
             <a href="reportes_y_estadisticas.html"
                class="nav-link">
 
@@ -567,6 +573,8 @@
 
             </a>
 
+
+            <!-- HISTORIAL -->
 
             <a href="historial.html"
                class="nav-link">
@@ -787,64 +795,745 @@
         <section class="content-grid">
 
 
-            <div
-                class="card"
-                style="
-                    min-height:500px;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    text-align:center;
-                ">
+            <div class="labores-module">
 
 
-                <div>
+                <!-- =================================================
+                     ENCABEZADO
+                ================================================== -->
+
+                <div class="labores-header">
+
+                    <div class="labores-title-area">
+
+                        <div class="labores-title-icon">
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Labores del Campo
+                            </h2>
+
+                            <p>
+                                Registra y administra las actividades
+                                realizadas en tus cultivos.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
-                    <i
-                        class="fa-solid fa-seedling"
-                        style="
-                            font-size:60px;
-                            margin-bottom:20px;
-                        ">
+                    <button
+                        type="button"
+                        class="btn-nueva-labor"
+                        id="btnNuevaLabor">
 
-                    </i>
+                        <i class="fa-solid fa-plus"></i>
+
+                        Nueva Labor
+
+                    </button>
+
+                </div>
 
 
-                    <h2>
-                        Módulo en desarrollo
-                    </h2>
+
+                <!-- =================================================
+                     RESUMEN
+                ================================================== -->
+
+                <div class="labores-stats">
 
 
-                    <p>
-                        Esta sección de HarvestX estará
-                        disponible próximamente.
-                    </p>
+                    <!-- TOTAL -->
+
+                    <div class="labor-stat-card">
+
+                        <div class="stat-icon stat-total">
+
+                            <i class="fa-solid fa-list-check"></i>
+
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Total de labores
+                            </span>
+
+                            <strong id="totalLabores">
+                                24
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMPLETADAS -->
+
+                    <div class="labor-stat-card">
+
+                        <div class="stat-icon stat-completadas">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Completadas
+                            </span>
+
+                            <strong id="laboresCompletadas">
+                                18
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PENDIENTES -->
+
+                    <div class="labor-stat-card">
+
+                        <div class="stat-icon stat-pendientes">
+
+                            <i class="fa-solid fa-clock"></i>
+
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Pendientes
+                            </span>
+
+                            <strong id="laboresPendientes">
+                                6
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SEMANA -->
+
+                    <div class="labor-stat-card">
+
+                        <div class="stat-icon stat-semana">
+
+                            <i class="fa-solid fa-calendar-week"></i>
+
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Esta semana
+                            </span>
+
+                            <strong id="laboresSemana">
+                                9
+                            </strong>
+
+                        </div>
+
+                    </div>
 
 
                 </div>
 
 
-            </div>
 
+                <!-- =================================================
+                     FILTROS
+                ================================================== -->
+
+                <div class="labores-filters">
+
+                    <div class="filters-header">
+
+                        <div>
+
+                            <i class="fa-solid fa-filter"></i>
+
+                            <span>
+                                Filtrar labores
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="limpiarFiltros"
+                            class="btn-filter-clear">
+
+                            <i class="fa-solid fa-rotate-left"></i>
+
+                            Limpiar
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="filters-grid">
+
+
+                        <!-- TIPO -->
+
+                        <div class="filter-group">
+
+                            <label for="filtroTipoLabor">
+                                Tipo de labor
+                            </label>
+
+                            <select id="filtroTipoLabor">
+
+                                <option value="todos">
+                                    Todas
+                                </option>
+
+                                <option value="preparacion">
+                                    Preparación del terreno
+                                </option>
+
+                                <option value="siembra">
+                                    Siembra
+                                </option>
+
+                                <option value="fertilizacion">
+                                    Fertilización
+                                </option>
+
+                                <option value="poda">
+                                    Poda
+                                </option>
+
+                                <option value="cosecha">
+                                    Cosecha
+                                </option>
+
+                                <option value="mantenimiento">
+                                    Mantenimiento
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- CULTIVO -->
+
+                        <div class="filter-group">
+
+                            <label for="filtroCultivoLabor">
+                                Cultivo
+                            </label>
+
+                            <select id="filtroCultivoLabor">
+
+                                <option value="todos">
+                                    Todos
+                                </option>
+
+                                <option value="brocoli">
+                                    Brócoli
+                                </option>
+
+                                <option value="tomate">
+                                    Tomate
+                                </option>
+
+                                <option value="limon">
+                                    Limón
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- ESTADO -->
+
+                        <div class="filter-group">
+
+                            <label for="filtroEstadoLabor">
+                                Estado
+                            </label>
+
+                            <select id="filtroEstadoLabor">
+
+                                <option value="todos">
+                                    Todos
+                                </option>
+
+                                <option value="completada">
+                                    Completada
+                                </option>
+
+                                <option value="pendiente">
+                                    Pendiente
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- FECHA -->
+
+                        <div class="filter-group">
+
+                            <label for="filtroFechaLabor">
+                                Fecha
+                            </label>
+
+                            <select id="filtroFechaLabor">
+
+                                <option value="todas">
+                                    Todas
+                                </option>
+
+                                <option value="hoy">
+                                    Hoy
+                                </option>
+
+                                <option value="semana">
+                                    Esta semana
+                                </option>
+
+                                <option value="mes">
+                                    Este mes
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     LISTADO DE LABORES
+                ================================================== -->
+
+                <div class="labores-container">
+
+
+                    <div class="labores-list-header">
+
+                        <div>
+
+                            <h3>
+                                Actividades registradas
+                            </h3>
+
+                            <span id="contadorLabores">
+                                4 labores
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="actualizarLabores"
+                            class="btn-refresh">
+
+                            <i class="fa-solid fa-arrows-rotate"></i>
+
+                            Actualizar
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div
+                        class="labores-list"
+                        id="laboresList">
+
+
+                        <!-- =================================================
+                             LABOR 1
+                        ================================================== -->
+
+                        <article
+                            class="labor-item"
+                            data-tipo="fertilizacion"
+                            data-cultivo="tomate"
+                            data-estado="completada"
+                            data-fecha="2026-09-02">
+
+                            <div class="labor-icon labor-fertilizacion">
+
+                                <i class="fa-solid fa-flask"></i>
+
+                            </div>
+
+
+                            <div class="labor-content">
+
+                                <div class="labor-main">
+
+                                    <div>
+
+                                        <span class="labor-type">
+                                            Fertilización
+                                        </span>
+
+                                        <h4>
+                                            Fertilización de cultivo de tomate
+                                        </h4>
+
+                                    </div>
+
+
+                                    <span class="labor-status status-completada">
+                                        Completada
+                                    </span>
+
+                                </div>
+
+
+                                <p class="labor-description">
+                                    Aplicación de fertilizante al cultivo
+                                    para mejorar su desarrollo.
+                                </p>
+
+
+                                <div class="labor-meta">
+
+                                    <span>
+                                        <i class="fa-solid fa-seedling"></i>
+                                        Tomate
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                        Finca El Paraíso
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-regular fa-calendar"></i>
+                                        02 Sep 2026
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-user"></i>
+                                        Carlos
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+
+                        <!-- =================================================
+                             LABOR 2
+                        ================================================== -->
+
+                        <article
+                            class="labor-item"
+                            data-tipo="poda"
+                            data-cultivo="limon"
+                            data-estado="completada"
+                            data-fecha="2026-09-01">
+
+                            <div class="labor-icon labor-poda">
+
+                                <i class="fa-solid fa-scissors"></i>
+
+                            </div>
+
+
+                            <div class="labor-content">
+
+                                <div class="labor-main">
+
+                                    <div>
+
+                                        <span class="labor-type">
+                                            Poda
+                                        </span>
+
+                                        <h4>
+                                            Poda de árboles de limón
+                                        </h4>
+
+                                    </div>
+
+
+                                    <span class="labor-status status-completada">
+                                        Completada
+                                    </span>
+
+                                </div>
+
+
+                                <p class="labor-description">
+                                    Eliminación de ramas secas y mantenimiento
+                                    general de los árboles.
+                                </p>
+
+
+                                <div class="labor-meta">
+
+                                    <span>
+                                        <i class="fa-solid fa-seedling"></i>
+                                        Limón
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                        Finca Santa María
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-regular fa-calendar"></i>
+                                        01 Sep 2026
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-user"></i>
+                                        Carlos
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+
+                        <!-- =================================================
+                             LABOR 3
+                        ================================================== -->
+
+                        <article
+                            class="labor-item"
+                            data-tipo="mantenimiento"
+                            data-cultivo="brocoli"
+                            data-estado="pendiente"
+                            data-fecha="2026-09-03">
+
+                            <div class="labor-icon labor-mantenimiento">
+
+                                <i class="fa-solid fa-wrench"></i>
+
+                            </div>
+
+
+                            <div class="labor-content">
+
+                                <div class="labor-main">
+
+                                    <div>
+
+                                        <span class="labor-type">
+                                            Mantenimiento
+                                        </span>
+
+                                        <h4>
+                                            Revisión del sistema de riego
+                                        </h4>
+
+                                    </div>
+
+
+                                    <span class="labor-status status-pendiente">
+                                        Pendiente
+                                    </span>
+
+                                </div>
+
+
+                                <p class="labor-description">
+                                    Revisar tuberías, conexiones y aspersores
+                                    del área de cultivo.
+                                </p>
+
+
+                                <div class="labor-meta">
+
+                                    <span>
+                                        <i class="fa-solid fa-seedling"></i>
+                                        Brócoli
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                        Finca El Paraíso
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-regular fa-calendar"></i>
+                                        03 Sep 2026
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-user"></i>
+                                        Carlos
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+
+                        <!-- =================================================
+                             LABOR 4
+                        ================================================== -->
+
+                        <article
+                            class="labor-item"
+                            data-tipo="cosecha"
+                            data-cultivo="tomate"
+                            data-estado="completada"
+                            data-fecha="2026-08-30">
+
+                            <div class="labor-icon labor-cosecha">
+
+                                <i class="fa-solid fa-basket-shopping"></i>
+
+                            </div>
+
+
+                            <div class="labor-content">
+
+                                <div class="labor-main">
+
+                                    <div>
+
+                                        <span class="labor-type">
+                                            Cosecha
+                                        </span>
+
+                                        <h4>
+                                            Cosecha de tomate
+                                        </h4>
+
+                                    </div>
+
+
+                                    <span class="labor-status status-completada">
+                                        Completada
+                                    </span>
+
+                                </div>
+
+
+                                <p class="labor-description">
+                                    Recolección de frutos maduros
+                                    correspondientes al lote principal.
+                                </p>
+
+
+                                <div class="labor-meta">
+
+                                    <span>
+                                        <i class="fa-solid fa-seedling"></i>
+                                        Tomate
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                        Finca El Paraíso
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-regular fa-calendar"></i>
+                                        30 Ago 2026
+                                    </span>
+
+                                    <span>
+                                        <i class="fa-solid fa-user"></i>
+                                        Carlos
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         ESTADO VACÍO
+                    ================================================== -->
+
+                    <div
+                        class="labores-empty"
+                        id="laboresVacio"
+                        style="display:none;">
+
+                        <i class="fa-solid fa-tractor"></i>
+
+                        <h3>
+                            No se encontraron labores
+                        </h3>
+
+                        <p>
+                            Prueba cambiando los filtros
+                            o registra una nueva labor.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
 
         </section>
 
 
     </main>
 
-
 </div>
 
 
 
 <!-- =========================================================
-     JAVASCRIPT
+     JAVASCRIPT GLOBAL
 ========================================================= -->
 
 <script src="../../JS/paginas/configuracion.js"></script>
 
 <script src="../../JS/paginas/administrador.js"></script>
+
+
+<!-- =========================================================
+     JAVASCRIPT DEL MÓDULO
+========================================================= -->
+
+<script src="../../JS/paginas/labores_del_campo.js"></script>
 
 
 </body>
