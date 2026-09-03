@@ -3,7 +3,6 @@
    ========================================================= */
 
 :root {
-
     --verde-barra: #1D4F37;
     --verde-oscuro-contraste: #102B1B;
     --fondo-pagina: #F2F9EF;
@@ -16,159 +15,121 @@
     --fila-impar: #E8F8E5;
     --estado-creciendo: #659C62;
     --estado-alerta: #BF4842;
-
 }
-
 
 /* =========================================================
    ESTRUCTURA GENERAL DE LA PÁGINA
    ========================================================= */
 
 .riego-page {
-
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 100%;
-
 }
-
 
 /* =========================================================
    HERO BANNER
    ========================================================= */
 
 .riego-hero {
-
     background: #ffffff;
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-
 }
 
 .riego-hero-info {
-
     display: flex;
     align-items: center;
     gap: 20px;
-
 }
 
 .riego-hero-icon {
-
     width: 56px;
     height: 56px;
     background: var(--fondo-pagina);
     color: var(--verde-barra);
     border-radius: 12px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 1.8rem;
-
 }
 
 .riego-kicker {
-
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 1px;
     color: var(--barra-mes);
     display: block;
     margin-bottom: 4px;
-
 }
 
 .riego-hero h2 {
-
     margin: 0 0 6px 0;
     font-size: 1.5rem;
     color: var(--texto-principal);
-
 }
 
 .riego-hero p {
-
     margin: 0;
     color: #666;
     font-size: 0.9rem;
-
 }
-
 
 /* =========================================================
    TARJETAS DE MÉTRICAS
    ========================================================= */
 
 .riego-metrics-grid {
-
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 15px;
-
 }
 
 .metric-card {
-
     background: #ffffff;
     padding: 16px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-
     display: flex;
     align-items: center;
     gap: 15px;
-
 }
 
 .metric-icon {
-
     font-size: 24px;
     color: var(--verde-barra);
     background: var(--fondo-pagina);
-
     width: 48px;
     height: 48px;
     border-radius: 10px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .metric-data {
-
     display: flex;
     flex-direction: column;
-
 }
 
 .metric-data span {
-
     font-size: 0.8rem;
     color: #666;
     font-weight: 600;
-
 }
 
 .metric-data strong {
-
     font-size: 1.3rem;
     color: var(--texto-principal);
-
 }
 
 .metric-data small {
-
     font-size: 0.75rem;
     color: #888;
-
 }
-
 
 /* =========================================================
    GRID PRINCIPAL
@@ -176,727 +137,395 @@
    ========================================================= */
 
 .main-riego-grid {
-
     display: grid;
-
     grid-template-columns: 1fr 1.2fr 1fr;
-
     gap: 20px;
-
 }
-
 
 /* Responsive */
-
 @media (max-width: 992px) {
-
     .main-riego-grid {
-
         grid-template-columns: 1fr;
-
     }
-
 }
-
 
 /* =========================================================
    PANELES
    ========================================================= */
 
 .panel-card {
-
     background: #ffffff;
     padding: 20px;
     border-radius: 12px;
-
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-
     display: flex;
     flex-direction: column;
-
 }
 
 .panel-card h3 {
-
     margin-top: 0;
     font-size: 1.1rem;
     color: var(--texto-principal);
-
     border-bottom: 2px solid var(--fondo-pagina);
-
     padding-bottom: 8px;
     margin-bottom: 15px;
-
     display: flex;
     align-items: center;
     gap: 8px;
-
 }
-
 
 /* =========================================================
    FORMULARIO
    ========================================================= */
 
 .form-group {
-
     margin-bottom: 12px;
-
 }
 
 .form-group label {
-
     display: block;
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 4px;
     color: var(--texto-principal);
-
 }
 
 .form-control {
-
     width: 100%;
     padding: 9px 12px;
-
     border: 1px solid #ddd;
     border-radius: 6px;
-
     box-sizing: border-box;
-
     font-size: 0.9rem;
-
 }
 
 .btn-action {
-
     width: 100%;
-
     background-color: var(--verde-barra);
     color: #fff;
-
     padding: 10px;
-
     border: none;
     border-radius: 6px;
-
     font-weight: bold;
     cursor: pointer;
-
     margin-top: 8px;
-
     transition: background-color 0.2s ease;
-
 }
 
 .btn-action:hover {
-
     filter: brightness(0.95);
-
 }
-
 
 /* =========================================================
    ESTILOS DEL CALENDARIO DINÁMICO
    ========================================================= */
 
-
-/* Controles superiores */
-
 .calendario-controles {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     background: var(--fondo-pagina);
-
     padding: 6px 12px;
-
     border-radius: 8px;
-
     margin-bottom: 12px;
-
     gap: 8px;
-
 }
 
-
-/* Botones anterior / siguiente */
-
 .cal-nav-btn {
-
     background: transparent;
-
     border: none;
-
     color: var(--verde-barra);
-
     font-size: 1rem;
-
     cursor: pointer;
-
     padding: 4px 8px;
-
     border-radius: 4px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
-
 }
 
 .cal-nav-btn:hover {
-
     background: rgba(0,0,0,0.05);
-
 }
-
-
-/* Nombre del mes */
 
 .cal-mes-navegacion {
-
     font-weight: bold;
-
     color: var(--texto-principal);
-
     font-size: 0.95rem;
-
     text-align: center;
-
     flex: 1;
-
 }
-
-
-/* Botón agregar */
 
 .cal-add-btn {
-
     background: var(--verde-barra);
-
     color: white;
-
     border: none;
-
     padding: 5px 10px;
-
     border-radius: 6px;
-
     font-size: 0.75rem;
-
     font-weight: bold;
-
     cursor: pointer;
-
     white-space: nowrap;
-
 }
 
-
 /* =========================================================
-   ENCABEZADO DEL CALENDARIO
+   ENCABEZADO Y DÍAS DEL CALENDARIO
    ========================================================= */
 
 .cal-header-bar {
-
     background: var(--barra-mes);
-
     color: white;
-
     padding: 8px;
-
     border-radius: 6px 6px 0 0;
-
     font-weight: bold;
-
     text-align: center;
-
 }
-
-
-/* =========================================================
-   NOMBRES DE LOS DÍAS
-   ========================================================= */
 
 .cal-days-title {
-
     display: grid;
-
     grid-template-columns: repeat(7, minmax(0, 1fr));
-
     width: 100%;
-
     font-size: 0.75rem;
-
     text-align: center;
-
     box-sizing: border-box;
-
 }
-
-
-/* Cada nombre ocupa una columna */
 
 .cal-days-title > * {
-
     min-width: 0;
-
     text-align: center;
-
 }
-
-
-/* =========================================================
-   CUADRÍCULA DEL CALENDARIO
-   ========================================================= */
 
 .cal-grid {
-
     display: grid;
-
     grid-template-columns: repeat(7, minmax(0, 1fr));
-
     gap: 4px;
-
     width: 100%;
-
     box-sizing: border-box;
-
     background: var(--dias-no-seleccionados);
-
     padding: 8px;
-
     border-radius: 0 0 6px 6px;
-
 }
-
-
-/* =========================================================
-   DÍAS DEL CALENDARIO
-   ========================================================= */
 
 .cal-day {
-
     position: relative;
-
     background: white;
-
     min-width: 0;
-
     min-height: 38px;
-
     padding: 10px 4px;
-
     box-sizing: border-box;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     text-align: center;
-
     font-size: 0.85rem;
-
     border-radius: 4px;
-
     cursor: pointer;
-
     font-weight: 600;
-
     color: var(--texto-principal);
-
     transition: all 0.2s ease;
-
 }
-
-
-/* Efecto al pasar el mouse */
 
 .cal-day:hover {
-
     background: #d8eed6;
-
 }
 
-
-/* =========================================================
-   DÍAS DE OTROS MESES
-   ========================================================= */
-
 .cal-day.other-month {
-
     opacity: 0.3;
-
     cursor: default;
-
 }
 
 .cal-day.other-month:hover {
-
     background: white;
-
 }
-
-
-/* =========================================================
-   DÍA ACTUAL
-   ========================================================= */
 
 .cal-day.hoy {
-
     background-color: var(--verde-barra);
-
     color: white;
-
 }
-
-
-/* =========================================================
-   DÍAS PROGRAMADOS
-   ========================================================= */
 
 .cal-day.programado {
-
     border: 2px solid var(--barra-mes);
-
     background-color: #f1f9ec;
-
 }
-
-
-/* =========================================================
-   DÍA SELECCIONADO
-   ========================================================= */
 
 .cal-day.seleccionado {
-
     outline: 2px solid var(--verde-barra);
-
     outline-offset: -2px;
-
 }
-
-
-/* =========================================================
-   BADGE DE CANTIDAD DE RIEGOS
-   ========================================================= */
 
 .cal-day-badge {
-
     position: absolute;
-
     top: 2px;
-
     right: 4px;
-
     background-color: var(--verde-barra);
-
     color: white;
-
     font-size: 0.65rem;
-
     font-weight: bold;
-
     border-radius: 50%;
-
     width: 15px;
-
     height: 15px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
 }
-
-
-/* Badge cuando el día es HOY */
 
 .cal-day.hoy .cal-day-badge {
-
     background-color: white;
-
     color: var(--verde-barra);
-
 }
 
-
-/* =========================================================
-   LEYENDA
-   ========================================================= */
-
 .cal-legend {
-
     display: flex;
-
     gap: 15px;
-
     margin-top: 12px;
-
     font-size: 0.75rem;
-
     color: #666;
-
     justify-content: center;
-
 }
 
 .legend-item {
-
     display: flex;
-
     align-items: center;
-
     gap: 6px;
-
 }
 
 .legend-dot {
-
     width: 10px;
-
     height: 10px;
-
     border-radius: 50%;
-
     display: inline-block;
-
 }
 
 .legend-dot.programado {
-
     background-color: var(--barra-mes);
-
 }
 
 .legend-dot.hoy {
-
     background-color: var(--verde-barra);
-
 }
-
 
 /* =========================================================
    AUTOMATIZACIÓN
    ========================================================= */
 
 .auto-box {
-
     text-align: center;
-
     align-items: center;
-
     justify-content: center;
-
 }
 
 .auto-icon-circle {
-
     width: 70px;
-
     height: 70px;
-
     background: var(--verde-barra);
-
     color: white;
-
     border-radius: 50%;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     font-size: 1.8rem;
-
     margin: 10px auto;
-
     transition: background-color 0.3s ease;
-
 }
 
 .auto-icon-circle.inactivo {
-
     background: var(--estado-alerta);
-
 }
 
 .btn-toggle-auto {
-
     background-color: var(--estado-alerta);
-
 }
 
 .btn-toggle-auto.inactivo {
-
     background-color: var(--verde-barra);
-
 }
 
-
 /* =========================================================
-   BLOQUE INFERIOR
+   BLOQUE INFERIOR Y RECOMENDACIONES
    ========================================================= */
 
 .bottom-riego-grid {
-
     display: grid;
-
     grid-template-columns: 1fr 1fr;
-
     gap: 20px;
-
 }
 
 @media (max-width: 768px) {
-
     .bottom-riego-grid {
-
         grid-template-columns: 1fr;
-
     }
-
 }
-
-
-/* =========================================================
-   RECOMENDACIONES
-   ========================================================= */
 
 .recomendacion-box {
-
     background-color: var(--fila-impar);
-
     border-left: 4px solid var(--verde-barra);
-
     padding: 14px;
-
     border-radius: 6px;
-
     font-size: 0.9rem;
-
     color: var(--texto-principal);
-
     line-height: 1.4;
-
 }
 
-
 /* =========================================================
-   TABLA DE HISTORIAL
+   TABLA DE HISTORIAL (CORREGIDA SIN GRID)
    ========================================================= */
 
 .table-responsive {
-
-    overflow-x: auto;
-
+    width: 100% !important;
+    overflow-x: auto !important;
+    display: block !important;
 }
 
 .riego-table {
-
-    width: 100%;
-
-    border-collapse: collapse;
-
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important; /* Fuerza a repartir las 4 columnas al 25% cada una */
     font-size: 0.85rem;
+}
 
+.riego-table thead {
+    background-color: var(--barra-mes, #8EB156) !important;
 }
 
 .riego-table th {
-
-    background: var(--barra-mes);
-
-    color: white;
-
-    padding: 8px 10px;
-
-    text-align: left;
-
-}
-
-.riego-table tr:nth-child(even) {
-
-    background: var(--fila-par);
-
-}
-
-.riego-table tr:nth-child(odd) {
-
-    background: var(--fila-impar);
-
+    color: #ffffff !important;
+    font-weight: bold !important;
+    padding: 10px 4px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: none !important;
+    width: 25% !important; /* Asegura el mismo ancho que las celdas */
 }
 
 .riego-table td {
-
-    padding: 8px 10px;
-
-    color: var(--texto-principal);
-
+    padding: 10px 4px !important;
+    color: var(--texto-principal) !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: none !important;
+    width: 25% !important;
+    white-space: nowrap !important;
 }
 
+/* Filas alternadas (verde claro / mint) */
+.riego-table tbody tr:nth-child(even) {
+    background-color: var(--fila-par, #F0FAF7) !important;
+}
 
+.riego-table tbody tr:nth-child(odd) {
+    background-color: var(--fila-impar, #E8F8E5) !important;
+}
 /* =========================================================
-   RESPONSIVE DEL CALENDARIO
+   PROTECCIÓN DEL CALENDARIO
    ========================================================= */
 
-@media (max-width: 600px) {
-
-    .calendario-controles {
-
-        flex-wrap: wrap;
-
-    }
-
-    .cal-mes-navegacion {
-
-        order: 2;
-
-        width: 100%;
-
-    }
-
-    .cal-add-btn {
-
-        order: 3;
-
-    }
-
-    .cal-days-title {
-
-        font-size: 0.7rem;
-
-    }
-
-    .cal-day {
-
-        min-height: 34px;
-
-        padding: 8px 2px;
-
-        font-size: 0.8rem;
-
-    }
-
-}
-/* Proteger el calendario contra fuentes o estilos globales */
 .cal-panel, 
 .cal-panel * {
-    font-family: inherit; /* Mantiene la tipografía original */
+    font-family: inherit;
     box-sizing: border-box;
 }
 
-/* Evitar que Font Awesome afecte el texto del calendario */
 .cal-panel :not(.fa-solid):not(.fa-regular):not(.fa-brands) {
     font-family: inherit !important;
 }
