@@ -220,31 +220,6 @@
             color: var(--texto-principal);
             line-height: 1.4;
         }
-        .table-responsive {
-            overflow-x: auto;
-        }
-        .riego-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        .riego-table th {
-            background: var(--barra-mes);
-            color: white;
-            padding: 8px 10px;
-            text-align: left;
-        }
-        .riego-table tr:nth-child(even) {
-            background: var(--fila-par);
-        }
-        .riego-table tr:nth-child(odd) {
-            background: var(--fila-impar);
-        }
-        .riego-table td {
-            padding: 8px 10px;
-            color: var(--texto-principal);
-        }
-
         /* AISLAMIENTO DEL CALENDARIO (Previene interferencias de fuentes globales) */
         .cal-panel, .cal-panel *:not(.fa-solid):not(.fa-regular):not(.fa-brands) {
             font-family: inherit;
@@ -534,8 +509,7 @@
                 </div>
                 <!-- CALENDARIO -->
                 <div class="panel-card cal-panel">
-                    <h3><i class="fa-solid fa-calendar-plus"></i> Programar riego</h3>
-                    <form id="formRiego">
+                    <h3>📅 Calendario de riego</h3>
                     <div class="cal-header-bar">
                         <div class="cal-days-title">
                             <div>LUN</div><div>MAR</div><div>MIE</div><div>JUE</div><div>VIE</div><div>SAB</div><div>DOM</div>
@@ -580,26 +554,34 @@
                 <!-- HISTORIAL -->
                 <div class="panel-card">
                     <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial de riegos</h3>
+                    
                     <div class="table-responsive">
-                        <table class="riego-table">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Hora</th>
-                                    <th>Duración</th>
-                                    <th>Agua</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historialRiegoBody">
-                                <!-- JS insertará o actualizará aquí las filas del historial -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <table class="riego-table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Duración</th>
+                <th>Agua</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>30/08/2026</td>
+                <td>06:10 AM</td>
+                <td>40 min</td>
+                <td>120 L</td>
+            </tr>
+            <tr>
+                <td>28/08/2026</td>
+                <td>06:00 AM</td>
+                <td>45 min</td>
+                <td>130 L</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
 <!-- SCRIPTS -->
 <script src="../../JS/paginas/configuracion.js"></script>
 <script src="../../JS/paginas/administrador.js"></script>
