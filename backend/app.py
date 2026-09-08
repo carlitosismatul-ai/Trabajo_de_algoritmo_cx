@@ -5,31 +5,121 @@ import os
 from werkzeug.utils import secure_filename
 
 
-app = Flask(__name__)
+# ==========================================================
+# CONFIGURACIÓN PRINCIPAL
+# ==========================================================
+
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+
+app = Flask(
+    __name__,
+    static_folder=BASE_DIR,
+    static_url_path=""
+)
+
 CORS(app)
 
 
-# ==========================================
-# CONFIGURACIÓN DE ARCHIVOS
-# ==========================================
+# ==========================================================
+# CONFIGURACIÓN DE CARPETAS
+# ==========================================================
 
-CARPETA_IMAGENES = os.path.abspath(
-    os.path.join(
-        os.path.dirname(__file__),
-        "..",
-        "IMG"
-    )
+CARPETA_IMAGENES = os.path.join(
+    BASE_DIR,
+    "IMG"
 )
+
+CARPETA_PERFILES = os.path.join(
+    BASE_DIR,
+    "Perfiles"
+)
+
 
 os.makedirs(
     CARPETA_IMAGENES,
     exist_ok=True
 )
 
+os.makedirs(
+    CARPETA_PERFILES,
+    exist_ok=True
+)
 
-# ==========================================
-# SERVIR IMÁGENES DESDE FLASK
-# ==========================================
+
+# ==========================================================
+# EXTENSIONES PERMITIDAS
+# ==========================================================
+
+EXTENSIONES_PERMITIDAS = {
+    "png",
+    "jpg",
+    "jpeg",
+    "webp"
+}
+
+
+# ==========================================================
+# CONEXIÓN CON MYSQL
+# ==========================================================
+
+def conectar_bd():
+
+    conexion = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="MySQL@2026Nueva",
+        database="harvestx"
+    )
+
+    return conexion
+
+
+# ==========================================================
+# PÁGINA PRINCIPAL
+# ==========================================================
+
+@app.route("/")
+def inicio():
+
+    return send_from_directory(
+        BASE_DIR,
+        "login.html"
+    )
+
+
+# ==========================================================
+# ARCHIVOS ESTÁTICOS
+# ==========================================================
+
+@app.route("/<path:nombre_archivo>")
+def archivos_estaticos(nombre_archivo):
+
+    ruta = os.path.join(
+        BASE_DIR,
+        nombre_archivo
+    )
+
+    if os.path.isfile(ruta):
+
+        return send_from_directory(
+            BASE_DIR,
+            nombre_archivo
+        )
+
+    return jsonify({
+        "exito": False,
+        "mensaje": "Archivo no encontrado."
+    }), 404
+
+
+# ==========================================================
+# SERVIR IMÁGENES DESDE IMG
+# ==========================================================
 
 @app.route("/IMG/<path:nombre_archivo>")
 def servir_imagen(nombre_archivo):
@@ -40,41 +130,27 @@ def servir_imagen(nombre_archivo):
     )
 
 
-# ==========================================
-# EXTENSIONES PERMITIDAS
-# ==========================================
+# ==========================================================
+# SERVIR PERFILES
+# ==========================================================
 
-EXTENSIONES_PERMITIDAS = {
-    "png",
-    "jpg",
-    "jpeg",
-    "webp"
-}
+@app.route("/Perfiles/<path:nombre_archivo>")
+def servir_perfil(nombre_archivo):
 
-
-# ==========================================
-# CONEXIÓN CON MYSQL
-# ==========================================
-
-def conectar_bd():
-
-    conexion = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="harvestx"
+    return send_from_directory(
+        CARPETA_PERFILES,
+        nombre_archivo
     )
 
-    return conexion
 
-
-# ==========================================
+# ==========================================================
 # FUNCIONES PARA IMÁGENES
-# ==========================================
+# ==========================================================
 
 def extension_permitida(nombre_archivo):
 
     if "." not in nombre_archivo:
+
         return False
 
     extension = (
@@ -86,29 +162,14 @@ def extension_permitida(nombre_archivo):
     return extension in EXTENSIONES_PERMITIDAS
 
 
-# ==========================================
-# INICIO
-# ==========================================
-
-@app.route("/")
-def inicio():
-
-    conexion = conectar_bd()
-
-    if conexion.is_connected():
-
-        conexion.close()
-
-        return "HarvestX Backend + MySQL funcionando 🌱🗄️"
-
-    return "No se pudo conectar con MySQL"
-
-
 # ==========================================================
 # LOGIN
 # ==========================================================
 
-@app.route("/login", methods=["POST"])
+@app.route(
+    "/login",
+    methods=["POST"]
+)
 def iniciar_sesion():
 
     datos = request.get_json()
@@ -127,13 +188,19 @@ def iniciar_sesion():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Usuario y contraseña son obligatorios."
+            "mensaje": (
+                "Usuario y contraseña "
+                "son obligatorios."
+            )
         }), 400
 
     usuario = usuario.strip()
 
     conexion = conectar_bd()
-    cursor = conexion.cursor(dictionary=True)
+
+    cursor = conexion.cursor(
+        dictionary=True
+    )
 
     sql = """
         SELECT
@@ -163,38 +230,57 @@ def iniciar_sesion():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Usuario o contraseña incorrectos."
+            "mensaje": (
+                "Usuario o contraseña "
+                "incorrectos."
+            )
         }), 401
 
     if usuario_bd["estado"] != "activo":
 
         return jsonify({
             "exito": False,
-            "mensaje": "Este usuario se encuentra inactivo."
+            "mensaje": (
+                "Este usuario se encuentra "
+                "inactivo."
+            )
         }), 403
 
     if contrasena != usuario_bd["contrasena"]:
 
         return jsonify({
             "exito": False,
-            "mensaje": "Usuario o contraseña incorrectos."
+            "mensaje": (
+                "Usuario o contraseña "
+                "incorrectos."
+            )
         }), 401
 
     return jsonify({
 
         "exito": True,
 
-        "mensaje": "Inicio de sesión correcto.",
+        "mensaje": (
+            "Inicio de sesión correcto."
+        ),
 
         "usuario": {
 
             "id": usuario_bd["id"],
+
             "nombre": usuario_bd["nombre"],
+
             "usuario": usuario_bd["usuario"],
+
             "rol": usuario_bd["rol"],
+
             "estado": usuario_bd["estado"],
+
             "foto": usuario_bd["foto"],
-            "fecha_creacion": usuario_bd["fecha_creacion"]
+
+            "fecha_creacion": (
+                usuario_bd["fecha_creacion"]
+            )
 
         }
 
@@ -205,7 +291,10 @@ def iniciar_sesion():
 # REGISTRO DE USUARIOS
 # ==========================================================
 
-@app.route("/registro", methods=["POST"])
+@app.route(
+    "/registro",
+    methods=["POST"]
+)
 def registrar_usuario():
 
     datos = request.get_json()
@@ -225,7 +314,10 @@ def registrar_usuario():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Todos los campos son obligatorios."
+            "mensaje": (
+                "Todos los campos "
+                "son obligatorios."
+            )
         }), 400
 
     nombre = nombre.strip()
@@ -240,11 +332,17 @@ def registrar_usuario():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Todos los campos son obligatorios."
+            "mensaje": (
+                "Todos los campos "
+                "son obligatorios."
+            )
         }), 400
 
     conexion = conectar_bd()
-    cursor = conexion.cursor(dictionary=True)
+
+    cursor = conexion.cursor(
+        dictionary=True
+    )
 
     sql_buscar = """
         SELECT id
@@ -266,7 +364,10 @@ def registrar_usuario():
 
         return jsonify({
             "exito": False,
-            "mensaje": "El nombre de usuario ya está registrado."
+            "mensaje": (
+                "El nombre de usuario "
+                "ya está registrado."
+            )
         }), 409
 
     sql_insertar = """
@@ -307,15 +408,22 @@ def registrar_usuario():
 
         "exito": True,
 
-        "mensaje": "Cuenta creada correctamente.",
+        "mensaje": (
+            "Cuenta creada correctamente."
+        ),
 
         "usuario": {
 
             "id": nuevo_id,
+
             "nombre": nombre,
+
             "usuario": usuario,
+
             "rol": "usuario",
+
             "estado": "activo",
+
             "foto": None
 
         }
@@ -396,14 +504,19 @@ def actualizar_perfil(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "El nombre es obligatorio."
+            "mensaje": (
+                "El nombre es obligatorio."
+            )
         }), 400
 
     if len(nombre) > 100:
 
         return jsonify({
             "exito": False,
-            "mensaje": "El nombre no puede superar los 100 caracteres."
+            "mensaje": (
+                "El nombre no puede superar "
+                "los 100 caracteres."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -454,7 +567,10 @@ def actualizar_perfil(id):
 
             return jsonify({
                 "exito": False,
-                "mensaje": "No se seleccionó ninguna imagen."
+                "mensaje": (
+                    "No se seleccionó "
+                    "ninguna imagen."
+                )
             }), 400
 
         if not extension_permitida(
@@ -467,7 +583,8 @@ def actualizar_perfil(id):
             return jsonify({
                 "exito": False,
                 "mensaje": (
-                    "Formato de imagen no permitido. "
+                    "Formato de imagen "
+                    "no permitido. "
                     "Usa JPG, JPEG, PNG o WEBP."
                 )
             }), 400
@@ -483,7 +600,10 @@ def actualizar_perfil(id):
 
             return jsonify({
                 "exito": False,
-                "mensaje": "El nombre de la imagen no es válido."
+                "mensaje": (
+                    "El nombre de la imagen "
+                    "no es válido."
+                )
             }), 400
 
         extension = (
@@ -497,7 +617,7 @@ def actualizar_perfil(id):
         )
 
         ruta_archivo = os.path.join(
-            CARPETA_IMAGENES,
+            CARPETA_PERFILES,
             nuevo_nombre_archivo
         )
 
@@ -505,32 +625,9 @@ def actualizar_perfil(id):
             ruta_archivo
         )
 
-        nueva_foto = nuevo_nombre_archivo
-
-        if (
-            foto_actual
-            and foto_actual.startswith("perfil_")
-            and foto_actual != nuevo_nombre_archivo
-        ):
-
-            ruta_foto_anterior = os.path.join(
-                CARPETA_IMAGENES,
-                foto_actual
-            )
-
-            if os.path.exists(
-                ruta_foto_anterior
-            ):
-
-                try:
-
-                    os.remove(
-                        ruta_foto_anterior
-                    )
-
-                except OSError:
-
-                    pass
+        nueva_foto = (
+            f"Perfiles/{nuevo_nombre_archivo}"
+        )
 
     sql_actualizar = """
         UPDATE usuarios
@@ -580,7 +677,10 @@ def actualizar_perfil(id):
 
         "exito": True,
 
-        "mensaje": "Perfil actualizado correctamente.",
+        "mensaje": (
+            "Perfil actualizado "
+            "correctamente."
+        ),
 
         "usuario": usuario_actualizado
 
@@ -621,7 +721,10 @@ def usuario_existe(usuario_id):
 # VERIFICAR FINCA
 # ==========================================================
 
-def finca_existe(finca_id, usuario_id):
+def finca_existe(
+    finca_id,
+    usuario_id
+):
 
     conexion = conectar_bd()
 
@@ -666,43 +769,49 @@ def agregar_cultivo():
 
         return jsonify({
             "exito": False,
-            "mensaje": "No se recibieron datos."
+            "mensaje": (
+                "No se recibieron datos."
+            )
         }), 400
 
-    usuario_id = datos.get("usuario_id")
+    usuario_id = datos.get(
+        "usuario_id"
+    )
 
     nombre = datos.get("nombre")
     tipo = datos.get("tipo")
     agua = datos.get("agua")
     cosecha = datos.get("cosecha")
 
-    finca_id = datos.get("finca_id")
+    finca_id = datos.get(
+        "finca_id"
+    )
 
     catalogo_cultivo_id = datos.get(
         "catalogo_cultivo_id"
     )
 
-    # ==========================================
-    # VALIDAR USUARIO
-    # ==========================================
-
     if not usuario_id:
 
         return jsonify({
             "exito": False,
-            "mensaje": "No se indicó el usuario del cultivo."
+            "mensaje": (
+                "No se indicó el "
+                "usuario del cultivo."
+            )
         }), 400
 
-    if not usuario_existe(usuario_id):
+    if not usuario_existe(
+        usuario_id
+    ):
 
         return jsonify({
             "exito": False,
-            "mensaje": "El usuario no existe o está inactivo."
+            "mensaje": (
+                "El usuario no existe "
+                "o está inactivo."
+            )
         }), 400
-
-    # ==========================================
-    # VALIDAR CULTIVO
-    # ==========================================
 
     if (
         not nombre
@@ -714,14 +823,10 @@ def agregar_cultivo():
         return jsonify({
             "exito": False,
             "mensaje": (
-                "Todos los campos del cultivo "
-                "son obligatorios."
+                "Todos los campos del "
+                "cultivo son obligatorios."
             )
         }), 400
-
-    # ==========================================
-    # VALIDAR FINCA SI SE INDICA
-    # ==========================================
 
     if finca_id is not None:
 
@@ -782,7 +887,10 @@ def agregar_cultivo():
 
         "exito": True,
 
-        "mensaje": "Cultivo agregado correctamente.",
+        "mensaje": (
+            "Cultivo agregado "
+            "correctamente."
+        ),
 
         "id": nuevo_id
 
@@ -790,7 +898,7 @@ def agregar_cultivo():
 
 
 # ==========================================================
-# OBTENER CULTIVOS DEL USUARIO
+# OBTENER CULTIVOS
 # ==========================================================
 
 @app.route(
@@ -808,7 +916,9 @@ def obtener_cultivos():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -851,7 +961,7 @@ def obtener_cultivos():
 
 
 # ==========================================================
-# BUSCAR CULTIVOS DEL CATÁLOGO
+# CATÁLOGO DE CULTIVOS
 # ==========================================================
 
 @app.route(
@@ -891,7 +1001,7 @@ def obtener_catalogo_cultivos():
 
 
 # ==========================================================
-# OBTENER UN CULTIVO DEL USUARIO
+# OBTENER UN CULTIVO
 # ==========================================================
 
 @app.route(
@@ -909,7 +1019,9 @@ def obtener_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -919,8 +1031,7 @@ def obtener_cultivo(id):
     )
 
     sql = """
-        SELECT
-            *
+        SELECT *
         FROM cultivos
         WHERE id = %s
         AND usuario_id = %s
@@ -943,14 +1054,16 @@ def obtener_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Cultivo no encontrado."
+            "mensaje": (
+                "Cultivo no encontrado."
+            )
         }), 404
 
     return jsonify(cultivo)
 
 
 # ==========================================================
-# EDITAR CULTIVO DEL USUARIO
+# EDITAR CULTIVO
 # ==========================================================
 
 @app.route(
@@ -965,17 +1078,23 @@ def editar_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "No se recibieron datos."
+            "mensaje": (
+                "No se recibieron datos."
+            )
         }), 400
 
-    usuario_id = datos.get("usuario_id")
+    usuario_id = datos.get(
+        "usuario_id"
+    )
 
     nombre = datos.get("nombre")
     tipo = datos.get("tipo")
     agua = datos.get("agua")
     cosecha = datos.get("cosecha")
 
-    finca_id = datos.get("finca_id")
+    finca_id = datos.get(
+        "finca_id"
+    )
 
     catalogo_cultivo_id = datos.get(
         "catalogo_cultivo_id"
@@ -985,7 +1104,9 @@ def editar_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     if (
@@ -998,14 +1119,10 @@ def editar_cultivo(id):
         return jsonify({
             "exito": False,
             "mensaje": (
-                "Todos los campos del cultivo "
-                "son obligatorios."
+                "Todos los campos del "
+                "cultivo son obligatorios."
             )
         }), 400
-
-    # ==========================================
-    # VALIDAR FINCA
-    # ==========================================
 
     if finca_id is not None:
 
@@ -1062,7 +1179,9 @@ def editar_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Cultivo no encontrado."
+            "mensaje": (
+                "Cultivo no encontrado."
+            )
         }), 404
 
     conexion.commit()
@@ -1074,13 +1193,16 @@ def editar_cultivo(id):
 
         "exito": True,
 
-        "mensaje": "Cultivo actualizado correctamente."
+        "mensaje": (
+            "Cultivo actualizado "
+            "correctamente."
+        )
 
     })
 
 
 # ==========================================================
-# ELIMINAR CULTIVO DEL USUARIO
+# ELIMINAR CULTIVO
 # ==========================================================
 
 @app.route(
@@ -1098,7 +1220,9 @@ def eliminar_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1126,7 +1250,9 @@ def eliminar_cultivo(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Cultivo no encontrado."
+            "mensaje": (
+                "Cultivo no encontrado."
+            )
         }), 404
 
     conexion.commit()
@@ -1138,16 +1264,12 @@ def eliminar_cultivo(id):
 
         "exito": True,
 
-        "mensaje": "Cultivo eliminado correctamente."
+        "mensaje": (
+            "Cultivo eliminado "
+            "correctamente."
+        )
 
     })
-
-
-# ==========================================================
-# ==========================================================
-#                 MÓDULO DE FINCAS
-# ==========================================================
-# ==========================================================
 
 
 # ==========================================================
@@ -1166,37 +1288,40 @@ def agregar_finca():
 
         return jsonify({
             "exito": False,
-            "mensaje": "No se recibieron datos."
+            "mensaje": (
+                "No se recibieron datos."
+            )
         }), 400
 
-    usuario_id = datos.get("usuario_id")
+    usuario_id = datos.get(
+        "usuario_id"
+    )
 
     nombre = datos.get("nombre")
     ubicacion = datos.get("ubicacion")
     area_total = datos.get("area_total")
     descripcion = datos.get("descripcion")
 
-    # ==========================================
-    # VALIDAR USUARIO
-    # ==========================================
-
     if not usuario_id:
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
-    if not usuario_existe(usuario_id):
+    if not usuario_existe(
+        usuario_id
+    ):
 
         return jsonify({
             "exito": False,
-            "mensaje": "El usuario no existe o está inactivo."
+            "mensaje": (
+                "El usuario no existe "
+                "o está inactivo."
+            )
         }), 400
-
-    # ==========================================
-    # VALIDAR DATOS
-    # ==========================================
 
     if not nombre or not ubicacion:
 
@@ -1212,25 +1337,38 @@ def agregar_finca():
 
         return jsonify({
             "exito": False,
-            "mensaje": "El área total es obligatoria."
+            "mensaje": (
+                "El área total es obligatoria."
+            )
         }), 400
 
     try:
 
-        area_total = float(area_total)
+        area_total = float(
+            area_total
+        )
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError
+    ):
 
         return jsonify({
             "exito": False,
-            "mensaje": "El área debe ser un número válido."
+            "mensaje": (
+                "El área debe ser un "
+                "número válido."
+            )
         }), 400
 
     if area_total <= 0:
 
         return jsonify({
             "exito": False,
-            "mensaje": "El área debe ser mayor que 0."
+            "mensaje": (
+                "El área debe ser "
+                "mayor que 0."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1253,7 +1391,11 @@ def agregar_finca():
         nombre.strip(),
         ubicacion.strip(),
         area_total,
-        descripcion.strip() if descripcion else None,
+        (
+            descripcion.strip()
+            if descripcion
+            else None
+        ),
         usuario_id
     )
 
@@ -1273,7 +1415,10 @@ def agregar_finca():
 
         "exito": True,
 
-        "mensaje": "Finca agregada correctamente.",
+        "mensaje": (
+            "Finca agregada "
+            "correctamente."
+        ),
 
         "id": nuevo_id
 
@@ -1281,7 +1426,7 @@ def agregar_finca():
 
 
 # ==========================================================
-# OBTENER FINCAS DEL USUARIO
+# OBTENER FINCAS
 # ==========================================================
 
 @app.route(
@@ -1299,7 +1444,9 @@ def obtener_fincas():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1341,7 +1488,7 @@ def obtener_fincas():
 
 
 # ==========================================================
-# OBTENER UNA FINCA DEL USUARIO
+# OBTENER UNA FINCA
 # ==========================================================
 
 @app.route(
@@ -1359,7 +1506,9 @@ def obtener_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1398,7 +1547,9 @@ def obtener_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Finca no encontrada."
+            "mensaje": (
+                "Finca no encontrada."
+            )
         }), 404
 
     return jsonify({
@@ -1411,7 +1562,7 @@ def obtener_finca(id):
 
 
 # ==========================================================
-# EDITAR FINCA DEL USUARIO
+# EDITAR FINCA
 # ==========================================================
 
 @app.route(
@@ -1426,10 +1577,14 @@ def editar_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "No se recibieron datos."
+            "mensaje": (
+                "No se recibieron datos."
+            )
         }), 400
 
-    usuario_id = datos.get("usuario_id")
+    usuario_id = datos.get(
+        "usuario_id"
+    )
 
     nombre = datos.get("nombre")
     ubicacion = datos.get("ubicacion")
@@ -1440,7 +1595,9 @@ def editar_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     if not nombre or not ubicacion:
@@ -1457,25 +1614,38 @@ def editar_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "El área total es obligatoria."
+            "mensaje": (
+                "El área total es obligatoria."
+            )
         }), 400
 
     try:
 
-        area_total = float(area_total)
+        area_total = float(
+            area_total
+        )
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError
+    ):
 
         return jsonify({
             "exito": False,
-            "mensaje": "El área debe ser un número válido."
+            "mensaje": (
+                "El área debe ser "
+                "un número válido."
+            )
         }), 400
 
     if area_total <= 0:
 
         return jsonify({
             "exito": False,
-            "mensaje": "El área debe ser mayor que 0."
+            "mensaje": (
+                "El área debe ser "
+                "mayor que 0."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1497,7 +1667,11 @@ def editar_finca(id):
         nombre.strip(),
         ubicacion.strip(),
         area_total,
-        descripcion.strip() if descripcion else None,
+        (
+            descripcion.strip()
+            if descripcion
+            else None
+        ),
         id,
         usuario_id
     )
@@ -1514,7 +1688,9 @@ def editar_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Finca no encontrada."
+            "mensaje": (
+                "Finca no encontrada."
+            )
         }), 404
 
     conexion.commit()
@@ -1526,13 +1702,16 @@ def editar_finca(id):
 
         "exito": True,
 
-        "mensaje": "Finca actualizada correctamente."
+        "mensaje": (
+            "Finca actualizada "
+            "correctamente."
+        )
 
     })
 
 
 # ==========================================================
-# ELIMINAR FINCA DEL USUARIO
+# ELIMINAR FINCA
 # ==========================================================
 
 @app.route(
@@ -1550,7 +1729,9 @@ def eliminar_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1578,7 +1759,9 @@ def eliminar_finca(id):
 
         return jsonify({
             "exito": False,
-            "mensaje": "Finca no encontrada."
+            "mensaje": (
+                "Finca no encontrada."
+            )
         }), 404
 
     conexion.commit()
@@ -1590,7 +1773,10 @@ def eliminar_finca(id):
 
         "exito": True,
 
-        "mensaje": "Finca eliminada correctamente."
+        "mensaje": (
+            "Finca eliminada "
+            "correctamente."
+        )
 
     })
 
@@ -1614,7 +1800,9 @@ def estadisticas_fincas():
 
         return jsonify({
             "exito": False,
-            "mensaje": "Se necesita el usuario."
+            "mensaje": (
+                "Se necesita el usuario."
+            )
         }), 400
 
     conexion = conectar_bd()
@@ -1622,10 +1810,6 @@ def estadisticas_fincas():
     cursor = conexion.cursor(
         dictionary=True
     )
-
-    # ==========================================
-    # TOTAL DE FINCAS Y ÁREA
-    # ==========================================
 
     sql_fincas = """
         SELECT
@@ -1644,10 +1828,6 @@ def estadisticas_fincas():
     )
 
     datos_fincas = cursor.fetchone()
-
-    # ==========================================
-    # CULTIVOS ACTIVOS
-    # ==========================================
 
     sql_cultivos = """
         SELECT
@@ -1673,15 +1853,23 @@ def estadisticas_fincas():
 
         "estadisticas": {
 
-            "total_fincas": datos_fincas["total_fincas"],
-
-            "area_total": float(
-                datos_fincas["area_total"]
+            "total_fincas": (
+                datos_fincas[
+                    "total_fincas"
+                ]
             ),
 
-            "cultivos_activos": datos_cultivos[
-                "cultivos_activos"
-            ]
+            "area_total": float(
+                datos_fincas[
+                    "area_total"
+                ]
+            ),
+
+            "cultivos_activos": (
+                datos_cultivos[
+                    "cultivos_activos"
+                ]
+            )
 
         }
 
