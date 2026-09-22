@@ -89,6 +89,12 @@ const tituloModalCultivo =
 const btnGuardarCultivo =
     document.getElementById("btnGuardarCultivo");
 
+const buscarCultivo =
+    document.getElementById("buscarCultivo");
+
+const resultadosCultivos =
+    document.getElementById("resultadosCultivos");
+
 
 // ==========================================
 // VARIABLES
@@ -100,80 +106,146 @@ let catalogoCultivoSeleccionado = null;
 
 
 // ==========================================
-// ABRIR MODAL
+// ABRIR MODAL PARA AGREGAR
 // ==========================================
 
-btnAgregarCultivo.addEventListener(
-    "click",
-    function () {
+if (btnAgregarCultivo) {
 
-        cultivoEditando = null;
+    btnAgregarCultivo.addEventListener(
+        
+        "click",
+        function () {
+        
+            cultivoEditando = null;
 
-        catalogoCultivoSeleccionado = null;
+            catalogoCultivoSeleccionado = null;
 
-        tituloModalCultivo.innerHTML = `
-            <i class="fa-solid fa-seedling"></i>
-            Agregar cultivo
-        `;
+            if (tituloModalCultivo) {
 
-        btnGuardarCultivo.innerHTML = `
-            <i class="fa-solid fa-plus"></i>
-            Guardar cultivo
-        `;
+                tituloModalCultivo.innerHTML = `
+                    <i class="fa-solid fa-seedling"></i>
+                    Agregar cultivo
+                `;
 
-        formCultivo.reset();
+            }
 
-        vistaBusquedaCultivo.style.display =
-            "block";
+            if (btnGuardarCultivo) {
 
-        vistaPersonalizadoCultivo.style.display =
-            "none";
+                btnGuardarCultivo.innerHTML = `
+                    <i class="fa-solid fa-plus"></i>
+                    Guardar cultivo
+                `;
 
-        modalCultivo.classList.add(
-            "activo"
+            }
+
+            if (formCultivo) {
+                formCultivo.reset();
+            }
+
+            if (vistaBusquedaCultivo) {
+
+                vistaBusquedaCultivo.style.display =
+                    "block";
+
+            }
+
+            if (vistaPersonalizadoCultivo) {
+
+                vistaPersonalizadoCultivo.style.display =
+                    "none";
+
+            }
+
+            abrirModalCultivo();
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// FUNCIÓN PARA ABRIR MODAL
+// ==========================================
+
+function abrirModalCultivo() {
+
+    if (!modalCultivo) {
+
+        console.error(
+            "No se encontró #modalCultivo"
         );
 
+        return;
+
     }
-);
+
+    modalCultivo.classList.add("activo");
+
+}
 
 
 // ==========================================
 // CERRAR MODAL
 // ==========================================
 
-btnCerrarModal.addEventListener(
-    "click",
-    cerrarModal
-);
+if (btnCerrarModal) {
+
+    btnCerrarModal.addEventListener(
+        "click",
+        cerrarModal
+    );
+
+}
 
 
 function cerrarModal() {
 
-    modalCultivo.classList.remove(
-        "activo"
-    );
+    if (!modalCultivo) {
+        return;
+    }
 
-    formCultivo.reset();
+    modalCultivo.classList.remove("activo");
+
+    if (formCultivo) {
+        formCultivo.reset();
+    }
 
     cultivoEditando = null;
 
     catalogoCultivoSeleccionado = null;
 
-    vistaBusquedaCultivo.style.display =
-        "block";
+    if (vistaBusquedaCultivo) {
 
-    vistaPersonalizadoCultivo.style.display =
-        "none";
+        vistaBusquedaCultivo.style.display =
+            "block";
 
-    tituloModalCultivo.innerHTML = `
-        <i class="fa-solid fa-seedling"></i>
-        Agregar cultivo
-    `;
+    }
 
-    btnGuardarCultivo.innerHTML = `
-        <i class="fa-solid fa-plus"></i>
-        Guardar cultivo
-    `;
+    if (vistaPersonalizadoCultivo) {
+
+        vistaPersonalizadoCultivo.style.display =
+            "none";
+
+    }
+
+    if (tituloModalCultivo) {
+
+        tituloModalCultivo.innerHTML = `
+            <i class="fa-solid fa-seedling"></i>
+            Agregar cultivo
+        `;
+
+    }
+
+    if (btnGuardarCultivo) {
+
+        btnGuardarCultivo.innerHTML = `
+            <i class="fa-solid fa-plus"></i>
+            Guardar cultivo
+        `;
+
+    }
 
 }
 
@@ -182,11 +254,37 @@ function cerrarModal() {
 // CERRAR AL HACER CLICK FUERA
 // ==========================================
 
-modalCultivo.addEventListener(
-    "click",
+if (modalCultivo) {
+
+    modalCultivo.addEventListener(
+        "click",
+        function (evento) {
+
+            if (evento.target === modalCultivo) {
+
+                cerrarModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CERRAR CON ESC
+// ==========================================
+
+document.addEventListener(
+    "keydown",
     function (evento) {
 
-        if (evento.target === modalCultivo) {
+        if (
+            evento.key === "Escape" &&
+            modalCultivo &&
+            modalCultivo.classList.contains("activo")
+        ) {
 
             cerrarModal();
 
@@ -200,198 +298,246 @@ modalCultivo.addEventListener(
 // REGISTRO PERSONALIZADO
 // ==========================================
 
-btnPersonalizadoCultivo.addEventListener(
-    "click",
-    function () {
+if (btnPersonalizadoCultivo) {
 
-        vistaBusquedaCultivo.style.display =
-            "none";
+    btnPersonalizadoCultivo.addEventListener(
+        "click",
+        function () {
 
-        vistaPersonalizadoCultivo.style.display =
-            "block";
+            if (vistaBusquedaCultivo) {
 
-    }
-);
+                vistaBusquedaCultivo.style.display =
+                    "none";
+
+            }
+
+            if (vistaPersonalizadoCultivo) {
+
+                vistaPersonalizadoCultivo.style.display =
+                    "block";
+
+            }
+
+        }
+    );
+
+}
 
 
 // ==========================================
 // VOLVER A BÚSQUEDA
 // ==========================================
 
-btnVolverBusquedaCultivo.addEventListener(
-    "click",
-    function () {
+if (btnVolverBusquedaCultivo) {
 
-        vistaPersonalizadoCultivo.style.display =
-            "none";
+    btnVolverBusquedaCultivo.addEventListener(
+        "click",
+        function () {
 
-        vistaBusquedaCultivo.style.display =
-            "block";
+            if (vistaPersonalizadoCultivo) {
 
-    }
-);
+                vistaPersonalizadoCultivo.style.display =
+                    "none";
+
+            }
+
+            if (vistaBusquedaCultivo) {
+
+                vistaBusquedaCultivo.style.display =
+                    "block";
+
+            }
+
+        }
+    );
+
+}
 
 
 // ==========================================
 // GUARDAR / EDITAR CULTIVO
 // ==========================================
 
-formCultivo.addEventListener(
-    "submit",
-    async function (evento) {
+if (formCultivo) {
 
-        evento.preventDefault();
+    formCultivo.addEventListener(
+        "submit",
+        async function (evento) {
 
-
-        // ======================================
-        // COMPROBAR USUARIO
-        // ======================================
-
-        if (
-            !usuarioActual ||
-            !usuarioActual.id
-        ) {
-
-            alert(
-                "No se pudo identificar al usuario actual."
-            );
-
-            return;
-
-        }
+            evento.preventDefault();
 
 
-        // ======================================
-        // OBTENER DATOS
-        // ======================================
+            // ======================================
+            // COMPROBAR USUARIO
+            // ======================================
 
-        const nombre =
-            document.getElementById(
-                "nombreCultivo"
-            ).value.trim();
-
-        const tipo =
-            document.getElementById(
-                "tipoCultivo"
-            ).value.trim();
-
-        const agua =
-            document.getElementById(
-                "aguaCultivo"
-            ).value.trim();
-
-        const cosecha =
-            document.getElementById(
-                "cosechaCultivo"
-            ).value.trim();
-
-
-        // ======================================
-        // CONFIGURAR PETICIÓN
-        // ======================================
-
-        let url =
-            `${API}/cultivos`;
-
-        let metodo =
-            "POST";
-
-
-        // ======================================
-        // SI ESTAMOS EDITANDO
-        // ======================================
-
-        if (
-            cultivoEditando !== null
-        ) {
-
-            url =
-                `${API}/cultivos/${cultivoEditando}`;
-
-            metodo =
-                "PUT";
-
-        }
-
-
-        try {
-
-            const respuesta =
-                await fetch(
-                    url,
-                    {
-
-                        method: metodo,
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            nombre:
-                                nombre,
-
-                            tipo:
-                                tipo,
-
-                            agua:
-                                agua,
-
-                            cosecha:
-                                cosecha,
-
-                            catalogo_cultivo_id:
-                                catalogoCultivoSeleccionado,
-
-                            usuario_id:
-                                usuarioActual.id
-
-                        })
-
-                    }
-                );
-
-
-            const resultado =
-                await respuesta.json();
-
-
-            if (respuesta.ok) {
-
-                cerrarModal();
-
-                await cargarCultivos();
-
-            } else {
+            if (
+                !usuarioActual ||
+                !usuarioActual.id
+            ) {
 
                 alert(
-                    "Error: " +
-                    (
-                        resultado.mensaje ||
-                        "No se pudo guardar el cultivo."
-                    )
+                    "No se pudo identificar al usuario actual."
                 );
+
+                return;
 
             }
 
 
-        } catch (error) {
+            // ======================================
+            // OBTENER DATOS
+            // ======================================
 
-            console.error(
-                "Error al guardar cultivo:",
-                error
-            );
+            const nombre =
+                document.getElementById(
+                    "nombreCultivo"
+                ).value.trim();
 
-            alert(
-                "No se pudo conectar con el servidor de HarvestX ❌"
-            );
+            const tipo =
+                document.getElementById(
+                    "tipoCultivo"
+                ).value.trim();
+
+            const agua =
+                document.getElementById(
+                    "aguaCultivo"
+                ).value.trim();
+
+            const cosecha =
+                document.getElementById(
+                    "cosechaCultivo"
+                ).value.trim();
+
+
+            // ======================================
+            // VALIDAR DATOS
+            // ======================================
+
+            if (
+                nombre === "" ||
+                tipo === "" ||
+                agua === "" ||
+                cosecha === ""
+            ) {
+
+                alert(
+                    "Completa todos los campos del cultivo."
+                );
+
+                return;
+
+            }
+
+
+            // ======================================
+            // CONFIGURAR PETICIÓN
+            // ======================================
+
+            let url =
+                `${API}/cultivos`;
+
+            let metodo =
+                "POST";
+
+
+            // ======================================
+            // SI ESTAMOS EDITANDO
+            // ======================================
+
+            if (
+                cultivoEditando !== null
+            ) {
+
+                url =
+                    `${API}/cultivos/${cultivoEditando}`;
+
+                metodo =
+                    "PUT";
+
+            }
+
+
+            try {
+
+                const respuesta =
+                    await fetch(
+                        url,
+                        {
+
+                            method: metodo,
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                nombre:
+                                    nombre,
+
+                                tipo:
+                                    tipo,
+
+                                agua:
+                                    agua,
+
+                                cosecha:
+                                    cosecha,
+
+                                catalogo_cultivo_id:
+                                    catalogoCultivoSeleccionado,
+
+                                usuario_id:
+                                    usuarioActual.id
+
+                            })
+
+                        }
+                    );
+
+
+                const resultado =
+                    await respuesta.json();
+
+
+                if (respuesta.ok) {
+
+                    cerrarModal();
+
+                    await cargarCultivos();
+
+                } else {
+
+                    alert(
+                        "Error: " +
+                        (
+                            resultado.mensaje ||
+                            "No se pudo guardar el cultivo."
+                        )
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al guardar cultivo:",
+                    error
+                );
+
+                alert(
+                    "No se pudo conectar con el servidor de HarvestX."
+                );
+
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 // ==========================================
@@ -416,6 +562,15 @@ async function cargarCultivos() {
             await fetch(
                 `${API}/cultivos?usuario_id=${usuarioActual.id}`
             );
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudieron obtener los cultivos."
+            );
+
+        }
 
 
         const cultivos =
@@ -575,6 +730,7 @@ async function cargarCultivos() {
                     <div class="cultivo-acciones">
 
                         <button
+                            type="button"
                             class="btn-cultivo btn-editar"
                             title="Editar cultivo"
                             data-id="${cultivo.id}"
@@ -586,6 +742,7 @@ async function cargarCultivos() {
 
 
                         <button
+                            type="button"
                             class="btn-cultivo btn-eliminar"
                             title="Eliminar cultivo"
                             data-id="${cultivo.id}"
@@ -624,84 +781,32 @@ async function cargarCultivos() {
 // BUSCAR CULTIVOS DEL CATÁLOGO
 // ==========================================
 
-const buscarCultivo =
-    document.getElementById(
-        "buscarCultivo"
-    );
+if (buscarCultivo) {
 
-const resultadosCultivos =
-    document.getElementById(
-        "resultadosCultivos"
-    );
+    buscarCultivo.addEventListener(
+        "input",
+        async function () {
 
-
-buscarCultivo.addEventListener(
-    "input",
-    async function () {
-
-        const texto =
-            buscarCultivo.value.trim();
-
-
-        // ======================================
-        // BUSCADOR VACÍO
-        // ======================================
-
-        if (
-            texto === ""
-        ) {
-
-            resultadosCultivos.innerHTML = `
-
-                <div class="mensaje-busqueda">
-
-                    <i class="fa-solid fa-seedling"></i>
-
-                    <p>
-                        Escribe el nombre de un cultivo para buscar.
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        try {
-
-            const respuesta =
-                await fetch(
-                    `${API}/catalogo-cultivos?buscar=${encodeURIComponent(texto)}`
-                );
-
-
-            const cultivos =
-                await respuesta.json();
-
-
-            resultadosCultivos.innerHTML =
-                "";
+            const texto =
+                buscarCultivo.value.trim();
 
 
             // ==================================
-            // SIN RESULTADOS
+            // BUSCADOR VACÍO
             // ==================================
 
             if (
-                cultivos.length === 0
+                texto === ""
             ) {
 
                 resultadosCultivos.innerHTML = `
 
                     <div class="mensaje-busqueda">
 
-                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <i class="fa-solid fa-seedling"></i>
 
                         <p>
-                            No se encontraron cultivos.
+                            Escribe el nombre de un cultivo para buscar.
                         </p>
 
                     </div>
@@ -713,118 +818,172 @@ buscarCultivo.addEventListener(
             }
 
 
-            // ==================================
-            // MOSTRAR RESULTADOS
-            // ==================================
+            try {
 
-            cultivos.forEach(
-                cultivo => {
-
-                    const resultado =
-                        document.createElement(
-                            "div"
-                        );
+                const respuesta =
+                    await fetch(
+                        `${API}/catalogo-cultivos?buscar=${encodeURIComponent(texto)}`
+                    );
 
 
-                    resultado.className =
-                        "resultado-cultivo";
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        "No se pudo consultar el catálogo."
+                    );
+
+                }
 
 
-                    resultado.innerHTML = `
-
-                        <img
-                            src="../../IMG/cultivos/${cultivo.imagen}"
-                            alt="${cultivo.nombre}"
-                        >
+                const cultivos =
+                    await respuesta.json();
 
 
-                        <div class="resultado-cultivo-info">
-
-                            <h4>
-                                ${cultivo.nombre}
-                            </h4>
+                resultadosCultivos.innerHTML =
+                    "";
 
 
-                            <p>
-                                Tipo:
-                                ${cultivo.tipo}
-                            </p>
+                // ==================================
+                // SIN RESULTADOS
+                // ==================================
 
+                if (
+                    cultivos.length === 0
+                ) {
 
-                            <p>
-                                Agua:
-                                ${cultivo.agua}
-                            </p>
+                    resultadosCultivos.innerHTML = `
 
+                        <div class="mensaje-busqueda">
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
 
                             <p>
-                                Cosecha:
-                                ${cultivo.cosecha}
+                                No se encontraron cultivos.
                             </p>
-
-
-                            <p class="descripcion">
-                                ${cultivo.descripcion}
-                            </p>
-
-                        </div>
-
-
-                        <div class="resultado-cultivo-flecha">
-
-                            <i class="fa-solid fa-chevron-right"></i>
 
                         </div>
 
                     `;
 
-
-                    resultado.addEventListener(
-                        "click",
-                        function () {
-
-                            seleccionarCultivoCatalogo(
-                                cultivo
-                            );
-
-                        }
-                    );
-
-
-                    resultadosCultivos.appendChild(
-                        resultado
-                    );
+                    return;
 
                 }
-            );
 
 
-        } catch (error) {
+                // ==================================
+                // MOSTRAR RESULTADOS
+                // ==================================
 
-            console.error(
-                "Error al buscar cultivos:",
-                error
-            );
+                cultivos.forEach(
+                    cultivo => {
+
+                        const resultado =
+                            document.createElement(
+                                "div"
+                            );
 
 
-            resultadosCultivos.innerHTML = `
+                        resultado.className =
+                            "resultado-cultivo";
 
-                <div class="mensaje-busqueda">
 
-                    <i class="fa-solid fa-triangle-exclamation"></i>
+                        resultado.innerHTML = `
 
-                    <p>
-                        No se pudo conectar con el catálogo.
-                    </p>
+                            <img
+                                src="../../IMG/cultivos/${cultivo.imagen}"
+                                alt="${cultivo.nombre}"
+                            >
 
-                </div>
 
-            `;
+                            <div class="resultado-cultivo-info">
+
+                                <h4>
+                                    ${cultivo.nombre}
+                                </h4>
+
+
+                                <p>
+                                    Tipo:
+                                    ${cultivo.tipo}
+                                </p>
+
+
+                                <p>
+                                    Agua:
+                                    ${cultivo.agua}
+                                </p>
+
+
+                                <p>
+                                    Cosecha:
+                                    ${cultivo.cosecha}
+                                </p>
+
+
+                                <p class="descripcion">
+                                    ${cultivo.descripcion || ""}
+                                </p>
+
+                            </div>
+
+
+                            <div class="resultado-cultivo-flecha">
+
+                                <i class="fa-solid fa-chevron-right"></i>
+
+                            </div>
+
+                        `;
+
+
+                        resultado.addEventListener(
+                            "click",
+                            function () {
+
+                                seleccionarCultivoCatalogo(
+                                    cultivo
+                                );
+
+                            }
+                        );
+
+
+                        resultadosCultivos.appendChild(
+                            resultado
+                        );
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al buscar cultivos:",
+                    error
+                );
+
+
+                resultadosCultivos.innerHTML = `
+
+                    <div class="mensaje-busqueda">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <p>
+                            No se pudo conectar con el catálogo.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 // ==========================================
@@ -875,11 +1034,19 @@ function seleccionarCultivoCatalogo(
     // MOSTRAR FORMULARIO
     // ======================================
 
-    vistaBusquedaCultivo.style.display =
-        "none";
+    if (vistaBusquedaCultivo) {
 
-    vistaPersonalizadoCultivo.style.display =
-        "block";
+        vistaBusquedaCultivo.style.display =
+            "none";
+
+    }
+
+    if (vistaPersonalizadoCultivo) {
+
+        vistaPersonalizadoCultivo.style.display =
+            "block";
+
+    }
 
 }
 
@@ -927,6 +1094,17 @@ document.addEventListener(
             botonEditar.dataset.id;
 
 
+        if (!id) {
+
+            console.error(
+                "El botón de editar no tiene data-id."
+            );
+
+            return;
+
+        }
+
+
         try {
 
             const respuesta =
@@ -972,26 +1150,34 @@ document.addEventListener(
             // CAMBIAR TÍTULO
             // ==================================
 
-            tituloModalCultivo.innerHTML = `
+            if (tituloModalCultivo) {
 
-                <i class="fa-solid fa-pen"></i>
+                tituloModalCultivo.innerHTML = `
 
-                Editar cultivo
+                    <i class="fa-solid fa-pen"></i>
 
-            `;
+                    Editar cultivo
+
+                `;
+
+            }
 
 
             // ==================================
             // CAMBIAR BOTÓN
             // ==================================
 
-            btnGuardarCultivo.innerHTML = `
+            if (btnGuardarCultivo) {
 
-                <i class="fa-solid fa-floppy-disk"></i>
+                btnGuardarCultivo.innerHTML = `
 
-                Guardar cambios
+                    <i class="fa-solid fa-floppy-disk"></i>
 
-            `;
+                    Guardar cambios
+
+                `;
+
+            }
 
 
             // ==================================
@@ -1001,45 +1187,51 @@ document.addEventListener(
             document.getElementById(
                 "nombreCultivo"
             ).value =
-                cultivo.nombre;
+                cultivo.nombre || "";
 
 
             document.getElementById(
                 "tipoCultivo"
             ).value =
-                cultivo.tipo;
+                cultivo.tipo || "";
 
 
             document.getElementById(
                 "aguaCultivo"
             ).value =
-                cultivo.agua;
+                cultivo.agua || "";
 
 
             document.getElementById(
                 "cosechaCultivo"
             ).value =
-                cultivo.cosecha;
+                cultivo.cosecha || "";
 
 
             // ==================================
             // MOSTRAR FORMULARIO
             // ==================================
 
-            vistaBusquedaCultivo.style.display =
-                "none";
+            if (vistaBusquedaCultivo) {
 
-            vistaPersonalizadoCultivo.style.display =
-                "block";
+                vistaBusquedaCultivo.style.display =
+                    "none";
+
+            }
+
+            if (vistaPersonalizadoCultivo) {
+
+                vistaPersonalizadoCultivo.style.display =
+                    "block";
+
+            }
 
 
             // ==================================
             // ABRIR MODAL
             // ==================================
 
-            modalCultivo.classList.add(
-                "activo"
-            );
+            abrirModalCultivo();
 
 
         } catch (error) {
@@ -1051,7 +1243,7 @@ document.addEventListener(
 
 
             alert(
-                "No se pudo conectar con el servidor de HarvestX ❌"
+                "No se pudo conectar con el servidor de HarvestX."
             );
 
         }
@@ -1167,7 +1359,7 @@ document.addEventListener(
 
 
             alert(
-                "No se pudo conectar con el servidor de HarvestX ❌"
+                "No se pudo conectar con el servidor de HarvestX."
             );
 
         }

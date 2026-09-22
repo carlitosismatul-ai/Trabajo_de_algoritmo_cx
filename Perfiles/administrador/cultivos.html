@@ -11,182 +11,19 @@
     <!-- CSS PRINCIPAL -->
     <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
 
+    <!-- CSS EXCLUSIVO DE CULTIVOS -->
+    <link rel="stylesheet" href="../../CSS/paginas/cultivos.css">
+
     <!-- ICONOS -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    <!-- ==========================================
-         ESTILOS EXCLUSIVOS DE CULTIVOS
-         ========================================== -->
-
-    <style>
-
-        .cultivos-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .cultivo-card {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 18px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-radius: 12px;
-            background: var(--fondo-tarjeta);
-            transition: var(--transicion);
-        }
-
-        .cultivo-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--sombra-fuerte);
-        }
-
-        .cultivo-icono {
-            width: 55px;
-            height: 55px;
-            min-width: 55px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 25px;
-            background: var(--bg-light-green);
-        }
-
-        .cultivo-info {
-            flex: 1;
-        }
-
-        .cultivo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .cultivo-header h4 {
-            font-size: 1rem;
-            color: var(--texto-oscuro);
-            font-weight: 600;
-        }
-
-        .cultivo-tipo {
-            font-size: 0.75rem;
-            color: var(--texto-claro);
-            margin-bottom: 8px;
-        }
-
-        .cultivo-datos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-        }
-
-        .dato-cultivo {
-            font-size: 0.75rem;
-            color: var(--texto-claro);
-        }
-
-        .dato-cultivo i {
-            margin-right: 5px;
-        }
-
-        .estado-activo {
-            font-size: 0.7rem;
-            color: var(--text-green);
-            background: var(--bg-light-green);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .cultivo-acciones {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-cultivo {
-            width: 35px;
-            height: 35px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.2s;
-        }
-
-        .btn-editar {
-            color: var(--text-blue);
-            background: var(--bg-light-blue);
-        }
-
-        .btn-editar:hover {
-            transform: scale(1.08);
-        }
-
-        .btn-eliminar {
-            color: var(--text-red);
-            background: var(--bg-light-red);
-        }
-
-        .btn-eliminar:hover {
-            transform: scale(1.08);
-        }
-
-        .btn-agregar-cultivo {
-            border: 1px solid var(--verde-activo);
-            background: transparent;
-            color: var(--verde-activo);
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-
-        .btn-agregar-cultivo:hover {
-            background: var(--verde-activo);
-            color: white;
-        }
-
-        @media (max-width: 700px) {
-
-            .cultivo-card {
-                align-items: flex-start;
-            }
-
-            .cultivo-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .cultivo-datos {
-                flex-direction: column;
-                gap: 6px;
-            }
-
-            .cultivo-acciones {
-                flex-direction: column;
-            }
-
-        }
-
-    </style>
 
 </head>
 
 
 <body>
 
-    <!-- =========================================================
+<!-- =========================================================
      LOADER
 ========================================================= -->
 
@@ -203,6 +40,7 @@
     </div>
 
 </div>
+
 
 <!-- =========================================================
      MODAL DE CONFIGURACIÓN
@@ -267,7 +105,7 @@
                     Voz del asistente
                 </label>
 
-                <span style="font-size:0.9rem; color:var(--texto-claro);">
+                <span class="setting-info-text">
                     🎙️ Asistente HarvestX
                 </span>
 
@@ -371,7 +209,6 @@
 </div>
 
 
-
 <!-- =========================================================
      MODAL DE PERFIL
 ========================================================= -->
@@ -379,8 +216,6 @@
 <div id="profileModal" class="modal-overlay">
 
     <div class="modal-content profile-modal">
-
-        <!-- ENCABEZADO -->
 
         <div class="modal-header">
 
@@ -391,8 +226,6 @@
 
         </div>
 
-
-        <!-- CUERPO -->
 
         <div class="modal-body">
 
@@ -516,7 +349,6 @@
     </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -780,7 +612,6 @@
     </aside>
 
 
-
     <!-- =================================================
          CONTENIDO PRINCIPAL
     ================================================= -->
@@ -794,7 +625,6 @@
         ================================================= -->
 
         <header class="topbar">
-
 
             <div class="left-controls">
 
@@ -865,8 +695,7 @@
                     class="avatar"
                     id="openProfile"
                     aria-label="Abrir perfil"
-                    title="Abrir mi perfil"
-                    style="cursor:pointer;">
+                    title="Abrir mi perfil">
 
                     <img
                         id="avatarImagen"
@@ -906,7 +735,6 @@
         </header>
 
 
-
         <!-- =================================================
              CONTENIDO DE CULTIVOS
         ================================================= -->
@@ -927,11 +755,7 @@
                             Catálogo de Cultivos
                         </h3>
 
-                        <p style="
-                            font-size: 0.75rem;
-                            color: var(--texto-claro);
-                            margin-top: 4px;
-                        ">
+                        <p class="cultivos-descripcion">
 
                             Consulta y administra los cultivos registrados.
 
@@ -974,7 +798,6 @@
         </section>
 
 
-
         <!-- =================================================
              MODAL AGREGAR CULTIVO
         ================================================= -->
@@ -1012,7 +835,6 @@
                 </div>
 
 
-
                 <!-- =================================================
                      BUSCAR CULTIVO
                 ================================================= -->
@@ -1045,7 +867,6 @@
                     </div>
 
 
-
                     <!-- RESULTADOS -->
 
                     <div
@@ -1065,7 +886,6 @@
                     </div>
 
 
-
                     <!-- SEPARADOR -->
 
                     <div class="separador-cultivo">
@@ -1073,7 +893,6 @@
                         <span>O</span>
 
                     </div>
-
 
 
                     <!-- PERSONALIZADO -->
@@ -1091,7 +910,6 @@
 
 
                 </div>
-
 
 
                 <!-- =================================================
@@ -1125,7 +943,6 @@
                             >
 
                         </div>
-
 
 
                         <!-- TIPO -->
@@ -1174,7 +991,6 @@
                         </div>
 
 
-
                         <!-- AGUA -->
 
                         <div class="form-grupo">
@@ -1209,7 +1025,6 @@
                         </div>
 
 
-
                         <!-- COSECHA -->
 
                         <div class="form-grupo">
@@ -1226,7 +1041,6 @@
                             >
 
                         </div>
-
 
 
                         <!-- BOTONES -->
@@ -1279,9 +1093,8 @@
 </div>
 
 
-
 <!-- =====================================================
-     JAVASCRIPT GENERAL
+     JAVASCRIPT
 ===================================================== -->
 
 <script src="../../JS/paginas/configuracion.js"></script>
