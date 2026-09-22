@@ -1,6 +1,6 @@
 /* =========================================================
    HARVESTX — FINCAS
-   Estilos exclusivos del módulo Fincas
+   Tierra + Vegetación · Versión Viva
 ========================================================= */
 
 
@@ -10,23 +10,32 @@
 
 :root {
 
-    --finca-verde: #2e7d32;
-    --finca-verde-claro: #4caf50;
-    --finca-verde-suave: #f0fdf4;
+    --finca-verde-profundo: #164A32;
+    --finca-verde: #348A4A;
+    --finca-verde-hoja: #68A84F;
+    --finca-verde-claro: #8BC34A;
+    --finca-lima: #B7E35A;
 
-    --finca-azul: #1976d2;
-    --finca-azul-suave: #f0f7ff;
+    --finca-verde-suave: #E5F6D9;
+    --finca-menta: #EFFAE8;
 
-    --finca-naranja: #f57c00;
-    --finca-naranja-suave: #fff7ed;
+    --finca-tierra: #A8793D;
+    --finca-tierra-claro: #D3A85C;
+    --finca-tierra-suave: #FBF0DC;
 
-    --finca-borde: rgba(128, 128, 128, 0.15);
+    --finca-borde: rgba(22, 74, 50, 0.18);
+
+    --finca-texto: #002300;
+    --finca-texto-suave: #526656;
+
+    --finca-rojo: #D6453D;
+    --finca-rojo-suave: #FFE8E5;
 
     --finca-sombra:
-        0 4px 18px rgba(0, 0, 0, 0.05);
+        0 6px 20px rgba(22, 74, 50, 0.10);
 
     --finca-sombra-hover:
-        0 12px 30px rgba(0, 0, 0, 0.10);
+        0 15px 32px rgba(22, 74, 50, 0.18);
 
     --finca-radio: 14px;
 
@@ -42,6 +51,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 100%;
 
 }
 
@@ -52,14 +62,51 @@
 
 .fincas-hero {
 
+    position: relative;
+    overflow: hidden;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    padding: 24px 26px;
+    padding: 25px 27px;
 
-    position: relative;
-    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #FFFFFF 0%,
+            #F5FBEF 55%,
+            #EAF7DF 100%
+        );
+
+    border: 1px solid var(--finca-borde);
+    border-radius: var(--finca-radio);
+
+    box-shadow: var(--finca-sombra);
+
+}
+
+
+/* Decoración */
+
+.fincas-hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    right: -105px;
+    top: -145px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(139,195,74,0.20);
+
+    pointer-events: none;
 
 }
 
@@ -70,16 +117,16 @@
 
     position: absolute;
 
-    width: 180px;
-    height: 180px;
+    width: 145px;
+    height: 145px;
 
-    right: -70px;
-    top: -90px;
+    right: 70px;
+    bottom: -105px;
 
     border-radius: 50%;
 
     background:
-        rgba(76, 175, 80, 0.07);
+        rgba(211,168,92,0.17);
 
     pointer-events: none;
 
@@ -90,8 +137,7 @@
 
     display: flex;
     align-items: center;
-
-    gap: 16px;
+    gap: 18px;
 
     position: relative;
     z-index: 1;
@@ -101,22 +147,31 @@
 
 .fincas-hero-icon {
 
-    width: 58px;
-    height: 58px;
+    width: 62px;
+    height: 62px;
 
-    min-width: 58px;
+    min-width: 62px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
-    border-radius: 14px;
+    border-radius: 16px;
 
-    background: var(--finca-verde-suave);
+    background:
+        linear-gradient(
+            145deg,
+            #DDF5CC,
+            #C8EBAF
+        );
 
-    color: var(--finca-verde);
+    color: #176239;
 
-    font-size: 25px;
+    font-size: 26px;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(104,168,79,0.18),
+        0 5px 14px rgba(104,168,79,0.12);
 
 }
 
@@ -125,48 +180,121 @@
 
     display: block;
 
-    font-size: 0.65rem;
+    margin-bottom: 4px;
 
-    font-weight: 700;
+    color: #5D9C35;
+
+    font-size: 0.67rem;
+    font-weight: 900;
 
     letter-spacing: 1.5px;
-
-    color: var(--finca-verde-claro);
-
-    margin-bottom: 3px;
 
 }
 
 
 .fincas-hero h2 {
 
-    font-size: 1.25rem;
+    margin: 0 0 5px;
 
-    font-weight: 700;
+    color: var(--finca-texto);
 
-    color: var(--texto-oscuro);
-
-    margin-bottom: 3px;
+    font-size: 1.45rem;
+    font-weight: 800;
 
 }
 
 
 .fincas-hero p {
 
-    font-size: 0.78rem;
+    margin: 0;
 
-    color: var(--texto-claro);
+    color: var(--finca-texto-suave);
+
+    font-size: 0.82rem;
+
+    max-width: 540px;
 
 }
 
 
+/* =========================================================
+   BOTÓN NUEVA FINCA
+========================================================= */
+
 .btn-nueva-finca {
 
     position: relative;
-
     z-index: 2;
 
-    white-space: nowrap;
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3D9A52,
+            #28783F
+        );
+
+    color: #FFFFFF;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    letter-spacing: 0.1px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 16px rgba(52,138,74,0.24),
+        inset 0 1px 0 rgba(255,255,255,0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+
+}
+
+
+.btn-nueva-finca i {
+
+    font-size: 0.82rem;
+
+}
+
+
+.btn-nueva-finca:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 11px 23px rgba(52,138,74,0.30),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+
+}
+
+
+.btn-nueva-finca:active {
+
+    transform: translateY(0);
+
+    box-shadow:
+        0 4px 10px rgba(52,138,74,0.22);
 
 }
 
@@ -180,9 +308,9 @@
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3, minmax(0, 1fr));
 
-    gap: 18px;
+    gap: 16px;
 
 }
 
@@ -191,46 +319,102 @@
 .finca-stat-area,
 .finca-stat-cultivos {
 
-    min-height: 145px;
-
     position: relative;
 
+    min-height: 125px;
+
     overflow: hidden;
+
+    border-radius: var(--finca-radio);
+
+    box-shadow: var(--finca-sombra);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
 
 }
 
 
-.finca-stat-total::before,
-.finca-stat-area::before,
-.finca-stat-cultivos::before {
+.finca-stat-total:hover,
+.finca-stat-area:hover,
+.finca-stat-cultivos:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: var(--finca-sombra-hover);
+
+}
+
+
+/* Decoración */
+
+.finca-stat-total::after,
+.finca-stat-area::after,
+.finca-stat-cultivos::after {
 
     content: "";
 
     position: absolute;
 
-    top: 0;
-    left: 0;
+    width: 125px;
+    height: 125px;
 
-    width: 100%;
-    height: 4px;
+    right: -48px;
+    bottom: -62px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
 
 }
 
 
-/* TOTAL */
+/* =========================================================
+   TOTAL
+========================================================= */
 
 .finca-stat-total {
 
-    background: #2e7d32;
+    background:
+        linear-gradient(
+            135deg,
+            #164A32 0%,
+            #247343 55%,
+            #318B4D 100%
+        );
 
-    color: white;
+    color: #FFFFFF;
 
 }
 
 
 .finca-stat-total::before {
 
-    background: #66bb6a;
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #B7E35A,
+            #8BC34A
+        );
+
+}
+
+
+.finca-stat-total::after {
+
+    background:
+        rgba(183,227,90,0.16);
 
 }
 
@@ -238,9 +422,12 @@
 .finca-stat-total .stat-icon {
 
     background:
-        rgba(255,255,255,0.16);
+        rgba(183,227,90,0.18);
 
-    color: white;
+    color: #D9FF8C;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(217,255,140,0.12);
 
 }
 
@@ -249,85 +436,155 @@
 .finca-stat-total .stat-info h3,
 .finca-stat-total .stat-info small {
 
-    color: white;
+    color: #FFFFFF;
 
 }
 
 
-/* ÁREA */
+/* =========================================================
+   ÁREA
+========================================================= */
 
 .finca-stat-area {
 
-    background: var(--finca-verde-suave);
+    background:
+        linear-gradient(
+            135deg,
+            #FFF7E7 0%,
+            #F7EACB 100%
+        );
 
 }
 
 
 .finca-stat-area::before {
 
-    background: var(--finca-verde-claro);
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #D39A45,
+            #F0C56A
+        );
+
+}
+
+
+.finca-stat-area::after {
+
+    background:
+        rgba(211,168,92,0.18);
 
 }
 
 
 .finca-stat-area .stat-icon {
 
-    background: white;
+    background: #FFFDF7;
 
-    color: var(--finca-verde);
+    color: #A36E25;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(168,121,61,0.10);
 
 }
 
 
 .finca-stat-area .stat-info h3 {
 
-    color: var(--finca-verde);
+    color: #173F2B;
 
 }
 
 
-/* CULTIVOS */
+/* =========================================================
+   CULTIVOS
+========================================================= */
 
 .finca-stat-cultivos {
 
-    background: var(--finca-azul-suave);
+    background:
+        linear-gradient(
+            135deg,
+            #E9F9E5 0%,
+            #D5F0D4 100%
+        );
 
 }
 
 
 .finca-stat-cultivos::before {
 
-    background: var(--finca-azul);
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4D9E45,
+            #91D45C
+        );
+
+}
+
+
+.finca-stat-cultivos::after {
+
+    background:
+        rgba(104,168,79,0.16);
 
 }
 
 
 .finca-stat-cultivos .stat-icon {
 
-    background: white;
+    background: #F9FFF6;
 
-    color: var(--finca-azul);
+    color: #438B3D;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(104,168,79,0.12);
 
 }
 
 
 .finca-stat-cultivos .stat-info h3 {
 
-    color: var(--finca-azul);
+    color: #173F2B;
 
 }
 
 
-/* ICONOS */
+/* =========================================================
+   ICONOS ESTADÍSTICAS
+========================================================= */
 
 .finca-stat-total .stat-icon,
 .finca-stat-area .stat-icon,
 .finca-stat-cultivos .stat-icon {
 
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
 
-    border-radius: 11px;
+    min-width: 46px;
+
+    border-radius: 12px;
 
 }
 
@@ -342,6 +599,8 @@
 
     overflow: hidden;
 
+    border: 1px solid var(--finca-borde);
+
 }
 
 
@@ -352,10 +611,17 @@
     justify-content: space-between;
     align-items: center;
 
-    padding: 22px 24px;
+    padding: 21px 24px;
 
     border-bottom:
         1px solid var(--finca-borde);
+
+    background:
+        linear-gradient(
+            180deg,
+            #FFFFFF,
+            #F7FCEF
+        );
 
 }
 
@@ -364,42 +630,44 @@
 
     display: block;
 
-    font-size: 0.62rem;
+    margin-bottom: 4px;
 
-    font-weight: 700;
+    color: #609E39;
+
+    font-size: 0.63rem;
+    font-weight: 900;
 
     letter-spacing: 1.4px;
-
-    color: var(--finca-verde-claro);
-
-    margin-bottom: 3px;
 
 }
 
 
 .fincas-list-header h3 {
 
-    font-size: 1rem;
+    margin: 0 0 3px;
 
-    font-weight: 600;
+    color: var(--finca-texto);
 
-    color: var(--texto-oscuro);
-
-    margin-bottom: 3px;
+    font-size: 1.05rem;
+    font-weight: 800;
 
 }
 
 
 .fincas-list-header p {
 
-    font-size: 0.75rem;
+    margin: 0;
 
-    color: var(--texto-claro);
+    color: var(--finca-texto-suave);
+
+    font-size: 0.75rem;
 
 }
 
 
-/* CONTADOR */
+/* =========================================================
+   CONTADOR
+========================================================= */
 
 .fincas-count {
 
@@ -409,24 +677,34 @@
 
     gap: 8px;
 
-    padding: 8px 12px;
+    padding: 8px 13px;
 
-    border-radius: 8px;
+    border-radius: 20px;
 
-    background: var(--finca-verde-suave);
+    background:
+        linear-gradient(
+            135deg,
+            #E5F7D8,
+            #D8F0C9
+        );
 
-    color: var(--finca-verde);
+    color: #28733D;
+
+    border:
+        1px solid rgba(72,137,62,0.20);
 
     font-size: 0.7rem;
+    font-weight: 800;
 
-    font-weight: 500;
+    box-shadow:
+        0 3px 8px rgba(72,137,62,0.08);
 
 }
 
 
 .fincas-count i {
 
-    font-size: 0.8rem;
+    color: #5EAA43;
 
 }
 
@@ -440,11 +718,18 @@
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3, minmax(0, 1fr));
 
     gap: 18px;
 
     padding: 22px 24px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #FBFEF8,
+            #F2F9EF
+        );
 
 }
 
@@ -457,32 +742,23 @@
 
     position: relative;
 
-    background: var(--fondo-tarjeta);
+    overflow: hidden;
+
+    background: #FFFFFF;
 
     border:
         1px solid var(--finca-borde);
 
-    border-radius: var(--finca-radio);
+    border-radius: 14px;
 
     padding: 18px;
 
     box-shadow: var(--finca-sombra);
 
-    transition: var(--transicion);
-
-    overflow: hidden;
-
-}
-
-
-.finca-card:hover {
-
-    transform: translateY(-4px);
-
-    box-shadow: var(--finca-sombra-hover);
-
-    border-color:
-        rgba(76, 175, 80, 0.30);
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
 
 }
 
@@ -496,145 +772,238 @@
     left: 0;
     top: 0;
 
-    width: 4px;
+    width: 5px;
     height: 100%;
 
-    background: var(--finca-verde-claro);
+    background:
+        linear-gradient(
+            180deg,
+            #4E9D46,
+            #A2D85D
+        );
+
+}
+
+
+.finca-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 105px;
+    height: 105px;
+
+    right: -50px;
+    top: -50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(139,195,74,0.11);
+
+    pointer-events: none;
+
+}
+
+
+.finca-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: var(--finca-sombra-hover);
+
+    border-color:
+        rgba(52,138,74,0.35);
 
 }
 
 
 /* =========================================================
-   HEADER TARJETA
+   CABECERA
 ========================================================= */
 
 .finca-card-header {
 
     display: flex;
 
-    align-items: flex-start;
-
+    align-items: center;
     justify-content: space-between;
 
     gap: 12px;
 
-    margin-bottom: 16px;
-
-}
-
-
-.finca-card-title {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 11px;
-
-}
-
-
-.finca-card-icon {
-
-    width: 42px;
-    height: 42px;
-
-    min-width: 42px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 10px;
-
-    background: var(--finca-verde-suave);
-
-    color: var(--finca-verde);
-
-    font-size: 17px;
-
-}
-
-
-.finca-card-title h3 {
-
-    font-size: 0.9rem;
-
-    font-weight: 600;
-
-    color: var(--texto-oscuro);
-
-    margin: 0;
-
-}
-
-
-.finca-card-title span {
-
-    display: block;
-
-    font-size: 0.68rem;
-
-    color: var(--texto-claro);
-
-    margin-top: 2px;
+    margin-bottom: 15px;
 
 }
 
 
 /* =========================================================
-   ACCIONES
+   ICONO FINCA
+========================================================= */
+
+.finca-icon {
+
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #E0F5D5,
+            #CDEBBE
+        );
+
+    color: #26733C;
+
+    font-size: 18px;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(104,168,79,0.14);
+
+}
+
+
+/* =========================================================
+   BOTONES DE ACCIÓN
 ========================================================= */
 
 .finca-actions {
 
     display: flex;
 
-    gap: 5px;
+    align-items: center;
+
+    gap: 7px;
 
 }
 
 
-.finca-action-btn {
+.finca-actions .btn-icon {
 
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
 
-    border: none;
+    border: 1px solid transparent;
 
-    border-radius: 7px;
-
-    background: transparent;
-
-    color: var(--texto-claro);
+    border-radius: 10px;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    background: #F1F7EE;
+
+    color: #4F7358;
 
     cursor: pointer;
 
-    transition: var(--transicion);
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
 }
 
 
-.finca-action-btn:hover {
+.finca-actions .btn-icon:hover {
 
-    background: var(--finca-verde-suave);
+    transform: translateY(-2px);
 
-    color: var(--finca-verde);
+    background:
+        linear-gradient(
+            135deg,
+            #DDF3D3,
+            #CBE9BE
+        );
+
+    color: #246A38;
+
+    border-color:
+        rgba(75,145,67,0.20);
+
+    box-shadow:
+        0 5px 10px rgba(52,138,74,0.13);
 
 }
 
 
-.finca-action-btn.delete:hover {
+.finca-actions .btn-icon.delete {
 
-    background: var(--bg-light-red);
+    background: #FFF1EE;
 
-    color: var(--text-red);
+    color: #C6534A;
+
+}
+
+
+.finca-actions .btn-icon.delete:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFE0DC,
+            #FFD1CC
+        );
+
+    color: #B9362F;
+
+    border-color:
+        rgba(214,69,61,0.22);
+
+    box-shadow:
+        0 5px 10px rgba(214,69,61,0.12);
+
+}
+
+
+/* =========================================================
+   CUERPO
+========================================================= */
+
+.finca-card-body h3 {
+
+    margin: 0 0 8px;
+
+    color: var(--finca-texto);
+
+    font-size: 1rem;
+    font-weight: 800;
+
+}
+
+
+.finca-location {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin: 0 0 17px;
+
+    color: var(--finca-texto-suave);
+
+    font-size: 0.73rem;
+
+}
+
+
+.finca-location i {
+
+    color: #5FA447;
+
+    font-size: 0.75rem;
 
 }
 
@@ -645,119 +1014,85 @@
 
 .finca-info {
 
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+
+}
+
+
+.finca-info > div {
+
     display: flex;
 
     flex-direction: column;
 
-    gap: 9px;
+    gap: 4px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #EDF9E8,
+            #E5F4DE
+        );
 
 }
 
 
-.finca-info-item {
+.finca-info > div:nth-child(2) {
 
-    display: flex;
+    background:
+        linear-gradient(
+            135deg,
+            #FFF4DF,
+            #F9EACD
+        );
 
-    align-items: center;
+}
 
-    gap: 9px;
+
+.finca-info span {
+
+    color: #617365;
+
+    font-size: 0.63rem;
+
+}
+
+
+.finca-info strong {
+
+    overflow: hidden;
+
+    color: var(--finca-texto);
 
     font-size: 0.75rem;
+    font-weight: 800;
 
-    color: var(--texto-claro);
+    white-space: nowrap;
 
-}
-
-
-.finca-info-item i {
-
-    width: 20px;
-
-    color: var(--finca-verde-claro);
-
-    text-align: center;
+    text-overflow: ellipsis;
 
 }
 
 
-.finca-info-item strong {
+.finca-info > div:first-child strong {
 
-    color: var(--texto-oscuro);
-
-    font-weight: 500;
+    color: #2F7F3E;
 
 }
 
 
-/* =========================================================
-   DESCRIPCIÓN
-========================================================= */
+.finca-info > div:nth-child(2) strong {
 
-.finca-description {
-
-    margin-top: 15px;
-
-    padding-top: 13px;
-
-    border-top:
-        1px solid var(--finca-borde);
-
-    font-size: 0.7rem;
-
-    line-height: 1.6;
-
-    color: var(--texto-claro);
-
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.finca-card-footer {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-top: 16px;
-
-    padding-top: 13px;
-
-    border-top:
-        1px solid var(--finca-borde);
-
-}
-
-
-.finca-area {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    font-size: 0.72rem;
-
-    color: var(--texto-claro);
-
-}
-
-
-.finca-area i {
-
-    color: var(--finca-verde);
-
-}
-
-
-.finca-area strong {
-
-    color: var(--texto-oscuro);
+    color: #8D652D;
 
 }
 
@@ -779,66 +1114,72 @@
     justify-content: center;
     align-items: center;
 
-    text-align: center;
-
     padding: 35px 20px;
+
+    text-align: center;
 
 }
 
 
 .empty-state-icon {
 
-    width: 70px;
-    height: 70px;
+    width: 74px;
+    height: 74px;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
 
     border-radius: 50%;
 
-    background: var(--finca-verde-suave);
+    background:
+        linear-gradient(
+            145deg,
+            #DDF4D2,
+            #F7E8C9
+        );
 
-    color: var(--finca-verde);
+    color: #478B42;
 
     font-size: 28px;
 
-    margin-bottom: 15px;
+    box-shadow:
+        0 7px 16px rgba(70,130,61,0.10);
 
 }
 
 
 .empty-state h3 {
 
-    font-size: 0.95rem;
+    margin: 0 0 6px;
 
-    color: var(--texto-oscuro);
+    color: var(--finca-texto);
 
-    margin-bottom: 6px;
+    font-size: 0.98rem;
 
 }
 
 
 .empty-state p {
 
-    max-width: 400px;
+    max-width: 410px;
+
+    margin: 0 0 18px;
+
+    color: var(--finca-texto-suave);
 
     font-size: 0.75rem;
 
-    color: var(--texto-claro);
-
     line-height: 1.6;
-
-    margin-bottom: 18px;
 
 }
 
 
 /* =========================================================
-   MODAL DE FINCA
-   CORRECCIÓN PRINCIPAL:
-   FONDO SÓLIDO PARA EVITAR TRANSPARENCIA
+   MODAL
 ========================================================= */
 
 .finca-modal-overlay {
@@ -847,12 +1188,6 @@
 
 }
 
-
-/*
-   IMPORTANTE:
-   Se fuerza el fondo del modal para evitar
-   que otro CSS global lo deje transparente.
-*/
 
 .finca-modal {
 
@@ -864,12 +1199,14 @@
 
     overflow: hidden;
 
-    background: #ffffff !important;
+    background: #FFFFFF !important;
 
-    border-radius: 16px;
+    border-radius: 17px;
+
+    border: 1px solid var(--finca-borde);
 
     box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.20);
+        0 24px 70px rgba(22,74,50,0.24);
 
     opacity: 1;
 
@@ -882,14 +1219,24 @@
 
 .finca-modal-header {
 
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
     padding: 22px 24px;
 
-    margin-bottom: 0;
+    margin: 0;
 
     border-bottom:
         1px solid var(--finca-borde);
 
-    background: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #FFFFFF,
+            #F0F8EA
+        );
 
 }
 
@@ -907,21 +1254,26 @@
 
 .finca-modal-icon {
 
-    width: 44px;
-    height: 44px;
+    width: 45px;
+    height: 45px;
 
-    min-width: 44px;
+    min-width: 45px;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
-    background: var(--finca-verde-suave);
+    background:
+        linear-gradient(
+            145deg,
+            #DDF4D2,
+            #CBEAB9
+        );
 
-    color: var(--finca-verde);
+    color: #28723B;
 
     font-size: 18px;
 
@@ -932,73 +1284,79 @@
 
     display: block;
 
-    font-size: 0.6rem;
+    margin-bottom: 2px;
 
-    font-weight: 700;
+    color: #609F38;
+
+    font-size: 0.61rem;
+    font-weight: 900;
 
     letter-spacing: 1.2px;
-
-    color: var(--finca-verde-claro);
-
-    margin-bottom: 2px;
 
 }
 
 
 .finca-modal-title h2 {
 
-    font-size: 1.05rem;
+    margin: 0 0 2px;
 
-    color: var(--texto-oscuro);
+    color: var(--finca-texto);
 
-    margin-bottom: 2px;
+    font-size: 1.08rem;
 
 }
 
 
 .finca-modal-title p {
 
-    font-size: 0.7rem;
+    margin: 0;
 
-    color: var(--texto-claro);
+    color: var(--finca-texto-suave);
+
+    font-size: 0.7rem;
 
 }
 
 
 /* =========================================================
-   BOTÓN CERRAR
+   CERRAR MODAL
 ========================================================= */
 
 .finca-modal .modal-close {
 
-    width: 34px;
-    height: 34px;
+    width: 35px;
+    height: 35px;
 
-    border: none;
+    border: 1px solid transparent;
 
-    border-radius: 8px;
+    border-radius: 10px;
 
-    background: transparent;
+    background: #F3F7F1;
 
-    color: var(--texto-claro);
+    color: #536359;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     cursor: pointer;
 
-    transition: var(--transicion);
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 
 }
 
 
 .finca-modal .modal-close:hover {
 
-    background: var(--bg-light-red);
+    transform: rotate(4deg);
 
-    color: var(--text-red);
+    background: #FFE5E1;
+
+    color: #C63E37;
 
 }
 
@@ -1011,7 +1369,7 @@
 
     padding: 24px;
 
-    background: #ffffff;
+    background: #FFFFFF;
 
 }
 
@@ -1033,18 +1391,17 @@
 
     margin-bottom: 7px;
 
+    color: var(--finca-texto);
+
     font-size: 0.75rem;
-
-    font-weight: 600;
-
-    color: var(--texto-oscuro);
+    font-weight: 800;
 
 }
 
 
 .finca-form-group label i {
 
-    color: var(--finca-verde-claro);
+    color: #63A646;
 
     font-size: 0.75rem;
 
@@ -1058,14 +1415,16 @@
 
     padding: 11px 12px;
 
+    box-sizing: border-box;
+
     border:
         1px solid var(--finca-borde);
 
-    border-radius: 8px;
+    border-radius: 10px;
 
-    background: #ffffff;
+    background: #FFFFFF;
 
-    color: var(--texto-oscuro);
+    color: var(--finca-texto);
 
     font-family: inherit;
 
@@ -1073,11 +1432,12 @@
 
     outline: none;
 
-    transition: var(--transicion);
-
     resize: vertical;
 
-    box-sizing: border-box;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 
 }
 
@@ -1085,7 +1445,7 @@
 .finca-form-group input::placeholder,
 .finca-form-group textarea::placeholder {
 
-    color: var(--texto-muy-claro);
+    color: #7C8A80;
 
 }
 
@@ -1093,10 +1453,12 @@
 .finca-form-group input:focus,
 .finca-form-group textarea:focus {
 
-    border-color: var(--finca-verde-claro);
+    border-color: #62A248;
+
+    background: #FBFFF8;
 
     box-shadow:
-        0 0 0 3px rgba(76, 175, 80, 0.08);
+        0 0 0 3px rgba(104,168,79,0.16);
 
 }
 
@@ -1124,16 +1486,14 @@
     position: absolute;
 
     right: 13px;
-
     top: 50%;
 
     transform: translateY(-50%);
 
+    color: #398348;
+
     font-size: 0.75rem;
-
-    font-weight: 600;
-
-    color: var(--finca-verde);
+    font-weight: 800;
 
 }
 
@@ -1156,15 +1516,15 @@
 
     margin-top: 5px;
 
-    font-size: 0.65rem;
+    color: var(--finca-texto-suave);
 
-    color: var(--texto-claro);
+    font-size: 0.65rem;
 
 }
 
 
 /* =========================================================
-   BOTONES MODAL
+   BOTONES DEL MODAL
 ========================================================= */
 
 .finca-modal-actions {
@@ -1182,7 +1542,25 @@
 
 .finca-modal-actions button {
 
-    min-height: 38px;
+    min-height: 40px;
+
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-weight: 800;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+
+}
+
+
+.finca-modal-actions button:hover {
+
+    transform: translateY(-1px);
 
 }
 
@@ -1194,49 +1572,160 @@
 [data-theme="dark"] {
 
     --finca-sombra:
-        0 5px 20px rgba(0, 0, 0, 0.35);
+        0 7px 24px rgba(0,0,0,0.46);
 
     --finca-sombra-hover:
-        0 12px 30px rgba(0, 0, 0, 0.50);
+        0 16px 35px rgba(0,0,0,0.62);
+
+    --finca-borde:
+        rgba(220,245,220,0.20);
+
+    --finca-texto:
+        #F7FFF3;
+
+    --finca-texto-suave:
+        #C8D6CA;
+
+    --finca-verde-claro:
+        #B9E66D;
+
+    --finca-verde-hoja:
+        #8ED15F;
+
+    --finca-verde:
+        #67B879;
+
+    --finca-lima:
+        #C8F46A;
+
+    --finca-tierra:
+        #E1B96D;
+
+    --finca-tierra-claro:
+        #F0CF87;
+
+    --finca-tierra-suave:
+        rgba(224,182,100,0.14);
 
 }
 
 
-/*
-   CORRECCIÓN DEL MODAL EN DARK MODE
-*/
+/* =========================================================
+   DARK — HERO
+========================================================= */
 
-[data-theme="dark"] .finca-modal {
-
-    background: #1f1f1f !important;
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.55);
-
-}
-
-
-[data-theme="dark"] .finca-modal-header {
-
-    background: #1f1f1f;
-
-    border-color:
-        rgba(255,255,255,0.08);
-
-}
-
-
-[data-theme="dark"] #formFinca {
-
-    background: #1f1f1f;
-
-}
-
-
-[data-theme="dark"] .finca-hero-icon {
+[data-theme="dark"] .fincas-hero {
 
     background:
-        rgba(76, 175, 80, 0.12);
+        linear-gradient(
+            135deg,
+            #16271C,
+            #1C3825
+        );
+
+    border-color:
+        rgba(220,245,220,0.20);
+
+}
+
+
+[data-theme="dark"] .fincas-hero::before {
+
+    background:
+        rgba(139,195,74,0.20);
+
+}
+
+
+[data-theme="dark"] .fincas-hero::after {
+
+    background:
+        rgba(211,168,92,0.16);
+
+}
+
+
+[data-theme="dark"] .fincas-hero-icon {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(139,195,74,0.23),
+            rgba(104,168,79,0.15)
+        );
+
+    color: #D1F58D;
+
+}
+
+
+[data-theme="dark"] .fincas-kicker {
+
+    color: #C2EE76;
+
+}
+
+
+[data-theme="dark"] .fincas-hero h2 {
+
+    color: #F8FFF5;
+
+}
+
+
+[data-theme="dark"] .fincas-hero p {
+
+    color: #C9D8CB;
+
+}
+
+
+/* =========================================================
+   DARK — BOTÓN NUEVA FINCA
+========================================================= */
+
+[data-theme="dark"] .btn-nueva-finca {
+
+    background:
+        linear-gradient(
+            135deg,
+            #55B867,
+            #318A49
+        );
+
+    color: #FFFFFF;
+
+    box-shadow:
+        0 8px 20px rgba(60,170,82,0.27),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+
+}
+
+
+[data-theme="dark"] .btn-nueva-finca:hover {
+
+    filter: brightness(1.12);
+
+    box-shadow:
+        0 12px 25px rgba(60,170,82,0.36),
+        inset 0 1px 0 rgba(255,255,255,0.26);
+
+}
+
+
+/* =========================================================
+   DARK — ESTADÍSTICAS
+========================================================= */
+
+[data-theme="dark"] .finca-stat-total {
+
+    background:
+        linear-gradient(
+            135deg,
+            #164A32,
+            #247B43,
+            #319650
+        );
 
 }
 
@@ -1244,15 +1733,11 @@
 [data-theme="dark"] .finca-stat-area {
 
     background:
-        rgba(56, 142, 60, 0.10);
-
-}
-
-
-[data-theme="dark"] .finca-stat-area .stat-icon,
-[data-theme="dark"] .finca-stat-cultivos .stat-icon {
-
-    background: #242424;
+        linear-gradient(
+            135deg,
+            #3A3324,
+            #40351F
+        );
 
 }
 
@@ -1260,7 +1745,288 @@
 [data-theme="dark"] .finca-stat-cultivos {
 
     background:
-        rgba(25, 118, 210, 0.10);
+        linear-gradient(
+            135deg,
+            #203D29,
+            #285135
+        );
+
+}
+
+
+[data-theme="dark"] .finca-stat-area .stat-icon,
+[data-theme="dark"] .finca-stat-cultivos .stat-icon {
+
+    background: rgba(255,255,255,0.09);
+
+}
+
+
+[data-theme="dark"] .finca-stat-area .stat-info span,
+[data-theme="dark"] .finca-stat-cultivos .stat-info span {
+
+    color: #D0DDD2;
+
+}
+
+
+[data-theme="dark"] .finca-stat-area .stat-info h3,
+[data-theme="dark"] .finca-stat-cultivos .stat-info h3 {
+
+    color: #F8FFF5;
+
+}
+
+
+[data-theme="dark"] .finca-stat-area .stat-info small,
+[data-theme="dark"] .finca-stat-cultivos .stat-info small {
+
+    color: #C1D0C3;
+
+}
+
+
+[data-theme="dark"] .finca-stat-area .stat-icon {
+
+    color: #F0C979;
+
+}
+
+
+[data-theme="dark"] .finca-stat-cultivos .stat-icon {
+
+    color: #A9EA78;
+
+}
+
+
+/* =========================================================
+   DARK — LISTA
+========================================================= */
+
+[data-theme="dark"] .fincas-list-card {
+
+    border-color:
+        rgba(220,245,220,0.20);
+
+}
+
+
+[data-theme="dark"] .fincas-list-header {
+
+    background:
+        linear-gradient(
+            180deg,
+            #1B2A1E,
+            #17251B
+        );
+
+    border-color:
+        rgba(220,245,220,0.17);
+
+}
+
+
+[data-theme="dark"] .section-kicker {
+
+    color: #BFEA73;
+
+}
+
+
+[data-theme="dark"] .fincas-list-header h3 {
+
+    color: #F7FFF3;
+
+}
+
+
+[data-theme="dark"] .fincas-list-header p {
+
+    color: #C5D4C7;
+
+}
+
+
+[data-theme="dark"] .fincas-grid {
+
+    background:
+        linear-gradient(
+            180deg,
+            #111B14,
+            #152118
+        );
+
+}
+
+
+[data-theme="dark"] .finca-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            #202F24,
+            #1C2920
+        );
+
+    border-color:
+        rgba(220,245,220,0.18);
+
+}
+
+
+[data-theme="dark"] .finca-card:hover {
+
+    border-color:
+        rgba(183,227,90,0.42);
+
+}
+
+
+[data-theme="dark"] .finca-icon {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(139,195,74,0.22),
+            rgba(104,168,79,0.14)
+        );
+
+    color: #C9F28E;
+
+}
+
+
+[data-theme="dark"] .finca-card-body h3 {
+
+    color: #F8FFF5;
+
+}
+
+
+[data-theme="dark"] .finca-location {
+
+    color: #C8D6CA;
+
+}
+
+
+[data-theme="dark"] .finca-location i {
+
+    color: #A6DE6D;
+
+}
+
+
+/* =========================================================
+   DARK — BOTONES DE ACCIÓN
+========================================================= */
+
+[data-theme="dark"] .finca-actions .btn-icon {
+
+    background:
+        rgba(139,195,74,0.11);
+
+    color: #BBD8B6;
+
+    border-color:
+        rgba(183,227,90,0.10);
+
+}
+
+
+[data-theme="dark"] .finca-actions .btn-icon:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139,195,74,0.25),
+            rgba(104,168,79,0.18)
+        );
+
+    color: #D7F5A7;
+
+    border-color:
+        rgba(183,227,90,0.25);
+
+    box-shadow:
+        0 5px 12px rgba(70,150,75,0.18);
+
+}
+
+
+[data-theme="dark"] .finca-actions .btn-icon.delete {
+
+    background:
+        rgba(214,69,61,0.12);
+
+    color: #FF9C94;
+
+}
+
+
+[data-theme="dark"] .finca-actions .btn-icon.delete:hover {
+
+    background:
+        rgba(214,69,61,0.23);
+
+    color: #FFB1AA;
+
+}
+
+
+/* =========================================================
+   DARK — INFORMACIÓN
+========================================================= */
+
+[data-theme="dark"] .finca-info > div:first-child {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(104,168,79,0.18),
+            rgba(104,168,79,0.10)
+        );
+
+}
+
+
+[data-theme="dark"] .finca-info > div:nth-child(2) {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(211,168,92,0.18),
+            rgba(211,168,92,0.10)
+        );
+
+}
+
+
+[data-theme="dark"] .finca-info span {
+
+    color: #BDCCBF;
+
+}
+
+
+[data-theme="dark"] .finca-info strong {
+
+    color: #F4FFF0;
+
+}
+
+
+[data-theme="dark"] .finca-info > div:first-child strong {
+
+    color: #BDF18A;
+
+}
+
+
+[data-theme="dark"] .finca-info > div:nth-child(2) strong {
+
+    color: #F0CD82;
 
 }
 
@@ -1268,25 +2034,163 @@
 [data-theme="dark"] .fincas-count {
 
     background:
-        rgba(76, 175, 80, 0.10);
-
-}
-
-
-[data-theme="dark"] .finca-card {
+        linear-gradient(
+            135deg,
+            rgba(139,195,74,0.20),
+            rgba(104,168,79,0.12)
+        );
 
     border-color:
-        rgba(255,255,255,0.08);
+        rgba(183,227,90,0.25);
+
+    color: #C9F28D;
 
 }
 
 
-[data-theme="dark"] .finca-card-icon,
-[data-theme="dark"] .finca-modal-icon,
+[data-theme="dark"] .fincas-count i {
+
+    color: #AEE76C;
+
+}
+
+
+/* =========================================================
+   DARK — ESTADO VACÍO
+========================================================= */
+
 [data-theme="dark"] .empty-state-icon {
 
     background:
-        rgba(76, 175, 80, 0.10);
+        linear-gradient(
+            145deg,
+            rgba(139,195,74,0.22),
+            rgba(211,168,92,0.17)
+        );
+
+    color: #C3ED86;
+
+}
+
+
+[data-theme="dark"] .empty-state h3 {
+
+    color: #F6FFF2;
+
+}
+
+
+[data-theme="dark"] .empty-state p {
+
+    color: #C3D1C5;
+
+}
+
+
+/* =========================================================
+   DARK — MODAL
+========================================================= */
+
+[data-theme="dark"] .finca-modal {
+
+    background: #1B281F !important;
+
+    border-color:
+        rgba(220,245,220,0.20);
+
+    box-shadow:
+        0 24px 70px rgba(0,0,0,0.68);
+
+}
+
+
+[data-theme="dark"] .finca-modal-header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #203126,
+            #1B2A20
+        );
+
+    border-color:
+        rgba(220,245,220,0.18);
+
+}
+
+
+[data-theme="dark"] .finca-modal-icon {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(139,195,74,0.23),
+            rgba(104,168,79,0.14)
+        );
+
+    color: #C9F28D;
+
+}
+
+
+[data-theme="dark"] .finca-modal-title > div:last-child > span {
+
+    color: #BFEA73;
+
+}
+
+
+[data-theme="dark"] .finca-modal-title h2 {
+
+    color: #F7FFF3;
+
+}
+
+
+[data-theme="dark"] .finca-modal-title p {
+
+    color: #C5D4C7;
+
+}
+
+
+[data-theme="dark"] .finca-modal .modal-close {
+
+    background:
+        rgba(255,255,255,0.06);
+
+    color: #C3D0C5;
+
+}
+
+
+[data-theme="dark"] .finca-modal .modal-close:hover {
+
+    background:
+        rgba(214,69,61,0.20);
+
+    color: #FFAAA3;
+
+}
+
+
+[data-theme="dark"] #formFinca {
+
+    background: #1B281F;
+
+}
+
+
+[data-theme="dark"] .finca-form-group label {
+
+    color: #F3FCEF;
+
+}
+
+
+[data-theme="dark"] .finca-form-group label i {
+
+    color: #A9E36D;
 
 }
 
@@ -1294,12 +2198,12 @@
 [data-theme="dark"] .finca-form-group input,
 [data-theme="dark"] .finca-form-group textarea {
 
-    background: #2a2a2a;
+    background: #27372B;
 
-    color: #ffffff;
+    color: #F5FFF1;
 
     border-color:
-        rgba(255,255,255,0.12);
+        rgba(220,245,220,0.20);
 
 }
 
@@ -1307,13 +2211,40 @@
 [data-theme="dark"] .finca-form-group input::placeholder,
 [data-theme="dark"] .finca-form-group textarea::placeholder {
 
-    color: #888;
+    color: #9EAEA1;
+
+}
+
+
+[data-theme="dark"] .finca-form-group input:focus,
+[data-theme="dark"] .finca-form-group textarea:focus {
+
+    background: #2C3D30;
+
+    border-color: #8FD25B;
+
+    box-shadow:
+        0 0 0 3px rgba(139,195,74,0.18);
+
+}
+
+
+[data-theme="dark"] .input-with-unit span {
+
+    color: #BDEB7A;
+
+}
+
+
+[data-theme="dark"] .campo-ayuda {
+
+    color: #B9C8BB;
 
 }
 
 
 /* =========================================================
-   RESPONSIVE — TABLET
+   RESPONSIVE — 1200
 ========================================================= */
 
 @media (max-width: 1200px) {
@@ -1321,7 +2252,7 @@
     .fincas-grid {
 
         grid-template-columns:
-            repeat(2, 1fr);
+            repeat(2, minmax(0, 1fr));
 
     }
 
@@ -1329,7 +2260,7 @@
 
 
 /* =========================================================
-   RESPONSIVE — TABLET PEQUEÑA
+   RESPONSIVE — 900
 ========================================================= */
 
 @media (max-width: 900px) {
@@ -1337,7 +2268,9 @@
     .fincas-stats {
 
         grid-template-columns:
-            repeat(3, 1fr);
+            repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
 
     }
 
@@ -1351,7 +2284,7 @@
 
 
 /* =========================================================
-   RESPONSIVE — MÓVIL
+   RESPONSIVE — 768
 ========================================================= */
 
 @media (max-width: 768px) {
@@ -1416,7 +2349,7 @@
 
 
 /* =========================================================
-   RESPONSIVE — MÓVIL PEQUEÑO
+   RESPONSIVE — 480
 ========================================================= */
 
 @media (max-width: 480px) {
@@ -1437,10 +2370,10 @@
 
     .fincas-hero-icon {
 
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
 
-        min-width: 48px;
+        min-width: 50px;
 
         font-size: 20px;
 
@@ -1449,7 +2382,7 @@
 
     .fincas-hero h2 {
 
-        font-size: 1.05rem;
+        font-size: 1.15rem;
 
     }
 
@@ -1502,4 +2435,12 @@
 
     }
 
+
+    .finca-info {
+
+        grid-template-columns: 1fr;
+
+    }
+
 }
+
