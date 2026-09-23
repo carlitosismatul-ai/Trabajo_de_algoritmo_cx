@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HarvestX | Mi Cuenta</title>
+
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet"
+          href="../../CSS/paginas/administrador.css">
+
+    <!-- CSS DEL MÓDULO -->
+    <link rel="stylesheet"
+          href="../../CSS/paginas/usuarios.css">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     LOADER
+========================================================= -->
+
+<div id="loader" class="loader-container">
+
+    <div class="loader">
+
+        <i class="fa-solid fa-seedling loader-icon"></i>
+
+        <div class="spinner"></div>
+
+        <p>Cargando tu cuenta...</p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DE CONFIGURACIÓN
+========================================================= -->
+
+<div id="settingsModal" class="modal-overlay">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>
+                Ajustes del Sistema
+            </h2>
+
+            <i class="fa-solid fa-xmark close-modal"
+               id="closeSettings">
+            </i>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <!-- TEMA -->
+
+            <div class="setting-group">
+
+                <label>
+                    Tema Oscuro
+                </label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                           id="themeToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- SONIDO -->
+
+            <div class="setting-group">
+
+                <label>
+                    Sonido
+                </label>
+
+                <label class="switch">
+
+                    <input type="checkbox"
+                           id="soundToggle">
+
+                    <span class="slider round"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- VOZ -->
+
+            <div class="setting-group">
+
+                <label>
+                    Voz del asistente
+                </label>
+
+                <span style="font-size:0.9rem; color:var(--texto-claro);">
+                    🎙️ Asistente HarvestX
+                </span>
+
+            </div>
+
+
+            <!-- PROBAR VOZ -->
+
+            <div class="setting-group">
+
+                <label>
+                    Probar voz
+                </label>
+
+                <button
+                    type="button"
+                    id="testVoiceButton"
+                    class="btn-size">
+
+                    🔊 Probar voz
+
+                </button>
+
+            </div>
+
+
+            <!-- FUENTE -->
+
+            <div class="setting-group">
+
+                <label>
+                    Fuente de Letra
+                </label>
+
+                <select id="fontSelect"
+                        class="form-select">
+
+                    <option value="'Poppins', sans-serif">
+                        Poppins
+                    </option>
+
+                    <option value="'Arial', sans-serif">
+                        Arial
+                    </option>
+
+                    <option value="'Courier New', monospace">
+                        Courier New
+                    </option>
+
+                    <option value="'Times New Roman', serif">
+                        Times New Roman
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TAMAÑO -->
+
+            <div class="setting-group">
+
+                <label>
+                    Tamaño de Letra
+                </label>
+
+                <div class="size-controls">
+
+                    <button
+                        id="btnSizeSmall"
+                        class="btn-size">
+
+                        A-
+
+                    </button>
+
+                    <button
+                        id="btnSizeNormal"
+                        class="btn-size active">
+
+                        A
+
+                    </button>
+
+                    <button
+                        id="btnSizeLarge"
+                        class="btn-size">
+
+                        A+
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DE PERFIL
+========================================================= -->
+
+<div id="profileModal"
+     class="modal-overlay">
+
+    <div class="modal-content profile-modal">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="modal-header">
+
+            <h2>
+                Mi Perfil
+            </h2>
+
+            <i class="fa-solid fa-xmark close-modal"
+               id="closeProfile">
+            </i>
+
+        </div>
+
+
+        <!-- CUERPO -->
+
+        <div class="modal-body">
+
+
+            <!-- FOTO -->
+
+            <div class="profile-photo-section">
+
+                <div class="profile-photo-wrapper">
+
+                    <div id="profilePhotoPreview"
+                         class="profile-photo-preview">
+
+                        U
+
+                    </div>
+
+
+                    <label
+                        for="profilePhotoInput"
+                        class="change-photo-button">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/*"
+                        hidden>
+
+                </div>
+
+
+                <p class="profile-photo-text">
+
+                    Haz clic en la cámara para cambiar tu foto
+
+                </p>
+
+            </div>
+
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="profile-form">
+
+
+                <!-- NOMBRE -->
+
+                <div class="profile-field">
+
+                    <label for="profileNombre">
+                        Nombre completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileNombre"
+                        placeholder="Nombre completo">
+
+                </div>
+
+
+                <!-- USUARIO -->
+
+                <div class="profile-field">
+
+                    <label for="profileUsuario">
+                        Nombre de usuario
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileUsuario"
+                        readonly>
+
+                </div>
+
+
+                <!-- ROL -->
+
+                <div class="profile-field">
+
+                    <label for="profileRol">
+                        Rol
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileRol"
+                        readonly>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- BOTONES -->
+
+            <div class="profile-actions">
+
+                <button
+                    type="button"
+                    id="cancelProfile"
+                    class="btn-modal btn-cancelar">
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="saveProfile"
+                    class="btn-modal btn-guardar">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Guardar cambios
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
+
+<div class="dashboard-container">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar"
+           id="sidebar">
+
+
+        <!-- CABECERA -->
+
+        <div class="sidebar-header">
+
+            <div class="logo-wrapper">
+
+                <i class="fa-solid fa-leaf logo-icon"></i>
+
+                <div class="logo-text">
+
+                    <h2>
+                        HarvestX
+                    </h2>
+
+                    <span>
+                        Sistema Inteligente
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <i class="fa-solid fa-xmark close-sidebar-mobile"
+               id="closeSidebarMobile">
+            </i>
+
+        </div>
+
+
+
+        <!-- =================================================
+             NAVEGACIÓN
+        ================================================== -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a href="inicio.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span class="nav-text">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+
+            <!-- GESTIÓN -->
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    GESTIÓN
+                </span>
+
+            </div>
+
+
+            <!-- FINCAS -->
+
+            <a href="fincas.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-mountain-sun"></i>
+
+                <span class="nav-text">
+                    Fincas
+                </span>
+
+            </a>
+
+
+            <!-- CULTIVOS -->
+
+            <a href="cultivos.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <span class="nav-text">
+                    Cultivos
+                </span>
+
+            </a>
+
+
+            <!-- RIEGO -->
+
+            <a href="programacion_de_riego.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <span class="nav-text">
+                    Programación de Riego
+                </span>
+
+            </a>
+
+
+            <!-- LABORES -->
+
+            <a href="labores_del_campo.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-tractor"></i>
+
+                <span class="nav-text">
+                    Labores del Campo
+                </span>
+
+            </a>
+
+
+            <!-- CLIMA -->
+
+            <a href="monitoreo_climatico.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                <span class="nav-text">
+                    Monitoreo Climático
+                </span>
+
+            </a>
+
+
+            <!-- ALERTAS -->
+
+            <a href="alertas.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <span class="nav-text">
+                    Alertas
+                </span>
+
+            </a>
+
+
+
+            <!-- REPORTES -->
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    REPORTES
+                </span>
+
+            </div>
+
+
+            <!-- REPORTES -->
+
+            <a href="reportes_y_estadisticas.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                <span class="nav-text">
+                    Reportes y Estadísticas
+                </span>
+
+            </a>
+
+
+            <!-- HISTORIAL -->
+
+            <a href="historial.html"
+               class="nav-link">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                <span class="nav-text">
+                    Historial de Actividades
+                </span>
+
+            </a>
+
+
+
+            <!-- SISTEMA -->
+
+            <div class="nav-category">
+
+                <span class="nav-text">
+                    SISTEMA
+                </span>
+
+            </div>
+
+
+            <!-- USUARIOS -->
+
+            <a href="usuarios.html"
+               class="nav-link active">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span class="nav-text">
+                    Usuarios
+                </span>
+
+            </a>
+
+
+            <!-- CONFIGURACIÓN -->
+
+            <a href="#"
+               class="nav-link"
+               id="openSettings">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span class="nav-text">
+                    Configuración
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+
+        <!-- CERRAR SESIÓN -->
+
+        <div class="sidebar-footer">
+
+            <a href="../../login.html"
+               class="nav-link logout"
+               id="cerrarSesion">
+
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <span class="nav-text">
+                    Cerrar Sesión
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="main-content"
+          id="mainContent">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+
+            <!-- IZQUIERDA -->
+
+            <div class="left-controls">
+
+
+                <!-- DESKTOP -->
+
+                <div class="menu-toggle-desktop"
+                     id="toggleSidebarDesktop">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </div>
+
+
+                <!-- MÓVIL -->
+
+                <div class="menu-toggle-mobile"
+                     id="menuToggleMobile">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </div>
+
+
+                <!-- TÍTULO -->
+
+                <div class="header-title">
+
+                    <div>
+
+                        <h1>
+                            HarvestX 🌱
+                        </h1>
+
+                        <p>
+                            Sistema Inteligente de Gestión Agrícola
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INFORMACIÓN DEL USUARIO
+            ================================================== -->
+
+            <div class="user-info">
+
+
+                <!-- NOTIFICACIONES -->
+
+                <div class="notifications">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="badge">
+                        3
+                    </span>
+
+                </div>
+
+
+
+                <!-- PERFIL -->
+
+                <div
+                    class="avatar"
+                    id="openProfile"
+                    aria-label="Abrir perfil"
+                    title="Abrir mi perfil"
+                    style="cursor:pointer;">
+
+                    <img
+                        id="avatarImagen"
+                        class="avatar-img"
+                        src=""
+                        alt="Foto de perfil">
+
+                </div>
+
+
+
+                <!-- INFORMACIÓN -->
+
+                <div class="user-details">
+
+                    <span
+                        class="name"
+                        id="nombreUsuario">
+
+                        Usuario
+
+                    </span>
+
+
+                    <span
+                        class="role"
+                        id="rolUsuario">
+
+                        Administrador
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             CONTENIDO DEL MÓDULO
+        ====================================================== -->
+
+        <section class="content-grid usuarios-module">
+
+
+
+            <!-- =================================================
+                 ENCABEZADO
+            ================================================== -->
+
+            <div class="usuarios-header card">
+
+                <div class="usuarios-title">
+
+                    <div class="usuarios-title-icon">
+
+                        <i class="fa-solid fa-user-gear"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Mi Cuenta
+                        </h2>
+
+                        <p>
+                            Administra tu información y consulta
+                            el estado de tu cuenta en HarvestX.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="usuarios-header-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Cuenta activa
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INFORMACIÓN PRINCIPAL
+            ================================================== -->
+
+            <div class="usuarios-main-grid">
+
+
+                <!-- =================================================
+                     INFORMACIÓN PERSONAL
+                ================================================== -->
+
+                <div class="usuario-card personal-card">
+
+                    <div class="usuario-card-header">
+
+                        <div class="usuario-card-heading">
+
+                            <div class="usuario-card-icon icon-green">
+
+                                <i class="fa-solid fa-id-card"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Información personal
+                                </h3>
+
+                                <p>
+                                    Datos principales de tu cuenta
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="usuario-edit-button"
+                            id="editarInformacion">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                            Editar
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="personal-information">
+
+
+                        <!-- NOMBRE -->
+
+                        <div class="information-row">
+
+                            <div class="information-icon">
+
+                                <i class="fa-solid fa-user"></i>
+
+                            </div>
+
+                            <div class="information-data">
+
+                                <span>
+                                    Nombre completo
+                                </span>
+
+                                <strong id="cuentaNombre">
+                                    Usuario
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- USUARIO -->
+
+                        <div class="information-row">
+
+                            <div class="information-icon">
+
+                                <i class="fa-solid fa-at"></i>
+
+                            </div>
+
+                            <div class="information-data">
+
+                                <span>
+                                    Nombre de usuario
+                                </span>
+
+                                <strong id="cuentaUsuario">
+                                    usuario
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ROL -->
+
+                        <div class="information-row">
+
+                            <div class="information-icon">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                            </div>
+
+                            <div class="information-data">
+
+                                <span>
+                                    Rol dentro de HarvestX
+                                </span>
+
+                                <strong id="cuentaRol">
+                                    Administrador
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ESTADO DE CUENTA
+                ================================================== -->
+
+                <div class="usuario-card account-card">
+
+                    <div class="usuario-card-header">
+
+                        <div class="usuario-card-heading">
+
+                            <div class="usuario-card-icon icon-blue">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Estado de cuenta
+                                </h3>
+
+                                <p>
+                                    Información de tu cuenta
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-status-content">
+
+
+                        <div class="big-account-status">
+
+                            <div class="account-status-icon">
+
+                                <i class="fa-solid fa-check"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Estado actual
+                                </span>
+
+                                <strong id="estadoCuenta">
+                                    Activa
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-details">
+
+
+                            <div class="account-detail">
+
+                                <i class="fa-regular fa-calendar"></i>
+
+                                <div>
+
+                                    <span>
+                                        Cuenta creada
+                                    </span>
+
+                                    <strong id="fechaCreacion">
+                                        Pendiente
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="account-detail">
+
+                                <i class="fa-solid fa-user-shield"></i>
+
+                                <div>
+
+                                    <span>
+                                        Tipo de cuenta
+                                    </span>
+
+                                    <strong id="tipoCuenta">
+                                        Administrador
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SEGURIDAD
+            ================================================== -->
+
+            <div class="usuario-card security-card">
+
+                <div class="usuario-card-header">
+
+                    <div class="usuario-card-heading">
+
+                        <div class="usuario-card-icon icon-orange">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Seguridad
+                            </h3>
+
+                            <p>
+                                Protege el acceso a tu cuenta.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-content">
+
+
+                    <div class="security-information">
+
+                        <div class="security-icon">
+
+                            <i class="fa-solid fa-key"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Contraseña
+                            </strong>
+
+                            <span>
+                                Mantén actualizada la contraseña
+                                de tu cuenta.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="security-button"
+                        id="cambiarContrasena">
+
+                        <i class="fa-solid fa-key"></i>
+
+                        Cambiar contraseña
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PREFERENCIAS
+            ================================================== -->
+
+            <div class="usuario-card preferences-card">
+
+                <div class="usuario-card-header">
+
+                    <div class="usuario-card-heading">
+
+                        <div class="usuario-card-icon icon-purple">
+
+                            <i class="fa-solid fa-sliders"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Preferencias
+                            </h3>
+
+                            <p>
+                                Personaliza tu experiencia en HarvestX.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="preferences-list">
+
+
+                    <!-- TEMA -->
+
+                    <div class="preference-item">
+
+                        <div class="preference-information">
+
+                            <div class="preference-icon theme-icon">
+
+                                <i class="fa-solid fa-moon"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Tema de la interfaz
+                                </strong>
+
+                                <span>
+                                    Cambia entre modo claro y oscuro.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="preference-action"
+                            id="preferenciaTema">
+
+                            <span>
+                                Automático
+                            </span>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- SONIDO -->
+
+                    <div class="preference-item">
+
+                        <div class="preference-information">
+
+                            <div class="preference-icon sound-icon">
+
+                                <i class="fa-solid fa-volume-high"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Sonidos del sistema
+                                </strong>
+
+                                <span>
+                                    Controla los sonidos de HarvestX.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="preference-switch">
+
+                            <input
+                                type="checkbox"
+                                id="preferenciaSonido"
+                                checked>
+
+                            <span class="preference-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- NOTIFICACIONES -->
+
+                    <div class="preference-item">
+
+                        <div class="preference-information">
+
+                            <div class="preference-icon notification-icon">
+
+                                <i class="fa-solid fa-bell"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Notificaciones
+                                </strong>
+
+                                <span>
+                                    Recibe avisos importantes del sistema.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="preference-switch">
+
+                            <input
+                                type="checkbox"
+                                id="preferenciaNotificaciones"
+                                checked>
+
+                            <span class="preference-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- FUENTE -->
+
+                    <div class="preference-item">
+
+                        <div class="preference-information">
+
+                            <div class="preference-icon font-icon">
+
+                                <i class="fa-solid fa-font"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Tamaño de texto
+                                </strong>
+
+                                <span>
+                                    Ajusta la lectura de la interfaz.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="preference-action"
+                            id="preferenciaTexto">
+
+                            <span>
+                                Normal
+
+                            </span>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RESUMEN DE ACTIVIDAD
+            ================================================== -->
+
+            <div class="usuario-card activity-summary-card">
+
+                <div class="usuario-card-header">
+
+                    <div class="usuario-card-heading">
+
+                        <div class="usuario-card-icon icon-green">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Resumen de mi actividad
+                            </h3>
+
+                            <p>
+                                Información relacionada con tu trabajo
+                                dentro de HarvestX.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity-summary-grid">
+
+
+                    <!-- CULTIVOS -->
+
+                    <div class="activity-summary-item crop-summary">
+
+                        <div class="summary-icon">
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Mis cultivos
+                            </span>
+
+                            <strong id="misCultivos">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <small>
+                            Cultivos registrados
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- FINCAS -->
+
+                    <div class="activity-summary-item farm-summary">
+
+                        <div class="summary-icon">
+
+                            <i class="fa-solid fa-mountain-sun"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Mis fincas
+                            </span>
+
+                            <strong id="misFincas">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <small>
+                            Fincas relacionadas
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- ACTIVIDADES -->
+
+                    <div class="activity-summary-item activity-summary">
+
+                        <div class="summary-icon">
+
+                            <i class="fa-solid fa-list-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Actividades
+                            </span>
+
+                            <strong id="misActividades">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <small>
+                            Acciones registradas
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- ALERTAS -->
+
+                    <div class="activity-summary-item alert-summary">
+
+                        <div class="summary-icon">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Alertas atendidas
+                            </span>
+
+                            <strong id="misAlertas">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <small>
+                            Alertas gestionadas
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INFORMACIÓN DE HARVESTX
+            ================================================== -->
+
+            <div class="usuarios-info-banner">
+
+                <div class="info-banner-icon">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                </div>
+
+
+                <div class="info-banner-content">
+
+                    <h3>
+                        Tu cuenta forma parte de HarvestX
+                    </h3>
+
+                    <p>
+                        Desde este espacio puedes consultar y
+                        administrar la información relacionada con
+                        tu cuenta dentro del sistema inteligente
+                        de gestión agrícola.
+                    </p>
+
+                </div>
+
+
+                <div class="info-banner-decoration">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+            </div>
+
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script src="../../JS/paginas/configuracion.js"></script>
+
+<script src="../../JS/paginas/administrador.js"></script>
+
+<!-- JS DEL MÓDULO -->
+<script src="../../JS/paginas/usuarios.js"></script>
+
+
+</body>
+
+</html>
