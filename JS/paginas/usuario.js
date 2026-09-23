@@ -1,989 +1,544 @@
-// ==========================================
-// HARVESTX - JAVASCRIPT USUARIO NORMAL
-// ==========================================
-
-const bgMusic = new Audio("../../song/mc.mp3");
-bgMusic.loop = true;
-
-
-// ==========================================
-// INICIO
-// ==========================================
+// =========================================================
+// HARVESTX — USUARIOS
+// JavaScript del módulo
+// =========================================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ==========================================
-    // USUARIO LOGUEADO
-    // ==========================================
+    console.log("HarvestX | Módulo Usuarios cargado.");
+
+    // =========================================================
+    // CONFIGURACIÓN DEL SERVIDOR
+    // =========================================================
+
+    const API_URL = "http://127.0.0.1:5000";
+
+
+    // =========================================================
+    // ELEMENTOS DEL MÓDULO
+    // =========================================================
+
+    const editarInformacion =
+        document.getElementById("editarInformacion");
+
+    const cambiarContrasena =
+        document.getElementById("cambiarContrasena");
+
+    const preferenciaTema =
+        document.getElementById("preferenciaTema");
+
+    const preferenciaSonido =
+        document.getElementById("preferenciaSonido");
+
+    const preferenciaNotificaciones =
+        document.getElementById("preferenciaNotificaciones");
+
+    const preferenciaTexto =
+        document.getElementById("preferenciaTexto");
+
+
+    // =========================================================
+    // CARGAR INFORMACIÓN DEL USUARIO
+    // =========================================================
+
+    cargarInformacionUsuario();
+
+
+    // =========================================================
+    // EDITAR INFORMACIÓN
+    // =========================================================
+
+    if (editarInformacion) {
+
+        editarInformacion.addEventListener("click", () => {
+
+            const profileModal =
+                document.getElementById("profileModal");
+
+            if (profileModal) {
+                profileModal.classList.add("active");
+            }
+
+            const openProfile =
+                document.getElementById("openProfile");
+
+            if (openProfile) {
+                openProfile.click();
+            }
+
+        });
+
+    }
+
+
+    // =========================================================
+    // CAMBIAR CONTRASEÑA
+    // =========================================================
+
+    if (cambiarContrasena) {
+
+        cambiarContrasena.addEventListener("click", () => {
+
+            alert(
+                "La función para cambiar la contraseña se conectará próximamente con tu cuenta de HarvestX."
+            );
+
+        });
+
+    }
+
+
+    // =========================================================
+    // PREFERENCIA DE TEMA
+    // =========================================================
+
+    if (preferenciaTema) {
+
+        preferenciaTema.addEventListener("change", () => {
+
+            const tema = preferenciaTema.value;
+
+            if (tema === "oscuro") {
+
+                document.body.classList.add("dark-mode");
+
+            }
+
+            else if (tema === "claro") {
+
+                document.body.classList.remove("dark-mode");
+
+            }
+
+            else if (tema === "sistema") {
+
+                const prefersDark =
+                    window.matchMedia &&
+                    window.matchMedia(
+                        "(prefers-color-scheme: dark)"
+                    ).matches;
+
+                document.body.classList.toggle(
+                    "dark-mode",
+                    prefersDark
+                );
+
+            }
+
+        });
+
+    }
+
+
+    // =========================================================
+    // PREFERENCIA DE SONIDO
+    // =========================================================
+
+    if (preferenciaSonido) {
+
+        preferenciaSonido.addEventListener("change", () => {
+
+            const sonidoActivado =
+                preferenciaSonido.checked;
+
+            localStorage.setItem(
+                "harvestx_sonido",
+                sonidoActivado ? "true" : "false"
+            );
+
+        });
+
+    }
+
+
+    // =========================================================
+    // PREFERENCIA DE NOTIFICACIONES
+    // =========================================================
+
+    if (preferenciaNotificaciones) {
+
+        preferenciaNotificaciones.addEventListener(
+            "change",
+            () => {
+
+                const notificacionesActivadas =
+                    preferenciaNotificaciones.checked;
+
+                localStorage.setItem(
+                    "harvestx_notificaciones",
+                    notificacionesActivadas
+                        ? "true"
+                        : "false"
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // PREFERENCIA DE TEXTO
+    // =========================================================
+
+    if (preferenciaTexto) {
+
+        preferenciaTexto.addEventListener("change", () => {
+
+            const tamañoTexto =
+                preferenciaTexto.value;
+
+            document.documentElement.dataset.textSize =
+                tamañoTexto;
+
+            localStorage.setItem(
+                "harvestx_texto",
+                tamañoTexto
+            );
+
+        });
+
+    }
+
+
+    // =========================================================
+    // CARGAR PREFERENCIAS
+    // =========================================================
+
+    cargarPreferencias();
+
+});
+
+
+// =========================================================
+// OBTENER USUARIO ACTUAL
+// =========================================================
+
+function obtenerUsuarioActual() {
 
     const usuarioGuardado =
         localStorage.getItem("usuarioHarvestX");
 
-
-    // Si no existe sesión
     if (!usuarioGuardado) {
 
-        console.warn("No hay una sesión activa.");
+        console.warn(
+            "HarvestX | No existe usuarioHarvestX en localStorage."
+        );
 
-        window.location.href = "../../login.html";
+        return null;
 
-        return;
     }
-
-
-    // ==========================================
-    // LEER DATOS DEL USUARIO
-    // ==========================================
-
-    let usuarioActual;
 
     try {
 
-        usuarioActual = JSON.parse(usuarioGuardado);
+        const usuario =
+            JSON.parse(usuarioGuardado);
 
-    } catch (error) {
+        return usuario;
+
+    }
+
+    catch (error) {
 
         console.error(
-            "Error al leer los datos del usuario:",
+            "HarvestX | Error al leer usuarioHarvestX:",
             error
         );
 
-        localStorage.removeItem("usuarioHarvestX");
+        return null;
 
-        window.location.href = "../../login.html";
-
-        return;
     }
 
+}
 
-    // ==========================================
-    // VERIFICAR ROL
-    // ==========================================
 
-    if (
-        !usuarioActual.rol ||
-        usuarioActual.rol.toLowerCase() !== "usuario"
-    ) {
+// =========================================================
+// CARGAR INFORMACIÓN DESDE MYSQL
+// =========================================================
+
+async function cargarInformacionUsuario() {
+
+    const usuarioLocal =
+        obtenerUsuarioActual();
+
+    if (!usuarioLocal) {
 
         console.warn(
-            "El usuario no tiene permisos para esta sección."
+            "HarvestX | No se pudo identificar al usuario actual."
         );
 
-        window.location.href = "../../login.html";
-
         return;
+
     }
 
+    if (!usuarioLocal.id) {
 
-    // ==========================================
-    // MOSTRAR NOMBRE DEL USUARIO
-    // ==========================================
+        console.warn(
+            "HarvestX | El usuario guardado no tiene ID."
+        );
 
-    const nombreBienvenida =
-        document.getElementById("nombreBienvenida");
+        return;
 
-    const nombreUsuario =
-        document.getElementById("nombreUsuario");
+    }
 
+    try {
 
-    if (usuarioActual.nombre) {
+        const respuesta = await fetch(
+            `http://127.0.0.1:5000/usuarios/${usuarioLocal.id}`
+        );
 
-        if (nombreBienvenida) {
+        const datos = await respuesta.json();
 
-            nombreBienvenida.textContent =
-                `¡Bienvenido, ${usuarioActual.nombre}! 👋`;
+        if (!respuesta.ok || !datos.exito) {
+
+            console.error(
+                "HarvestX | No se pudo obtener la información del usuario:",
+                datos
+            );
+
+            return;
+
         }
+
+        const usuario =
+            datos.usuario;
+
+        console.log(
+            "HarvestX | Usuario obtenido desde MySQL:",
+            usuario
+        );
+
+
+        // =====================================================
+        // ACTUALIZAR INFORMACIÓN PRINCIPAL
+        // =====================================================
+
+        const cuentaNombre =
+            document.getElementById("cuentaNombre");
+
+        const cuentaUsuario =
+            document.getElementById("cuentaUsuario");
+
+        const cuentaRol =
+            document.getElementById("cuentaRol");
+
+        const estadoCuenta =
+            document.getElementById("estadoCuenta");
+
+        const fechaCreacion =
+            document.getElementById("fechaCreacion");
+
+        const tipoCuenta =
+            document.getElementById("tipoCuenta");
+
+
+        if (cuentaNombre) {
+
+            cuentaNombre.textContent =
+                usuario.nombre || "Sin nombre";
+
+        }
+
+
+        if (cuentaUsuario) {
+
+            cuentaUsuario.textContent =
+                usuario.usuario || "Sin usuario";
+
+        }
+
+
+        if (cuentaRol) {
+
+            cuentaRol.textContent =
+                usuario.rol || "Sin rol";
+
+        }
+
+
+        if (estadoCuenta) {
+
+            estadoCuenta.textContent =
+                usuario.estado || "Sin estado";
+
+        }
+
+
+        if (fechaCreacion) {
+
+            if (usuario.fecha_creacion) {
+
+                const fecha =
+                    new Date(usuario.fecha_creacion);
+
+                fechaCreacion.textContent =
+                    fecha.toLocaleDateString(
+                        "es-GT",
+                        {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric"
+                        }
+                    );
+
+            }
+
+            else {
+
+                fechaCreacion.textContent =
+                    "Sin información";
+
+            }
+
+        }
+
+
+        if (tipoCuenta) {
+
+            tipoCuenta.textContent =
+                usuario.rol === "administrador"
+                    ? "Administrador"
+                    : "Usuario";
+
+        }
+
+
+        // =====================================================
+        // ACTUALIZAR INFORMACIÓN DEL TOPBAR
+        // =====================================================
+
+        const nombreUsuario =
+            document.getElementById("nombreUsuario");
+
+        const rolUsuario =
+            document.getElementById("rolUsuario");
+
+        const avatarImagen =
+            document.getElementById("avatarImagen");
 
 
         if (nombreUsuario) {
 
             nombreUsuario.textContent =
-                usuarioActual.nombre;
-        }
-
-    }
-
-
-    // ==========================================
-    // CONFIGURACIÓN GUARDADA
-    // ==========================================
-
-    const htmlElement =
-        document.documentElement;
-
-
-    const temaGuardado =
-        localStorage.getItem("temaHarvestX");
-
-    const fuenteGuardada =
-        localStorage.getItem("fuenteHarvestX");
-
-    const escalaGuardada =
-        localStorage.getItem("escalaHarvestX");
-
-    const sonidoGuardado =
-        localStorage.getItem("sonidoHarvestX");
-
-
-    // ==========================================
-    // TEMA
-    // ==========================================
-
-    if (temaGuardado === "dark") {
-
-        htmlElement.setAttribute(
-            "data-theme",
-            "dark"
-        );
-
-    } else {
-
-        htmlElement.removeAttribute(
-            "data-theme"
-        );
-
-    }
-
-
-    // ==========================================
-    // FUENTE
-    // ==========================================
-
-    if (fuenteGuardada) {
-
-        htmlElement.style.setProperty(
-            "--fuente-actual",
-            fuenteGuardada
-        );
-
-    }
-
-
-    // ==========================================
-    // TAMAÑO DE LETRA
-    // ==========================================
-
-    if (escalaGuardada) {
-
-        htmlElement.style.setProperty(
-            "--escala-texto",
-            escalaGuardada
-        );
-
-    }
-
-
-    // ==========================================
-    // LOADER
-    // ==========================================
-
-    const loader =
-        document.getElementById("loader");
-
-
-    setTimeout(() => {
-
-        if (loader) {
-
-            loader.classList.add("hidden");
+                usuario.nombre || "Usuario";
 
         }
 
 
-        document
-            .querySelectorAll(".fade-up")
-            .forEach(element => {
+        if (rolUsuario) {
 
-                element.classList.add("visible");
-
-            });
-
-
-        initCharts();
-
-    }, 1000);
-
-
-    // ==========================================
-    // SIDEBAR
-    // ==========================================
-
-    const sidebar =
-        document.getElementById("sidebar");
-
-    const mainContent =
-        document.getElementById("mainContent");
-
-    const toggleSidebarDesktop =
-        document.getElementById(
-            "toggleSidebarDesktop"
-        );
-
-
-    if (toggleSidebarDesktop) {
-
-        toggleSidebarDesktop.addEventListener(
-            "click",
-            () => {
-
-                if (sidebar) {
-
-                    sidebar.classList.toggle(
-                        "collapsed"
-                    );
-
-                }
-
-
-                if (mainContent) {
-
-                    mainContent.classList.toggle(
-                        "expanded"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // MENÚ MÓVIL
-    // ==========================================
-
-    const menuToggleMobile =
-        document.getElementById(
-            "menuToggleMobile"
-        );
-
-    const closeSidebarMobile =
-        document.getElementById(
-            "closeSidebarMobile"
-        );
-
-
-    if (menuToggleMobile) {
-
-        menuToggleMobile.addEventListener(
-            "click",
-            () => {
-
-                if (sidebar) {
-
-                    sidebar.classList.add(
-                        "active"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    if (closeSidebarMobile) {
-
-        closeSidebarMobile.addEventListener(
-            "click",
-            () => {
-
-                if (sidebar) {
-
-                    sidebar.classList.remove(
-                        "active"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // CERRAR SIDEBAR AL HACER CLIC AFUERA
-    // ==========================================
-
-    document.addEventListener(
-        "click",
-        (e) => {
-
-            if (window.innerWidth <= 768) {
-
-                if (
-                    sidebar &&
-                    sidebar.classList.contains("active") &&
-                    menuToggleMobile
-                ) {
-
-                    if (
-                        !sidebar.contains(e.target) &&
-                        !menuToggleMobile.contains(e.target)
-                    ) {
-
-                        sidebar.classList.remove(
-                            "active"
-                        );
-
-                    }
-
-                }
-
-            }
+            rolUsuario.textContent =
+                usuario.rol || "usuario";
 
         }
-    );
 
 
-    // ==========================================
-    // MODAL DE CONFIGURACIÓN
-    // ==========================================
+        if (
+            avatarImagen &&
+            usuario.foto
+        ) {
 
-    const settingsModal =
-        document.getElementById(
-            "settingsModal"
-        );
+            let rutaFoto =
+                usuario.foto;
 
-    const openSettings =
-        document.getElementById(
-            "openSettings"
-        );
+            if (!rutaFoto.startsWith("/")) {
 
-    const closeSettings =
-        document.getElementById(
-            "closeSettings"
-        );
-
-
-    if (openSettings) {
-
-        openSettings.addEventListener(
-            "click",
-            (e) => {
-
-                e.preventDefault();
-
-                if (settingsModal) {
-
-                    settingsModal.classList.add(
-                        "active"
-                    );
-
-                }
+                rutaFoto =
+                    "/" + rutaFoto;
 
             }
-        );
 
-    }
-
-
-    if (closeSettings) {
-
-        closeSettings.addEventListener(
-            "click",
-            () => {
-
-                if (settingsModal) {
-
-                    settingsModal.classList.remove(
-                        "active"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // CERRAR MODAL AL HACER CLIC AFUERA
-    // ==========================================
-
-    if (settingsModal) {
-
-        settingsModal.addEventListener(
-            "click",
-            (e) => {
-
-                if (e.target === settingsModal) {
-
-                    settingsModal.classList.remove(
-                        "active"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // TEMA OSCURO
-    // ==========================================
-
-    const themeToggle =
-        document.getElementById(
-            "themeToggle"
-        );
-
-
-    if (themeToggle) {
-
-        themeToggle.checked =
-            localStorage.getItem(
-                "temaHarvestX"
-            ) === "dark";
-
-
-        themeToggle.addEventListener(
-            "change",
-            (e) => {
-
-                if (e.target.checked) {
-
-                    htmlElement.setAttribute(
-                        "data-theme",
-                        "dark"
-                    );
-
-                    localStorage.setItem(
-                        "temaHarvestX",
-                        "dark"
-                    );
-
-                } else {
-
-                    htmlElement.removeAttribute(
-                        "data-theme"
-                    );
-
-                    localStorage.setItem(
-                        "temaHarvestX",
-                        "light"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // SONIDO
-    // ==========================================
-
-    const soundToggle =
-        document.getElementById(
-            "soundToggle"
-        );
-
-
-    if (soundToggle) {
-
-        soundToggle.checked =
-            localStorage.getItem(
-                "sonidoHarvestX"
-            ) === "on";
-
-
-        soundToggle.addEventListener(
-            "change",
-            (e) => {
-
-                if (e.target.checked) {
-
-                    localStorage.setItem(
-                        "sonidoHarvestX",
-                        "on"
-                    );
-
-
-                    bgMusic.play().catch(error => {
-
-                        console.warn(
-                            "El navegador bloqueó el audio hasta que exista interacción del usuario.",
-                            error
-                        );
-
-                    });
-
-                } else {
-
-                    localStorage.setItem(
-                        "sonidoHarvestX",
-                        "off"
-                    );
-
-                    bgMusic.pause();
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // FUENTE
-    // ==========================================
-
-    const fontSelect =
-        document.getElementById(
-            "fontSelect"
-        );
-
-
-    if (fontSelect) {
-
-        if (fuenteGuardada) {
-
-            fontSelect.value =
-                fuenteGuardada;
+            avatarImagen.src =
+                `http://127.0.0.1:5000${rutaFoto}`;
 
         }
 
 
-        fontSelect.addEventListener(
-            "change",
-            (e) => {
+        // =====================================================
+        // ACTUALIZAR LOCALSTORAGE
+        // =====================================================
 
-                const nuevaFuente =
-                    e.target.value;
-
-
-                htmlElement.style.setProperty(
-                    "--fuente-actual",
-                    nuevaFuente
-                );
+        localStorage.setItem(
+            "usuarioHarvestX",
+            JSON.stringify(usuario)
+        );
 
 
-                localStorage.setItem(
-                    "fuenteHarvestX",
-                    nuevaFuente
-                );
+    }
 
-            }
+    catch (error) {
+
+        console.error(
+            "HarvestX | Error al conectar con Flask:",
+            error
         );
 
     }
 
+}
 
-    // ==========================================
-    // TAMAÑO DE LETRA
-    // ==========================================
 
-    const btnsSize =
-        document.querySelectorAll(
-            ".btn-size"
-        );
+// =========================================================
+// CARGAR PREFERENCIAS
+// =========================================================
 
+function cargarPreferencias() {
 
-    btnsSize.forEach(btn => {
+    const sonido =
+        localStorage.getItem("harvestx_sonido");
 
-        btn.addEventListener(
-            "click",
-            (e) => {
+    const preferenciaSonido =
+        document.getElementById("preferenciaSonido");
 
-                btnsSize.forEach(b => {
+    if (
+        preferenciaSonido &&
+        sonido !== null
+    ) {
 
-                    b.classList.remove(
-                        "active"
-                    );
-
-                });
-
-
-                e.currentTarget.classList.add(
-                    "active"
-                );
-
-
-                const sizeId =
-                    e.currentTarget.id;
-
-
-                let nuevoTamano;
-
-
-                if (sizeId === "btnSizeSmall") {
-
-                    nuevoTamano = "0.85rem";
-
-                }
-
-                else if (
-                    sizeId === "btnSizeNormal"
-                ) {
-
-                    nuevoTamano = "1rem";
-
-                }
-
-                else if (
-                    sizeId === "btnSizeLarge"
-                ) {
-
-                    nuevoTamano = "1.15rem";
-
-                }
-
-
-                if (nuevoTamano) {
-
-                    htmlElement.style.setProperty(
-                        "--escala-texto",
-                        nuevoTamano
-                    );
-
-
-                    localStorage.setItem(
-                        "escalaHarvestX",
-                        nuevoTamano
-                    );
-
-                }
-
-            }
-        );
-
-    });
-
-
-    // ==========================================
-    // ENLACES DEL SIDEBAR
-    // ==========================================
-
-    const navLinks =
-        document.querySelectorAll(
-            ".sidebar-nav .nav-link"
-        );
-
-
-    navLinks.forEach(link => {
-
-        link.addEventListener(
-            "click",
-            function () {
-
-                navLinks.forEach(nav => {
-
-                    nav.classList.remove(
-                        "active"
-                    );
-
-                });
-
-
-                this.classList.add(
-                    "active"
-                );
-
-            }
-        );
-
-    });
-
-
-    // ==========================================
-    // CHART.JS
-    // ==========================================
-
-    function initCharts() {
-
-        if (typeof Chart === "undefined") {
-
-            console.warn(
-                "Chart.js no está disponible."
-            );
-
-            return;
-        }
-
-
-        Chart.defaults.font.family =
-            getComputedStyle(
-                document.documentElement
-            ).getPropertyValue(
-                "--fuente-actual"
-            );
-
-
-        Chart.defaults.color =
-            "#636e72";
-
-
-        // ==========================================
-        // PRODUCCIÓN
-        // ==========================================
-
-        const ctxProduction =
-            document.getElementById(
-                "productionChart"
-            );
-
-
-        if (ctxProduction) {
-
-            new Chart(
-                ctxProduction,
-                {
-
-                    type: "doughnut",
-
-                    data: {
-
-                        labels: [
-                            "Tomate",
-                            "Maíz",
-                            "Café",
-                            "Lechuga"
-                        ],
-
-                        datasets: [{
-
-                            data: [
-                                45,
-                                30,
-                                15,
-                                10
-                            ],
-
-                            backgroundColor: [
-                                "#4CAF50",
-                                "#fbc02d",
-                                "#81c784",
-                                "#64b5f6"
-                            ],
-
-                            borderWidth: 0,
-
-                            hoverOffset: 4
-
-                        }]
-
-                    },
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-                        cutout: "65%",
-
-                        plugins: {
-
-                            legend: {
-
-                                position: "right",
-
-                                labels: {
-
-                                    boxWidth: 10,
-
-                                    usePointStyle: true
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // RENDIMIENTO
-        // ==========================================
-
-        const ctxYield =
-            document.getElementById(
-                "yieldChart"
-            );
-
-
-        if (ctxYield) {
-
-            new Chart(
-                ctxYield,
-                {
-
-                    type: "line",
-
-                    data: {
-
-                        labels: [
-                            "Ene",
-                            "Feb",
-                            "Mar",
-                            "Abr",
-                            "May",
-                            "Jun"
-                        ],
-
-                        datasets: [{
-
-                            label: "Rendimiento",
-
-                            data: [
-                                1000,
-                                3000,
-                                4000,
-                                3800,
-                                6000,
-                                8000
-                            ],
-
-                            borderColor:
-                                "#2196F3",
-
-                            backgroundColor:
-                                "#2196F3",
-
-                            borderWidth: 2,
-
-                            tension: 0.4,
-
-                            pointBackgroundColor:
-                                "#fff",
-
-                            pointBorderColor:
-                                "#2196F3",
-
-                            pointRadius: 4
-
-                        }]
-
-                    },
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-                        plugins: {
-
-                            legend: {
-
-                                display: false
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // HUMEDAD
-        // ==========================================
-
-        const ctxMoisture =
-            document.getElementById(
-                "moistureChart"
-            );
-
-
-        if (ctxMoisture) {
-
-            new Chart(
-                ctxMoisture,
-                {
-
-                    type: "bar",
-
-                    data: {
-
-                        labels: [
-                            "Sector A",
-                            "Sector B",
-                            "Sector C",
-                            "Sector D"
-                        ],
-
-                        datasets: [{
-
-                            label: "Humedad",
-
-                            data: [
-                                75,
-                                60,
-                                80,
-                                45
-                            ],
-
-                            backgroundColor: [
-                                "#2196F3",
-                                "#4CAF50",
-                                "#1976D2",
-                                "#fbc02d"
-                            ],
-
-                            borderRadius: 4,
-
-                            barPercentage: 0.5
-
-                        }]
-
-                    },
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-                        plugins: {
-
-                            legend: {
-
-                                display: false
-
-                            }
-
-                        },
-
-                        scales: {
-
-                            y: {
-
-                                beginAtZero: true,
-
-                                max: 100
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
+        preferenciaSonido.checked =
+            sonido === "true";
 
     }
 
-});
+
+    const notificaciones =
+        localStorage.getItem(
+            "harvestx_notificaciones"
+        );
+
+    const preferenciaNotificaciones =
+        document.getElementById(
+            "preferenciaNotificaciones"
+        );
+
+    if (
+        preferenciaNotificaciones &&
+        notificaciones !== null
+    ) {
+
+        preferenciaNotificaciones.checked =
+            notificaciones === "true";
+
+    }
+
+
+    const texto =
+        localStorage.getItem("harvestx_texto");
+
+    const preferenciaTexto =
+        document.getElementById("preferenciaTexto");
+
+    if (
+        preferenciaTexto &&
+        texto
+    ) {
+
+        preferenciaTexto.value =
+            texto;
+
+        document.documentElement.dataset.textSize =
+            texto;
+
+    }
+
+}
