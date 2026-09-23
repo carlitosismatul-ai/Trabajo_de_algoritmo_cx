@@ -1,5 +1,6 @@
 /* =========================================================
    HARVESTX — HISTORIAL DE ACTIVIDADES
+   NATURAL TECH / COLORFUL
 ========================================================= */
 
 
@@ -8,9 +9,12 @@
 ========================================================= */
 
 .historial-module {
+    width: 100%;
+
     display: flex;
     flex-direction: column;
-    gap: 20px;
+
+    gap: 22px;
 }
 
 
@@ -19,21 +23,71 @@
 ========================================================= */
 
 .historial-header {
-    padding: 24px;
-    border-radius: 18px;
-    border: 1px solid rgba(46, 125, 50, 0.10);
-    background: linear-gradient(
-        135deg,
-        #ffffff,
-        #f4faf5
-    );
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+
+    padding: 26px 28px;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(46, 125, 50, 0.11);
+
+    background:
+        linear-gradient(
+            135deg,
+            #e7f6e9 0%,
+            #eef8ff 52%,
+            #fff8df 100%
+        );
+
+    box-shadow:
+        0 10px 28px rgba(46, 125, 50, 0.08);
+}
+
+
+.historial-header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -55px;
+    top: -70px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(76, 175, 80, 0.10);
+}
+
+
+.historial-header::after {
+    content: "";
+
+    position: absolute;
+
+    width: 95px;
+    height: 95px;
+
+    right: 125px;
+    bottom: -60px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(33, 150, 243, 0.08);
 }
 
 
 .historial-title {
+    position: relative;
+    z-index: 1;
+
     display: flex;
     align-items: center;
+
     gap: 18px;
 }
 
@@ -42,37 +96,46 @@
     width: 58px;
     height: 58px;
 
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 16px;
+    border-radius: 17px;
 
-    background: linear-gradient(
-        135deg,
-        #2e7d32,
-        #43a047
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #2e7d32,
+            #43a047
+        );
 
     color: #ffffff;
 
     font-size: 25px;
 
     box-shadow:
-        0 8px 18px rgba(46, 125, 50, 0.25);
+        0 9px 20px rgba(46, 125, 50, 0.24);
 }
 
 
 .historial-title h2 {
     margin: 0 0 5px;
-    font-size: 1.45rem;
+
+    font-size: 1.5rem;
+
+    font-weight: 750;
+
     color: #263238;
 }
 
 
 .historial-title p {
     margin: 0;
+
     color: #78909c;
+
     font-size: 0.92rem;
 }
 
@@ -92,22 +155,26 @@
 
 
 .historial-stat-card {
+    position: relative;
+    overflow: hidden;
+
     display: flex;
     align-items: center;
+
     gap: 15px;
 
-    min-height: 105px;
+    min-height: 110px;
 
-    padding: 18px;
+    padding: 19px;
 
-    border-radius: 17px;
+    border-radius: 19px;
 
     background: #ffffff;
 
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.045);
 
     box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.05);
+        0 8px 23px rgba(38, 50, 56, 0.065);
 
     transition:
         transform 0.25s ease,
@@ -115,19 +182,60 @@
 }
 
 
-.historial-stat-card:hover {
-    transform: translateY(-3px);
+.historial-stat-card::before {
+    content: "";
 
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.09);
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+    border-radius: 20px 0 0 20px;
+
+    background: #43a047;
 }
 
 
-/* ICONOS */
+.historial-stat-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 82px;
+    height: 82px;
+
+    right: -28px;
+    bottom: -35px;
+
+    border-radius: 50%;
+
+    opacity: 0.09;
+
+    background: #43a047;
+}
+
+
+.historial-stat-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 13px 28px rgba(38, 50, 56, 0.10);
+}
+
+
+/* =========================================================
+   ICONOS
+========================================================= */
 
 .stat-icon {
-    width: 50px;
-    height: 50px;
+    position: relative;
+    z-index: 1;
+
+    width: 52px;
+    height: 52px;
 
     flex-shrink: 0;
 
@@ -135,7 +243,7 @@
     align-items: center;
     justify-content: center;
 
-    border-radius: 14px;
+    border-radius: 15px;
 
     font-size: 20px;
 }
@@ -144,51 +252,110 @@
 /* ACTIVIDADES */
 
 .activity-icon {
-    background: #e8f5e9;
+    background:
+        linear-gradient(
+            135deg,
+            #e0f3e2,
+            #c8efcf
+        );
+
     color: #2e7d32;
+}
+
+
+.historial-stat-card:has(.activity-icon)::before {
+    background: #43a047;
 }
 
 
 /* SEMANA */
 
 .week-icon {
-    background: #ede7f6;
+    background:
+        linear-gradient(
+            135deg,
+            #eee7ff,
+            #dfd3ff
+        );
+
     color: #6a1b9a;
+}
+
+
+.historial-stat-card:has(.week-icon)::before {
+    background: #7e57c2;
 }
 
 
 /* RIEGO */
 
 .water-icon {
-    background: #e1f5fe;
+    background:
+        linear-gradient(
+            135deg,
+            #e1f1ff,
+            #cce7ff
+        );
+
     color: #0288d1;
+}
+
+
+.historial-stat-card:has(.water-icon)::before {
+    background: #1976d2;
 }
 
 
 /* ALERTAS */
 
 .alert-icon {
-    background: #fff3e0;
+    background:
+        linear-gradient(
+            135deg,
+            #fff1df,
+            #ffe4c5
+        );
+
     color: #ef6c00;
 }
 
 
+.historial-stat-card:has(.alert-icon)::before {
+    background: #ef6c00;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DE ESTADÍSTICAS
+========================================================= */
+
 .stat-info {
+    position: relative;
+    z-index: 1;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 4px;
 }
 
 
 .stat-info span {
     font-size: 0.82rem;
+
     color: #78909c;
+
+    font-weight: 600;
 }
 
 
 .stat-info strong {
-    font-size: 1.55rem;
+    font-size: 1.6rem;
+
     color: #263238;
+
+    font-weight: 750;
 }
 
 
@@ -197,21 +364,45 @@
 ========================================================= */
 
 .historial-filters {
-    padding: 22px;
+    position: relative;
+    overflow: hidden;
 
-    border-radius: 18px;
+    padding: 23px;
+
+    border-radius: 20px;
 
     background: #ffffff;
 
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.045);
 
     box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.04);
+        0 8px 23px rgba(38, 50, 56, 0.06);
+}
+
+
+.historial-filters::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2e7d32,
+            #42a5f5,
+            #7e57c2
+        );
 }
 
 
 .filters-header {
-    margin-bottom: 18px;
+    margin-bottom: 19px;
 }
 
 
@@ -220,11 +411,14 @@
 
     display: flex;
     align-items: center;
+
     gap: 9px;
 
     font-size: 1.05rem;
 
     color: #263238;
+
+    font-weight: 750;
 }
 
 
@@ -259,14 +453,17 @@
 
 .filter-group {
     display: flex;
+
     flex-direction: column;
+
     gap: 7px;
 }
 
 
 .filter-group label {
     font-size: 0.82rem;
-    font-weight: 600;
+
+    font-weight: 650;
 
     color: #546e7a;
 }
@@ -278,11 +475,11 @@
 
     min-height: 43px;
 
-    border-radius: 10px;
+    border-radius: 11px;
 
     border: 1px solid #dce5df;
 
-    background: #f9fbfa;
+    background: #f8fbf9;
 
     padding: 0 12px;
 
@@ -290,10 +487,18 @@
 
     outline: none;
 
+    font-family: inherit;
+
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease,
         background 0.2s ease;
+}
+
+
+.filter-group .form-select:hover,
+.filter-group .form-input:hover {
+    border-color: #b8d9be;
 }
 
 
@@ -308,10 +513,13 @@
 }
 
 
-/* BOTÓN LIMPIAR */
+/* =========================================================
+   BOTÓN LIMPIAR
+========================================================= */
 
 .filter-actions {
     display: flex;
+
     align-items: center;
 }
 
@@ -323,17 +531,23 @@
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 11px;
 
-    background: #eceff1;
+    background:
+        linear-gradient(
+            135deg,
+            #eef2f3,
+            #e3e9eb
+        );
 
     color: #546e7a;
 
-    font-weight: 600;
+    font-weight: 650;
 
     cursor: pointer;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -342,15 +556,25 @@
     transition:
         background 0.2s ease,
         color 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
 .btn-filter-clear:hover {
-    background: #dfe5e8;
+    background:
+        linear-gradient(
+            135deg,
+            #dfe8e2,
+            #d5e0e4
+        );
+
     color: #263238;
 
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 12px rgba(38, 50, 56, 0.08);
 }
 
 
@@ -359,16 +583,39 @@
 ========================================================= */
 
 .historial-container {
-    padding: 22px;
+    position: relative;
+    overflow: hidden;
 
-    border-radius: 18px;
+    padding: 23px;
+
+    border-radius: 20px;
 
     background: #ffffff;
 
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.045);
 
     box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.04);
+        0 8px 23px rgba(38, 50, 56, 0.06);
+}
+
+
+.historial-container::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2e7d32,
+            #66bb6a
+        );
 }
 
 
@@ -396,6 +643,8 @@
     font-size: 1.15rem;
 
     color: #263238;
+
+    font-weight: 750;
 }
 
 
@@ -408,23 +657,33 @@
 }
 
 
-/* BOTÓN ACTUALIZAR */
+/* =========================================================
+   BOTÓN ACTUALIZAR
+========================================================= */
 
 .btn-refresh {
     width: 40px;
     height: 40px;
 
+    flex-shrink: 0;
+
     border: none;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
-    background: #e8f5e9;
+    background:
+        linear-gradient(
+            135deg,
+            #e0f3e2,
+            #c8efcf
+        );
 
     color: #2e7d32;
 
     cursor: pointer;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -432,14 +691,23 @@
 
     transition:
         transform 0.25s ease,
-        background 0.2s ease;
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
 .btn-refresh:hover {
     transform: rotate(90deg);
 
-    background: #c8e6c9;
+    background:
+        linear-gradient(
+            135deg,
+            #c8e6c9,
+            #b9dfc0
+        );
+
+    box-shadow:
+        0 5px 13px rgba(46, 125, 50, 0.14);
 }
 
 
@@ -449,6 +717,7 @@
 
 .activity-history-list {
     display: flex;
+
     flex-direction: column;
 
     gap: 12px;
@@ -460,6 +729,8 @@
 ========================================================= */
 
 .history-item {
+    position: relative;
+
     display: grid;
 
     grid-template-columns:
@@ -473,11 +744,16 @@
 
     padding: 17px;
 
-    border-radius: 14px;
+    border-radius: 16px;
 
-    background: #fafcfb;
+    background:
+        linear-gradient(
+            135deg,
+            #fbfdfb,
+            #f7faf8
+        );
 
-    border: 1px solid #edf1ee;
+    border: 1px solid #e8efea;
 
     transition:
         transform 0.2s ease,
@@ -487,12 +763,12 @@
 
 
 .history-item:hover {
-    transform: translateX(3px);
+    transform: translateX(4px);
 
-    border-color: #c8e6c9;
+    border-color: #b9dcbc;
 
     box-shadow:
-        0 5px 16px rgba(46, 125, 50, 0.07);
+        0 7px 18px rgba(46, 125, 50, 0.08);
 }
 
 
@@ -505,10 +781,11 @@
     height: 48px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    border-radius: 13px;
+    border-radius: 14px;
 
     font-size: 18px;
 }
@@ -517,7 +794,13 @@
 /* RIEGO */
 
 .history-riego {
-    background: #e1f5fe;
+    background:
+        linear-gradient(
+            135deg,
+            #e1f1ff,
+            #cce7ff
+        );
+
     color: #0288d1;
 }
 
@@ -525,7 +808,13 @@
 /* CULTIVO */
 
 .history-cultivo {
-    background: #e8f5e9;
+    background:
+        linear-gradient(
+            135deg,
+            #e0f3e2,
+            #c8efcf
+        );
+
     color: #2e7d32;
 }
 
@@ -533,7 +822,13 @@
 /* ALERTA */
 
 .history-alerta {
-    background: #ffebee;
+    background:
+        linear-gradient(
+            135deg,
+            #ffebee,
+            #ffe0e0
+        );
+
     color: #d32f2f;
 }
 
@@ -541,7 +836,13 @@
 /* LABOR */
 
 .history-labor {
-    background: #fff3e0;
+    background:
+        linear-gradient(
+            135deg,
+            #fff1df,
+            #ffe4c5
+        );
+
     color: #ef6c00;
 }
 
@@ -549,7 +850,13 @@
 /* CLIMA */
 
 .history-clima {
-    background: #e3f2fd;
+    background:
+        linear-gradient(
+            135deg,
+            #e3f2fd,
+            #d4eaff
+        );
+
     color: #1976d2;
 }
 
@@ -557,7 +864,13 @@
 /* FINCA */
 
 .history-finca {
-    background: #efebe9;
+    background:
+        linear-gradient(
+            135deg,
+            #efebe9,
+            #e4dcd7
+        );
+
     color: #5d4037;
 }
 
@@ -565,7 +878,13 @@
 /* USUARIO */
 
 .history-usuario {
-    background: #ede7f6;
+    background:
+        linear-gradient(
+            135deg,
+            #eee7ff,
+            #dfd3ff
+        );
+
     color: #6a1b9a;
 }
 
@@ -581,6 +900,7 @@
 
 .history-main {
     display: flex;
+
     align-items: center;
 
     flex-wrap: wrap;
@@ -597,6 +917,8 @@
     font-size: 0.98rem;
 
     color: #263238;
+
+    font-weight: 700;
 }
 
 
@@ -615,18 +937,18 @@
 
     font-size: 0.68rem;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 
 .type-riego {
-    background: #e1f5fe;
+    background: #e1f1ff;
     color: #0277bd;
 }
 
 
 .type-cultivo {
-    background: #e8f5e9;
+    background: #e0f3e2;
     color: #2e7d32;
 }
 
@@ -638,7 +960,7 @@
 
 
 .type-labor {
-    background: #fff3e0;
+    background: #fff1df;
     color: #e65100;
 }
 
@@ -656,7 +978,7 @@
 
 
 .type-usuario {
-    background: #ede7f6;
+    background: #eee7ff;
     color: #6a1b9a;
 }
 
@@ -726,12 +1048,12 @@
 
     font-size: 0.7rem;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 
 .status-completada {
-    background: #e8f5e9;
+    background: #e0f3e2;
     color: #2e7d32;
 }
 
@@ -743,7 +1065,7 @@
 
 
 .status-pendiente {
-    background: #fff3e0;
+    background: #fff1df;
     color: #ef6c00;
 }
 
@@ -795,13 +1117,16 @@ body:is(
     [data-theme="dark"]
 ) .historial-header {
 
-    background: linear-gradient(
-        135deg,
-        #17231a,
-        #1c2b20
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #17251a,
+            #1b2930,
+            #29251a
+        );
 
-    border-color: rgba(129, 199, 132, 0.12);
+    border-color:
+        rgba(129, 199, 132, 0.12);
 }
 
 
@@ -867,7 +1192,8 @@ body:is(
 
     background: #18211b;
 
-    border-color: rgba(255, 255, 255, 0.07);
+    border-color:
+        rgba(255, 255, 255, 0.07);
 
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.22);
@@ -881,9 +1207,15 @@ body:is(
     [data-theme="dark"]
 ) .history-item {
 
-    background: #202b23;
+    background:
+        linear-gradient(
+            135deg,
+            #202b23,
+            #1e2924
+        );
 
-    border-color: rgba(255, 255, 255, 0.07);
+    border-color:
+        rgba(255, 255, 255, 0.07);
 }
 
 
@@ -894,7 +1226,8 @@ body:is(
     [data-theme="dark"]
 ) .history-item:hover {
 
-    border-color: rgba(129, 199, 132, 0.3);
+    border-color:
+        rgba(129, 199, 132, 0.30);
 }
 
 
@@ -947,7 +1280,8 @@ body:is(
 
     background: #202b23;
 
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color:
+        rgba(255, 255, 255, 0.10);
 
     color: #ffffff;
 }
@@ -980,7 +1314,8 @@ body:is(
     [data-theme="dark"]
 ) .historial-list-header {
 
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color:
+        rgba(255, 255, 255, 0.08);
 }
 
 
@@ -1042,7 +1377,6 @@ body:is(
     .filter-actions {
         justify-content: flex-start;
     }
-
 }
 
 
@@ -1053,7 +1387,7 @@ body:is(
 @media (max-width: 700px) {
 
     .historial-header {
-        padding: 18px;
+        padding: 19px;
     }
 
 
@@ -1087,7 +1421,7 @@ body:is(
 
     .historial-filters,
     .historial-container {
-        padding: 17px;
+        padding: 18px;
     }
 
 
@@ -1142,7 +1476,6 @@ body:is(
     .history-meta span {
         font-size: 0.68rem;
     }
-
 }
 
 
@@ -1208,5 +1541,19 @@ body:is(
     .history-content > p {
         font-size: 0.78rem;
     }
+}
 
+
+/* =========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .historial-stat-card,
+    .history-item,
+    .btn-filter-clear,
+    .btn-refresh {
+        transition: none;
+    }
 }

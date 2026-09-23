@@ -1,24 +1,41 @@
 /* =========================================================
    HARVESTX — MÓDULO DE PROGRAMACIÓN DE RIEGO
+   DISEÑO — NATURAL TECH / COLORIDO
    ========================================================= */
 
 :root {
-    --verde-barra: #1D4F37;
-    --verde-oscuro-contraste: #102B1B;
-    --fondo-pagina: #F2F9EF;
-    --texto-principal: #002300;
-    --barra-mes: #8EB156;
-    --dias-semana: #78916C;
-    --dia-cosecha: #D9FC8D;
-    --dias-no-seleccionados: #EAF7E8;
-    --fila-par: #F0FAF7;
-    --fila-impar: #E8F8E5;
-    --estado-creciendo: #659C62;
-    --estado-alerta: #BF4842;
+    --riego-verde: #2e7d32;
+    --riego-verde-claro: #66bb6a;
+    --riego-verde-oscuro: #1b5e20;
+
+    --riego-fondo: #f2f9ef;
+    --riego-texto: #002300;
+
+    --riego-agua: #0288d1;
+    --riego-agua-claro: #4fc3f7;
+    --riego-agua-fondo: #d9f5fc;
+
+    --riego-celeste: #1976d2;
+    --riego-celeste-claro: #42a5f5;
+    --riego-celeste-fondo: #dcecff;
+
+    --riego-naranja: #ef6c00;
+    --riego-naranja-claro: #ffb74d;
+    --riego-naranja-fondo: #ffead2;
+
+    --riego-amarillo: #f9a825;
+    --riego-amarillo-fondo: #fff3c4;
+
+    --riego-mint: #e0f5e4;
+    --riego-blanco: #ffffff;
+
+    --riego-borde: rgba(46, 125, 50, 0.14);
+    --riego-sombra: 0 8px 24px rgba(27, 94, 32, 0.08);
 }
 
+
 /* =========================================================
-   ESTRUCTURA GENERAL DE LA PÁGINA
+   ESTRUCTURA GENERAL
    ========================================================= */
 
 .riego-page {
@@ -28,112 +45,209 @@
     width: 100%;
 }
 
+
 /* =========================================================
-   HERO BANNER
+   HERO
    ========================================================= */
 
 .riego-hero {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        #e0f5e4 0%,
+        #f4fbf0 48%,
+        #dff5fa 100%
+    );
+    border-radius: 18px;
+    padding: 26px;
+    border: 1px solid var(--riego-borde);
+    box-shadow: var(--riego-sombra);
+}
+
+.riego-hero::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: rgba(79, 195, 247, 0.13);
+    right: -55px;
+    top: -85px;
+}
+
+.riego-hero::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(102, 187, 106, 0.14);
+    right: 120px;
+    bottom: -75px;
 }
 
 .riego-hero-info {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
 .riego-hero-icon {
-    width: 56px;
-    height: 56px;
-    background: var(--fondo-pagina);
-    color: var(--verde-barra);
-    border-radius: 12px;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    background: linear-gradient(
+        135deg,
+        var(--riego-agua),
+        var(--riego-celeste)
+    );
+    color: #ffffff;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
+    box-shadow: 0 8px 18px rgba(2, 136, 209, 0.22);
 }
 
 .riego-kicker {
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--barra-mes);
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: var(--riego-verde);
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 }
 
 .riego-hero h2 {
-    margin: 0 0 6px 0;
-    font-size: 1.5rem;
-    color: var(--texto-principal);
+    margin: 0 0 7px 0;
+    font-size: 1.55rem;
+    color: var(--riego-texto);
 }
 
 .riego-hero p {
     margin: 0;
-    color: #666;
+    color: #55705c;
     font-size: 0.9rem;
 }
 
+
 /* =========================================================
-   TARJETAS DE MÉTRICAS
+   MÉTRICAS
    ========================================================= */
 
 .riego-metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
 }
 
 .metric-card {
+    position: relative;
+    overflow: hidden;
     background: #ffffff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid var(--riego-borde);
+    box-shadow: var(--riego-sombra);
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 14px;
+    min-height: 82px;
+}
+
+.metric-card::after {
+    content: "";
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    right: -28px;
+    bottom: -30px;
+    background: rgba(102, 187, 106, 0.08);
+}
+
+.metric-card:nth-child(1) {
+    border-top: 4px solid var(--riego-agua);
+}
+
+.metric-card:nth-child(2) {
+    border-top: 4px solid var(--riego-verde);
+}
+
+.metric-card:nth-child(3) {
+    border-top: 4px solid var(--riego-naranja);
+}
+
+.metric-card:nth-child(4) {
+    border-top: 4px solid var(--riego-celeste);
 }
 
 .metric-icon {
-    font-size: 24px;
-    color: var(--verde-barra);
-    background: var(--fondo-pagina);
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.35rem;
+}
+
+.metric-card:nth-child(1) .metric-icon {
+    background: var(--riego-agua-fondo);
+    color: var(--riego-agua);
+}
+
+.metric-card:nth-child(2) .metric-icon {
+    background: var(--riego-mint);
+    color: var(--riego-verde);
+}
+
+.metric-card:nth-child(3) .metric-icon {
+    background: var(--riego-naranja-fondo);
+    color: var(--riego-naranja);
+}
+
+.metric-card:nth-child(4) .metric-icon {
+    background: var(--riego-celeste-fondo);
+    color: var(--riego-celeste);
 }
 
 .metric-data {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .metric-data span {
-    font-size: 0.8rem;
-    color: #666;
-    font-weight: 600;
+    font-size: 0.76rem;
+    color: #607565;
+    font-weight: 700;
 }
 
 .metric-data strong {
     font-size: 1.3rem;
-    color: var(--texto-principal);
+    color: var(--riego-texto);
+    margin-top: 2px;
 }
 
 .metric-data small {
-    font-size: 0.75rem;
-    color: #888;
+    font-size: 0.72rem;
+    color: #78917e;
+    margin-top: 2px;
 }
+
 
 /* =========================================================
    GRID PRINCIPAL
-   FORMULARIO + CALENDARIO + AUTOMATIZACIÓN
    ========================================================= */
 
 .main-riego-grid {
@@ -142,143 +256,201 @@
     gap: 20px;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-    .main-riego-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* =========================================================
    PANELES
    ========================================================= */
 
 .panel-card {
+    position: relative;
+    overflow: hidden;
     background: #ffffff;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border-radius: 18px;
+    border: 1px solid var(--riego-borde);
+    box-shadow: var(--riego-sombra);
     display: flex;
     flex-direction: column;
 }
 
+.panel-card::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        var(--riego-verde),
+        var(--riego-agua),
+        var(--riego-celeste)
+    );
+}
+
 .panel-card h3 {
-    margin-top: 0;
-    font-size: 1.1rem;
-    color: var(--texto-principal);
-    border-bottom: 2px solid var(--fondo-pagina);
-    padding-bottom: 8px;
-    margin-bottom: 15px;
+    margin-top: 4px;
+    font-size: 1.08rem;
+    color: var(--riego-texto);
+    border-bottom: 2px solid #e5f2e5;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
 }
+
+.panel-card h3 i {
+    color: var(--riego-verde);
+}
+
 
 /* =========================================================
    FORMULARIO
    ========================================================= */
 
 .form-group {
-    margin-bottom: 12px;
+    margin-bottom: 13px;
 }
 
 .form-group label {
     display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: var(--texto-principal);
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--riego-texto);
 }
 
 .form-control {
     width: 100%;
-    padding: 9px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 10px 12px;
+    border: 1px solid #cfe2d1;
+    border-radius: 9px;
     box-sizing: border-box;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    color: var(--riego-texto);
+    background: #fbfefb;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--riego-agua);
+    box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.11);
+    background: #ffffff;
 }
 
 .btn-action {
     width: 100%;
-    background-color: var(--verde-barra);
-    color: #fff;
-    padding: 10px;
+    background: linear-gradient(
+        135deg,
+        var(--riego-verde),
+        var(--riego-verde-claro)
+    );
+    color: #ffffff;
+    padding: 11px;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
+    border-radius: 9px;
+    font-weight: 800;
     cursor: pointer;
     margin-top: 8px;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 5px 12px rgba(46, 125, 50, 0.18);
 }
 
 .btn-action:hover {
-    filter: brightness(0.95);
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+    box-shadow: 0 7px 16px rgba(46, 125, 50, 0.23);
 }
 
+
 /* =========================================================
-   ESTILOS DEL CALENDARIO DINÁMICO
+   CALENDARIO — CONTROLES
    ========================================================= */
 
 .calendario-controles {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--fondo-pagina);
-    padding: 6px 12px;
-    border-radius: 8px;
+    background: linear-gradient(
+        135deg,
+        var(--riego-agua-fondo),
+        #eaf7ed
+    );
+    padding: 7px 10px;
+    border-radius: 10px;
     margin-bottom: 12px;
     gap: 8px;
 }
 
 .cal-nav-btn {
-    background: transparent;
+    background: #ffffff;
     border: none;
-    color: var(--verde-barra);
+    color: var(--riego-agua);
     font-size: 1rem;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 9px;
+    border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: all 0.2s ease;
 }
 
 .cal-nav-btn:hover {
-    background: rgba(0,0,0,0.05);
+    background: var(--riego-agua);
+    color: #ffffff;
+    transform: translateY(-1px);
 }
 
 .cal-mes-navegacion {
-    font-weight: bold;
-    color: var(--texto-principal);
+    font-weight: 800;
+    color: var(--riego-texto);
     font-size: 0.95rem;
     text-align: center;
     flex: 1;
 }
 
 .cal-add-btn {
-    background: var(--verde-barra);
-    color: white;
+    background: linear-gradient(
+        135deg,
+        var(--riego-agua),
+        var(--riego-celeste)
+    );
+    color: #ffffff;
     border: none;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: bold;
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 0.73rem;
+    font-weight: 800;
     cursor: pointer;
     white-space: nowrap;
+    transition: all 0.2s ease;
 }
 
+.cal-add-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+
 /* =========================================================
-   ENCABEZADO Y DÍAS DEL CALENDARIO
+   ENCABEZADO DEL CALENDARIO
    ========================================================= */
 
 .cal-header-bar {
-    background: var(--barra-mes);
-    color: white;
-    padding: 8px;
-    border-radius: 6px 6px 0 0;
-    font-weight: bold;
+    background: linear-gradient(
+        90deg,
+        var(--riego-verde),
+        var(--riego-agua)
+    );
+    color: #ffffff;
+    padding: 9px;
+    border-radius: 8px 8px 0 0;
+    font-weight: 800;
     text-align: center;
 }
 
@@ -286,9 +458,12 @@
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
     width: 100%;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     text-align: center;
     box-sizing: border-box;
+    background: #edf8ef;
+    color: var(--riego-verde-oscuro);
+    padding: 7px 0;
 }
 
 .cal-days-title > * {
@@ -296,38 +471,44 @@
     text-align: center;
 }
 
+
+/* =========================================================
+   GRID DEL CALENDARIO
+   ========================================================= */
+
 .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 4px;
     width: 100%;
     box-sizing: border-box;
-    background: var(--dias-no-seleccionados);
+    background: #e8f5eb;
     padding: 8px;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 8px 8px;
 }
 
 .cal-day {
     position: relative;
-    background: white;
+    background: #ffffff;
     min-width: 0;
-    min-height: 38px;
+    min-height: 40px;
     padding: 10px 4px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 0.85rem;
-    border-radius: 4px;
+    font-size: 0.82rem;
+    border-radius: 7px;
     cursor: pointer;
-    font-weight: 600;
-    color: var(--texto-principal);
+    font-weight: 700;
+    color: var(--riego-texto);
     transition: all 0.2s ease;
 }
 
 .cal-day:hover {
-    background: #d8eed6;
+    background: #dff4e2;
+    transform: translateY(-1px);
 }
 
 .cal-day.other-month {
@@ -336,52 +517,70 @@
 }
 
 .cal-day.other-month:hover {
-    background: white;
+    background: #ffffff;
+    transform: none;
 }
 
 .cal-day.hoy {
-    background-color: var(--verde-barra);
-    color: white;
+    background: linear-gradient(
+        135deg,
+        var(--riego-verde),
+        var(--riego-agua)
+    );
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.22);
 }
 
 .cal-day.programado {
-    border: 2px solid var(--barra-mes);
-    background-color: #f1f9ec;
+    border: 2px solid var(--riego-agua);
+    background: var(--riego-agua-fondo);
+    color: #075a82;
 }
 
 .cal-day.seleccionado {
-    outline: 2px solid var(--verde-barra);
+    outline: 2px solid var(--riego-verde);
     outline-offset: -2px;
 }
+
+
+/* =========================================================
+   BADGE DEL CALENDARIO
+   ========================================================= */
 
 .cal-day-badge {
     position: absolute;
     top: 2px;
     right: 4px;
-    background-color: var(--verde-barra);
-    color: white;
-    font-size: 0.65rem;
-    font-weight: bold;
+    background-color: var(--riego-agua);
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-weight: 800;
     border-radius: 50%;
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .cal-day.hoy .cal-day-badge {
-    background-color: white;
-    color: var(--verde-barra);
+    background-color: #ffffff;
+    color: var(--riego-verde);
 }
+
+
+/* =========================================================
+   LEYENDA
+   ========================================================= */
 
 .cal-legend {
     display: flex;
-    gap: 15px;
+    gap: 16px;
     margin-top: 12px;
-    font-size: 0.75rem;
-    color: #666;
+    font-size: 0.73rem;
+    color: #607565;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .legend-item {
@@ -398,12 +597,13 @@
 }
 
 .legend-dot.programado {
-    background-color: var(--barra-mes);
+    background-color: var(--riego-agua);
 }
 
 .legend-dot.hoy {
-    background-color: var(--verde-barra);
+    background-color: var(--riego-verde);
 }
+
 
 /* =========================================================
    AUTOMATIZACIÓN
@@ -413,36 +613,61 @@
     text-align: center;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(
+        160deg,
+        #f2fbf3 0%,
+        #ffffff 55%,
+        #eaf7fd 100%
+    );
 }
 
 .auto-icon-circle {
-    width: 70px;
-    height: 70px;
-    background: var(--verde-barra);
-    color: white;
+    width: 76px;
+    height: 76px;
+    background: linear-gradient(
+        135deg,
+        var(--riego-agua),
+        var(--riego-celeste)
+    );
+    color: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.8rem;
-    margin: 10px auto;
-    transition: background-color 0.3s ease;
+    margin: 12px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 18px rgba(25, 118, 210, 0.22);
 }
 
 .auto-icon-circle.inactivo {
-    background: var(--estado-alerta);
+    background: linear-gradient(
+        135deg,
+        #d95c55,
+        #bf4842
+    );
+    box-shadow: 0 8px 18px rgba(191, 72, 66, 0.18);
 }
 
 .btn-toggle-auto {
-    background-color: var(--estado-alerta);
+    background: linear-gradient(
+        135deg,
+        #bf4842,
+        #d95c55
+    );
 }
 
 .btn-toggle-auto.inactivo {
-    background-color: var(--verde-barra);
+    background: linear-gradient(
+        135deg,
+        var(--riego-verde),
+        var(--riego-verde-claro)
+    );
 }
 
+
 /* =========================================================
-   BLOQUE INFERIOR Y RECOMENDACIONES
+   BLOQUE INFERIOR
    ========================================================= */
 
 .bottom-riego-grid {
@@ -451,24 +676,23 @@
     gap: 20px;
 }
 
-@media (max-width: 768px) {
-    .bottom-riego-grid {
-        grid-template-columns: 1fr;
-    }
+.recomendacion-box {
+    background: linear-gradient(
+        135deg,
+        #e4f6e6,
+        #effaf1
+    );
+    border-left: 5px solid var(--riego-verde);
+    padding: 15px;
+    border-radius: 9px;
+    font-size: 0.88rem;
+    color: var(--riego-texto);
+    line-height: 1.5;
 }
 
-.recomendacion-box {
-    background-color: var(--fila-impar);
-    border-left: 4px solid var(--verde-barra);
-    padding: 14px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    color: var(--texto-principal);
-    line-height: 1.4;
-}
 
 /* =========================================================
-   TABLA DE HISTORIAL (CORREGIDA SIN GRID)
+   TABLA DE HISTORIAL
    ========================================================= */
 
 .table-responsive {
@@ -479,28 +703,41 @@
 
 .riego-table {
     width: 100% !important;
-    border-collapse: collapse !important;
-    table-layout: fixed !important; /* Fuerza a repartir las 4 columnas al 25% cada una */
-    font-size: 0.85rem;
+    border-collapse: separate !important;
+    border-spacing: 0 4px !important;
+    table-layout: fixed !important;
+    font-size: 0.84rem;
 }
 
 .riego-table thead {
-    background-color: var(--barra-mes, #8EB156) !important;
+    background: linear-gradient(
+        90deg,
+        var(--riego-verde),
+        var(--riego-agua)
+    ) !important;
 }
 
 .riego-table th {
     color: #ffffff !important;
-    font-weight: bold !important;
-    padding: 10px 4px !important;
+    font-weight: 800 !important;
+    padding: 11px 5px !important;
     text-align: center !important;
     vertical-align: middle !important;
     border: none !important;
-    width: 25% !important; /* Asegura el mismo ancho que las celdas */
+    width: 25% !important;
+}
+
+.riego-table th:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+.riego-table th:last-child {
+    border-radius: 0 8px 8px 0;
 }
 
 .riego-table td {
-    padding: 10px 4px !important;
-    color: var(--texto-principal) !important;
+    padding: 10px 5px !important;
+    color: var(--riego-texto) !important;
     text-align: center !important;
     vertical-align: middle !important;
     border: none !important;
@@ -508,19 +745,28 @@
     white-space: nowrap !important;
 }
 
-/* Filas alternadas (verde claro / mint) */
+.riego-table tbody tr {
+    transition: transform 0.15s ease;
+}
+
+.riego-table tbody tr:hover {
+    transform: translateX(2px);
+}
+
 .riego-table tbody tr:nth-child(even) {
-    background-color: var(--fila-par, #F0FAF7) !important;
+    background-color: #edf8ef !important;
 }
 
 .riego-table tbody tr:nth-child(odd) {
-    background-color: var(--fila-impar, #E8F8E5) !important;
+    background-color: #e1f3e4 !important;
 }
+
+
 /* =========================================================
    PROTECCIÓN DEL CALENDARIO
    ========================================================= */
 
-.cal-panel, 
+.cal-panel,
 .cal-panel * {
     font-family: inherit;
     box-sizing: border-box;
@@ -528,4 +774,100 @@
 
 .cal-panel :not(.fa-solid):not(.fa-regular):not(.fa-brands) {
     font-family: inherit !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .riego-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-riego-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .auto-box {
+        grid-column: span 2;
+    }
+}
+
+
+@media (max-width: 992px) {
+
+    .main-riego-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .auto-box {
+        grid-column: auto;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .riego-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bottom-riego-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .riego-hero {
+        padding: 22px;
+    }
+
+    .riego-hero-info {
+        gap: 15px;
+    }
+
+    .riego-hero-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .riego-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .riego-hero-info {
+        align-items: flex-start;
+    }
+
+    .riego-hero h2 {
+        font-size: 1.3rem;
+    }
+
+    .riego-hero p {
+        font-size: 0.82rem;
+    }
+
+    .panel-card {
+        padding: 16px;
+    }
+
+    .cal-day {
+        min-height: 34px;
+        padding: 8px 2px;
+        font-size: 0.76rem;
+    }
+
+    .cal-days-title {
+        font-size: 0.65rem;
+    }
+
+    .cal-legend {
+        gap: 10px;
+    }
 }
