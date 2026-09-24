@@ -1,4 +1,8 @@
 // ==========================================
+// HARVESTX - MÓDULO CULTIVOS
+// ==========================================
+
+// ==========================================
 // CONFIGURACIÓN DEL SERVIDOR
 // ==========================================
 
@@ -21,7 +25,14 @@ function obtenerUsuarioActual() {
 
     try {
 
-        return JSON.parse(usuarioGuardado);
+        const datos = JSON.parse(usuarioGuardado);
+
+        // Por compatibilidad con distintas estructuras
+        if (datos && datos.usuario && typeof datos.usuario === "object") {
+            return datos.usuario;
+        }
+
+        return datos;
 
     } catch (error) {
 
@@ -32,6 +43,34 @@ function obtenerUsuarioActual() {
 
         return null;
     }
+}
+
+
+// ==========================================
+// OBTENER ID DEL USUARIO
+// ==========================================
+
+function obtenerUsuarioId() {
+
+    const usuario = obtenerUsuarioActual();
+
+    if (!usuario) {
+        return null;
+    }
+
+    const id = Number(usuario.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+
+        console.warn(
+            "ID de usuario inválido:",
+            usuario.id
+        );
+
+        return null;
+    }
+
+    return id;
 }
 
 
@@ -95,6 +134,9 @@ const buscarCultivo =
 const resultadosCultivos =
     document.getElementById("resultadosCultivos");
 
+const fincaCultivo =
+    document.getElementById("fincaCultivo");
+
 
 // ==========================================
 // VARIABLES
@@ -104,6 +146,142 @@ let cultivoEditando = null;
 
 let catalogoCultivoSeleccionado = null;
 
+let fincasUsuario = [];
+
+
+// ==========================================
+// CARGAR FINCAS DEL USUARIO
+// ==========================================
+
+async function cargarFincas() {
+
+    const usuarioId = obtenerUsuarioId();
+
+    if (!usuarioId) {
+
+        console.warn(
+            "No se pudo obtener el ID del usuario."
+        );
+
+        return;
+    }
+
+    if (!fincaCultivo) {
+
+        console.warn(
+            "No se encontró #fincaCultivo en el HTML."
+        );
+
+        return;
+    }
+
+    try {
+
+        console.log(
+            `Cargando fincas del usuario ID: ${usuarioId}`
+        );
+
+        const respuesta =
+            await fetch(
+                `${API}/fincas?usuario_id=${usuarioId}`
+            );
+
+        const datos =
+            await respuesta.json();
+
+        console.log(
+            "Respuesta de /fincas:",
+            datos
+        );
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                datos.mensaje ||
+                `Error HTTP: ${respuesta.status}`
+            );
+
+        }
+
+        if (!datos.exito) {
+
+            throw new Error(
+                datos.mensaje ||
+                "No se pudieron obtener las fincas."
+            );
+
+        }
+
+
+        // ======================================
+        // OBTENER ARRAY REAL DE FINCAS
+        // ======================================
+
+        fincasUsuario =
+            Array.isArray(datos.fincas)
+                ? datos.fincas
+                : [];
+
+
+        // ======================================
+        // LIMPIAR SELECT
+        // ======================================
+
+        fincaCultivo.innerHTML = `
+            <option value="">
+                Sin finca
+            </option>
+        `;
+
+
+        // ======================================
+        // AGREGAR FINCAS
+        // ======================================
+
+        fincasUsuario.forEach(
+            finca => {
+
+                const opcion =
+                    document.createElement(
+                        "option"
+                    );
+
+                opcion.value =
+                    finca.id;
+
+                opcion.textContent =
+                    finca.nombre;
+
+                fincaCultivo.appendChild(
+                    opcion
+                );
+
+            }
+        );
+
+
+        console.log(
+            "Fincas cargadas correctamente:",
+            fincasUsuario
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error al cargar fincas:",
+            error
+        );
+
+        fincasUsuario = [];
+
+        fincaCultivo.innerHTML = `
+            <option value="">
+                Sin finca
+            </option>
+        `;
+    }
+}
+
 
 // ==========================================
 // ABRIR MODAL PARA AGREGAR
@@ -112,13 +290,13 @@ let catalogoCultivoSeleccionado = null;
 if (btnAgregarCultivo) {
 
     btnAgregarCultivo.addEventListener(
-        
         "click",
-        function () {
-        
+        async function () {
+
             cultivoEditando = null;
 
             catalogoCultivoSeleccionado = null;
+
 
             if (tituloModalCultivo) {
 
@@ -129,6 +307,7 @@ if (btnAgregarCultivo) {
 
             }
 
+
             if (btnGuardarCultivo) {
 
                 btnGuardarCultivo.innerHTML = `
@@ -138,9 +317,15 @@ if (btnAgregarCultivo) {
 
             }
 
+
             if (formCultivo) {
                 formCultivo.reset();
             }
+
+
+            // Cargar fincas disponibles
+            await cargarFincas();
+
 
             if (vistaBusquedaCultivo) {
 
@@ -149,12 +334,14 @@ if (btnAgregarCultivo) {
 
             }
 
+
             if (vistaPersonalizadoCultivo) {
 
                 vistaPersonalizadoCultivo.style.display =
                     "none";
 
             }
+
 
             abrirModalCultivo();
 
@@ -177,7 +364,6 @@ function abrirModalCultivo() {
         );
 
         return;
-
     }
 
     modalCultivo.classList.add("activo");
@@ -207,13 +393,16 @@ function cerrarModal() {
 
     modalCultivo.classList.remove("activo");
 
+
     if (formCultivo) {
         formCultivo.reset();
     }
 
+
     cultivoEditando = null;
 
     catalogoCultivoSeleccionado = null;
+
 
     if (vistaBusquedaCultivo) {
 
@@ -222,12 +411,14 @@ function cerrarModal() {
 
     }
 
+
     if (vistaPersonalizadoCultivo) {
 
         vistaPersonalizadoCultivo.style.display =
             "none";
 
     }
+
 
     if (tituloModalCultivo) {
 
@@ -237,6 +428,7 @@ function cerrarModal() {
         `;
 
     }
+
 
     if (btnGuardarCultivo) {
 
@@ -302,7 +494,10 @@ if (btnPersonalizadoCultivo) {
 
     btnPersonalizadoCultivo.addEventListener(
         "click",
-        function () {
+        async function () {
+
+            await cargarFincas();
+
 
             if (vistaBusquedaCultivo) {
 
@@ -310,6 +505,7 @@ if (btnPersonalizadoCultivo) {
                     "none";
 
             }
+
 
             if (vistaPersonalizadoCultivo) {
 
@@ -341,6 +537,7 @@ if (btnVolverBusquedaCultivo) {
 
             }
 
+
             if (vistaBusquedaCultivo) {
 
                 vistaBusquedaCultivo.style.display =
@@ -371,10 +568,10 @@ if (formCultivo) {
             // COMPROBAR USUARIO
             // ======================================
 
-            if (
-                !usuarioActual ||
-                !usuarioActual.id
-            ) {
+            const usuarioId =
+                obtenerUsuarioId();
+
+            if (!usuarioId) {
 
                 alert(
                     "No se pudo identificar al usuario actual."
@@ -394,20 +591,29 @@ if (formCultivo) {
                     "nombreCultivo"
                 ).value.trim();
 
+
             const tipo =
                 document.getElementById(
                     "tipoCultivo"
                 ).value.trim();
+
 
             const agua =
                 document.getElementById(
                     "aguaCultivo"
                 ).value.trim();
 
+
             const cosecha =
                 document.getElementById(
                     "cosechaCultivo"
                 ).value.trim();
+
+
+            const fincaId =
+                fincaCultivo
+                    ? fincaCultivo.value
+                    : "";
 
 
             // ======================================
@@ -440,10 +646,6 @@ if (formCultivo) {
             let metodo =
                 "POST";
 
-
-            // ======================================
-            // SI ESTAMOS EDITANDO
-            // ======================================
 
             if (
                 cultivoEditando !== null
@@ -486,11 +688,16 @@ if (formCultivo) {
                                 cosecha:
                                     cosecha,
 
+                                finca_id:
+                                    fincaId === ""
+                                        ? null
+                                        : Number(fincaId),
+
                                 catalogo_cultivo_id:
                                     catalogoCultivoSeleccionado,
 
                                 usuario_id:
-                                    usuarioActual.id
+                                    usuarioId
 
                             })
 
@@ -506,6 +713,10 @@ if (formCultivo) {
 
                     cerrarModal();
 
+                    // Recargar fincas por si cambió
+                    await cargarFincas();
+
+                    // Recargar cultivos
                     await cargarCultivos();
 
                 } else {
@@ -546,13 +757,11 @@ if (formCultivo) {
 
 async function cargarCultivos() {
 
-    if (
-        !usuarioActual ||
-        !usuarioActual.id
-    ) {
+    const usuarioId =
+        obtenerUsuarioId();
 
+    if (!usuarioId) {
         return;
-
     }
 
 
@@ -560,13 +769,18 @@ async function cargarCultivos() {
 
         const respuesta =
             await fetch(
-                `${API}/cultivos?usuario_id=${usuarioActual.id}`
+                `${API}/cultivos?usuario_id=${usuarioId}`
             );
+
+
+        const datos =
+            await respuesta.json();
 
 
         if (!respuesta.ok) {
 
             throw new Error(
+                datos.mensaje ||
                 "No se pudieron obtener los cultivos."
             );
 
@@ -574,19 +788,25 @@ async function cargarCultivos() {
 
 
         const cultivos =
-            await respuesta.json();
+            Array.isArray(datos)
+                ? datos
+                : (
+                    Array.isArray(datos.cultivos)
+                        ? datos.cultivos
+                        : []
+                );
 
 
         const contenedor =
-            document.querySelector(
-                ".cultivos-container"
+            document.getElementById(
+                "listaCultivos"
             );
 
 
         if (!contenedor) {
 
             console.error(
-                "No se encontró .cultivos-container"
+                "No se encontró #listaCultivos"
             );
 
             return;
@@ -594,16 +814,8 @@ async function cargarCultivos() {
         }
 
 
-        // ======================================
-        // LIMPIAR TARJETAS
-        // ======================================
-
         contenedor.innerHTML = "";
 
-
-        // ======================================
-        // SI NO HAY CULTIVOS
-        // ======================================
 
         if (
             cultivos.length === 0
@@ -628,10 +840,6 @@ async function cargarCultivos() {
         }
 
 
-        // ======================================
-        // CREAR TARJETAS
-        // ======================================
-
         cultivos.forEach(
             cultivo => {
 
@@ -645,15 +853,43 @@ async function cargarCultivos() {
                     "cultivo-card";
 
 
+                // ==================================
+                // OBTENER NOMBRE DE LA FINCA
+                // ==================================
+
+                let nombreFinca =
+                    "Sin finca";
+
+
+                if (
+                    cultivo.finca_id
+                ) {
+
+                    const fincaEncontrada =
+                        fincasUsuario.find(
+                            finca =>
+                                Number(finca.id) ===
+                                Number(cultivo.finca_id)
+                        );
+
+
+                    if (fincaEncontrada) {
+
+                        nombreFinca =
+                            fincaEncontrada.nombre;
+
+                    }
+
+                }
+
+
                 cultivoCard.innerHTML = `
 
                     <div class="cultivo-icono">
 
                         ${
                             cultivo.imagen
-
                             ?
-
                             `
 
                                 <img
@@ -663,9 +899,7 @@ async function cargarCultivos() {
                                 >
 
                             `
-
                             :
-
                             `
 
                                 <i class="fa-solid fa-seedling text-dark-green"></i>
@@ -719,6 +953,16 @@ async function cargarCultivos() {
 
                                 Cosecha:
                                 ${cultivo.cosecha}
+
+                            </span>
+
+
+                            <span class="dato-cultivo">
+
+                                <i class="fa-solid fa-mountain-sun text-green"></i>
+
+                                Finca:
+                                ${nombreFinca}
 
                             </span>
 
@@ -791,10 +1035,6 @@ if (buscarCultivo) {
                 buscarCultivo.value.trim();
 
 
-            // ==================================
-            // BUSCADOR VACÍO
-            // ==================================
-
             if (
                 texto === ""
             ) {
@@ -843,10 +1083,6 @@ if (buscarCultivo) {
                     "";
 
 
-                // ==================================
-                // SIN RESULTADOS
-                // ==================================
-
                 if (
                     cultivos.length === 0
                 ) {
@@ -869,10 +1105,6 @@ if (buscarCultivo) {
 
                 }
 
-
-                // ==================================
-                // MOSTRAR RESULTADOS
-                // ==================================
 
                 cultivos.forEach(
                     cultivo => {
@@ -994,17 +1226,9 @@ function seleccionarCultivoCatalogo(
     cultivo
 ) {
 
-    // ======================================
-    // GUARDAR ID DEL CATÁLOGO
-    // ======================================
-
     catalogoCultivoSeleccionado =
         cultivo.id;
 
-
-    // ======================================
-    // PASAR DATOS AL FORMULARIO
-    // ======================================
 
     document.getElementById(
         "nombreCultivo"
@@ -1030,16 +1254,13 @@ function seleccionarCultivoCatalogo(
         cultivo.cosecha;
 
 
-    // ======================================
-    // MOSTRAR FORMULARIO
-    // ======================================
-
     if (vistaBusquedaCultivo) {
 
         vistaBusquedaCultivo.style.display =
             "none";
 
     }
+
 
     if (vistaPersonalizadoCultivo) {
 
@@ -1066,20 +1287,15 @@ document.addEventListener(
 
 
         if (!botonEditar) {
-
             return;
-
         }
 
 
-        // ======================================
-        // COMPROBAR USUARIO
-        // ======================================
+        const usuarioId =
+            obtenerUsuarioId();
 
-        if (
-            !usuarioActual ||
-            !usuarioActual.id
-        ) {
+
+        if (!usuarioId) {
 
             alert(
                 "No se pudo identificar al usuario actual."
@@ -1109,7 +1325,7 @@ document.addEventListener(
 
             const respuesta =
                 await fetch(
-                    `${API}/cultivos/${id}?usuario_id=${usuarioActual.id}`
+                    `${API}/cultivos/${id}?usuario_id=${usuarioId}`
                 );
 
 
@@ -1129,26 +1345,18 @@ document.addEventListener(
             }
 
 
-            // ==================================
-            // GUARDAR ID
-            // ==================================
+            // Cargar fincas antes de seleccionar la actual
+            await cargarFincas();
+
 
             cultivoEditando =
                 id;
 
 
-            // ==================================
-            // GUARDAR CATÁLOGO
-            // ==================================
-
             catalogoCultivoSeleccionado =
                 cultivo.catalogo_cultivo_id ||
                 null;
 
-
-            // ==================================
-            // CAMBIAR TÍTULO
-            // ==================================
 
             if (tituloModalCultivo) {
 
@@ -1163,10 +1371,6 @@ document.addEventListener(
             }
 
 
-            // ==================================
-            // CAMBIAR BOTÓN
-            // ==================================
-
             if (btnGuardarCultivo) {
 
                 btnGuardarCultivo.innerHTML = `
@@ -1179,10 +1383,6 @@ document.addEventListener(
 
             }
 
-
-            // ==================================
-            // CARGAR DATOS
-            // ==================================
 
             document.getElementById(
                 "nombreCultivo"
@@ -1208,9 +1408,15 @@ document.addEventListener(
                 cultivo.cosecha || "";
 
 
-            // ==================================
-            // MOSTRAR FORMULARIO
-            // ==================================
+            if (fincaCultivo) {
+
+                fincaCultivo.value =
+                    cultivo.finca_id
+                        ? String(cultivo.finca_id)
+                        : "";
+
+            }
+
 
             if (vistaBusquedaCultivo) {
 
@@ -1219,6 +1425,7 @@ document.addEventListener(
 
             }
 
+
             if (vistaPersonalizadoCultivo) {
 
                 vistaPersonalizadoCultivo.style.display =
@@ -1226,10 +1433,6 @@ document.addEventListener(
 
             }
 
-
-            // ==================================
-            // ABRIR MODAL
-            // ==================================
 
             abrirModalCultivo();
 
@@ -1267,20 +1470,15 @@ document.addEventListener(
 
 
         if (!botonEliminar) {
-
             return;
-
         }
 
 
-        // ======================================
-        // COMPROBAR USUARIO
-        // ======================================
+        const usuarioId =
+            obtenerUsuarioId();
 
-        if (
-            !usuarioActual ||
-            !usuarioActual.id
-        ) {
+
+        if (!usuarioId) {
 
             alert(
                 "No se pudo identificar al usuario actual."
@@ -1295,10 +1493,6 @@ document.addEventListener(
             botonEliminar.dataset.id;
 
 
-        // ======================================
-        // CONFIRMAR
-        // ======================================
-
         const confirmar =
             confirm(
                 "¿Estás seguro de que deseas eliminar este cultivo?"
@@ -1306,9 +1500,7 @@ document.addEventListener(
 
 
         if (!confirmar) {
-
             return;
-
         }
 
 
@@ -1316,7 +1508,7 @@ document.addEventListener(
 
             const respuesta =
                 await fetch(
-                    `${API}/cultivos/${id}?usuario_id=${usuarioActual.id}`,
+                    `${API}/cultivos/${id}?usuario_id=${usuarioId}`,
                     {
                         method: "DELETE"
                     }
@@ -1372,4 +1564,13 @@ document.addEventListener(
 // INICIAR
 // ==========================================
 
-cargarCultivos();
+async function iniciarCultivos() {
+
+    await cargarFincas();
+
+    await cargarCultivos();
+
+}
+
+
+iniciarCultivos();

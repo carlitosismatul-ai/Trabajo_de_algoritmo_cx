@@ -8,15 +8,12 @@
 
     <title>Fincas - HarvestX</title>
 
-    <!-- CSS GENERAL -->
     <link rel="stylesheet"
           href="../../CSS/paginas/administrador.css">
 
-    <!-- CSS EXCLUSIVO DE FINCAS -->
     <link rel="stylesheet"
           href="../../CSS/paginas/fincas.css">
 
-    <!-- FONT AWESOME -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
@@ -46,7 +43,7 @@
 
 
 <!-- =========================================================
-     MODAL DE AJUSTES
+     MODAL AJUSTES
 ========================================================= -->
 
 <div id="settingsModal" class="modal-overlay">
@@ -61,7 +58,6 @@
                id="closeSettings"></i>
 
         </div>
-
 
         <div class="modal-body">
 
@@ -183,9 +179,8 @@
 </div>
 
 
-
 <!-- =========================================================
-     MODAL DE PERFIL
+     MODAL PERFIL
 ========================================================= -->
 
 <div id="profileModal"
@@ -202,11 +197,7 @@
 
         </div>
 
-
         <div class="modal-body">
-
-
-            <!-- FOTO -->
 
             <div class="profile-photo-section">
 
@@ -219,14 +210,12 @@
 
                     </div>
 
-
                     <label for="profilePhotoInput"
                            class="change-photo-button">
 
                         <i class="fa-solid fa-camera"></i>
 
                     </label>
-
 
                     <input
                         type="file"
@@ -236,21 +225,14 @@
 
                 </div>
 
-
                 <p class="profile-photo-text">
-
                     Haz clic en la cámara para cambiar tu foto
-
                 </p>
 
             </div>
 
 
-
-            <!-- DATOS -->
-
             <div class="profile-form">
-
 
                 <div class="profile-field">
 
@@ -293,12 +275,8 @@
 
                 </div>
 
-
             </div>
 
-
-
-            <!-- BOTONES -->
 
             <div class="profile-actions">
 
@@ -325,13 +303,11 @@
 
             </div>
 
-
         </div>
 
     </div>
 
 </div>
-
 
 
 <!-- =========================================================
@@ -349,8 +325,6 @@
            id="sidebar">
 
 
-        <!-- LOGO -->
-
         <div class="sidebar-header">
 
             <div class="logo-wrapper">
@@ -367,18 +341,13 @@
 
             </div>
 
-
             <i class="fa-solid fa-xmark close-sidebar-mobile"
                id="closeSidebarMobile"></i>
 
         </div>
 
 
-
-        <!-- NAVEGACIÓN -->
-
         <nav class="sidebar-nav">
-
 
             <a href="inicio.html"
                class="nav-link">
@@ -539,12 +508,8 @@
 
             </a>
 
-
         </nav>
 
-
-
-        <!-- CERRAR SESIÓN -->
 
         <div class="sidebar-footer">
 
@@ -562,28 +527,22 @@
 
         </div>
 
-
     </aside>
 
 
-
     <!-- =====================================================
-         CONTENIDO PRINCIPAL
+         CONTENIDO
     ===================================================== -->
 
     <main class="main-content"
           id="mainContent">
 
 
-        <!-- =================================================
-             TOPBAR
-        ================================================= -->
+        <!-- TOPBAR -->
 
         <header class="topbar">
 
-
             <div class="left-controls">
-
 
                 <div class="menu-toggle-desktop"
                      id="toggleSidebarDesktop">
@@ -617,15 +576,10 @@
 
                 </div>
 
-
             </div>
 
 
-
-            <!-- USUARIO -->
-
             <div class="user-info">
-
 
                 <div class="notifications">
 
@@ -639,7 +593,6 @@
 
 
                 <div class="profile">
-
 
                     <div class="avatar"
                          id="openProfile"
@@ -677,27 +630,21 @@
 
                     </div>
 
-
                 </div>
 
-
             </div>
-
 
         </header>
 
 
-
         <!-- =================================================
-             CONTENIDO FINCAS
+             FINCAS
         ================================================= -->
 
         <section class="fincas-page">
 
 
-            <!-- =================================================
-                 ENCABEZADO
-            ================================================= -->
+            <!-- HERO -->
 
             <div class="fincas-hero card fade-up delay-1">
 
@@ -743,15 +690,10 @@
             </div>
 
 
-
-            <!-- =================================================
-                 ESTADÍSTICAS
-            ================================================= -->
+            <!-- ESTADÍSTICAS -->
 
             <div class="stats-grid fincas-stats fade-up delay-1">
 
-
-                <!-- TOTAL -->
 
                 <div class="stat-card finca-stat-total">
 
@@ -781,9 +723,6 @@
                 </div>
 
 
-
-                <!-- ÁREA -->
-
                 <div class="stat-card finca-stat-area">
 
                     <div class="stat-icon">
@@ -812,9 +751,6 @@
                 </div>
 
 
-
-                <!-- CULTIVOS -->
-
                 <div class="stat-card finca-stat-cultivos">
 
                     <div class="stat-icon">
@@ -842,17 +778,12 @@
 
                 </div>
 
-
             </div>
 
 
-
-            <!-- =================================================
-                 LISTA DE FINCAS
-            ================================================= -->
+            <!-- LISTA -->
 
             <div class="card fincas-list-card fade-up delay-2">
-
 
                 <div class="fincas-list-header">
 
@@ -887,17 +818,9 @@
                 </div>
 
 
-
-                <!-- CONTENEDOR DINÁMICO -->
-
                 <div
                     class="fincas-grid"
                     id="fincasContainer">
-
-
-                    <!-- =================================================
-                         ESTADO VACÍO
-                    ================================================= -->
 
                     <div
                         class="empty-state"
@@ -935,21 +858,15 @@
 
                     </div>
 
-
                 </div>
-
 
             </div>
 
-
         </section>
-
 
     </main>
 
-
 </div>
-
 
 
 <!-- =========================================================
@@ -960,14 +877,10 @@
     class="modal-overlay finca-modal-overlay"
     id="modalFinca">
 
-
     <div class="modal finca-modal">
 
 
-        <!-- HEADER -->
-
         <div class="modal-header finca-modal-header">
-
 
             <div class="finca-modal-title">
 
@@ -1007,25 +920,15 @@
 
             </button>
 
-
         </div>
 
 
-
-        <!-- FORMULARIO -->
-
         <form id="formFinca">
-
-
-            <!-- ID -->
 
             <input
                 type="hidden"
                 id="fincaId">
 
-
-
-            <!-- NOMBRE -->
 
             <div class="form-group finca-form-group">
 
@@ -1048,9 +951,6 @@
             </div>
 
 
-
-            <!-- UBICACIÓN -->
-
             <div class="form-group finca-form-group">
 
                 <label for="ubicacionFinca">
@@ -1071,9 +971,6 @@
 
             </div>
 
-
-
-            <!-- ÁREA -->
 
             <div class="form-group finca-form-group">
 
@@ -1105,9 +1002,6 @@
             </div>
 
 
-
-            <!-- DESCRIPCIÓN -->
-
             <div class="form-group finca-form-group">
 
                 <label for="descripcionFinca">
@@ -1133,11 +1027,7 @@
             </div>
 
 
-
-            <!-- BOTONES -->
-
             <div class="modal-actions finca-modal-actions">
-
 
                 <button
                     type="button"
@@ -1162,17 +1052,190 @@
 
                 </button>
 
-
             </div>
 
-
         </form>
-
 
     </div>
 
 </div>
 
+
+<!-- =========================================================
+     MODAL ASIGNAR / CAMBIAR CULTIVO
+========================================================= -->
+
+<div
+    class="modal-overlay finca-cultivo-modal-overlay"
+    id="modalAsignarCultivo">
+
+    <div class="modal finca-cultivo-modal">
+
+
+        <div class="modal-header finca-modal-header">
+
+            <div class="finca-modal-title">
+
+                <div class="finca-modal-icon cultivo">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        ASIGNACIÓN DE CULTIVO
+                    </span>
+
+                    <h2>
+                        Asociar cultivo
+                    </h2>
+
+                    <p id="textoFincaAsignacion">
+                        Elige el cultivo que quieres asociar.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                id="cerrarModalAsignarCultivo"
+                aria-label="Cerrar ventana">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="finca-cultivo-modal-body">
+
+
+            <!-- FINCA DESTINO -->
+
+            <div class="asignar-cultivo-finca">
+
+                <div class="asignar-cultivo-finca-icon">
+
+                    <i class="fa-solid fa-mountain-sun"></i>
+
+                </div>
+
+
+                <div class="asignar-cultivo-finca-info">
+
+                    <span>
+                        FINCA DESTINO
+                    </span>
+
+                    <strong id="nombreFincaAsignacion">
+                        —
+                    </strong>
+
+                    <small id="ubicacionFincaAsignacion">
+                        Selecciona una finca
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- CULTIVO -->
+
+            <div class="form-group finca-form-group">
+
+                <label for="selectCultivoFinca">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    Cultivo
+
+                </label>
+
+
+                <select
+                    id="selectCultivoFinca"
+                    class="form-select">
+
+                    <option value="">
+                        Selecciona un cultivo
+                    </option>
+
+                </select>
+
+
+                <small class="campo-ayuda">
+                    Puedes seleccionar un cultivo sin finca
+                    o mover uno que ya pertenezca a otra finca.
+                </small>
+
+            </div>
+
+
+            <!-- RELACIÓN -->
+
+            <div class="asignar-cultivo-nota">
+
+                <i class="fa-solid fa-arrows-rotate"></i>
+
+                <div>
+
+                    <strong>
+                        Relación automática
+                    </strong>
+
+                    <span>
+                        El cambio se guardará directamente en la
+                        base de datos y se reflejará en ambos módulos.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCIONES -->
+
+            <div class="modal-actions finca-modal-actions">
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    id="cancelarAsignacionCultivo">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn-primary"
+                    id="btnGuardarAsignacion">
+
+                    <i class="fa-solid fa-link"></i>
+
+                    Asociar cultivo
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- =========================================================

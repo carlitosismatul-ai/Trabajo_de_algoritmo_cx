@@ -2,39 +2,105 @@
 // HARVESTX - MÓDULO FINCAS
 // ==========================================================
 
-
-// ==========================================================
-// CONFIGURACIÓN
-// ==========================================================
-
 const API_URL = "http://127.0.0.1:5000";
-
 
 // ==========================================================
 // ELEMENTOS DEL DOM
 // ==========================================================
 
-const modalFinca = document.getElementById("modalFinca");
-const btnNuevaFinca = document.getElementById("btnNuevaFinca");
-const cerrarModal = document.getElementById("cerrarModal");
-const cancelarModal = document.getElementById("cancelarModal");
-const formFinca = document.getElementById("formFinca");
-const fincasContainer = document.getElementById("fincasContainer");
-const mensajeSinFincas = document.getElementById("mensajeSinFincas");
+const modalFinca =
+    document.getElementById("modalFinca");
 
-const fincaId = document.getElementById("fincaId");
-const nombreFinca = document.getElementById("nombreFinca");
-const ubicacionFinca = document.getElementById("ubicacionFinca");
-const extensionFinca = document.getElementById("extensionFinca");
-const descripcionFinca = document.getElementById("descripcionFinca");
+const btnNuevaFinca =
+    document.getElementById("btnNuevaFinca");
 
-const tituloModalFinca = document.getElementById("tituloModalFinca");
-const descripcionModalFinca = document.getElementById("descripcionModalFinca");
-const guardarFinca = document.getElementById("guardarFinca");
+const cerrarModal =
+    document.getElementById("cerrarModal");
 
-const totalFincas = document.getElementById("totalFincas");
-const areaTotal = document.getElementById("areaTotal");
-const cultivosActivos = document.getElementById("cultivosActivos");
+const cancelarModal =
+    document.getElementById("cancelarModal");
+
+const formFinca =
+    document.getElementById("formFinca");
+
+const fincasContainer =
+    document.getElementById("fincasContainer");
+
+const mensajeSinFincas =
+    document.getElementById("mensajeSinFincas");
+
+const fincaId =
+    document.getElementById("fincaId");
+
+const nombreFinca =
+    document.getElementById("nombreFinca");
+
+const ubicacionFinca =
+    document.getElementById("ubicacionFinca");
+
+const extensionFinca =
+    document.getElementById("extensionFinca");
+
+const descripcionFinca =
+    document.getElementById("descripcionFinca");
+
+const tituloModalFinca =
+    document.getElementById("tituloModalFinca");
+
+const descripcionModalFinca =
+    document.getElementById("descripcionModalFinca");
+
+const guardarFinca =
+    document.getElementById("guardarFinca");
+
+const totalFincas =
+    document.getElementById("totalFincas");
+
+const areaTotal =
+    document.getElementById("areaTotal");
+
+const cultivosActivos =
+    document.getElementById("cultivosActivos");
+
+
+// ==========================================================
+// ELEMENTOS MODAL CULTIVOS
+// ==========================================================
+
+const modalAsignarCultivo =
+    document.getElementById("modalAsignarCultivo");
+
+const selectCultivoFinca =
+    document.getElementById("selectCultivoFinca");
+
+const cerrarModalAsignarCultivoBtn =
+    document.getElementById("cerrarModalAsignarCultivo");
+
+const cancelarAsignacionCultivo =
+    document.getElementById("cancelarAsignacionCultivo");
+
+const btnGuardarAsignacion =
+    document.getElementById("btnGuardarAsignacion");
+
+const textoFincaAsignacion =
+    document.getElementById("textoFincaAsignacion");
+
+const nombreFincaAsignacion =
+    document.getElementById("nombreFincaAsignacion");
+
+const ubicacionFincaAsignacion =
+    document.getElementById("ubicacionFincaAsignacion");
+
+
+// ==========================================================
+// VARIABLES
+// ==========================================================
+
+let cultivosUsuario = [];
+
+let fincasUsuario = [];
+
+let fincaDestinoCultivo = null;
 
 
 // ==========================================================
@@ -43,55 +109,29 @@ const cultivosActivos = document.getElementById("cultivosActivos");
 
 function obtenerUsuarioActual() {
 
-    const usuarioGuardado = localStorage.getItem("usuarioHarvestX");
+    const usuarioGuardado =
+        localStorage.getItem("usuarioHarvestX");
 
     if (!usuarioGuardado) {
-
-        console.warn(
-            "No existe un usuario guardado en localStorage."
-        );
-
         return null;
     }
 
     try {
 
-        const datos = JSON.parse(usuarioGuardado);
+        const datos =
+            JSON.parse(usuarioGuardado);
 
-        /*
-         * El login.js actual guarda directamente:
-         *
-         * {
-         *   id: 1,
-         *   nombre: "...",
-         *   usuario: "carlos",
-         *   rol: "administrador",
-         *   ...
-         * }
-         *
-         * Por eso NO debemos buscar usuario.usuario
-         * como si fuera otro objeto.
-         */
-
-        if (!datos || typeof datos !== "object") {
-
-            console.warn(
-                "El contenido de usuarioHarvestX no es válido."
-            );
-
+        if (
+            !datos ||
+            typeof datos !== "object"
+        ) {
             return null;
         }
-
-        /*
-         * Compatibilidad por si en algún momento
-         * el objeto viene dentro de otra propiedad.
-         */
 
         if (
             datos.usuario &&
             typeof datos.usuario === "object"
         ) {
-
             return datos.usuario;
         }
 
@@ -110,26 +150,25 @@ function obtenerUsuarioActual() {
 
 
 // ==========================================================
-// OBTENER ID DEL USUARIO
+// OBTENER ID USUARIO
 // ==========================================================
 
 function obtenerUsuarioId() {
 
-    const usuario = obtenerUsuarioActual();
+    const usuario =
+        obtenerUsuarioActual();
 
     if (!usuario) {
         return null;
     }
 
-    const id = Number(usuario.id);
+    const id =
+        Number(usuario.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
-
-        console.warn(
-            "ID de usuario inválido:",
-            usuario.id
-        );
-
+    if (
+        !Number.isInteger(id) ||
+        id <= 0
+    ) {
         return null;
     }
 
@@ -143,27 +182,28 @@ function obtenerUsuarioId() {
 
 function verificarSesion() {
 
-    const usuario = obtenerUsuarioActual();
+    const usuario =
+        obtenerUsuarioActual();
 
     if (!usuario) {
 
         console.warn(
-            "No hay una sesión válida."
+            "No existe una sesión válida."
         );
 
         return false;
     }
 
-    const usuarioId = Number(usuario.id);
+    const id =
+        Number(usuario.id);
 
     if (
-        !Number.isInteger(usuarioId) ||
-        usuarioId <= 0
+        !Number.isInteger(id) ||
+        id <= 0
     ) {
 
         console.warn(
-            "La sesión existe, pero el ID del usuario no es válido:",
-            usuario
+            "ID de usuario inválido."
         );
 
         return false;
@@ -199,47 +239,99 @@ function mostrarError(mensaje) {
 
 
 // ==========================================================
-// MOSTRAR MODAL
+// ESCAPAR HTML
+// ==========================================================
+
+function escaparHTML(texto) {
+
+    if (
+        texto === null ||
+        texto === undefined
+    ) {
+        return "";
+    }
+
+    return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// ==========================================================
+// FORMATEAR ÁREA
+// ==========================================================
+
+function formatearArea(area) {
+
+    const numero =
+        Number(area || 0);
+
+    if (Number.isInteger(numero)) {
+
+        return numero.toString();
+
+    }
+
+    return numero.toFixed(1);
+}
+
+
+// ==========================================================
+// OBTENER NOMBRE FINCA
+// ==========================================================
+
+function obtenerNombreFincaPorId(id) {
+
+    const finca =
+        fincasUsuario.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+    return finca
+        ? finca.nombre
+        : null;
+}
+
+
+// ==========================================================
+// MODAL NUEVA FINCA
 // ==========================================================
 
 function abrirModalNuevaFinca() {
 
-    if (!modalFinca || !formFinca) {
+    if (
+        !modalFinca ||
+        !formFinca
+    ) {
         return;
     }
 
     formFinca.reset();
 
-    if (fincaId) {
-        fincaId.value = "";
-    }
+    fincaId.value = "";
 
-    if (tituloModalFinca) {
+    tituloModalFinca.textContent =
+        "Nueva finca";
 
-        tituloModalFinca.textContent =
-            "Nueva finca";
-    }
+    descripcionModalFinca.textContent =
+        "Registra una nueva finca.";
 
-    if (descripcionModalFinca) {
-
-        descripcionModalFinca.textContent =
-            "Registra una nueva finca.";
-    }
-
-    if (guardarFinca) {
-
-        guardarFinca.innerHTML = `
-            <i class="fa-solid fa-floppy-disk"></i>
-            Guardar finca
-        `;
-    }
+    guardarFinca.innerHTML = `
+        <i class="fa-solid fa-floppy-disk"></i>
+        Guardar finca
+    `;
 
     modalFinca.classList.add("active");
 }
 
 
 // ==========================================================
-// CERRAR MODAL
+// CERRAR MODAL FINCA
 // ==========================================================
 
 function cerrarModalFinca() {
@@ -248,7 +340,9 @@ function cerrarModalFinca() {
         return;
     }
 
-    modalFinca.classList.remove("active");
+    modalFinca.classList.remove(
+        "active"
+    );
 
     if (formFinca) {
         formFinca.reset();
@@ -261,7 +355,7 @@ function cerrarModalFinca() {
 
 
 // ==========================================================
-// EVENTOS DEL MODAL
+// EVENTOS MODAL FINCA
 // ==========================================================
 
 if (btnNuevaFinca) {
@@ -272,7 +366,6 @@ if (btnNuevaFinca) {
     );
 }
 
-
 if (cerrarModal) {
 
     cerrarModal.addEventListener(
@@ -280,7 +373,6 @@ if (cerrarModal) {
         cerrarModalFinca
     );
 }
-
 
 if (cancelarModal) {
 
@@ -290,28 +382,28 @@ if (cancelarModal) {
     );
 }
 
-
-// ==========================================================
-// CERRAR MODAL HACIENDO CLICK FUERA
-// ==========================================================
-
 if (modalFinca) {
 
     modalFinca.addEventListener(
         "click",
         function(event) {
 
-            if (event.target === modalFinca) {
+            if (
+                event.target ===
+                modalFinca
+            ) {
 
                 cerrarModalFinca();
+
             }
+
         }
     );
 }
 
 
 // ==========================================================
-// CERRAR MODAL CON ESC
+// CERRAR MODALES CON ESC
 // ==========================================================
 
 document.addEventListener(
@@ -325,7 +417,20 @@ document.addEventListener(
         ) {
 
             cerrarModalFinca();
+
+            return;
         }
+
+        if (
+            event.key === "Escape" &&
+            modalAsignarCultivo &&
+            modalAsignarCultivo.classList.contains("active")
+        ) {
+
+            cerrarModalAsignarCultivo();
+
+        }
+
     }
 );
 
@@ -336,13 +441,10 @@ document.addEventListener(
 
 async function cargarFincas() {
 
-    const usuarioId = obtenerUsuarioId();
+    const usuarioId =
+        obtenerUsuarioId();
 
     if (!usuarioId) {
-
-        console.warn(
-            "No se pudo obtener el ID del usuario."
-        );
 
         mostrarEstadoVacio(
             "No se pudo identificar al usuario."
@@ -351,24 +453,20 @@ async function cargarFincas() {
         return;
     }
 
-    console.log(
-        `Cargando fincas del usuario ID: ${usuarioId}`
-    );
-
     try {
 
-        const respuesta = await fetch(
-            `${API_URL}/fincas?usuario_id=${usuarioId}`
-        );
+        const respuesta =
+            await fetch(
+                `${API_URL}/fincas?usuario_id=${usuarioId}`
+            );
 
-        const datos = await respuesta.json();
+        const datos =
+            await respuesta.json();
 
-        console.log(
-            "Respuesta /fincas:",
-            datos
-        );
-
-        if (!respuesta.ok) {
+        if (
+            !respuesta.ok ||
+            !datos.exito
+        ) {
 
             throw new Error(
                 datos.mensaje ||
@@ -376,19 +474,16 @@ async function cargarFincas() {
             );
         }
 
-        if (!datos.exito) {
+        fincasUsuario =
+            datos.fincas || [];
 
-            throw new Error(
-                datos.mensaje ||
-                "No se pudieron obtener las fincas."
-            );
-        }
+        await cargarCultivosUsuario();
 
-        const fincas = datos.fincas || [];
+        renderizarFincas(
+            fincasUsuario
+        );
 
-        renderizarFincas(fincas);
-
-        cargarEstadisticas();
+        await cargarEstadisticas();
 
     } catch (error) {
 
@@ -405,7 +500,73 @@ async function cargarFincas() {
 
 
 // ==========================================================
-// MOSTRAR FINCAS
+// CARGAR CULTIVOS
+// ==========================================================
+
+async function cargarCultivosUsuario() {
+
+    const usuarioId =
+        obtenerUsuarioId();
+
+    if (!usuarioId) {
+        return [];
+    }
+
+    try {
+
+        const respuesta =
+            await fetch(
+                `${API_URL}/cultivos?usuario_id=${usuarioId}`
+            );
+
+        const datos =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                datos.mensaje ||
+                `Error HTTP: ${respuesta.status}`
+            );
+        }
+
+        if (Array.isArray(datos)) {
+
+            cultivosUsuario =
+                datos;
+
+        } else if (
+            datos &&
+            Array.isArray(datos.cultivos)
+        ) {
+
+            cultivosUsuario =
+                datos.cultivos;
+
+        } else {
+
+            cultivosUsuario = [];
+
+        }
+
+        return cultivosUsuario;
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando cultivos:",
+            error
+        );
+
+        cultivosUsuario = [];
+
+        return [];
+    }
+}
+
+
+// ==========================================================
+// RENDERIZAR FINCAS
 // ==========================================================
 
 function renderizarFincas(fincas) {
@@ -414,7 +575,15 @@ function renderizarFincas(fincas) {
         return;
     }
 
-    fincasContainer.innerHTML = "";
+    const tarjetas =
+        fincasContainer.querySelectorAll(
+            ".finca-card"
+        );
+
+    tarjetas.forEach(
+        tarjeta => tarjeta.remove()
+    );
+
 
     if (
         !fincas ||
@@ -426,28 +595,34 @@ function renderizarFincas(fincas) {
         return;
     }
 
+
     if (mensajeSinFincas) {
 
         mensajeSinFincas.style.display =
             "none";
+
     }
 
+
     fincas.forEach(
-        function(finca) {
+        finca => {
 
             const tarjeta =
-                crearTarjetaFinca(finca);
+                crearTarjetaFinca(
+                    finca
+                );
 
             fincasContainer.appendChild(
                 tarjeta
             );
+
         }
     );
 }
 
 
 // ==========================================================
-// CREAR TARJETA DE FINCA
+// CREAR TARJETA FINCA
 // ==========================================================
 
 function crearTarjetaFinca(finca) {
@@ -458,6 +633,7 @@ function crearTarjetaFinca(finca) {
     article.className =
         "finca-card";
 
+
     const iconos = [
         "fa-mountain-sun",
         "fa-seedling",
@@ -465,23 +641,33 @@ function crearTarjetaFinca(finca) {
         "fa-tree"
     ];
 
+
     const icono =
         iconos[
-            Number(finca.id) % iconos.length
+            Number(finca.id) %
+            iconos.length
         ];
 
-    const area =
-        Number(finca.area_total || 0);
 
     const areaTexto =
-        Number.isInteger(area)
-            ? area.toString()
-            : area.toFixed(1);
+        formatearArea(
+            finca.area_total
+        );
+
 
     const descripcion =
         finca.descripcion
             ? String(finca.descripcion)
             : "Sin descripción";
+
+
+    const cultivosFinca =
+        cultivosUsuario.filter(
+            cultivo =>
+                Number(cultivo.finca_id) ===
+                Number(finca.id)
+        );
+
 
     article.innerHTML = `
 
@@ -493,12 +679,13 @@ function crearTarjetaFinca(finca) {
 
             </div>
 
+
             <div class="finca-actions">
 
                 <button
+                    type="button"
                     class="btn-icon"
                     title="Editar finca"
-                    data-id="${finca.id}"
                     data-action="editar">
 
                     <i class="fa-solid fa-pen"></i>
@@ -507,9 +694,9 @@ function crearTarjetaFinca(finca) {
 
 
                 <button
+                    type="button"
                     class="btn-icon delete"
                     title="Eliminar finca"
-                    data-id="${finca.id}"
                     data-action="eliminar">
 
                     <i class="fa-solid fa-trash"></i>
@@ -532,7 +719,10 @@ function crearTarjetaFinca(finca) {
 
                 <i class="fa-solid fa-location-dot"></i>
 
-                ${escaparHTML(finca.ubicacion)}
+                ${escaparHTML(
+                    finca.ubicacion ||
+                    "Sin ubicación"
+                )}
 
             </p>
 
@@ -555,19 +745,69 @@ function crearTarjetaFinca(finca) {
                 <div>
 
                     <span>
-                        Descripción
+                        Cultivos
                     </span>
 
-                    <strong
-                        title="${escaparHTML(descripcion)}">
-
-                        ${escaparHTML(
-                            descripcion.length > 25
-                                ? descripcion.substring(0, 25) + "..."
-                                : descripcion
-                        )}
-
+                    <strong>
+                        ${cultivosFinca.length}
                     </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="finca-description">
+
+                <span>
+                    Descripción
+                </span>
+
+                <p title="${escaparHTML(descripcion)}">
+                    ${escaparHTML(descripcion)}
+                </p>
+
+            </div>
+
+
+            <!-- CULTIVOS -->
+
+            <div class="finca-cultivos-section">
+
+                <div class="finca-cultivos-header">
+
+                    <div>
+
+                        <span class="finca-cultivos-kicker">
+                            PRODUCCIÓN
+                        </span>
+
+                        <h4>
+                            Cultivos asociados
+                        </h4>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="finca-btn-agregar-cultivo"
+                        data-action="agregar-cultivo"
+                        title="Agregar o cambiar cultivo"
+                        aria-label="Agregar o cambiar cultivo">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="finca-cultivos-list">
+
+                    ${generarHTMLCultivos(
+                        cultivosFinca
+                    )}
 
                 </div>
 
@@ -578,11 +818,14 @@ function crearTarjetaFinca(finca) {
     `;
 
 
+    // ======================================================
+    // EDITAR
+    // ======================================================
+
     const botonEditar =
         article.querySelector(
             '[data-action="editar"]'
         );
-
 
     if (botonEditar) {
 
@@ -590,17 +833,23 @@ function crearTarjetaFinca(finca) {
             "click",
             function() {
 
-                editarFinca(finca.id);
+                editarFinca(
+                    finca.id
+                );
+
             }
         );
     }
 
 
+    // ======================================================
+    // ELIMINAR
+    // ======================================================
+
     const botonEliminar =
         article.querySelector(
             '[data-action="eliminar"]'
         );
-
 
     if (botonEliminar) {
 
@@ -612,9 +861,79 @@ function crearTarjetaFinca(finca) {
                     finca.id,
                     finca.nombre
                 );
+
             }
         );
     }
+
+
+    // ======================================================
+    // AGREGAR CULTIVO
+    // ======================================================
+
+    const botonAgregarCultivo =
+        article.querySelector(
+            '[data-action="agregar-cultivo"]'
+        );
+
+    if (botonAgregarCultivo) {
+
+        botonAgregarCultivo.addEventListener(
+            "click",
+            function() {
+
+                abrirModalAsignarCultivo(
+                    finca
+                );
+
+            }
+        );
+    }
+
+
+    // ======================================================
+    // QUITAR CULTIVO
+    // ======================================================
+
+    article
+        .querySelectorAll(
+            "[data-cultivo-quitar]"
+        )
+        .forEach(
+            boton => {
+
+                boton.addEventListener(
+                    "click",
+                    function() {
+
+                        const cultivoId =
+                            Number(
+                                boton.dataset.cultivoQuitar
+                            );
+
+
+                        const cultivo =
+                            cultivosUsuario.find(
+                                item =>
+                                    Number(item.id) ===
+                                    cultivoId
+                            );
+
+
+                        if (cultivo) {
+
+                            quitarCultivoDeFinca(
+                                cultivo,
+                                finca
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
 
     return article;
@@ -622,80 +941,919 @@ function crearTarjetaFinca(finca) {
 
 
 // ==========================================================
-// ESCAPAR HTML
+// GENERAR HTML CULTIVOS
 // ==========================================================
 
-function escaparHTML(texto) {
+function generarHTMLCultivos(
+    cultivos
+) {
 
     if (
-        texto === null ||
-        texto === undefined
+        !cultivos ||
+        cultivos.length === 0
     ) {
 
-        return "";
+        return `
+
+            <div class="finca-sin-cultivos">
+
+                <div class="finca-sin-cultivos-icon">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Sin cultivos asociados
+                    </strong>
+
+                    <span>
+                        Agrega un cultivo para comenzar.
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
     }
 
-    return String(texto)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+    return cultivos
+        .map(
+            cultivo => {
+
+                const nombre =
+                    cultivo.nombre ||
+                    "Cultivo";
+
+
+                const tipo =
+                    cultivo.tipo ||
+                    "Sin tipo";
+
+
+                const estado =
+                    cultivo.estado ||
+                    "Activo";
+
+
+                const imagen =
+                    cultivo.imagen
+                        ? `${API_URL}/IMG/${cultivo.imagen}`
+                        : null;
+
+
+                const icono =
+                    obtenerIconoCultivo(
+                        tipo
+                    );
+
+
+                return `
+
+                    <div class="finca-cultivo-item">
+
+                        <div class="finca-cultivo-info">
+
+                            ${
+                                imagen
+                                ? `
+                                    <div class="finca-cultivo-image">
+
+                                        <img
+                                            src="${escaparHTML(imagen)}"
+                                            alt="${escaparHTML(nombre)}"
+                                            onerror="this.parentElement.innerHTML='<i class=&quot;fa-solid ${icono}&quot;></i>'">
+
+                                    </div>
+                                `
+                                : `
+                                    <div class="finca-cultivo-icon">
+
+                                        <i class="fa-solid ${icono}"></i>
+
+                                    </div>
+                                `
+                            }
+
+
+                            <div class="finca-cultivo-text">
+
+                                <strong>
+                                    ${escaparHTML(nombre)}
+                                </strong>
+
+                                <span>
+                                    ${escaparHTML(tipo)}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="finca-cultivo-right">
+
+                            <span class="finca-cultivo-estado">
+                                ${escaparHTML(estado)}
+                            </span>
+
+
+                            <button
+                                type="button"
+                                class="btn-quitar-cultivo"
+                                data-cultivo-quitar="${cultivo.id}"
+                                title="Quitar cultivo de esta finca"
+                                aria-label="Quitar cultivo de esta finca">
+
+                                <i class="fa-solid fa-xmark"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
 }
 
 
 // ==========================================================
-// MOSTRAR ESTADO VACÍO
+// ICONO SEGÚN TIPO
+// ==========================================================
+
+function obtenerIconoCultivo(tipo) {
+
+    const texto =
+        String(tipo || "")
+            .toLowerCase();
+
+
+    if (
+        texto.includes("fruta") ||
+        texto.includes("frut")
+    ) {
+
+        return "fa-apple-whole";
+    }
+
+
+    if (
+        texto.includes("hort") ||
+        texto.includes("verd")
+    ) {
+
+        return "fa-carrot";
+    }
+
+
+    if (
+        texto.includes("cereal") ||
+        texto.includes("grano")
+    ) {
+
+        return "fa-wheat-awn";
+    }
+
+
+    if (
+        texto.includes("legum")
+    ) {
+
+        return "fa-seedling";
+    }
+
+
+    return "fa-seedling";
+}
+
+
+// ==========================================================
+// ABRIR MODAL ASIGNAR CULTIVO
+// ==========================================================
+
+async function abrirModalAsignarCultivo(
+    finca
+) {
+
+    fincaDestinoCultivo =
+        finca;
+
+
+    if (!modalAsignarCultivo) {
+        return;
+    }
+
+
+    // ======================================================
+    // INFORMACIÓN FINCA
+    // ======================================================
+
+    if (nombreFincaAsignacion) {
+
+        nombreFincaAsignacion.textContent =
+            finca.nombre ||
+            "Finca seleccionada";
+
+    }
+
+
+    if (ubicacionFincaAsignacion) {
+
+        ubicacionFincaAsignacion.textContent =
+            finca.ubicacion ||
+            "Sin ubicación registrada";
+
+    }
+
+
+    if (textoFincaAsignacion) {
+
+        textoFincaAsignacion.textContent =
+            "Elige el cultivo que quieres asociar a esta finca.";
+
+    }
+
+
+    // ======================================================
+    // CARGANDO
+    // ======================================================
+
+    if (selectCultivoFinca) {
+
+        selectCultivoFinca.innerHTML = `
+
+            <option value="">
+                Cargando cultivos...
+            </option>
+
+        `;
+
+    }
+
+
+    modalAsignarCultivo.classList.add(
+        "active"
+    );
+
+
+    // ======================================================
+    // CARGAR CULTIVOS
+    // ======================================================
+
+    const cultivos =
+        await cargarCultivosUsuario();
+
+
+    if (!selectCultivoFinca) {
+        return;
+    }
+
+
+    selectCultivoFinca.innerHTML = `
+
+        <option value="">
+            Selecciona un cultivo
+        </option>
+
+    `;
+
+
+    if (
+        !cultivos ||
+        cultivos.length === 0
+    ) {
+
+        selectCultivoFinca.innerHTML = `
+
+            <option value="">
+                No tienes cultivos registrados
+            </option>
+
+        `;
+
+        return;
+    }
+
+
+    // ======================================================
+    // OPCIONES
+    // ======================================================
+
+    cultivos.forEach(
+        cultivo => {
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                cultivo.id;
+
+
+            let estadoFinca =
+                "Sin finca";
+
+
+            if (cultivo.finca_id) {
+
+                const nombreFinca =
+                    obtenerNombreFincaPorId(
+                        cultivo.finca_id
+                    );
+
+
+                estadoFinca =
+                    nombreFinca ||
+                    `Finca #${cultivo.finca_id}`;
+
+            }
+
+
+            option.textContent =
+                `${cultivo.nombre} · ${estadoFinca}`;
+
+
+            // ==================================================
+            // YA PERTENECE A ESTA FINCA
+            // ==================================================
+
+            if (
+                Number(cultivo.finca_id) ===
+                Number(finca.id)
+            ) {
+
+                option.textContent +=
+                    " · Ya asociado";
+
+                option.selected =
+                    true;
+
+            }
+
+
+            selectCultivoFinca.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================================
+// CERRAR MODAL ASIGNACIÓN
+// ==========================================================
+
+function cerrarModalAsignarCultivo() {
+
+    if (!modalAsignarCultivo) {
+        return;
+    }
+
+
+    modalAsignarCultivo.classList.remove(
+        "active"
+    );
+
+
+    fincaDestinoCultivo =
+        null;
+
+
+    if (selectCultivoFinca) {
+
+        selectCultivoFinca.innerHTML = `
+
+            <option value="">
+                Selecciona un cultivo
+            </option>
+
+        `;
+
+        selectCultivoFinca.value = "";
+
+    }
+
+
+    if (nombreFincaAsignacion) {
+
+        nombreFincaAsignacion.textContent =
+            "—";
+
+    }
+
+
+    if (ubicacionFincaAsignacion) {
+
+        ubicacionFincaAsignacion.textContent =
+            "Selecciona una finca";
+
+    }
+
+}
+
+
+// ==========================================================
+// EVENTOS MODAL ASIGNACIÓN
+// ==========================================================
+
+if (cerrarModalAsignarCultivoBtn) {
+
+    cerrarModalAsignarCultivoBtn.addEventListener(
+        "click",
+        cerrarModalAsignarCultivo
+    );
+}
+
+
+if (cancelarAsignacionCultivo) {
+
+    cancelarAsignacionCultivo.addEventListener(
+        "click",
+        cerrarModalAsignarCultivo
+    );
+}
+
+
+if (modalAsignarCultivo) {
+
+    modalAsignarCultivo.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                modalAsignarCultivo
+            ) {
+
+                cerrarModalAsignarCultivo();
+
+            }
+
+        }
+    );
+}
+
+
+// ==========================================================
+// ASIGNAR CULTIVO
+// ==========================================================
+
+if (btnGuardarAsignacion) {
+
+    btnGuardarAsignacion.addEventListener(
+        "click",
+        guardarAsignacionCultivo
+    );
+}
+
+
+async function guardarAsignacionCultivo() {
+
+    const usuarioId =
+        obtenerUsuarioId();
+
+
+    if (!usuarioId) {
+
+        mostrarError(
+            "No se pudo identificar al usuario."
+        );
+
+        return;
+    }
+
+
+    if (!fincaDestinoCultivo) {
+
+        mostrarError(
+            "No se identificó la finca."
+        );
+
+        return;
+    }
+
+
+    if (
+        !selectCultivoFinca ||
+        !selectCultivoFinca.value
+    ) {
+
+        alert(
+            "Selecciona un cultivo."
+        );
+
+        return;
+    }
+
+
+    const cultivoId =
+        Number(
+            selectCultivoFinca.value
+        );
+
+
+    const cultivo =
+        cultivosUsuario.find(
+            item =>
+                Number(item.id) ===
+                cultivoId
+        );
+
+
+    if (!cultivo) {
+
+        mostrarError(
+            "No se encontró el cultivo seleccionado."
+        );
+
+        return;
+    }
+
+
+    if (
+        Number(cultivo.finca_id) ===
+        Number(fincaDestinoCultivo.id)
+    ) {
+
+        alert(
+            "Este cultivo ya pertenece a esta finca."
+        );
+
+        return;
+    }
+
+
+    btnGuardarAsignacion.disabled =
+        true;
+
+
+    btnGuardarAsignacion.innerHTML = `
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        Guardando...
+
+    `;
+
+
+    try {
+
+        const respuestaCultivo =
+            await fetch(
+                `${API_URL}/cultivos/${cultivoId}?usuario_id=${usuarioId}`
+            );
+
+
+        const datosCultivo =
+            await respuestaCultivo.json();
+
+
+        if (!respuestaCultivo.ok) {
+
+            throw new Error(
+                datosCultivo.mensaje ||
+                "No se pudo obtener el cultivo."
+            );
+
+        }
+
+
+        const cultivoCompleto =
+            datosCultivo.cultivo ||
+            datosCultivo;
+
+
+        const respuesta =
+            await fetch(
+                `${API_URL}/cultivos/${cultivoId}`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        usuario_id:
+                            usuarioId,
+
+                        nombre:
+                            cultivoCompleto.nombre,
+
+                        tipo:
+                            cultivoCompleto.tipo,
+
+                        agua:
+                            cultivoCompleto.agua,
+
+                        cosecha:
+                            cultivoCompleto.cosecha,
+
+                        finca_id:
+                            Number(
+                                fincaDestinoCultivo.id
+                            ),
+
+                        catalogo_cultivo_id:
+                            cultivoCompleto.catalogo_cultivo_id
+                                ? Number(
+                                    cultivoCompleto.catalogo_cultivo_id
+                                )
+                                : null
+
+                    })
+                }
+            );
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (
+            !respuesta.ok ||
+            !datos.exito
+        ) {
+
+            throw new Error(
+                datos.mensaje ||
+                "No se pudo asignar el cultivo."
+            );
+
+        }
+
+
+        const nombreCultivo =
+            cultivoCompleto.nombre;
+
+        const nombreFinca =
+            fincaDestinoCultivo.nombre;
+
+
+        cerrarModalAsignarCultivo();
+
+
+        await cargarFincas();
+
+
+        alert(
+            `"${nombreCultivo}" ahora pertenece a "${nombreFinca}".`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error asignando cultivo:",
+            error
+        );
+
+
+        mostrarError(
+            error.message ||
+            "No se pudo asignar el cultivo."
+        );
+
+
+    } finally {
+
+        btnGuardarAsignacion.disabled =
+            false;
+
+
+        btnGuardarAsignacion.innerHTML = `
+
+            <i class="fa-solid fa-link"></i>
+
+            Asociar cultivo
+
+        `;
+
+    }
+
+}
+
+
+// ==========================================================
+// QUITAR CULTIVO DE FINCA
+// ==========================================================
+
+async function quitarCultivoDeFinca(
+    cultivo,
+    finca
+) {
+
+    const usuarioId =
+        obtenerUsuarioId();
+
+
+    if (!usuarioId) {
+
+        mostrarError(
+            "No se pudo identificar al usuario."
+        );
+
+        return;
+    }
+
+
+    const confirmar =
+        confirm(
+            `¿Quieres quitar "${cultivo.nombre}" de "${finca.nombre}"?\n\nEl cultivo no será eliminado. Solo quedará sin finca asignada.`
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    try {
+
+        const respuestaCultivo =
+            await fetch(
+                `${API_URL}/cultivos/${cultivo.id}?usuario_id=${usuarioId}`
+            );
+
+
+        const datosCultivo =
+            await respuestaCultivo.json();
+
+
+        if (!respuestaCultivo.ok) {
+
+            throw new Error(
+                datosCultivo.mensaje ||
+                "No se pudo obtener el cultivo."
+            );
+
+        }
+
+
+        const cultivoCompleto =
+            datosCultivo.cultivo ||
+            datosCultivo;
+
+
+        const respuesta =
+            await fetch(
+                `${API_URL}/cultivos/${cultivo.id}`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        usuario_id:
+                            usuarioId,
+
+                        nombre:
+                            cultivoCompleto.nombre,
+
+                        tipo:
+                            cultivoCompleto.tipo,
+
+                        agua:
+                            cultivoCompleto.agua,
+
+                        cosecha:
+                            cultivoCompleto.cosecha,
+
+                        finca_id:
+                            null,
+
+                        catalogo_cultivo_id:
+                            cultivoCompleto.catalogo_cultivo_id
+                                ? Number(
+                                    cultivoCompleto.catalogo_cultivo_id
+                                )
+                                : null
+
+                    })
+                }
+            );
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (
+            !respuesta.ok ||
+            !datos.exito
+        ) {
+
+            throw new Error(
+                datos.mensaje ||
+                "No se pudo quitar el cultivo."
+            );
+
+        }
+
+
+        await cargarFincas();
+
+
+        alert(
+            `"${cultivo.nombre}" quedó sin finca asignada.`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error quitando cultivo:",
+            error
+        );
+
+
+        mostrarError(
+            error.message ||
+            "No se pudo quitar el cultivo."
+        );
+
+    }
+
+}
+
+
+// ==========================================================
+// ESTADO VACÍO
 // ==========================================================
 
 function mostrarEstadoVacio(
     mensajePersonalizado = null
 ) {
 
-    if (!fincasContainer) {
+    if (!mensajeSinFincas) {
         return;
     }
 
-    if (mensajeSinFincas) {
 
-        mensajeSinFincas.style.display =
-            "block";
+    mensajeSinFincas.style.display =
+        "block";
 
-        const titulo =
-            mensajeSinFincas.querySelector("h3");
 
-        const texto =
-            mensajeSinFincas.querySelector("p");
+    const titulo =
+        mensajeSinFincas.querySelector("h3");
 
-        if (mensajePersonalizado) {
 
-            if (titulo) {
+    const texto =
+        mensajeSinFincas.querySelector("p");
 
-                titulo.textContent =
-                    "No se pudieron cargar las fincas";
-            }
 
-            if (texto) {
+    if (mensajePersonalizado) {
 
-                texto.textContent =
-                    mensajePersonalizado;
-            }
+        if (titulo) {
 
-        } else {
+            titulo.textContent =
+                "No se pudieron cargar las fincas";
 
-            if (titulo) {
-
-                titulo.textContent =
-                    "No tienes fincas registradas";
-            }
-
-            if (texto) {
-
-                texto.textContent =
-                    "Crea tu primera finca para comenzar.";
-            }
         }
+
+
+        if (texto) {
+
+            texto.textContent =
+                mensajePersonalizado;
+
+        }
+
+    } else {
+
+        if (titulo) {
+
+            titulo.textContent =
+                "No tienes fincas registradas";
+
+        }
+
+
+        if (texto) {
+
+            texto.textContent =
+                "Crea tu primera finca para comenzar a administrar tus propiedades.";
+
+        }
+
     }
+
 }
 
 
@@ -708,6 +1866,7 @@ async function crearFinca() {
     const usuarioId =
         obtenerUsuarioId();
 
+
     if (!usuarioId) {
 
         mostrarError(
@@ -717,14 +1876,18 @@ async function crearFinca() {
         return;
     }
 
+
     const nombre =
         nombreFinca.value.trim();
+
 
     const ubicacion =
         ubicacionFinca.value.trim();
 
+
     const area =
         extensionFinca.value;
+
 
     const descripcion =
         descripcionFinca.value.trim();
@@ -769,6 +1932,7 @@ async function crearFinca() {
     const areaNumero =
         Number(area);
 
+
     if (
         Number.isNaN(areaNumero) ||
         areaNumero <= 0
@@ -784,11 +1948,16 @@ async function crearFinca() {
     }
 
 
-    guardarFinca.disabled = true;
+    guardarFinca.disabled =
+        true;
+
 
     guardarFinca.innerHTML = `
+
         <i class="fa-solid fa-spinner fa-spin"></i>
+
         Guardando...
+
     `;
 
 
@@ -798,7 +1967,6 @@ async function crearFinca() {
             await fetch(
                 `${API_URL}/fincas`,
                 {
-
                     method: "POST",
 
                     headers: {
@@ -821,7 +1989,9 @@ async function crearFinca() {
                             areaNumero,
 
                         descripcion:
-                            descripcion || null
+                            descripcion ||
+                            null
+
                     })
                 }
             );
@@ -829,12 +1999,6 @@ async function crearFinca() {
 
         const datos =
             await respuesta.json();
-
-
-        console.log(
-            "Respuesta crear finca:",
-            datos
-        );
 
 
         if (
@@ -846,17 +2010,19 @@ async function crearFinca() {
                 datos.mensaje ||
                 "No se pudo guardar la finca."
             );
+
         }
-
-
-        alert(
-            "Finca creada correctamente. 🌱"
-        );
 
 
         cerrarModalFinca();
 
+
         await cargarFincas();
+
+
+        alert(
+            "Finca creada correctamente."
+        );
 
 
     } catch (error) {
@@ -866,6 +2032,7 @@ async function crearFinca() {
             error
         );
 
+
         mostrarError(
             error.message ||
             "No se pudo guardar la finca."
@@ -874,13 +2041,20 @@ async function crearFinca() {
 
     } finally {
 
-        guardarFinca.disabled = false;
+        guardarFinca.disabled =
+            false;
+
 
         guardarFinca.innerHTML = `
+
             <i class="fa-solid fa-floppy-disk"></i>
+
             Guardar finca
+
         `;
+
     }
+
 }
 
 
@@ -892,6 +2066,7 @@ async function editarFinca(id) {
 
     const usuarioId =
         obtenerUsuarioId();
+
 
     if (!usuarioId) {
 
@@ -915,12 +2090,6 @@ async function editarFinca(id) {
             await respuesta.json();
 
 
-        console.log(
-            "Finca recibida:",
-            datos
-        );
-
-
         if (
             !respuesta.ok ||
             !datos.exito
@@ -930,6 +2099,7 @@ async function editarFinca(id) {
                 datos.mensaje ||
                 "No se pudo obtener la finca."
             );
+
         }
 
 
@@ -940,14 +2110,18 @@ async function editarFinca(id) {
         fincaId.value =
             finca.id;
 
+
         nombreFinca.value =
             finca.nombre || "";
+
 
         ubicacionFinca.value =
             finca.ubicacion || "";
 
+
         extensionFinca.value =
             finca.area_total || "";
+
 
         descripcionFinca.value =
             finca.descripcion || "";
@@ -962,8 +2136,11 @@ async function editarFinca(id) {
 
 
         guardarFinca.innerHTML = `
+
             <i class="fa-solid fa-floppy-disk"></i>
+
             Guardar cambios
+
         `;
 
 
@@ -979,11 +2156,14 @@ async function editarFinca(id) {
             error
         );
 
+
         mostrarError(
             error.message ||
             "No se pudo cargar la finca."
         );
+
     }
+
 }
 
 
@@ -995,6 +2175,7 @@ async function actualizarFinca() {
 
     const usuarioId =
         obtenerUsuarioId();
+
 
     const id =
         fincaId.value;
@@ -1021,11 +2202,14 @@ async function actualizarFinca() {
     const nombre =
         nombreFinca.value.trim();
 
+
     const ubicacion =
         ubicacionFinca.value.trim();
 
+
     const area =
         extensionFinca.value;
+
 
     const descripcion =
         descripcionFinca.value.trim();
@@ -1086,11 +2270,16 @@ async function actualizarFinca() {
     }
 
 
-    guardarFinca.disabled = true;
+    guardarFinca.disabled =
+        true;
+
 
     guardarFinca.innerHTML = `
+
         <i class="fa-solid fa-spinner fa-spin"></i>
+
         Guardando...
+
     `;
 
 
@@ -1100,7 +2289,6 @@ async function actualizarFinca() {
             await fetch(
                 `${API_URL}/fincas/${id}`,
                 {
-
                     method: "PUT",
 
                     headers: {
@@ -1123,7 +2311,9 @@ async function actualizarFinca() {
                             areaNumero,
 
                         descripcion:
-                            descripcion || null
+                            descripcion ||
+                            null
+
                     })
                 }
             );
@@ -1131,12 +2321,6 @@ async function actualizarFinca() {
 
         const datos =
             await respuesta.json();
-
-
-        console.log(
-            "Respuesta actualizar finca:",
-            datos
-        );
 
 
         if (
@@ -1148,17 +2332,19 @@ async function actualizarFinca() {
                 datos.mensaje ||
                 "No se pudo actualizar la finca."
             );
+
         }
-
-
-        alert(
-            "Finca actualizada correctamente. 🌱"
-        );
 
 
         cerrarModalFinca();
 
+
         await cargarFincas();
+
+
+        alert(
+            "Finca actualizada correctamente."
+        );
 
 
     } catch (error) {
@@ -1168,6 +2354,7 @@ async function actualizarFinca() {
             error
         );
 
+
         mostrarError(
             error.message ||
             "No se pudo actualizar la finca."
@@ -1176,18 +2363,25 @@ async function actualizarFinca() {
 
     } finally {
 
-        guardarFinca.disabled = false;
+        guardarFinca.disabled =
+            false;
+
 
         guardarFinca.innerHTML = `
+
             <i class="fa-solid fa-floppy-disk"></i>
+
             Guardar cambios
+
         `;
+
     }
+
 }
 
 
 // ==========================================================
-// GUARDAR FORMULARIO
+// FORMULARIO FINCA
 // ==========================================================
 
 if (formFinca) {
@@ -1198,6 +2392,7 @@ if (formFinca) {
 
             event.preventDefault();
 
+
             if (fincaId.value) {
 
                 await actualizarFinca();
@@ -1205,9 +2400,12 @@ if (formFinca) {
             } else {
 
                 await crearFinca();
+
             }
+
         }
     );
+
 }
 
 
@@ -1236,8 +2434,7 @@ async function eliminarFinca(
 
     const confirmar =
         confirm(
-            `¿Estás seguro de eliminar la finca "${nombre}"?\n\n` +
-            "Esta acción no se puede deshacer."
+            `¿Estás seguro de eliminar la finca "${nombre}"?\n\nLos cultivos asociados NO serán eliminados. Quedarán sin finca asignada.`
         );
 
 
@@ -1261,12 +2458,6 @@ async function eliminarFinca(
             await respuesta.json();
 
 
-        console.log(
-            "Respuesta eliminar finca:",
-            datos
-        );
-
-
         if (
             !respuesta.ok ||
             !datos.exito
@@ -1276,15 +2467,16 @@ async function eliminarFinca(
                 datos.mensaje ||
                 "No se pudo eliminar la finca."
             );
+
         }
+
+
+        await cargarFincas();
 
 
         alert(
             "Finca eliminada correctamente."
         );
-
-
-        await cargarFincas();
 
 
     } catch (error) {
@@ -1299,7 +2491,9 @@ async function eliminarFinca(
             error.message ||
             "No se pudo eliminar la finca."
         );
+
     }
+
 }
 
 
@@ -1330,12 +2524,6 @@ async function cargarEstadisticas() {
             await respuesta.json();
 
 
-        console.log(
-            "Estadísticas:",
-            datos
-        );
-
-
         if (
             !respuesta.ok ||
             !datos.exito
@@ -1345,6 +2533,7 @@ async function cargarEstadisticas() {
                 datos.mensaje ||
                 "No se pudieron obtener las estadísticas."
             );
+
         }
 
 
@@ -1356,25 +2545,17 @@ async function cargarEstadisticas() {
 
             totalFincas.textContent =
                 estadisticas.total_fincas ?? 0;
+
         }
 
 
         if (areaTotal) {
 
-            const area =
-                Number(
-                    estadisticas.area_total || 0
-                );
-
-
-            const areaTexto =
-                Number.isInteger(area)
-                    ? area.toString()
-                    : area.toFixed(1);
-
-
             areaTotal.textContent =
-                `${areaTexto} ha`;
+                `${formatearArea(
+                    estadisticas.area_total
+                )} ha`;
+
         }
 
 
@@ -1382,6 +2563,7 @@ async function cargarEstadisticas() {
 
             cultivosActivos.textContent =
                 estadisticas.cultivos_activos ?? 0;
+
         }
 
 
@@ -1391,7 +2573,9 @@ async function cargarEstadisticas() {
             "Error cargando estadísticas:",
             error
         );
+
     }
+
 }
 
 
@@ -1401,53 +2585,19 @@ async function cargarEstadisticas() {
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    async function() {
 
         console.log(
             "🌱 HarvestX - Fincas iniciado."
         );
 
 
-        /*
-         * Esperamos a que el DOM esté completamente
-         * cargado y comprobamos la sesión.
-         */
-
-        const sesionValida =
-            verificarSesion();
-
-
-        if (!sesionValida) {
-
-            console.warn(
-                "No hay una sesión válida."
-            );
-
+        if (!verificarSesion()) {
             return;
         }
 
 
-        /*
-         * Mostrar en consola el usuario que se está usando.
-         * Esto nos ayudará a comprobar que el ID llega correctamente.
-         */
-
-        console.log(
-            "👤 Usuario actual:",
-            obtenerUsuarioActual()
-        );
-
-        console.log(
-            "🆔 ID utilizado para Fincas:",
-            obtenerUsuarioId()
-        );
-
-
-        /*
-         * Cargar fincas.
-         */
-
-        cargarFincas();
+        await cargarFincas();
 
     }
 );
