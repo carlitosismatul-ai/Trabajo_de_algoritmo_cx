@@ -1033,18 +1033,23 @@ html[data-theme="dark"] .charts-card .card-header h3 {
 
             <div class="user-info">
 
-                <div class="notifications">
+<!-- NOTIFICACIONES -->
 
-                    <i class="fa-regular fa-bell"></i>
+<div class="notifications"
+     id="notificationsButton"
+     role="button"
+     tabindex="0"
+     aria-label="Abrir notificaciones"
+     title="Notificaciones">
 
-                    <span class="badge"
-                        id="contadorNotificaciones">
+    <i class="fa-regular fa-bell"></i>
 
-                        3
+    <span class="badge"
+          id="notificationBadge">
+        0
+    </span>
 
-                    </span>
-
-                </div>
+</div>
 
                 <div
                     class="avatar"
@@ -3327,6 +3332,8 @@ html[data-theme="dark"] .charts-card .card-header h3 {
 
 </script>
 
+ <script src="../../JS/paginas/sistema-notificaciones.js"></script>
+ 
 </body>
 
 </html>

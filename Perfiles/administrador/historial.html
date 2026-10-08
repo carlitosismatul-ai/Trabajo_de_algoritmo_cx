@@ -723,17 +723,23 @@
             <div class="user-info">
 
 
-                <!-- NOTIFICACIONES -->
+<!-- NOTIFICACIONES -->
 
-                <div class="notifications">
+<div class="notifications"
+     id="notificationsButton"
+     role="button"
+     tabindex="0"
+     aria-label="Abrir notificaciones"
+     title="Notificaciones">
 
-                    <i class="fa-regular fa-bell"></i>
+    <i class="fa-regular fa-bell"></i>
 
-                    <span class="badge">
-                        3
-                    </span>
+    <span class="badge"
+          id="notificationBadge">
+        0
+    </span>
 
-                </div>
+</div>
 
 
 
@@ -1707,6 +1713,7 @@
 <script src="../../JS/paginas/administrador.js"></script>
 
 <!-- JS DEL MÓDULO -->
+  <script src="../../JS/paginas/sistema-notificaciones.js"></script>
 <script src="../../JS/paginas/historial.js"></script>
 
 

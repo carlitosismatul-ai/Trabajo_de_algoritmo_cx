@@ -725,26 +725,23 @@
             <div class="user-info">
 
 
-                <!-- NOTIFICACIONES -->
+<!-- NOTIFICACIONES -->
 
-                <div class="notifications"
-                     id="notificationsButton"
-                     role="button"
-                     tabindex="0"
-                     aria-label="Ver notificaciones"
-                     title="Ver notificaciones">
+<div class="notifications"
+     id="notificationsButton"
+     role="button"
+     tabindex="0"
+     aria-label="Abrir notificaciones"
+     title="Notificaciones">
 
-                    <i class="fa-regular fa-bell"></i>
+    <i class="fa-regular fa-bell"></i>
 
-                    <span class="badge"
-                          id="notificationBadge"
-                          aria-hidden="true">
+    <span class="badge"
+          id="notificationBadge">
+        0
+    </span>
 
-                        3
-
-                    </span>
-
-                </div>
+</div>
 
 
 
@@ -875,7 +872,7 @@
                         <span class="summary-number"
                               id="criticalCount">
 
-                            3
+                            0
 
                         </span>
 
@@ -904,7 +901,7 @@
                         <span class="summary-number"
                               id="warningCount">
 
-                            5
+                            0
 
                         </span>
 
@@ -933,7 +930,7 @@
                         <span class="summary-number"
                               id="preventiveCount">
 
-                            2
+                            0
 
                         </span>
 
@@ -962,7 +959,7 @@
                         <span class="summary-number"
                               id="resolvedCount">
 
-                            12
+                            0
 
                         </span>
 
@@ -1035,10 +1032,6 @@
                             Preventivas
                         </option>
 
-                        <option value="informacion">
-                            Información
-                        </option>
-
                         <option value="resuelta">
                             Resueltas
                         </option>
@@ -1054,384 +1047,14 @@
 
             <!-- =================================================
                  LISTA DE ALERTAS
+                 
+                 IMPORTANTE:
+                 Las alertas se generan dinámicamente
+                 desde MySQL mediante alertas.js.
             ================================================== -->
 
             <div class="alerts-list"
                  id="alertsList">
-
-
-                <!-- =================================================
-                     ALERTA CRÍTICA
-                ================================================== -->
-
-                <article class="alert-item critical"
-                         data-level="critica">
-
-                    <div class="alert-item-icon">
-
-                        <i class="fa-solid fa-droplet"></i>
-
-                    </div>
-
-
-                    <div class="alert-item-content">
-
-                        <div class="alert-item-top">
-
-                            <h4>
-                                Humedad crítica
-                            </h4>
-
-                            <span class="alert-level critical">
-                                CRÍTICA
-                            </span>
-
-                        </div>
-
-
-                        <p>
-                            El cultivo presenta un nivel de humedad
-                            inferior al recomendado.
-                        </p>
-
-
-                        <div class="alert-item-meta">
-
-                            <span>
-                                <i class="fa-solid fa-seedling"></i>
-                                Tomate
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-mountain-sun"></i>
-                                Finca Norte
-                            </span>
-
-                            <span>
-                                <i class="fa-regular fa-clock"></i>
-                                Hace 15 minutos
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="alert-item-action">
-
-                        <button
-                            type="button"
-                            class="resolve-alert-btn">
-
-                            <i class="fa-solid fa-check"></i>
-
-                            Resolver
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- =================================================
-                     ALERTA ADVERTENCIA
-                ================================================== -->
-
-                <article class="alert-item warning"
-                         data-level="advertencia">
-
-                    <div class="alert-item-icon">
-
-                        <i class="fa-solid fa-temperature-high"></i>
-
-                    </div>
-
-
-                    <div class="alert-item-content">
-
-                        <div class="alert-item-top">
-
-                            <h4>
-                                Temperatura elevada
-                            </h4>
-
-                            <span class="alert-level warning">
-                                ADVERTENCIA
-                            </span>
-
-                        </div>
-
-
-                        <p>
-                            Se detectó una temperatura superior al
-                            rango recomendado para el cultivo.
-                        </p>
-
-
-                        <div class="alert-item-meta">
-
-                            <span>
-                                <i class="fa-solid fa-seedling"></i>
-                                Maíz
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-mountain-sun"></i>
-                                Finca Central
-                            </span>
-
-                            <span>
-                                <i class="fa-regular fa-clock"></i>
-                                Hace 32 minutos
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="alert-item-action">
-
-                        <button
-                            type="button"
-                            class="resolve-alert-btn">
-
-                            <i class="fa-solid fa-check"></i>
-
-                            Resolver
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- =================================================
-                     ALERTA PREVENTIVA
-                ================================================== -->
-
-                <article class="alert-item preventive"
-                         data-level="preventiva">
-
-                    <div class="alert-item-icon">
-
-                        <i class="fa-solid fa-clock"></i>
-
-                    </div>
-
-
-                    <div class="alert-item-content">
-
-                        <div class="alert-item-top">
-
-                            <h4>
-                                Riego próximo
-                            </h4>
-
-                            <span class="alert-level preventive">
-                                PREVENTIVA
-                            </span>
-
-                        </div>
-
-
-                        <p>
-                            El cultivo tiene un riego programado
-                            próximamente.
-                        </p>
-
-
-                        <div class="alert-item-meta">
-
-                            <span>
-                                <i class="fa-solid fa-seedling"></i>
-                                Lechuga
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-mountain-sun"></i>
-                                Parcela Sur
-                            </span>
-
-                            <span>
-                                <i class="fa-regular fa-clock"></i>
-                                En 45 minutos
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="alert-item-action">
-
-                        <button
-                            type="button"
-                            class="resolve-alert-btn">
-
-                            <i class="fa-solid fa-check"></i>
-
-                            Resolver
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- =================================================
-                     ALERTA INFORMACIÓN
-                ================================================== -->
-
-                <article class="alert-item information"
-                         data-level="informacion">
-
-                    <div class="alert-item-icon">
-
-                        <i class="fa-solid fa-circle-info"></i>
-
-                    </div>
-
-
-                    <div class="alert-item-content">
-
-                        <div class="alert-item-top">
-
-                            <h4>
-                                Riego programado
-                            </h4>
-
-                            <span class="alert-level information">
-                                INFORMACIÓN
-                            </span>
-
-                        </div>
-
-
-                        <p>
-                            El sistema tiene programado un riego
-                            para el cultivo seleccionado.
-                        </p>
-
-
-                        <div class="alert-item-meta">
-
-                            <span>
-                                <i class="fa-solid fa-seedling"></i>
-                                Pepino
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-mountain-sun"></i>
-                                Finca Este
-                            </span>
-
-                            <span>
-                                <i class="fa-regular fa-clock"></i>
-                                Hace 1 hora
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="alert-item-action">
-
-                        <button
-                            type="button"
-                            class="resolve-alert-btn">
-
-                            <i class="fa-solid fa-check"></i>
-
-                            Resolver
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- =================================================
-                     ALERTA RESUELTA
-                ================================================== -->
-
-                <article class="alert-item resolved"
-                         data-level="resuelta">
-
-                    <div class="alert-item-icon">
-
-                        <i class="fa-solid fa-circle-check"></i>
-
-                    </div>
-
-
-                    <div class="alert-item-content">
-
-                        <div class="alert-item-top">
-
-                            <h4>
-                                Riego completado correctamente
-                            </h4>
-
-                            <span class="alert-level resolved">
-                                RESUELTA
-                            </span>
-
-                        </div>
-
-
-                        <p>
-                            El riego programado para el cultivo
-                            finalizó correctamente.
-                        </p>
-
-
-                        <div class="alert-item-meta">
-
-                            <span>
-                                <i class="fa-solid fa-seedling"></i>
-                                Brócoli
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-mountain-sun"></i>
-                                Finca Oeste
-                            </span>
-
-                            <span>
-                                <i class="fa-regular fa-clock"></i>
-                                Hace 2 horas
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="alert-item-action">
-
-                        <span class="resolved-status">
-
-                            <i class="fa-solid fa-check"></i>
-
-                            Resuelta
-
-                        </span>
-
-                    </div>
-
-                </article>
-
-
             </div>
 
 
@@ -1487,4 +1110,3 @@
 </body>
 
 </html>
-

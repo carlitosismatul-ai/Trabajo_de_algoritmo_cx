@@ -3,6 +3,7 @@ from flask_cors import CORS
 import mysql.connector
 import os
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 
 # ==========================================================
@@ -72,7 +73,7 @@ def conectar_bd():
     conexion = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="MySQL@2026Nueva",
+        password="Root",
         database="harvestx"
     )
 
@@ -1874,6 +1875,526 @@ def estadisticas_fincas():
         }
 
     })
+
+
+# ==========================================================
+# ALERTAS
+# ==========================================================
+
+@app.route(
+    "/api/alertas",
+    methods=["GET"]
+)
+def obtener_alertas():
+
+    conexion = None
+    cursor = None
+
+    try:
+
+        conexion = conectar_bd()
+
+        cursor = conexion.cursor(
+            dictionary=True
+        )
+
+        sql = """
+            SELECT
+                id,
+                tipo,
+                nivel,
+                mensaje,
+                estado,
+                fecha
+            FROM alertas
+            ORDER BY fecha DESC
+        """
+
+        cursor.execute(sql)
+
+        alertas = cursor.fetchall()
+
+        for alerta in alertas:
+
+            if alerta["fecha"]:
+
+                alerta["fecha"] = (
+                    alerta["fecha"]
+                    .strftime(
+                        "%Y-%m-%d %H:%M:%S"
+                    )
+                )
+
+        return jsonify({
+
+            "status": "ok",
+
+            "alertas": alertas
+
+        }), 200
+
+    except Exception as e:
+
+        print(
+            f"Error al obtener alertas: {e}"
+        )
+
+        return jsonify({
+
+            "status": "error",
+
+            "mensaje": (
+                "No se pudieron "
+                "obtener las alertas."
+            ),
+
+            "error": str(e)
+
+        }), 500
+
+    finally:
+
+        if cursor:
+
+            cursor.close()
+
+        if conexion:
+
+            conexion.close()
+
+
+# ==========================================================
+# CREAR ALERTA
+# ==========================================================
+
+@app.route(
+    "/api/alertas",
+    methods=["POST"]
+)
+def crear_alerta():
+
+    conexion = None
+    cursor = None
+
+    try:
+
+        datos = request.get_json()
+
+        if not datos:
+
+            return jsonify({
+
+                "status": "error",
+
+                "mensaje": (
+                    "No se recibieron datos."
+                )
+
+            }), 400
+
+        tipo = datos.get("tipo")
+        nivel = datos.get("nivel")
+        mensaje = datos.get("mensaje")
+
+        if (
+            not tipo
+            or not nivel
+            or not mensaje
+        ):
+
+            return jsonify({
+
+                "status": "error",
+
+                "mensaje": (
+                    "Tipo, nivel y mensaje "
+                    "son obligatorios."
+                )
+
+            }), 400
+
+        conexion = conectar_bd()
+
+        cursor = conexion.cursor()
+
+        fecha_actual = datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+
+        sql = """
+            INSERT INTO alertas
+            (
+                tipo,
+                nivel,
+                mensaje,
+                estado,
+                fecha
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                %s,
+                %s
+            )
+        """
+
+        valores = (
+            tipo,
+            nivel,
+            mensaje,
+            "Activa",
+            fecha_actual
+        )
+
+        cursor.execute(
+            sql,
+            valores
+        )
+
+        conexion.commit()
+
+        nuevo_id = cursor.lastrowid
+
+        return jsonify({
+
+            "status": "ok",
+
+            "mensaje": (
+                "Alerta creada "
+                "correctamente."
+            ),
+
+            "id": nuevo_id
+
+        }), 201
+
+    except Exception as e:
+
+        if conexion:
+
+            conexion.rollback()
+
+        print(
+            f"Error al crear alerta: {e}"
+        )
+
+        return jsonify({
+
+            "status": "error",
+
+            "mensaje": (
+                "No se pudo crear "
+                "la alerta."
+            ),
+
+            "error": str(e)
+
+        }), 500
+
+    finally:
+
+        if cursor:
+
+            cursor.close()
+
+        if conexion:
+
+            conexion.close()
+
+
+# ==========================================================
+# ACTUALIZAR ALERTA
+# ==========================================================
+
+@app.route(
+    "/api/alertas/<int:id>",
+    methods=["PUT"]
+)
+def actualizar_alerta(id):
+
+    conexion = None
+    cursor = None
+
+    try:
+
+        datos = request.get_json()
+
+        if not datos:
+
+            return jsonify({
+
+                "status": "error",
+
+                "mensaje": (
+                    "No se recibieron datos."
+                )
+
+            }), 400
+
+        estado = datos.get("estado")
+
+        if estado not in [
+            "Activa",
+            "Resuelta"
+        ]:
+
+            return jsonify({
+
+                "status": "error",
+
+                "mensaje": (
+                    "El estado debe ser "
+                    "Activa o Resuelta."
+                )
+
+            }), 400
+
+        conexion = conectar_bd()
+
+        cursor = conexion.cursor()
+
+        sql = """
+            UPDATE alertas
+            SET estado = %s
+            WHERE id = %s
+        """
+
+        cursor.execute(
+            sql,
+            (
+                estado,
+                id
+            )
+        )
+
+        if cursor.rowcount == 0:
+
+            cursor.close()
+            conexion.close()
+
+            return jsonify({
+
+                "status": "error",
+
+                "mensaje": (
+                    "Alerta no encontrada."
+                )
+
+            }), 404
+
+        conexion.commit()
+
+        return jsonify({
+
+            "status": "ok",
+
+            "mensaje": (
+                "Alerta actualizada "
+                "correctamente."
+            )
+
+        }), 200
+
+    except Exception as e:
+
+        if conexion:
+
+            conexion.rollback()
+
+        print(
+            f"Error al actualizar alerta: {e}"
+        )
+
+        return jsonify({
+
+            "status": "error",
+
+            "mensaje": (
+                "No se pudo actualizar "
+                "la alerta."
+            ),
+
+            "error": str(e)
+
+        }), 500
+
+    finally:
+
+        if cursor:
+
+            cursor.close()
+
+        if conexion:
+
+            conexion.close()
+
+
+# ==========================================================
+# RESOLVER TODAS LAS ALERTAS
+# ==========================================================
+
+@app.route(
+    "/api/alertas/resolver-todas",
+    methods=["PUT"]
+)
+def resolver_todas_alertas():
+
+    conexion = None
+    cursor = None
+
+    try:
+
+        conexion = conectar_bd()
+
+        cursor = conexion.cursor()
+
+        sql = """
+            UPDATE alertas
+            SET estado = 'Resuelta'
+            WHERE estado = 'Activa'
+        """
+
+        cursor.execute(sql)
+
+        cantidad = cursor.rowcount
+
+        conexion.commit()
+
+        return jsonify({
+
+            "status": "ok",
+
+            "mensaje": (
+                "Todas las alertas activas "
+                "fueron resueltas."
+            ),
+
+            "actualizadas": cantidad
+
+        }), 200
+
+    except Exception as e:
+
+        if conexion:
+
+            conexion.rollback()
+
+        print(
+            f"Error al resolver todas las alertas: {e}"
+        )
+
+        return jsonify({
+
+            "status": "error",
+
+            "mensaje": (
+                "No se pudieron resolver "
+                "las alertas."
+            ),
+
+            "error": str(e)
+
+        }), 500
+
+    finally:
+
+        if cursor:
+
+            cursor.close()
+
+        if conexion:
+
+            conexion.close()
+
+
+# ==========================================================
+# CREAR ALERTA AUTOMÁTICA
+# ==========================================================
+
+def crear_alerta_automatica(
+    tipo,
+    nivel,
+    mensaje
+):
+
+    conexion = None
+    cursor = None
+
+    try:
+
+        conexion = conectar_bd()
+
+        cursor = conexion.cursor()
+
+        fecha_actual = datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+
+        sql = """
+            INSERT INTO alertas
+            (
+                tipo,
+                nivel,
+                mensaje,
+                estado,
+                fecha
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                %s,
+                %s
+            )
+        """
+
+        valores = (
+            tipo,
+            nivel,
+            mensaje,
+            "Activa",
+            fecha_actual
+        )
+
+        cursor.execute(
+            sql,
+            valores
+        )
+
+        conexion.commit()
+
+        nuevo_id = cursor.lastrowid
+
+        print(
+            f"Alerta automática creada: {mensaje}"
+        )
+
+        return nuevo_id
+
+    except Exception as e:
+
+        if conexion:
+
+            conexion.rollback()
+
+        print(
+            f"Error al generar alerta automática: {e}"
+        )
+
+        return None
+
+    finally:
+
+        if cursor:
+
+            cursor.close()
+
+        if conexion:
+
+            conexion.close()
 
 
 # ==========================================================

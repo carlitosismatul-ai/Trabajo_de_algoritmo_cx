@@ -415,10 +415,23 @@
                 </div>
             </div>
             <div class="user-info">
-                <div class="notifications">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="badge">3</span>
-                </div>
+<!-- NOTIFICACIONES -->
+
+<div class="notifications"
+     id="notificationsButton"
+     role="button"
+     tabindex="0"
+     aria-label="Abrir notificaciones"
+     title="Notificaciones">
+
+    <i class="fa-regular fa-bell"></i>
+
+    <span class="badge"
+          id="notificationBadge">
+        0
+    </span>
+
+</div>
                 <div class="avatar" id="openProfile" style="cursor:pointer;">
                     <img id="avatarImagen" class="avatar-img" src="" alt="Foto de perfil">
                 </div>
@@ -585,6 +598,7 @@
 <!-- SCRIPTS -->
 <script src="../../JS/paginas/configuracion.js"></script>
 <script src="../../JS/paginas/administrador.js"></script>
+ <script src="../../JS/paginas/sistema-notificaciones.js"></script>
 <script src="../../JS/paginas/riego.js"></script>
 </body>
 </html>
