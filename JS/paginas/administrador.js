@@ -62,6 +62,40 @@ function bienvenidaAdministrador() {
 // CONFIGURAR AVATAR
 // ==========================================
 
+function obtenerRutaFoto(foto) {
+    if (!foto || typeof foto !== "string") {
+        return "";
+    }
+
+    const ruta = foto.trim();
+
+    if (!ruta) {
+        return "";
+    }
+
+    // La foto ya tiene una URL completa.
+    if (/^https?:\/\//i.test(ruta)) {
+        return ruta;
+    }
+
+    // La foto tiene una ruta absoluta del servidor.
+    if (ruta.startsWith("/")) {
+        return `http://127.0.0.1:5000${ruta}`;
+    }
+
+    // Compatibilidad con las rutas antiguas.
+    if (ruta.startsWith("Perfiles/")) {
+        return `http://127.0.0.1:5000/${ruta}`;
+    }
+
+    if (ruta.startsWith("IMG/")) {
+        return `http://127.0.0.1:5000/${ruta}`;
+    }
+
+    // La base de datos guarda solamente el nombre.
+    return `http://127.0.0.1:5000/IMG/${encodeURIComponent(ruta)}`;
+}
+
 function configurarAvatar(usuario) {
 
     const avatar =
@@ -94,8 +128,8 @@ function configurarAvatar(usuario) {
 
     if (foto) {
 
-        const rutaFoto =
-            `http://127.0.0.1:5000/IMG/${foto}`;
+        const rutaFoto = obtenerRutaFoto(foto);
+        
 
 
         avatarImg.src =
@@ -205,8 +239,18 @@ function mostrarInicial(
     }
 
 
-    avatar.textContent =
-        inicial;
+ let inicialElemento = avatar.querySelector(
+    ".avatar-inicial-harvestx"
+);
+
+if (!inicialElemento) {
+    inicialElemento = document.createElement("span");
+    inicialElemento.className = "avatar-inicial-harvestx";
+    avatar.appendChild(inicialElemento);
+}
+
+inicialElemento.textContent = inicial;
+inicialElemento.style.display = "flex";
 
 
     avatar.style.backgroundImage =
@@ -985,21 +1029,7 @@ document.addEventListener(
             }
 
 
-            let rutaFoto =
-                foto;
-
-
-            if (
-                !foto.startsWith("../") &&
-                !foto.startsWith("http") &&
-                !foto.startsWith("/")
-            ) {
-
-                rutaFoto =
-                    `http://127.0.0.1:5000/IMG/${foto}`;
-
-            }
-
+const rutaFoto = obtenerRutaFoto(foto);
 
             profilePhotoPreview.textContent =
                 "";

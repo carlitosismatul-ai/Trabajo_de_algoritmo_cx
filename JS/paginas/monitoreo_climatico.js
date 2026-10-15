@@ -1,6 +1,6 @@
 /* =========================================================
    HARVESTX — MONITOREO CLIMÁTICO
-   Open-Meteo
+   Open-Meteo + Alertas Automáticas
 ========================================================= */
 
 
@@ -15,6 +15,13 @@ const CLIMA_CONFIG = {
     diasPronostico: 5
 
 };
+
+
+/* =========================================================
+   CONFIGURACIÓN DE ALERTAS
+========================================================= */
+
+const ALERTAS_API = "http://127.0.0.1:5000";
 
 
 /* =========================================================
@@ -281,6 +288,17 @@ async function obtenerClima(
         );
 
 
+        /*
+           NUEVO:
+           Revisamos si las condiciones actuales
+           deben generar una alerta.
+        */
+
+        revisarAlertasClimaticas(
+            datos
+        );
+
+
         actualizarEstado(
             "Información climática actualizada"
         );
@@ -464,6 +482,359 @@ function mostrarClima(datos) {
     mostrarPronostico(
         datos.daily
     );
+
+}
+
+
+/* =========================================================
+   ALERTAS CLIMÁTICAS AUTOMÁTICAS
+========================================================= */
+
+/*
+   Esta función analiza los datos reales de Open-Meteo
+   y determina si existe alguna condición que deba
+   registrarse como alerta en HarvestX.
+*/
+
+async function revisarAlertasClimaticas(datos) {
+
+    if (
+        !datos ||
+        !datos.current
+    ) {
+
+        return;
+
+    }
+
+
+    const actual =
+        datos.current;
+
+
+    const temperatura =
+        Number(actual.temperature_2m);
+
+
+    const humedad =
+        Number(actual.relative_humidity_2m);
+
+
+    const viento =
+        Number(actual.wind_speed_10m);
+
+
+    const codigoClima =
+        Number(actual.weather_code);
+
+
+    const probabilidadLluvia =
+        obtenerProbabilidadLluvia(datos);
+
+
+    /*
+       =====================================================
+       TORMENTA ELÉCTRICA
+       =====================================================
+    */
+
+    if (
+        codigoClima === 95 ||
+        codigoClima === 96 ||
+        codigoClima === 99
+    ) {
+
+        await crearAlertaClimatica(
+            "Clima",
+            "Alto",
+            "Se detectan condiciones de tormenta eléctrica en la zona."
+        );
+
+    }
+
+
+    /*
+       =====================================================
+       TEMPERATURA
+       =====================================================
+    */
+
+    else if (
+        temperatura >= 35
+    ) {
+
+        await crearAlertaClimatica(
+            "Temperatura",
+            "Alto",
+            `La temperatura actual es de ${Math.round(temperatura)}°C y puede representar un riesgo para los cultivos.`
+        );
+
+    }
+
+
+    else if (
+        temperatura >= 30
+    ) {
+
+        await crearAlertaClimatica(
+            "Temperatura",
+            "Medio",
+            `La temperatura actual es de ${Math.round(temperatura)}°C y supera el rango recomendado.`
+        );
+
+    }
+
+
+    /*
+       =====================================================
+       HUMEDAD
+       =====================================================
+    */
+
+    if (
+        humedad <= 30
+    ) {
+
+        await crearAlertaClimatica(
+            "Humedad",
+            "Alto",
+            `La humedad relativa actual es de ${Math.round(humedad)}% y se encuentra muy por debajo del nivel recomendado.`
+        );
+
+    }
+
+
+    else if (
+        humedad <= 40
+    ) {
+
+        await crearAlertaClimatica(
+            "Humedad",
+            "Medio",
+            `La humedad relativa actual es de ${Math.round(humedad)}% y se encuentra por debajo del nivel recomendado.`
+        );
+
+    }
+
+
+    /*
+       =====================================================
+       PROBABILIDAD DE LLUVIA
+       =====================================================
+    */
+
+    if (
+        probabilidadLluvia >= 90
+    ) {
+
+        await crearAlertaClimatica(
+            "Lluvia",
+            "Alto",
+            `La probabilidad de lluvia es del ${probabilidadLluvia}%. Se recomienda revisar las condiciones de los cultivos.`
+        );
+
+    }
+
+
+    else if (
+        probabilidadLluvia >= 80
+    ) {
+
+        await crearAlertaClimatica(
+            "Lluvia",
+            "Medio",
+            `La probabilidad de lluvia es del ${probabilidadLluvia}%. Se recomienda estar atento a las condiciones climáticas.`
+        );
+
+    }
+
+
+    /*
+       =====================================================
+       VIENTO
+       =====================================================
+    */
+
+    if (
+        viento >= 50
+    ) {
+
+        await crearAlertaClimatica(
+            "Clima",
+            "Alto",
+            `La velocidad del viento es de ${Math.round(viento)} km/h y puede afectar las condiciones de los cultivos.`
+        );
+
+    }
+
+
+    else if (
+        viento >= 35
+    ) {
+
+        await crearAlertaClimatica(
+            "Clima",
+            "Medio",
+            `La velocidad del viento es de ${Math.round(viento)} km/h. Se recomienda supervisar los cultivos.`
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CREAR ALERTA CLIMÁTICA
+========================================================= */
+
+/*
+   Antes de crear una alerta:
+
+   1. Consulta las alertas existentes.
+   2. Busca una alerta activa del mismo tipo,
+      nivel y mensaje.
+   3. Si ya existe, NO crea otra.
+
+   Esto evita que la actualización automática
+   cada 15 minutos llene la base de datos con
+   alertas duplicadas.
+*/
+
+async function crearAlertaClimatica(
+    tipo,
+    nivel,
+    mensaje
+) {
+
+    try {
+
+        const respuestaExistentes =
+            await fetch(
+                `${ALERTAS_API}/api/alertas`
+            );
+
+
+        if (!respuestaExistentes.ok) {
+
+            throw new Error(
+                `Error consultando alertas existentes: ${respuestaExistentes.status}`
+            );
+
+        }
+
+
+        const datosExistentes =
+            await respuestaExistentes.json();
+
+
+        if (
+            datosExistentes.status !== "ok" ||
+            !Array.isArray(datosExistentes.alertas)
+        ) {
+
+            throw new Error(
+                "La respuesta de alertas no tiene el formato esperado."
+            );
+
+        }
+
+
+        /*
+           Buscamos únicamente alertas activas
+           iguales a la que queremos crear.
+        */
+
+        const alertaYaExiste =
+            datosExistentes.alertas.some(
+                alerta =>
+                    String(alerta.estado).toLowerCase() === "activa" &&
+                    String(alerta.tipo).toLowerCase() ===
+                        String(tipo).toLowerCase() &&
+                    String(alerta.nivel).toLowerCase() ===
+                        String(nivel).toLowerCase() &&
+                    String(alerta.mensaje).toLowerCase() ===
+                        String(mensaje).toLowerCase()
+            );
+
+
+        if (alertaYaExiste) {
+
+            console.log(
+                "🔔 Alerta ya existente. No se creará duplicada:",
+                tipo,
+                nivel
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Crear alerta nueva.
+        */
+
+        const respuesta =
+            await fetch(
+                `${ALERTAS_API}/api/alertas`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        tipo: tipo,
+                        nivel: nivel,
+                        mensaje: mensaje
+                    })
+                }
+            );
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                `Error creando alerta: ${respuesta.status}`
+            );
+
+        }
+
+
+        const resultado =
+            await respuesta.json();
+
+
+        if (
+            resultado.status === "ok"
+        ) {
+
+            console.log(
+                "🔔 HarvestX — Alerta climática creada:",
+                tipo,
+                nivel
+            );
+
+        }
+        else {
+
+            console.warn(
+                "La API no confirmó la creación de la alerta:",
+                resultado
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "HarvestX — Error creando alerta climática:",
+            error
+        );
+
+    }
 
 }
 
