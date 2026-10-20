@@ -336,10 +336,26 @@
         margin-top: 2px;
     }
 
-    .charts-card .card-header h3 {
-        color: #111111 !important;
-        font-weight: 750;
-    }
+/* Título principal de la sección de gráficos */
+.charts-card .card-header h3 {
+color: var(--texto-oscuro) !important;
+font-weight: 750;
+}
+
+/* Títulos individuales de los gráficos */
+.chart-box h4 {
+color: var(--texto-oscuro) !important;
+font-weight: 700;
+}
+
+/* Asegurar que los títulos sean claros en modo oscuro */
+html[data-theme="dark"] .charts-card .card-header h3,
+html[data-theme="dark"] .chart-box h4,
+body.dark-mode .charts-card .card-header h3,
+body.dark-mode .chart-box h4 {
+color: #F2F9EF !important;
+}
+
 
     .charts-container {
         gap: 20px;
@@ -351,11 +367,6 @@
         background: linear-gradient(145deg, #ffffff, #f8fbf8);
         padding: 18px;
         box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
-    }
-
-    .chart-box h4 {
-        color: #111111 !important;
-        font-weight: 700;
     }
 
     /* =========================================================
@@ -2730,44 +2741,38 @@ html[data-theme="dark"] .charts-card .card-header h3 {
 
     }
 
-    function mostrarErrorClima(
-        mensaje
-    ) {
+  function mostrarErrorClima(mensaje) {
+const estado = document.getElementById("climaEstado");
+const actividadClima = document.getElementById("actividadClima");
 
-        const estado =
-            document.getElementById(
-                "climaEstado"
-            );
 
-        if (estado) {
+if (estado) {
+    estado.style.display = "flex";
+    estado.innerHTML = `
+        <i
+            class="fa-solid fa-triangle-exclamation"
+            style="font-size:2rem; color:#f9a825;">
+        </i>
+        <p>${escaparHTML(mensaje)}</p>
+        <small style="opacity:0.8;">
+            Se intentará consultar el clima nuevamente.
+        </small>
+    `;
+}
 
-            estado.style.display =
-                "flex";
+if (actividadClima) {
+    actividadClima.textContent = "Clima temporalmente no disponible";
+}
 
-            estado.innerHTML = `
+// No se dibujan valores ficticios.
+// Si ya existe una gráfica con datos anteriores, se conserva.
+if (graficoClima) {
+    graficoClima.update();
+}
 
-                <i
-                    class="fa-solid fa-triangle-exclamation"
-                    style="
-                        font-size:2rem;
-                        color:#f9a825;
-                    ">
-                </i>
 
-                <p>
-                    ${mensaje}
-                </p>
+}
 
-            `;
-
-        }
-
-        document.getElementById(
-            "actividadClima"
-        ).textContent =
-            "Información no disponible";
-
-    }
 
     function obtenerEstadoHumedad(
         humedad
@@ -2909,94 +2914,72 @@ html[data-theme="dark"] .charts-card .card-header h3 {
 
     }
 
-    function actualizarGraficoCultivos(
-        cultivos
-    ) {
+   function actualizarGraficoCultivos(cultivos) {
+    const canvas = document.getElementById("productionChart");
 
-        const canvas =
-            document.getElementById(
-                "productionChart"
-            );
+    if (!canvas || !window.Chart) {
+        return;
+    }
 
-        if (!canvas || !window.Chart) {
+    // Agrupar los cultivos por tipo.
+    const conteo = {};
 
-            return;
+    cultivos.forEach(cultivo => {
+        const categoria = String(
+            cultivo.tipo || cultivo.nombre || "Sin clasificar"
+        ).trim();
 
-        }
+        conteo[categoria] = (conteo[categoria] || 0) + 1;
+    });
 
-        const conteo = {};
+    const labels = Object.keys(conteo);
+    const valores = Object.values(conteo);
+    const colores = coloresGraficosDashboard();
 
-        cultivos.forEach(
-            cultivo => {
+    // Evitar crear gráficas duplicadas.
+    if (graficoCultivos) {
+        graficoCultivos.destroy();
+        graficoCultivos = null;
+    }
 
-                const nombre =
-                    cultivo.nombre ||
-                    "Sin nombre";
+    graficoCultivos = new Chart(canvas, {
+        type: "doughnut",
 
-                conteo[nombre] =
-                    (conteo[nombre] || 0) + 1;
+        data: {
+            labels: labels.length ? labels : ["Sin cultivos registrados"],
 
-            }
-        );
+            datasets: [{
+                data: valores.length ? valores : [1],
+                borderWidth: 2
+            }]
+        },
 
-        const labels =
-            Object.keys(conteo);
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
 
-        const valores =
-            Object.values(conteo);
+            plugins: {
+                legend: {
+                    position: "bottom",
 
-        const colores =
-            coloresGraficosDashboard();
+                    labels: {
+                        color: colores.texto
+                    }
+                },
 
-        if (graficoCultivos) {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const cantidad = context.raw;
 
-            graficoCultivos.destroy();
-
-        }
-
-        graficoCultivos =
-            new Chart(
-                canvas,
-                {
-                    type: "doughnut",
-
-                    data: {
-                        labels:
-                            labels.length
-                                ? labels
-                                : ["Sin cultivos"],
-
-                        datasets: [
-                            {
-                                data:
-                                    valores.length
-                                        ? valores
-                                        : [1],
-
-                                borderWidth: 2
-                            }
-                        ]
-                    },
-
-                    options: {
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-                        plugins: {
-                            legend: {
-                                position: "bottom",
-
-                                labels: {
-                                    color: colores.texto
-                                }
-                            }
+                            return `${context.label}: ${cantidad} registro(s)`;
                         }
                     }
                 }
-            );
-
-    }
+            }
+        }
+    });
+}
 
     function actualizarGraficoFincas(
         estadisticas
@@ -3094,6 +3077,47 @@ html[data-theme="dark"] .charts-card .card-header h3 {
             );
 
     }
+
+function mostrarEstadoGraficoClima(mensaje) {
+const canvas = document.getElementById("moistureChart");
+
+
+if (!canvas) {
+    return;
+}
+
+const contenedor = canvas.parentElement;
+
+if (!contenedor) {
+    return;
+}
+
+// Si ya hay una gráfica válida, no la ocultamos.
+if (graficoClima) {
+    return;
+}
+
+let aviso = document.getElementById("avisoGraficoClima");
+
+if (!aviso) {
+    aviso = document.createElement("p");
+    aviso.id = "avisoGraficoClima";
+
+    aviso.style.cssText = `
+        text-align: center;
+        padding: 12px;
+        font-size: 0.9rem;
+        color: var(--texto-oscuro, #555);
+    `;
+
+    contenedor.appendChild(aviso);
+}
+
+aviso.textContent = mensaje;
+
+
+}
+
 
     function actualizarGraficoClima(
         temperatura,
@@ -3248,6 +3272,8 @@ html[data-theme="dark"] .charts-card .card-header h3 {
 
             cargarUsuarioDashboard();
 
+            cargarContadorAlertasDashboard();
+
             if (!usuarioDashboard?.id) {
 
                 console.warn(
@@ -3263,6 +3289,7 @@ html[data-theme="dark"] .charts-card .card-header h3 {
                 cargarDatosFincasDashboard(),
 
                 cargarDatosCultivosDashboard()
+                
 
             ]);
 
@@ -3329,6 +3356,59 @@ html[data-theme="dark"] .charts-card .card-header h3 {
             ]
         }
     );
+
+    // ==========================================
+// ALERTAS REALES DEL DASHBOARD - HARVESTX
+// ==========================================
+
+async function cargarContadorAlertasDashboard() {
+    const contadorAlertas = document.getElementById("totalAlertas");
+    const contadorNotificaciones = document.getElementById("notificationBadge");
+
+    try {
+        const respuesta = await fetch(`${HARVESTX_API}/api/alertas`);
+
+        if (!respuesta.ok) {
+            throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
+
+        const datos = await respuesta.json();
+
+        if (datos.status !== "ok" || !Array.isArray(datos.alertas)) {
+            throw new Error("La respuesta de alertas no tiene el formato esperado.");
+        }
+
+        // Contar únicamente las alertas que siguen activas.
+        const alertasActivas = datos.alertas.filter(
+            alerta => String(alerta.estado || "").trim().toLowerCase() === "activa"
+        );
+
+        const totalActivas = alertasActivas.length;
+
+        // Actualizar la tarjeta de alertas del Dashboard.
+        if (contadorAlertas) {
+            contadorAlertas.textContent = totalActivas;
+        }
+
+        // Actualizar la campanita de notificaciones.
+        if (contadorNotificaciones) {
+            contadorNotificaciones.textContent = totalActivas;
+            contadorNotificaciones.style.display =
+                totalActivas > 0 ? "" : "none";
+        }
+
+        console.log("🌱 Alertas cargadas desde MySQL:", {
+            activas: totalActivas,
+            resueltas: datos.alertas.filter(
+                alerta => String(alerta.estado || "").trim().toLowerCase() === "resuelta"
+            ).length,
+            total: datos.alertas.length
+        });
+
+    } catch (error) {
+        console.error("Error al cargar las alertas de HarvestX:", error);
+    }
+}
 
 </script>
 

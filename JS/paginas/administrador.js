@@ -588,7 +588,9 @@ document.addEventListener(
                 });
 
 
-            initCharts();
+// Las gráficas del Dashboard se inicializan en inicio.html.
+// Evitamos crearlas dos veces sobre los mismos canvas.
+// initCharts();
 
 
             // ======================================

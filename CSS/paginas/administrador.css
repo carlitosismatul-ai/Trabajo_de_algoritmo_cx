@@ -1318,49 +1318,125 @@ body {
 
 
 /* =========================================================
-   GRÁFICOS
+GRÁFICOS DEL DASHBOARD HARVESTX
 ========================================================= */
 
 .charts-card {
-    margin-top: 5px;
+margin-top: 5px;
+min-width: 0;
 }
 
 .charts-container {
-    display: grid;
+display: grid;
+grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1.35fr);
+gap: 20px;
+align-items: stretch;
+}
 
-    grid-template-columns: 1fr 1.5fr 1.5fr;
-
-    gap: 20px;
-
-    align-items: end;
+.chart-box {
+min-width: 0;
+padding: 18px;
+border-radius: 16px;
+border: 1px solid rgba(46, 125, 50, 0.10);
+background: var(--fondo-tarjeta);
+box-shadow: var(--sombra);
+transition:
+background-color 0.3s ease,
+border-color 0.3s ease,
+box-shadow 0.3s ease;
 }
 
 .chart-box h4 {
-    font-size: 0.8rem;
-
-    color: var(--texto-oscuro);
-
-    font-weight: 500;
-
-    margin-bottom: 15px;
-
-    text-align: center;
+min-height: 38px;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 12px;
+color: var(--texto-oscuro);
+font-size: 0.82rem;
+font-weight: 600;
+text-align: center;
+line-height: 1.4;
 }
 
 .chart-wrapper {
-    width: 100%;
-
-    height: 200px;
-
-    position: relative;
+position: relative;
+width: 100%;
+height: 240px;
+min-width: 0;
 }
 
 .pie-wrapper {
-    height: 180px;
+height: 240px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
 
-    display: flex;
+.chart-wrapper canvas {
+display: block;
+max-width: 100%;
+}
 
-    justify-content: center;
+[data-theme="dark"] .chart-box {
+border-color: rgba(142, 177, 86, 0.18);
+background: var(--fondo-tarjeta);
+}
+
+/* TABLET Y PANTALLAS MEDIANAS */
+@media (max-width: 1200px) {
+.charts-container {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+align-items: stretch;
+}
+
+
+.chart-box:first-child {
+    grid-column: 1 / -1;
+}
+
+.chart-box:first-child .chart-wrapper {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+
+}
+
+/* MÓVILES */
+@media (max-width: 768px) {
+.charts-container {
+grid-template-columns: minmax(0, 1fr);
+gap: 16px;
+}
+
+
+.chart-box:first-child {
+    grid-column: auto;
+}
+
+.chart-box {
+    padding: 16px;
+}
+
+.chart-wrapper,
+.pie-wrapper {
+    height: 250px;
+}
+
+.chart-box:first-child .chart-wrapper {
+    max-width: none;
+}
+
+
+}
+
+/* MÓVILES PEQUEÑOS */
+@media (max-width: 480px) {
+.chart-wrapper,
+.pie-wrapper {
+height: 230px;
+}
 }
 
 
