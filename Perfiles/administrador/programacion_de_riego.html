@@ -1,232 +1,29 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programación de Riego | HarvestX</title>
-    
-    <!-- FONT AWESOME (Íconos) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+    <meta name="theme-color" content="#1D4F37">
 
-    <!-- CSS DEL MÓDULO DE RIEGO -->
-    <link rel="stylesheet" href="../../CSS/paginas/riego.css">
-    
-    <style>
-        :root {
-            --verde-barra: #1D4F37;
-            --verde-oscuro-contraste: #102B1B;
-            --fondo-pagina: #F2F9EF;
-            --texto-principal: #002300;
-            --barra-mes: #8EB156;
-            --dias-semana: #78916C;
-            --dia-cosecha: #D9FC8D;
-            --dias-no-seleccionados: #EAF7E8;
-            --fila-par: #F0FAF7;
-            --fila-impar: #E8F8E5;
-            --estado-creciendo: #659C62;
-            --estado-alerta: #BF4842;
-        }
-        .riego-page {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-        }
-        .riego-hero {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-        }
-        .riego-hero-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .riego-hero-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--fondo-pagina);
-            color: var(--verde-barra);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-        }
-        .riego-kicker {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--barra-mes);
-            display: block;
-            margin-bottom: 4px;
-        }
-        .riego-hero h2 {
-            margin: 0 0 6px 0;
-            font-size: 1.5rem;
-            color: var(--texto-principal);
-        }
-        .riego-hero p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        .riego-metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
-        .metric-card {
-            background: #ffffff;
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .metric-icon {
-            font-size: 24px;
-            color: var(--verde-barra);
-            background: var(--fondo-pagina);
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .metric-data {
-            display: flex;
-            flex-direction: column;
-        }
-        .metric-data span {
-            font-size: 0.8rem;
-            color: #666;
-            font-weight: 600;
-        }
-        .metric-data strong {
-            font-size: 1.3rem;
-            color: var(--texto-principal);
-        }
-        .metric-data small {
-            font-size: 0.75rem;
-            color: #888;
-        }
-        .main-riego-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 992px) {
-            .main-riego-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .panel-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-        }
-        .panel-card h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
-            color: var(--texto-principal);
-            border-bottom: 2px solid var(--fondo-pagina);
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--texto-principal);
-        }
-        .form-control {
-            width: 100%;
-            padding: 9px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 0.9rem;
-        }
-        .btn-action {
-            width: 100%;
-            background-color: var(--verde-barra);
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-        .auto-box {
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-        }
-        .auto-icon-circle {
-            width: 70px;
-            height: 70px;
-            background: var(--verde-barra);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin: 10px auto;
-        }
-        .auto-icon-circle.inactivo {
-            background: var(--estado-alerta);
-        }
-        .btn-toggle-auto {
-            background-color: var(--estado-alerta);
-        }
-        .btn-toggle-auto.inactivo {
-            background-color: var(--verde-barra);
-        }
-        .bottom-riego-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 768px) {
-            .bottom-riego-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .recomendacion-box {
-            background-color: var(--fila-impar);
-            border-left: 4px solid var(--verde-barra);
-            padding: 14px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--texto-principal);
-            line-height: 1.4;
-        }
-        /* AISLAMIENTO DEL CALENDARIO (Previene interferencias de fuentes globales) */
-        .cal-panel, .cal-panel *:not(.fa-solid):not(.fa-regular):not(.fa-brands) {
-            font-family: inherit;
-        }
-    </style>
+
+<title>Programación de Riego | HarvestX</title>
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- CSS PRINCIPAL -->
+<link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+
+<!-- CSS DEL MÓDULO DE RIEGO -->
+<link rel="stylesheet" href="../../CSS/paginas/riego.css">
+
+
 </head>
+
 <body>
+
+
 <!-- LOADER -->
 <div id="loader" class="loader-container">
     <div class="loader">
@@ -235,14 +32,18 @@
         <p>Cargando tu cosecha...</p>
     </div>
 </div>
+
 <!-- MODAL CONFIGURACIÓN -->
 <div id="settingsModal" class="modal-overlay">
     <div class="modal-content">
+
         <div class="modal-header">
             <h2>Ajustes del Sistema</h2>
             <i class="fa-solid fa-xmark close-modal" id="closeSettings"></i>
         </div>
+
         <div class="modal-body">
+
             <div class="setting-group">
                 <label>Tema Oscuro</label>
                 <label class="switch">
@@ -250,6 +51,7 @@
                     <span class="slider round"></span>
                 </label>
             </div>
+
             <div class="setting-group">
                 <label>Sonido</label>
                 <label class="switch">
@@ -257,14 +59,21 @@
                     <span class="slider round"></span>
                 </label>
             </div>
+
             <div class="setting-group">
                 <label>Voz del asistente</label>
-                <span style="font-size:0.9rem; color:var(--texto-claro);">🎙️ Asistente HarvestX</span>
+                <span style="font-size:0.9rem; color:var(--texto-claro);">
+                    🎙️ Asistente HarvestX
+                </span>
             </div>
+
             <div class="setting-group">
                 <label>Probar voz</label>
-                <button type="button" id="testVoiceButton" class="btn-size">🔊 Probar voz</button>
+                <button type="button" id="testVoiceButton" class="btn-size">
+                    🔊 Probar voz
+                </button>
             </div>
+
             <div class="setting-group">
                 <label>Fuente de Letra</label>
                 <select id="fontSelect" class="form-select">
@@ -274,331 +83,506 @@
                     <option value="'Times New Roman', serif">Times New Roman</option>
                 </select>
             </div>
+
             <div class="setting-group">
                 <label>Tamaño de Letra</label>
                 <div class="size-controls">
-                    <button id="btnSizeSmall" class="btn-size">A-</button>
-                    <button id="btnSizeNormal" class="btn-size active">A</button>
-                    <button id="btnSizeLarge" class="btn-size">A+</button>
+                    <button type="button" id="btnSizeSmall" class="btn-size">A-</button>
+                    <button type="button" id="btnSizeNormal" class="btn-size active">A</button>
+                    <button type="button" id="btnSizeLarge" class="btn-size">A+</button>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
 <!-- MODAL PERFIL -->
 <div id="profileModal" class="modal-overlay">
     <div class="modal-content profile-modal">
+
         <div class="modal-header">
             <h2>Mi Perfil</h2>
             <i class="fa-solid fa-xmark close-modal" id="closeProfile"></i>
         </div>
+
         <div class="modal-body">
+
             <div class="profile-photo-section">
                 <div class="profile-photo-wrapper">
+
                     <div id="profilePhotoPreview" class="profile-photo-preview">U</div>
+
                     <label for="profilePhotoInput" class="change-photo-button">
                         <i class="fa-solid fa-camera"></i>
                     </label>
+
                     <input type="file" id="profilePhotoInput" accept="image/*" hidden>
+
                 </div>
-                <p class="profile-photo-text">Haz clic en la cámara para cambiar tu foto</p>
+
+                <p class="profile-photo-text">
+                    Haz clic en la cámara para cambiar tu foto
+                </p>
             </div>
+
             <div class="profile-form">
+
                 <div class="profile-field">
                     <label for="profileNombre">Nombre completo</label>
                     <input type="text" id="profileNombre" placeholder="Nombre completo">
                 </div>
+
                 <div class="profile-field">
                     <label for="profileUsuario">Nombre de usuario</label>
                     <input type="text" id="profileUsuario" readonly>
                 </div>
+
                 <div class="profile-field">
                     <label for="profileRol">Rol</label>
                     <input type="text" id="profileRol" readonly>
                 </div>
+
             </div>
+
             <div class="profile-actions">
-                <button type="button" id="cancelProfile" class="btn-modal btn-cancelar">Cancelar</button>
+                <button type="button" id="cancelProfile" class="btn-modal btn-cancelar">
+                    Cancelar
+                </button>
+
                 <button type="button" id="saveProfile" class="btn-modal btn-guardar">
-                    <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar cambios
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
 <!-- DASHBOARD -->
 <div class="dashboard-container">
+
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
+
         <div class="sidebar-header">
             <div class="logo-wrapper">
                 <i class="fa-solid fa-leaf logo-icon"></i>
+
                 <div class="logo-text">
                     <h2>HarvestX</h2>
                     <span>Sistema Inteligente</span>
                 </div>
             </div>
+
             <i class="fa-solid fa-xmark close-sidebar-mobile" id="closeSidebarMobile"></i>
         </div>
+
         <nav class="sidebar-nav">
+
             <a href="inicio.html" class="nav-link">
                 <i class="fa-solid fa-house"></i>
                 <span class="nav-text">Dashboard</span>
             </a>
-            <div class="nav-category"><span class="nav-text">GESTIÓN</span></div>
+
+            <div class="nav-category">
+                <span class="nav-text">GESTIÓN</span>
+            </div>
+
             <a href="fincas.html" class="nav-link">
                 <i class="fa-solid fa-mountain-sun"></i>
                 <span class="nav-text">Fincas</span>
             </a>
+
             <a href="cultivos.html" class="nav-link">
                 <i class="fa-solid fa-seedling"></i>
                 <span class="nav-text">Cultivos</span>
             </a>
+
             <a href="programacion_de_riego.html" class="nav-link active">
                 <i class="fa-solid fa-droplet"></i>
                 <span class="nav-text">Programación de Riego</span>
             </a>
+
             <a href="labores_del_campo.html" class="nav-link">
                 <i class="fa-solid fa-tractor"></i>
                 <span class="nav-text">Labores del Campo</span>
             </a>
+
             <a href="monitoreo_climatico.html" class="nav-link">
                 <i class="fa-solid fa-cloud-sun"></i>
                 <span class="nav-text">Monitoreo Climático</span>
             </a>
+
             <a href="alertas.html" class="nav-link">
                 <i class="fa-solid fa-bell"></i>
                 <span class="nav-text">Alertas</span>
             </a>
-            <div class="nav-category"><span class="nav-text">REPORTES</span></div>
+
+            <div class="nav-category">
+                <span class="nav-text">REPORTES</span>
+            </div>
+
             <a href="reportes_y_estadisticas.html" class="nav-link">
                 <i class="fa-solid fa-chart-column"></i>
                 <span class="nav-text">Reportes y Estadísticas</span>
             </a>
+
             <a href="historial.html" class="nav-link">
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 <span class="nav-text">Historial de Actividades</span>
             </a>
-            <div class="nav-category"><span class="nav-text">SISTEMA</span></div>
+
+            <div class="nav-category">
+                <span class="nav-text">SISTEMA</span>
+            </div>
+
             <a href="usuarios.html" class="nav-link">
                 <i class="fa-solid fa-user"></i>
                 <span class="nav-text">Usuarios</span>
             </a>
+
             <a href="#" class="nav-link" id="openSettings">
                 <i class="fa-solid fa-gear"></i>
                 <span class="nav-text">Configuración</span>
             </a>
+
         </nav>
+
         <div class="sidebar-footer">
             <a href="../../login.html" class="nav-link logout" id="cerrarSesion">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span class="nav-text">Cerrar Sesión</span>
             </a>
         </div>
+
     </aside>
-    <!-- MAIN CONTENT -->
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content" id="mainContent">
+
         <!-- TOPBAR -->
         <header class="topbar">
+
             <div class="left-controls">
+
                 <div class="menu-toggle-desktop" id="toggleSidebarDesktop">
                     <i class="fa-solid fa-bars"></i>
                 </div>
+
                 <div class="menu-toggle-mobile" id="menuToggleMobile">
                     <i class="fa-solid fa-bars"></i>
                 </div>
+
                 <div class="header-title">
                     <div>
                         <h1>HarvestX 🌱</h1>
                         <p>Sistema Inteligente de Gestión Agrícola</p>
                     </div>
                 </div>
+
             </div>
+
             <div class="user-info">
-<!-- NOTIFICACIONES -->
 
-<div class="notifications"
-     id="notificationsButton"
-     role="button"
-     tabindex="0"
-     aria-label="Abrir notificaciones"
-     title="Notificaciones">
+                <!-- NOTIFICACIONES -->
+                <div class="notifications"
+                     id="notificationsButton"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Abrir notificaciones"
+                     title="Notificaciones">
 
-    <i class="fa-regular fa-bell"></i>
+                    <i class="fa-regular fa-bell"></i>
 
-    <span class="badge"
-          id="notificationBadge">
-        0
-    </span>
+                    <span class="badge" id="notificationBadge">0</span>
 
-</div>
+                </div>
+
+                <!-- FOTO DE PERFIL -->
                 <div class="avatar" id="openProfile" style="cursor:pointer;">
                     <img id="avatarImagen" class="avatar-img" src="" alt="Foto de perfil">
                 </div>
+
                 <div class="user-details">
                     <span class="name" id="nombreUsuario">Usuario</span>
                     <span class="role" id="rolUsuario">Administrador</span>
                 </div>
+
             </div>
         </header>
-        <!-- SECCIÓN RIEGO -->
+
+        <!-- MÓDULO DE RIEGO -->
         <section class="riego-page">
+
             <!-- HERO -->
             <div class="riego-hero card">
+
                 <div class="riego-hero-info">
+
                     <div class="riego-hero-icon">
                         <i class="fa-solid fa-droplet"></i>
                     </div>
+
                     <div>
                         <span class="riego-kicker">CONTROL AUTOMATIZADO</span>
+
                         <h2>Programación de Riego</h2>
-                        <p>Gestiona los horarios, monitorea la humedad y automatiza los ciclos de riego de tus cultivos.</p>
+
+                        <p>
+                            Gestiona los horarios, monitorea la humedad y automatiza
+                            los ciclos de riego de tus cultivos.
+                        </p>
                     </div>
+
                 </div>
             </div>
-            <!-- METRICAS CON ÍCONOS -->
+
+            <!-- MÉTRICAS -->
             <div class="riego-metrics-grid">
+
                 <article class="metric-card">
-                    <div class="metric-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+
                     <div class="metric-data">
                         <span>Humedad del suelo</span>
                         <strong id="humedadValor">45%</strong>
                         <small style="color: var(--estado-creciendo, #659C62);">Moderada</small>
                     </div>
                 </article>
+
                 <article class="metric-card">
-                    <div class="metric-icon"><i class="fa-solid fa-temperature-half"></i></div>
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-temperature-half"></i>
+                    </div>
+
                     <div class="metric-data">
                         <span>Temperatura</span>
                         <strong id="temperaturaValor">28 °C</strong>
                         <small>Normal</small>
                     </div>
                 </article>
+
                 <article class="metric-card">
-                    <div class="metric-icon"><i class="fa-solid fa-sun"></i></div>
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+
                     <div class="metric-data">
                         <span>Clima actual</span>
                         <strong id="climaValor">Soleado</strong>
                         <small>0% lluvia</small>
                     </div>
                 </article>
+
                 <article class="metric-card">
-                    <div class="metric-icon"><i class="fa-solid fa-circle-check" style="color: var(--estado-creciendo, #659C62);"></i></div>
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-circle-check"
+                           style="color: var(--estado-creciendo, #659C62);"></i>
+                    </div>
+
                     <div class="metric-data">
                         <span>Estado del riego</span>
-                        <strong style="font-size: 1.1rem; color: var(--verde-barra, #1D4F37);">Necesita riego</strong>
+                        <strong style="font-size: 1.1rem; color: var(--verde-barra, #1D4F37);">
+                            Necesita riego
+                        </strong>
                         <small id="estadoUltimaAccion">Sugerido por sensores</small>
                     </div>
                 </article>
+
             </div>
+
             <!-- BLOQUE PRINCIPAL -->
             <div class="main-riego-grid">
+
                 <!-- FORMULARIO -->
                 <div class="panel-card">
-                    <h3><i class="fa-solid fa-calendar-plus"></i> Programar riego</h3>
+
+                    <h3>
+                        <i class="fa-solid fa-calendar-plus"></i>
+                        Programar riego
+                    </h3>
+
                     <form id="formRiego">
+
                         <div class="form-group">
                             <label for="riegoCultivo">Cultivo</label>
+
                             <select id="riegoCultivo" class="form-control" required>
                                 <option value="Tomate">Tomate</option>
                                 <option value="Lechuga">Lechuga</option>
                                 <option value="Chile pimiento">Chile pimiento</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label for="riegoFecha">Fecha</label>
                             <input type="date" id="riegoFecha" class="form-control" required>
                         </div>
+
                         <div class="form-group">
                             <label for="riegoHora">Hora de inicio</label>
                             <input type="time" id="riegoHora" class="form-control" value="06:00" required>
                         </div>
+
                         <div class="form-group">
                             <label for="riegoDuracion">Duración (minutos)</label>
-                            <input type="number" id="riegoDuracion" class="form-control" value="45" min="1" required>
+                            <input type="number" id="riegoDuracion" class="form-control"
+                                   value="45" min="1" required>
                         </div>
-                        <button type="submit" class="btn-action">Guardar programación</button>
+
+                        <button type="submit" class="btn-action">
+                            Guardar programación
+                        </button>
+
                     </form>
                 </div>
+
                 <!-- CALENDARIO -->
                 <div class="panel-card cal-panel">
+
                     <h3>📅 Calendario de riego</h3>
+
                     <div class="cal-header-bar">
                         <div class="cal-days-title">
-                            <div>LUN</div><div>MAR</div><div>MIE</div><div>JUE</div><div>VIE</div><div>SAB</div><div>DOM</div>
+                            <div>LUN</div>
+                            <div>MAR</div>
+                            <div>MIE</div>
+                            <div>JUE</div>
+                            <div>VIE</div>
+                            <div>SAB</div>
+                            <div>DOM</div>
                         </div>
                     </div>
-                    <!-- Contenedor dinámico de días -->
+
                     <div class="cal-grid" id="calGrid"></div>
-                    <!-- Leyenda inferior -->
-                    <div class="cal-legend">
+
+                    <div class="calendar-legend">
+
                         <div class="legend-item">
                             <span class="legend-dot programado"></span>
                             <span>Día programado</span>
                         </div>
+
                         <div class="legend-item">
                             <span class="legend-dot hoy"></span>
                             <span>Hoy</span>
                         </div>
+
                     </div>
                 </div>
+
                 <!-- AUTOMATIZACIÓN -->
                 <div class="panel-card auto-box">
-                    <h3><i class="fa-solid fa-robot"></i> Riego automático</h3>
+
+                    <h3>
+                        <i class="fa-solid fa-robot"></i>
+                        Riego automático
+                    </h3>
+
                     <div class="auto-icon-circle" id="autoStatusIcon">
                         <i class="fa-solid fa-shower"></i>
                     </div>
+
                     <h4 id="autoStatusTitle">Sistema activo</h4>
-                    <p id="autoStatusDesc">El sistema regará automáticamente según la programación de los sensores.</p>
-                    <button type="button" class="btn-action btn-toggle-auto" id="btnToggleAuto">Desactivar</button>
+
+                    <p id="autoStatusDesc">
+                        El sistema regará automáticamente según la programación de los sensores.
+                    </p>
+
+                    <button type="button" class="btn-action btn-toggle-auto" id="btnToggleAuto">
+                        Desactivar
+                    </button>
+
                 </div>
+
             </div>
+
             <!-- BLOQUE INFERIOR -->
             <div class="bottom-riego-grid">
+
                 <!-- RECOMENDACIÓN -->
                 <div class="panel-card">
-                    <h3><i class="fa-solid fa-lightbulb"></i> Recomendación inteligente</h3>
+
+                    <h3>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Recomendación inteligente
+                    </h3>
+
                     <div class="recomendacion-box">
                         <p id="recomendacionTexto">
-                            El cultivo de <strong id="recCultivo">Tomate</strong> requiere riego en las próximas horas debido a la humedad del suelo (45%) y la temperatura actual.
+                            El cultivo de <strong id="recCultivo">Tomate</strong>
+                            requiere riego en las próximas horas debido a la humedad
+                            del suelo (45%) y la temperatura actual.
                         </p>
                     </div>
+
                 </div>
+
                 <!-- HISTORIAL -->
                 <div class="panel-card">
-                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial de riegos</h3>
-                    
+
+                    <h3>
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Historial de riegos
+                    </h3>
+
                     <div class="table-responsive">
-    <table class="riego-table">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Duración</th>
-                <th>Agua</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>30/08/2026</td>
-                <td>06:10 AM</td>
-                <td>40 min</td>
-                <td>120 L</td>
-            </tr>
-            <tr>
-                <td>28/08/2026</td>
-                <td>06:00 AM</td>
-                <td>45 min</td>
-                <td>130 L</td>
-            </tr>
-        </tbody>
-    </table>
+
+                        <table class="riego-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Fecha y hora</th>
+                                    <th>Cultivo</th>
+                                    <th>Duración</th>
+                                    <th>Agua estimada</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="historialRiegoBody">
+
+                                <tr>
+                                    <td>30/08/2026 · 06:10 AM</td>
+                                    <td>Tomate</td>
+                                    <td>40 min</td>
+                                    <td>120 L</td>
+                                    <td>Completado</td>
+                                </tr>
+
+                                <tr>
+                                    <td>28/08/2026 · 06:00 AM</td>
+                                    <td>Lechuga</td>
+                                    <td>45 min</td>
+                                    <td>130 L</td>
+                                    <td>Completado</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
 </div>
 
 <!-- SCRIPTS -->
 <script src="../../JS/paginas/configuracion.js"></script>
 <script src="../../JS/paginas/administrador.js"></script>
- <script src="../../JS/paginas/sistema-notificaciones.js"></script>
+<script src="../../JS/paginas/sistema-notificaciones.js"></script>
+<script src="../../JS/paginas/algoritmos_estructuras.js"></script>
 <script src="../../JS/paginas/riego.js"></script>
+
+
 </body>
 </html>

@@ -1,822 +1,2688 @@
-/* =========================================================
-   HARVESTX — MÓDULO DE PROGRAMACIÓN DE RIEGO
-   DISEÑO — NATURAL TECH / COLORIDO
-   ========================================================= */
+/* ============================================================
+   HARVESTX — PROGRAMACIÓN DE RIEGO
+   Identidad visual: agua, turquesa, cielo y naturaleza.
+   CSS independiente del resto de páginas.
+   ============================================================ */
+
+/* ============================================================
+   1. VARIABLES
+   ============================================================ */
 
 :root {
-    --riego-verde: #2e7d32;
-    --riego-verde-claro: #66bb6a;
-    --riego-verde-oscuro: #1b5e20;
+    --riego-azul: #278BCB;
+    --riego-azul-oscuro: #17628F;
+    --riego-azul-profundo: #15364A;
 
-    --riego-fondo: #f2f9ef;
-    --riego-texto: #002300;
+    --riego-turquesa: #38CFC3;
+    --riego-turquesa-oscuro: #159D98;
 
-    --riego-agua: #0288d1;
-    --riego-agua-claro: #4fc3f7;
-    --riego-agua-fondo: #d9f5fc;
+    --riego-celeste: #DFF6FC;
+    --riego-celeste-claro: #F2FCFF;
 
-    --riego-celeste: #1976d2;
-    --riego-celeste-claro: #42a5f5;
-    --riego-celeste-fondo: #dcecff;
+    --riego-verde: #5DAD79;
+    --riego-verde-oscuro: #32764D;
+    --riego-verde-claro: #E3F6E9;
 
-    --riego-naranja: #ef6c00;
-    --riego-naranja-claro: #ffb74d;
-    --riego-naranja-fondo: #ffead2;
+    --riego-amarillo: #F4D66D;
+    --riego-amarillo-claro: #FFF8D9;
 
-    --riego-amarillo: #f9a825;
-    --riego-amarillo-fondo: #fff3c4;
+    --riego-morado: #8B7AE8;
+    --riego-morado-claro: #F0EDFF;
 
-    --riego-mint: #e0f5e4;
-    --riego-blanco: #ffffff;
+    --riego-rojo: #D95864;
+    --riego-rojo-claro: #FFF0F1;
 
-    --riego-borde: rgba(46, 125, 50, 0.14);
-    --riego-sombra: 0 8px 24px rgba(27, 94, 32, 0.08);
+    --riego-texto: #213D4D;
+    --riego-texto-secundario: #6B8592;
+
+    --riego-fondo: #F0F8FA;
+    --riego-superficie: #FFFFFF;
+    --riego-borde: #DCEBF0;
+
+    --riego-sombra:
+        0 12px 35px rgba(34, 105, 133, 0.08);
+
+    --riego-sombra-hover:
+        0 16px 38px rgba(34, 105, 133, 0.14);
+
+    --riego-radio: 20px;
+    --riego-radio-pequeno: 12px;
+
+    --riego-transicion:
+        180ms ease;
 }
 
-
-/* =========================================================
-   ESTRUCTURA GENERAL
-   ========================================================= */
+/* ============================================================
+   2. CONTENEDOR
+   ============================================================ */
 
 .riego-page {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
     width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px;
+    color: var(--riego-texto);
+    box-sizing: border-box;
+    font-family: inherit;
 }
 
+.riego-page *,
+.riego-page *::before,
+.riego-page *::after {
+    box-sizing: border-box;
+}
 
-/* =========================================================
-   HERO
-   ========================================================= */
+.riego-page button,
+.riego-page input,
+.riego-page select {
+    font: inherit;
+}
+
+.riego-page button {
+    cursor: pointer;
+}
+
+.riego-page button:disabled,
+.riego-page input:disabled,
+.riego-page select:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.riego-page button:focus-visible,
+.riego-page input:focus-visible,
+.riego-page select:focus-visible {
+    outline: 3px solid rgba(39, 139, 203, 0.28);
+    outline-offset: 3px;
+}
+
+/* ============================================================
+   3. HERO
+   ============================================================ */
 
 .riego-hero {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    min-height: 255px;
+    padding: 38px 42px;
+    margin-bottom: 24px;
     overflow: hidden;
-    background: linear-gradient(
-        135deg,
-        #e0f5e4 0%,
-        #f4fbf0 48%,
-        #dff5fa 100%
-    );
-    border-radius: 18px;
-    padding: 26px;
-    border: 1px solid var(--riego-borde);
+    isolation: isolate;
+    border: 1px solid rgba(56, 207, 195, 0.28);
+    border-radius: 28px;
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(255, 255, 255, 0.9),
+            transparent 25%
+        ),
+        linear-gradient(
+            120deg,
+            #DFF6FC 0%,
+            #E6FAF7 48%,
+            #F0F9E6 100%
+        );
     box-shadow: var(--riego-sombra);
 }
 
 .riego-hero::before {
     content: "";
     position: absolute;
-    width: 190px;
-    height: 190px;
+    width: 330px;
+    height: 330px;
+    right: 11%;
+    top: -220px;
+    z-index: -1;
+    border: 1px solid rgba(39, 139, 203, 0.13);
     border-radius: 50%;
-    background: rgba(79, 195, 247, 0.13);
-    right: -55px;
-    top: -85px;
 }
 
 .riego-hero::after {
     content: "";
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 430px;
+    height: 430px;
+    right: -80px;
+    bottom: -330px;
+    z-index: -1;
+    border: 1px solid rgba(56, 207, 195, 0.18);
     border-radius: 50%;
-    background: rgba(102, 187, 106, 0.14);
-    right: 120px;
-    bottom: -75px;
 }
 
-.riego-hero-info {
+.riego-hero-content {
+    max-width: 720px;
     position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    z-index: 2;
 }
 
-.riego-hero-icon {
-    width: 64px;
-    height: 64px;
-    flex-shrink: 0;
-    background: linear-gradient(
-        135deg,
-        var(--riego-agua),
-        var(--riego-celeste)
-    );
-    color: #ffffff;
-    border-radius: 16px;
-    display: flex;
+.riego-eyebrow {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.9rem;
-    box-shadow: 0 8px 18px rgba(2, 136, 209, 0.22);
-}
-
-.riego-kicker {
-    font-size: 0.75rem;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: var(--riego-azul-oscuro);
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 1.2px;
-    color: var(--riego-verde);
-    display: block;
-    margin-bottom: 5px;
+    letter-spacing: 1.5px;
+}
+
+.riego-eyebrow i {
+    color: var(--riego-turquesa-oscuro);
+    font-size: 16px;
 }
 
 .riego-hero h2 {
-    margin: 0 0 7px 0;
-    font-size: 1.55rem;
-    color: var(--riego-texto);
+    margin: 0 0 14px;
+    color: var(--riego-azul-profundo);
+    font-size: clamp(30px, 4vw, 45px);
+    font-weight: 850;
+    letter-spacing: -1.5px;
+    line-height: 1.12;
+}
+
+.riego-hero h2 span {
+    color: var(--riego-azul);
 }
 
 .riego-hero p {
+    max-width: 590px;
     margin: 0;
-    color: #55705c;
-    font-size: 0.9rem;
+    color: #587583;
+    font-size: 14px;
+    line-height: 1.85;
 }
 
+.riego-hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 23px;
+}
 
-/* =========================================================
-   MÉTRICAS
-   ========================================================= */
+.riego-hero-tags span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    border: 1px solid rgba(39, 139, 203, 0.13);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.65);
+    color: var(--riego-azul-oscuro);
+    font-size: 11px;
+    font-weight: 750;
+}
 
-.riego-metrics-grid {
+.riego-hero-tags i {
+    color: var(--riego-turquesa-oscuro);
+}
+
+/* Ilustración acuática */
+
+.riego-hero-visual {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
+    flex: 0 0 230px;
+    width: 230px;
+    height: 200px;
+    place-items: center;
+}
+
+.riego-water-circle {
+    position: absolute;
+    border: 1px solid rgba(39, 139, 203, 0.18);
+    border-radius: 50%;
+}
+
+.circle-one {
+    width: 175px;
+    height: 175px;
+    background: rgba(255, 255, 255, 0.27);
+}
+
+.circle-two {
+    width: 135px;
+    height: 135px;
+    background: rgba(56, 207, 195, 0.11);
+}
+
+.riego-water-icon {
+    display: grid;
+    width: 105px;
+    height: 105px;
+    place-items: center;
+    border: 8px solid rgba(255, 255, 255, 0.68);
+    border-radius: 35px 35px 35px 10px;
+    background: linear-gradient(
+        145deg,
+        var(--riego-azul),
+        var(--riego-turquesa)
+    );
+    color: #FFFFFF;
+    font-size: 42px;
+    box-shadow:
+        0 18px 35px rgba(39, 139, 203, 0.25);
+    transform: rotate(-8deg);
+}
+
+.riego-hero-leaf {
+    position: absolute;
+    right: 8px;
+    bottom: 14px;
+    color: var(--riego-verde);
+    font-size: 39px;
+    transform: rotate(-15deg);
+}
+
+.riego-hero-spark {
+    position: absolute;
+    color: #D5A925;
+    font-size: 25px;
+}
+
+.spark-one {
+    top: 9px;
+    right: 29px;
+}
+
+.spark-two {
+    left: 13px;
+    bottom: 28px;
+    font-size: 17px;
+}
+
+/* ============================================================
+   4. MÉTRICAS
+   ============================================================ */
+
+.riego-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
 }
 
 .metric-card {
     position: relative;
-    overflow: hidden;
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 16px;
-    border: 1px solid var(--riego-borde);
-    box-shadow: var(--riego-sombra);
     display: flex;
     align-items: center;
-    gap: 14px;
-    min-height: 82px;
+    gap: 17px;
+    min-width: 0;
+    padding: 23px;
+    overflow: hidden;
+    border: 1px solid var(--riego-borde);
+    border-radius: var(--riego-radio);
+    background: var(--riego-superficie);
+    box-shadow: var(--riego-sombra);
+    transition:
+        transform var(--riego-transicion),
+        box-shadow var(--riego-transicion);
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--riego-sombra-hover);
 }
 
 .metric-card::after {
     content: "";
     position: absolute;
-    width: 75px;
-    height: 75px;
+    right: -25px;
+    bottom: -40px;
+    width: 105px;
+    height: 105px;
     border-radius: 50%;
-    right: -28px;
-    bottom: -30px;
-    background: rgba(102, 187, 106, 0.08);
+    background: var(--metric-glow, #E8F8FD);
+    opacity: 0.7;
 }
 
-.metric-card:nth-child(1) {
-    border-top: 4px solid var(--riego-agua);
+.metric-blue {
+    --metric-glow: #DDF1FF;
 }
 
-.metric-card:nth-child(2) {
-    border-top: 4px solid var(--riego-verde);
+.metric-aqua {
+    --metric-glow: #D8FBF4;
 }
 
-.metric-card:nth-child(3) {
-    border-top: 4px solid var(--riego-naranja);
-}
-
-.metric-card:nth-child(4) {
-    border-top: 4px solid var(--riego-celeste);
+.metric-green {
+    --metric-glow: #E4F7E7;
 }
 
 .metric-icon {
-    position: relative;
-    z-index: 1;
-    width: 50px;
-    height: 50px;
-    flex-shrink: 0;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.35rem;
+    display: grid;
+    flex: 0 0 58px;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    border-radius: 18px;
+    background: var(--metric-icon-bg, var(--riego-celeste));
+    color: var(--metric-icon-color, var(--riego-azul));
+    font-size: 23px;
 }
 
-.metric-card:nth-child(1) .metric-icon {
-    background: var(--riego-agua-fondo);
-    color: var(--riego-agua);
+.metric-blue .metric-icon {
+    --metric-icon-bg: #E2F2FF;
+    --metric-icon-color: #278BCB;
 }
 
-.metric-card:nth-child(2) .metric-icon {
-    background: var(--riego-mint);
-    color: var(--riego-verde);
+.metric-aqua .metric-icon {
+    --metric-icon-bg: #DDFBF4;
+    --metric-icon-color: #159D98;
 }
 
-.metric-card:nth-child(3) .metric-icon {
-    background: var(--riego-naranja-fondo);
-    color: var(--riego-naranja);
+.metric-green .metric-icon {
+    --metric-icon-bg: #E5F6E8;
+    --metric-icon-color: #428B5C;
 }
 
-.metric-card:nth-child(4) .metric-icon {
-    background: var(--riego-celeste-fondo);
-    color: var(--riego-celeste);
-}
-
-.metric-data {
+.metric-info {
     position: relative;
     z-index: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     min-width: 0;
 }
 
-.metric-data span {
-    font-size: 0.76rem;
-    color: #607565;
+.metric-info > span {
+    color: var(--riego-texto-secundario);
+    font-size: 12px;
     font-weight: 700;
 }
 
-.metric-data strong {
-    font-size: 1.3rem;
-    color: var(--riego-texto);
-    margin-top: 2px;
+.metric-info strong {
+    margin: 7px 0 4px;
+    color: var(--riego-azul-profundo);
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 850;
+    overflow-wrap: anywhere;
 }
 
-.metric-data small {
-    font-size: 0.72rem;
-    color: #78917e;
-    margin-top: 2px;
+.metric-info small {
+    color: #8A9FA9;
+    font-size: 10px;
+    line-height: 1.5;
 }
 
-
-/* =========================================================
-   GRID PRINCIPAL
-   ========================================================= */
+/* ============================================================
+   5. DISTRIBUCIÓN PRINCIPAL
+   ============================================================ */
 
 .main-riego-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;
+    grid-template-columns:
+        minmax(300px, 0.85fr)
+        minmax(0, 1.15fr);
+    align-items: start;
+    gap: 22px;
+    margin-bottom: 24px;
+}
+
+.panel-card {
+    min-width: 0;
+    padding: 25px;
+    border: 1px solid var(--riego-borde);
+    border-radius: var(--riego-radio);
+    background: var(--riego-superficie);
+    box-shadow: var(--riego-sombra);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 25px;
+}
+
+.panel-heading-icon {
+    display: grid;
+    flex: 0 0 47px;
+    width: 47px;
+    height: 47px;
+    place-items: center;
+    border-radius: 15px;
+    font-size: 19px;
+}
+
+.icon-blue {
+    background: #E3F3FF;
+    color: #278BCB;
+}
+
+.icon-aqua {
+    background: #DDFBF5;
+    color: #159D98;
+}
+
+.icon-green {
+    background: #E5F6E8;
+    color: #428B5C;
+}
+
+.icon-purple {
+    background: #F0EDFF;
+    color: #8071D9;
+}
+
+.panel-header h3 {
+    margin: 0;
+    color: var(--riego-azul-profundo);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.panel-header p {
+    margin: 6px 0 0;
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.panel-header-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 20px;
 }
 
-
-/* =========================================================
-   PANELES
-   ========================================================= */
-
-.panel-card {
-    position: relative;
-    overflow: hidden;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 18px;
-    border: 1px solid var(--riego-borde);
-    box-shadow: var(--riego-sombra);
-    display: flex;
-    flex-direction: column;
-}
-
-.panel-card::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(
-        90deg,
-        var(--riego-verde),
-        var(--riego-agua),
-        var(--riego-celeste)
-    );
-}
-
-.panel-card h3 {
-    margin-top: 4px;
-    font-size: 1.08rem;
-    color: var(--riego-texto);
-    border-bottom: 2px solid #e5f2e5;
-    padding-bottom: 10px;
-    margin-bottom: 16px;
+.panel-heading-group {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 13px;
+    min-width: 0;
 }
 
-.panel-card h3 i {
-    color: var(--riego-verde);
+/* ============================================================
+   6. FORMULARIO
+   ============================================================ */
+
+.panel-form {
+    background:
+        linear-gradient(
+            180deg,
+            #FFFFFF,
+            #FBFEFF
+        );
 }
 
-
-/* =========================================================
-   FORMULARIO
-   ========================================================= */
+#formRiego {
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+}
 
 .form-group {
-    margin-bottom: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
 }
 
 .form-group label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 700;
-    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: var(--riego-texto);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.form-group label i {
+    color: var(--riego-azul);
+    font-size: 14px;
+}
+
+.form-group small {
+    color: var(--riego-texto-secundario);
+    font-size: 10px;
+    line-height: 1.6;
 }
 
 .form-control {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #cfe2d1;
-    border-radius: 9px;
-    box-sizing: border-box;
-    font-size: 0.88rem;
+    min-width: 0;
+    min-height: 47px;
+    padding: 12px 14px;
+    border: 1px solid #D9E8ED;
+    border-radius: var(--riego-radio-pequeno);
+    background: #F9FCFD;
     color: var(--riego-texto);
-    background: #fbfefb;
+    font-size: 13px;
     outline: none;
-    transition: all 0.2s ease;
+    transition:
+        border-color var(--riego-transicion),
+        background var(--riego-transicion),
+        box-shadow var(--riego-transicion);
+}
+
+.form-control:hover {
+    border-color: #A8D8E7;
 }
 
 .form-control:focus {
-    border-color: var(--riego-agua);
-    box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.11);
-    background: #ffffff;
+    border-color: var(--riego-azul);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(39, 139, 203, 0.09);
 }
 
-.btn-action {
-    width: 100%;
-    background: linear-gradient(
-        135deg,
-        var(--riego-verde),
-        var(--riego-verde-claro)
-    );
-    color: #ffffff;
-    padding: 11px;
-    border: none;
-    border-radius: 9px;
-    font-weight: 800;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: all 0.2s ease;
-    box-shadow: 0 5px 12px rgba(46, 125, 50, 0.18);
+.form-control:disabled {
+    background: #EFF4F6;
 }
 
-.btn-action:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.04);
-    box-shadow: 0 7px 16px rgba(46, 125, 50, 0.23);
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
 }
 
-
-/* =========================================================
-   CALENDARIO — CONTROLES
-   ========================================================= */
-
-.calendario-controles {
+.duration-input {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(
-        135deg,
-        var(--riego-agua-fondo),
-        #eaf7ed
-    );
-    padding: 7px 10px;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    gap: 8px;
+    gap: 12px;
 }
 
-.cal-nav-btn {
-    background: #ffffff;
-    border: none;
-    color: var(--riego-agua);
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 6px 9px;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
-}
-
-.cal-nav-btn:hover {
-    background: var(--riego-agua);
-    color: #ffffff;
-    transform: translateY(-1px);
-}
-
-.cal-mes-navegacion {
-    font-weight: 800;
-    color: var(--riego-texto);
-    font-size: 0.95rem;
-    text-align: center;
+.duration-input input {
     flex: 1;
 }
 
-.cal-add-btn {
-    background: linear-gradient(
-        135deg,
-        var(--riego-agua),
-        var(--riego-celeste)
-    );
-    color: #ffffff;
-    border: none;
-    padding: 7px 11px;
-    border-radius: 8px;
-    font-size: 0.73rem;
-    font-weight: 800;
-    cursor: pointer;
+.duration-input > span {
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    font-weight: 700;
     white-space: nowrap;
-    transition: all 0.2s ease;
 }
 
-.cal-add-btn:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.05);
+.riego-form-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px;
+    border: 1px solid #D4EBF8;
+    border-radius: var(--riego-radio-pequeno);
+    background: #EDF8FF;
+    color: #456D81;
+    font-size: 11px;
+    line-height: 1.7;
 }
 
+.riego-form-note i {
+    margin-top: 2px;
+    color: var(--riego-azul);
+}
 
-/* =========================================================
-   ENCABEZADO DEL CALENDARIO
-   ========================================================= */
+/* ============================================================
+   7. BOTONES
+   ============================================================ */
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 46px;
+    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+    transition:
+        transform var(--riego-transicion),
+        background var(--riego-transicion),
+        box-shadow var(--riego-transicion);
+}
+
+.btn-action:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.btn-primary-riego {
+    background: linear-gradient(
+        115deg,
+        #278BCB,
+        #20B8C0
+    );
+    color: #FFFFFF;
+    box-shadow: 0 7px 17px rgba(39, 139, 203, 0.2);
+}
+
+.btn-primary-riego:hover:not(:disabled) {
+    background: linear-gradient(
+        115deg,
+        #176FA6,
+        #159DAB
+    );
+    box-shadow: 0 10px 23px rgba(39, 139, 203, 0.25);
+}
+
+.btn-secondary-riego {
+    border-color: var(--riego-borde);
+    background: #F5FAFC;
+    color: var(--riego-azul-oscuro);
+}
+
+.btn-secondary-riego:hover:not(:disabled) {
+    background: #E5F4FA;
+}
+
+#formRiego > .btn-primary-riego {
+    width: 100%;
+    margin-top: 2px;
+}
+
+/* ============================================================
+   8. CALENDARIO
+   ============================================================ */
+
+.cal-panel {
+    background:
+        radial-gradient(
+            circle at 100% 0,
+            rgba(56, 207, 195, 0.09),
+            transparent 30%
+        ),
+        #FFFFFF;
+}
 
 .cal-header-bar {
-    background: linear-gradient(
-        90deg,
-        var(--riego-verde),
-        var(--riego-agua)
-    );
-    color: #ffffff;
-    padding: 9px;
-    border-radius: 8px 8px 0 0;
-    font-weight: 800;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: -5px 0 19px;
 }
 
-.cal-days-title {
+.calendar-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.calendar-label i {
+    color: var(--riego-azul);
+}
+
+.btn-refresh {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    width: 100%;
-    font-size: 0.72rem;
-    text-align: center;
-    box-sizing: border-box;
-    background: #edf8ef;
-    color: var(--riego-verde-oscuro);
-    padding: 7px 0;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border: 1px solid #D9EDF3;
+    border-radius: 11px;
+    background: #EDF9FC;
+    color: var(--riego-azul);
+    transition:
+        background var(--riego-transicion),
+        transform var(--riego-transicion);
 }
 
-.cal-days-title > * {
-    min-width: 0;
+.btn-refresh:hover {
+    background: #DDF5F8;
+    transform: rotate(15deg);
+}
+
+.riego-calendario-controles {
+    display: grid;
+    grid-template-columns: 39px minmax(0, 1fr) 39px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 19px;
+}
+
+.riego-calendario-controles button {
+    display: grid;
+    width: 39px;
+    height: 39px;
+    place-items: center;
+    border: 1px solid #D8EBF2;
+    border-radius: 12px;
+    background: #F0FAFD;
+    color: var(--riego-azul);
+    font-size: 23px;
+    line-height: 1;
+    transition:
+        background var(--riego-transicion),
+        color var(--riego-transicion);
+}
+
+.riego-calendario-controles button:hover {
+    background: var(--riego-azul);
+    color: #FFFFFF;
+}
+
+.riego-calendario-controles h3 {
+    margin: 0;
+    color: var(--riego-azul-profundo);
+    font-size: 17px;
+    font-weight: 850;
     text-align: center;
 }
 
-
-/* =========================================================
-   GRID DEL CALENDARIO
-   ========================================================= */
-
+.cal-days-title,
 .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    background: #e8f5eb;
-    padding: 8px;
-    border-radius: 0 0 8px 8px;
+    gap: 7px;
 }
 
-.cal-day {
-    position: relative;
-    background: #ffffff;
-    min-width: 0;
-    min-height: 40px;
-    padding: 10px 4px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 0.82rem;
-    border-radius: 7px;
-    cursor: pointer;
-    font-weight: 700;
-    color: var(--riego-texto);
-    transition: all 0.2s ease;
+.cal-days-title {
+    margin-bottom: 9px;
 }
 
-.cal-day:hover {
-    background: #dff4e2;
-    transform: translateY(-1px);
-}
-
-.cal-day.other-month {
-    opacity: 0.3;
-    cursor: default;
-}
-
-.cal-day.other-month:hover {
-    background: #ffffff;
-    transform: none;
-}
-
-.cal-day.hoy {
-    background: linear-gradient(
-        135deg,
-        var(--riego-verde),
-        var(--riego-agua)
-    );
-    color: #ffffff;
-    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.22);
-}
-
-.cal-day.programado {
-    border: 2px solid var(--riego-agua);
-    background: var(--riego-agua-fondo);
-    color: #075a82;
-}
-
-.cal-day.seleccionado {
-    outline: 2px solid var(--riego-verde);
-    outline-offset: -2px;
-}
-
-
-/* =========================================================
-   BADGE DEL CALENDARIO
-   ========================================================= */
-
-.cal-day-badge {
-    position: absolute;
-    top: 2px;
-    right: 4px;
-    background-color: var(--riego-agua);
-    color: #ffffff;
-    font-size: 0.62rem;
+.cal-days-title span {
+    padding: 7px 0;
+    color: #7C97A3;
+    font-size: 10px;
     font-weight: 800;
+    text-align: center;
+}
+
+.cal-dia {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    min-width: 0;
+    min-height: 62px;
+    padding: 9px 2px 5px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: #F4FAFC;
+    color: var(--riego-texto);
+    transition:
+        background var(--riego-transicion),
+        border-color var(--riego-transicion),
+        box-shadow var(--riego-transicion);
+}
+
+.cal-dia:not(.vacio):hover {
+    border-color: #A5DCE9;
+    background: #E5F8FC;
+}
+
+.cal-dia.vacio {
+    min-height: 62px;
+    background: transparent;
+    pointer-events: none;
+}
+
+.cal-numero {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: 29px;
+    height: 29px;
+    flex: 0 0 29px;
+    place-items: center;
     border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: #496B7A;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1;
 }
 
-.cal-day.hoy .cal-day-badge {
-    background-color: #ffffff;
-    color: var(--riego-verde);
+.cal-dia.hoy .cal-numero {
+    background: var(--riego-azul);
+    color: #FFFFFF;
+    box-shadow: 0 3px 8px rgba(39, 139, 203, 0.25);
 }
 
+.cal-dia.tiene-riego {
+    border-color: #BCEDE5;
+    background: #E7FAF5;
+}
 
-/* =========================================================
-   LEYENDA
-   ========================================================= */
+.cal-dia.tiene-riego .cal-numero {
+    color: #147B76;
+}
 
-.cal-legend {
+.cal-dia.tiene-riego.hoy .cal-numero {
+    background: var(--riego-azul);
+    color: #FFFFFF;
+}
+
+.cal-dia.seleccionado {
+    border-color: var(--riego-turquesa-oscuro);
+    background: #CFF6EF;
+    box-shadow: inset 0 0 0 1px var(--riego-turquesa-oscuro);
+}
+
+.cal-dia.seleccionado .cal-numero {
+    color: #125D63;
+}
+
+.cal-dia.seleccionado.hoy .cal-numero {
+    background: var(--riego-azul-oscuro);
+    color: #FFFFFF;
+}
+
+.cal-indicador {
+    position: relative;
+    z-index: 1;
+    display: block;
+    max-width: 100%;
+    padding: 3px 5px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #C7F0E7;
+    color: #14766D;
+    font-size: 8px;
+    font-weight: 850;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cal-dia.hoy .cal-indicador {
+    background: #B7E9F8;
+    color: #155B79;
+}
+
+.cal-dia.seleccionado .cal-indicador {
+    background: #FFFFFF;
+    color: #14766D;
+}
+
+.calendar-legend {
     display: flex;
-    gap: 16px;
-    margin-top: 12px;
-    font-size: 0.73rem;
-    color: #607565;
-    justify-content: center;
     flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #E8F1F4;
 }
 
-.legend-item {
-    display: flex;
+.calendar-legend span {
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    color: var(--riego-texto-secundario);
+    font-size: 10px;
+    font-weight: 650;
 }
 
 .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
     display: inline-block;
-}
-
-.legend-dot.programado {
-    background-color: var(--riego-agua);
-}
-
-.legend-dot.hoy {
-    background-color: var(--riego-verde);
-}
-
-
-/* =========================================================
-   AUTOMATIZACIÓN
-   ========================================================= */
-
-.auto-box {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(
-        160deg,
-        #f2fbf3 0%,
-        #ffffff 55%,
-        #eaf7fd 100%
-    );
-}
-
-.auto-icon-circle {
-    width: 76px;
-    height: 76px;
-    background: linear-gradient(
-        135deg,
-        var(--riego-agua),
-        var(--riego-celeste)
-    );
-    color: #ffffff;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
+}
+
+.legend-today {
+    background: var(--riego-azul);
+}
+
+.legend-water {
+    background: var(--riego-turquesa);
+}
+
+.legend-selected {
+    background: #80D8C7;
+}
+
+/* ============================================================
+   9. LISTA DE PROGRAMACIONES
+   ============================================================ */
+
+.panel-programaciones {
+    margin-bottom: 24px;
+}
+
+.programaciones-search {
     display: flex;
     align-items: center;
+    gap: 9px;
+    width: min(270px, 100%);
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid var(--riego-borde);
+    border-radius: 11px;
+    background: #F8FCFD;
+}
+
+.programaciones-search i {
+    color: var(--riego-azul);
+    font-size: 12px;
+}
+
+.programaciones-search input {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--riego-texto);
+    font-size: 11px;
+}
+
+.lista-programaciones-riego {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+    max-height: 480px;
+    padding: 2px 4px 8px 2px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: #A8DCE4 #F1F8FA;
+    scrollbar-width: thin;
+}
+
+.lista-programaciones-riego > h3 {
+    grid-column: 1 / -1;
+    margin: 0 0 2px;
+    color: var(--riego-azul-profundo);
+    font-size: 14px;
+    font-weight: 850;
+}
+
+.riego-programacion {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+    min-width: 0;
+    padding: 17px;
+    border: 1px solid #DDECF1;
+    border-left: 4px solid var(--riego-turquesa);
+    border-radius: 15px;
+    background: linear-gradient(
+        140deg,
+        #FFFFFF,
+        #F8FCFD
+    );
+    transition:
+        border-color var(--riego-transicion),
+        box-shadow var(--riego-transicion),
+        transform var(--riego-transicion);
+}
+
+.riego-programacion:hover {
+    border-color: #A6DCE4;
+    box-shadow: 0 8px 22px rgba(34, 105, 133, 0.08);
+    transform: translateY(-2px);
+}
+
+.riego-programacion-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+}
+
+.riego-programacion-info h4 {
+    margin: 0;
+    color: var(--riego-azul-profundo);
+    font-size: 14px;
+    font-weight: 850;
+    overflow-wrap: anywhere;
+}
+
+.riego-programacion-info p {
+    margin: 0;
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.riego-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #E5F7EF;
+    color: #287B55;
+    font-size: 10px;
+    font-weight: 850;
+}
+
+.estado-programado {
+    background: #DFF5FC;
+    color: #176C9D;
+}
+
+.estado-completado {
+    background: #E1F7E9;
+    color: #287B55;
+}
+
+.estado-cancelado {
+    background: #FFF0F1;
+    color: #B6404B;
+}
+
+.riego-programacion-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #E8F0F3;
+}
+
+.riego-programacion-acciones button {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
-    margin: 12px auto;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 18px rgba(25, 118, 210, 0.22);
+    gap: 6px;
+    min-height: 34px;
+    padding: 8px 11px;
+    border: 1px solid #D7E8ED;
+    border-radius: 9px;
+    background: #FFFFFF;
+    color: #426474;
+    font-size: 10px;
+    font-weight: 800;
+    transition:
+        background var(--riego-transicion),
+        border-color var(--riego-transicion),
+        color var(--riego-transicion);
 }
 
-.auto-icon-circle.inactivo {
-    background: linear-gradient(
-        135deg,
-        #d95c55,
-        #bf4842
-    );
-    box-shadow: 0 8px 18px rgba(191, 72, 66, 0.18);
+.riego-programacion-acciones button:nth-child(1) {
+    border-color: #C5EBD4;
+    background: #E8F8EE;
+    color: #287B55;
 }
 
-.btn-toggle-auto {
-    background: linear-gradient(
-        135deg,
-        #bf4842,
-        #d95c55
-    );
+.riego-programacion-acciones button:nth-child(2) {
+    border-color: #F6D9D9;
+    background: #FFF4F4;
+    color: #B6404B;
 }
 
-.btn-toggle-auto.inactivo {
-    background: linear-gradient(
-        135deg,
-        var(--riego-verde),
-        var(--riego-verde-claro)
-    );
+.riego-programacion-acciones button:hover {
+    border-color: var(--riego-azul);
+    background: #EAF6FC;
+    color: var(--riego-azul-oscuro);
 }
 
+.riego-vacio {
+    padding: 23px;
+    border: 1px dashed #D1E7ED;
+    border-radius: 13px;
+    background: #F8FCFD;
+    color: #78909B;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+}
 
-/* =========================================================
-   BLOQUE INFERIOR
-   ========================================================= */
+.lista-programaciones-riego > .riego-vacio {
+    grid-column: 1 / -1;
+}
+
+/* ============================================================
+   10. AUTOMATIZACIÓN Y RECOMENDACIONES
+   ============================================================ */
 
 .bottom-riego-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 22px;
+    margin-bottom: 24px;
 }
 
+.auto-box,
 .recomendacion-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.auto-status {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 17px;
+    border: 1px solid #DFEAF4;
+    border-radius: 15px;
     background: linear-gradient(
         135deg,
-        #e4f6e6,
-        #effaf1
+        #F1F8FF,
+        #F4FCFD
     );
-    border-left: 5px solid var(--riego-verde);
-    padding: 15px;
-    border-radius: 9px;
-    font-size: 0.88rem;
-    color: var(--riego-texto);
-    line-height: 1.5;
 }
 
+.auto-status-icon {
+    display: grid;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 15px;
+    background: #DDEEFF;
+    color: var(--riego-azul);
+    font-size: 20px;
+}
 
-/* =========================================================
-   TABLA DE HISTORIAL
-   ========================================================= */
+.auto-status-icon.inactivo {
+    background: #EAF0F4;
+    color: #6F8794;
+}
+
+.auto-status-icon:not(.inactivo) {
+    background: #D9F8F0;
+    color: #159D98;
+}
+
+.auto-status-text {
+    min-width: 0;
+}
+
+.auto-status-text h4 {
+    margin: 2px 0 7px;
+    color: var(--riego-azul-profundo);
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.auto-status-text p {
+    margin: 0;
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    line-height: 1.75;
+}
+
+.btn-toggle-auto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 46px;
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #B6DFF0;
+    border-radius: 12px;
+    background: #E6F6FF;
+    color: #176C9D;
+    font-size: 11px;
+    font-weight: 850;
+    transition:
+        background var(--riego-transicion),
+        border-color var(--riego-transicion),
+        color var(--riego-transicion);
+}
+
+.btn-toggle-auto:hover {
+    background: #D6EFFB;
+}
+
+.btn-toggle-auto.activo {
+    border-color: #A8E8D7;
+    background: #DDF9EF;
+    color: #16795C;
+}
+
+.btn-toggle-auto.activo:hover {
+    background: #C9F4E5;
+}
+
+.btn-toggle-auto.inactivo {
+    border-color: #C9E4EE;
+    background: #EDF7FB;
+    color: #34768E;
+}
+
+.auto-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 14px 0 0;
+    color: #8296A0;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.auto-disclaimer i {
+    margin-top: 2px;
+    color: var(--riego-azul);
+}
+
+/* Recomendación */
+
+.recomendacion-box {
+    background:
+        radial-gradient(
+            circle at 100% 0,
+            rgba(244, 214, 109, 0.17),
+            transparent 32%
+        ),
+        #FFFFFF;
+}
+
+.recomendacion-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 18px;
+    border: 1px solid #E3EFCD;
+    border-radius: 15px;
+    background: linear-gradient(
+        135deg,
+        #F7FBEF,
+        #F0FBF7
+    );
+}
+
+.recomendacion-illustration {
+    position: relative;
+    display: grid;
+    flex: 0 0 57px;
+    width: 57px;
+    height: 57px;
+    place-items: center;
+    border-radius: 17px;
+    background: #E0F4D9;
+    color: var(--riego-verde-oscuro);
+    font-size: 24px;
+}
+
+.recomendacion-illustration .fa-droplet {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    display: grid;
+    width: 27px;
+    height: 27px;
+    place-items: center;
+    border: 3px solid #F7FBEF;
+    border-radius: 50%;
+    background: #DDF6FF;
+    color: var(--riego-azul);
+    font-size: 11px;
+}
+
+.recomendacion-content > div:last-child {
+    min-width: 0;
+}
+
+.recommendation-label {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: #52844C;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.recomendacion-content p {
+    margin: 0;
+    color: #526F5C;
+    font-size: 11px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.recommendation-crop {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 12px 14px;
+    border: 1px solid #DDEFE4;
+    border-radius: 11px;
+    background: #F5FCF7;
+    color: #698474;
+    font-size: 10px;
+}
+
+.recommendation-crop i {
+    color: var(--riego-verde);
+}
+
+.recommendation-crop strong {
+    color: #32764D;
+    font-weight: 850;
+}
+
+.recommendation-disclaimer {
+    margin: 12px 0 0;
+    color: #8A9DA4;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+/* ============================================================
+   11. HISTORIAL
+   ============================================================ */
+
+.panel-history {
+    margin-bottom: 24px;
+}
+
+.history-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid #D5F0EB;
+    border-radius: 999px;
+    background: #ECFBF7;
+    color: #188A7E;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
 
 .table-responsive {
-    width: 100% !important;
-    overflow-x: auto !important;
-    display: block !important;
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #E1EDF1;
+    border-radius: 13px;
 }
 
 .riego-table {
-    width: 100% !important;
-    border-collapse: separate !important;
-    border-spacing: 0 4px !important;
-    table-layout: fixed !important;
-    font-size: 0.84rem;
+    width: 100%;
+    min-width: 610px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #FFFFFF;
 }
 
 .riego-table thead {
-    background: linear-gradient(
-        90deg,
-        var(--riego-verde),
-        var(--riego-agua)
-    ) !important;
+    background: #EAF7FB;
 }
 
 .riego-table th {
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    padding: 11px 5px !important;
-    text-align: center !important;
-    vertical-align: middle !important;
-    border: none !important;
-    width: 25% !important;
-}
-
-.riego-table th:first-child {
-    border-radius: 8px 0 0 8px;
-}
-
-.riego-table th:last-child {
-    border-radius: 0 8px 8px 0;
+    padding: 15px;
+    color: #477181;
+    font-size: 10px;
+    font-weight: 850;
+    text-align: left;
+    white-space: nowrap;
 }
 
 .riego-table td {
-    padding: 10px 5px !important;
-    color: var(--riego-texto) !important;
-    text-align: center !important;
-    vertical-align: middle !important;
-    border: none !important;
-    width: 25% !important;
-    white-space: nowrap !important;
-}
-
-.riego-table tbody tr {
-    transition: transform 0.15s ease;
-}
-
-.riego-table tbody tr:hover {
-    transform: translateX(2px);
+    padding: 14px 15px;
+    border-top: 1px solid #EAF1F4;
+    color: #526D7B;
+    font-size: 11px;
+    line-height: 1.6;
 }
 
 .riego-table tbody tr:nth-child(even) {
-    background-color: #edf8ef !important;
+    background: #F7FBFC;
 }
 
-.riego-table tbody tr:nth-child(odd) {
-    background-color: #e1f3e4 !important;
+.riego-table tbody tr:hover {
+    background: #ECF9FA;
 }
 
+.riego-table td.riego-vacio {
+    padding: 25px;
+    border-top: 0;
+    text-align: center;
+}
 
-/* =========================================================
-   PROTECCIÓN DEL CALENDARIO
-   ========================================================= */
+/* ============================================================
+   12. PIE DE PÁGINA
+   ============================================================ */
 
-.cal-panel,
-.cal-panel * {
+.riego-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 19px 4px 5px;
+    color: #8299A4;
+    font-size: 10px;
+}
+
+.riego-footer span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--riego-azul-oscuro);
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.riego-footer i {
+    color: var(--riego-verde);
+}
+
+/* ============================================================
+   13. LOADER
+   ============================================================ */
+
+#loader {
+    color: var(--riego-azul-profundo);
+}
+
+#loader .loader-content p {
+    color: var(--riego-texto-secundario);
+}
+
+#loader .loader-spinner {
+    border-color: #D7EEF5;
+    border-top-color: var(--riego-azul);
+}
+
+/* ============================================================
+   14. MODALES
+   ============================================================ */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(14, 43, 59, 0.47);
+    backdrop-filter: blur(7px);
+}
+
+.modal-overlay.active,
+.modal-overlay.show,
+.modal-overlay[aria-hidden="false"] {
+    display: flex;
+}
+
+.modal-content {
+    width: min(100%, 470px);
+    max-height: min(85vh, 850px);
+    padding: 25px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 21px;
+    background: #FFFFFF;
+    box-shadow: 0 25px 80px rgba(13, 47, 67, 0.23);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.modal-eyebrow {
+    color: var(--riego-turquesa-oscuro);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.4px;
+}
+
+.modal-header h2 {
+    margin: 6px 0 0;
+    color: var(--riego-azul-profundo);
+    font-size: 21px;
+    font-weight: 850;
+}
+
+.modal-close {
+    display: grid;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid #E2EDF1;
+    border-radius: 11px;
+    background: #F6FBFC;
+    color: #587584;
+}
+
+.modal-close:hover {
+    background: #E4F5F9;
+    color: var(--riego-azul-oscuro);
+}
+
+.settings-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+    color: var(--riego-texto);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.settings-group select,
+.settings-group input:not([type="checkbox"]):not([type="file"]) {
+    width: min(58%, 230px);
+    min-height: 39px;
+    padding: 9px 11px;
+    border: 1px solid #D9E8ED;
+    border-radius: 9px;
+    background: #F8FCFD;
+    color: var(--riego-texto);
+}
+
+.settings-group input[type="checkbox"] {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--riego-azul);
+}
+
+.settings-size-buttons > div {
+    display: flex;
+    gap: 7px;
+}
+
+.settings-size-buttons button {
+    min-width: 38px;
+    min-height: 35px;
+    border: 1px solid #D8E8ED;
+    border-radius: 8px;
+    background: #F4FAFC;
+    color: var(--riego-azul-oscuro);
+    font-weight: 800;
+}
+
+.settings-size-buttons button:hover {
+    background: #DFF4FA;
+}
+
+.modal-content > .btn-action {
+    width: 100%;
+    margin-top: 7px;
+}
+
+.profile-photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.profile-photo-container img {
+    width: 94px;
+    height: 94px;
+    border: 4px solid #DDF5F5;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #EFF8FA;
+}
+
+.profile-photo-container label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--riego-azul-oscuro);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.profile-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.profile-modal-actions .btn-action {
+    flex: 1;
+}
+
+/* ============================================================
+   15. NOTIFICACIONES LOCALES
+   ============================================================ */
+
+.notificaciones-riego {
     font-family: inherit;
-    box-sizing: border-box;
 }
 
-.cal-panel :not(.fa-solid):not(.fa-regular):not(.fa-brands) {
-    font-family: inherit !important;
+.notificacion-riego {
+    font-size: 12px;
+    line-height: 1.6;
 }
 
+/* ============================================================
+   16. TEMA OSCURO
+   Compatible con las clases utilizadas en HarvestX.
+   ============================================================ */
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
+body.dark-mode .riego-page,
+body.dark-theme .riego-page,
+body.tema-oscuro .riego-page,
+body.modo-oscuro .riego-page,
+html.dark-mode .riego-page,
+html.dark-theme .riego-page,
+html.tema-oscuro .riego-page,
+html.modo-oscuro .riego-page,
+html[data-theme="dark"] .riego-page,
+body[data-theme="dark"] .riego-page {
+    --riego-texto: #E0EDF3;
+    --riego-texto-secundario: #A6BAC5;
 
-@media (max-width: 1100px) {
+    --riego-fondo: #102B3B;
+    --riego-superficie: #183849;
+    --riego-borde: #2B4B5C;
 
-    .riego-metrics-grid {
-        grid-template-columns: repeat(2, 1fr);
+    --riego-sombra:
+        0 12px 35px rgba(0, 0, 0, 0.15);
+
+    color: var(--riego-texto);
+}
+
+body.dark-mode .riego-page .panel-card,
+body.dark-theme .riego-page .panel-card,
+body.tema-oscuro .riego-page .panel-card,
+body.modo-oscuro .riego-page .panel-card,
+html[data-theme="dark"] .riego-page .panel-card,
+body[data-theme="dark"] .riego-page .panel-card {
+    border-color: #2B4B5C;
+    background-color: #183849;
+}
+
+body.dark-mode .riego-page .panel-header h3,
+body.dark-theme .riego-page .panel-header h3,
+body.tema-oscuro .riego-page .panel-header h3,
+body.modo-oscuro .riego-page .panel-header h3,
+html[data-theme="dark"] .riego-page .panel-header h3,
+body[data-theme="dark"] .riego-page .panel-header h3,
+body.dark-mode .riego-page .metric-info strong,
+body.dark-theme .riego-page .metric-info strong,
+body.tema-oscuro .riego-page .metric-info strong,
+body.modo-oscuro .riego-page .metric-info strong,
+html[data-theme="dark"] .riego-page .metric-info strong,
+body[data-theme="dark"] .riego-page .metric-info strong {
+    color: #E7F6FC;
+}
+
+body.dark-mode .riego-page .metric-card,
+body.dark-theme .riego-page .metric-card,
+body.tema-oscuro .riego-page .metric-card,
+body.modo-oscuro .riego-page .metric-card,
+html[data-theme="dark"] .riego-page .metric-card,
+body[data-theme="dark"] .riego-page .metric-card {
+    border-color: #2B4B5C;
+    background: #183849;
+}
+
+body.dark-mode .riego-page .form-control,
+body.dark-theme .riego-page .form-control,
+body.tema-oscuro .riego-page .form-control,
+body.modo-oscuro .riego-page .form-control,
+html[data-theme="dark"] .riego-page .form-control,
+body[data-theme="dark"] .riego-page .form-control,
+body.dark-mode .riego-page .programaciones-search,
+body.dark-theme .riego-page .programaciones-search,
+body.tema-oscuro .riego-page .programaciones-search,
+body.modo-oscuro .riego-page .programaciones-search,
+html[data-theme="dark"] .riego-page .programaciones-search,
+body[data-theme="dark"] .riego-page .programaciones-search {
+    border-color: #35596A;
+    background: #102B3B;
+    color: #E0EDF3;
+}
+
+body.dark-mode .riego-page .form-group label,
+body.dark-theme .riego-page .form-group label,
+body.tema-oscuro .riego-page .form-group label,
+body.modo-oscuro .riego-page .form-group label,
+html[data-theme="dark"] .riego-page .form-group label,
+body[data-theme="dark"] .riego-page .form-group label {
+    color: #DDEBF2;
+}
+
+body.dark-mode .riego-page .cal-dia,
+body.dark-theme .riego-page .cal-dia,
+body.tema-oscuro .riego-page .cal-dia,
+body.modo-oscuro .riego-page .cal-dia,
+html[data-theme="dark"] .riego-page .cal-dia,
+body[data-theme="dark"] .riego-page .cal-dia {
+    border-color: transparent;
+    background: #203F50;
+    color: #DDEBF2;
+}
+
+body.dark-mode .riego-page .cal-dia.vacio,
+body.dark-theme .riego-page .cal-dia.vacio,
+body.tema-oscuro .riego-page .cal-dia.vacio,
+body.modo-oscuro .riego-page .cal-dia.vacio,
+html[data-theme="dark"] .riego-page .cal-dia.vacio,
+body[data-theme="dark"] .riego-page .cal-dia.vacio {
+    background: transparent;
+}
+
+body.dark-mode .riego-page .cal-numero,
+body.dark-theme .riego-page .cal-numero,
+body.tema-oscuro .riego-page .cal-numero,
+body.modo-oscuro .riego-page .cal-numero,
+html[data-theme="dark"] .riego-page .cal-numero,
+body[data-theme="dark"] .riego-page .cal-numero {
+    color: #E0EDF3;
+}
+
+body.dark-mode .riego-page .cal-dia.tiene-riego,
+body.dark-theme .riego-page .cal-dia.tiene-riego,
+body.tema-oscuro .riego-page .cal-dia.tiene-riego,
+body.modo-oscuro .riego-page .cal-dia.tiene-riego,
+html[data-theme="dark"] .riego-page .cal-dia.tiene-riego,
+body[data-theme="dark"] .riego-page .cal-dia.tiene-riego {
+    border-color: #267C7A;
+    background: #214D55;
+}
+
+body.dark-mode .riego-page .cal-dia.tiene-riego .cal-numero,
+body.dark-theme .riego-page .cal-dia.tiene-riego .cal-numero,
+body.tema-oscuro .riego-page .cal-dia.tiene-riego .cal-numero,
+body.modo-oscuro .riego-page .cal-dia.tiene-riego .cal-numero,
+html[data-theme="dark"] .riego-page .cal-dia.tiene-riego .cal-numero,
+body[data-theme="dark"] .riego-page .cal-dia.tiene-riego .cal-numero {
+    color: #D8FFF5;
+}
+
+body.dark-mode .riego-page .cal-dia.seleccionado,
+body.dark-theme .riego-page .cal-dia.seleccionado,
+body.tema-oscuro .riego-page .cal-dia.seleccionado,
+body.modo-oscuro .riego-page .cal-dia.seleccionado,
+html[data-theme="dark"] .riego-page .cal-dia.seleccionado,
+body[data-theme="dark"] .riego-page .cal-dia.seleccionado {
+    border-color: #38CFC3;
+    background: #205C62;
+}
+
+body.dark-mode .riego-page .cal-dia.seleccionado .cal-numero,
+body.dark-theme .riego-page .cal-dia.seleccionado .cal-numero,
+body.tema-oscuro .riego-page .cal-dia.seleccionado .cal-numero,
+body.modo-oscuro .riego-page .cal-dia.seleccionado .cal-numero,
+html[data-theme="dark"] .riego-page .cal-dia.seleccionado .cal-numero,
+body[data-theme="dark"] .riego-page .cal-dia.seleccionado .cal-numero {
+    color: #FFFFFF;
+}
+
+body.dark-mode .riego-page .riego-programacion,
+body.dark-theme .riego-page .riego-programacion,
+body.tema-oscuro .riego-page .riego-programacion,
+body.modo-oscuro .riego-page .riego-programacion,
+html[data-theme="dark"] .riego-page .riego-programacion,
+body[data-theme="dark"] .riego-page .riego-programacion {
+    border-color: #2B4B5C;
+    border-left-color: #38CFC3;
+    background: #153447;
+}
+
+body.dark-mode .riego-page .riego-programacion-info h4,
+body.dark-theme .riego-page .riego-programacion-info h4,
+body.tema-oscuro .riego-page .riego-programacion-info h4,
+body.modo-oscuro .riego-page .riego-programacion-info h4,
+html[data-theme="dark"] .riego-page .riego-programacion-info h4,
+body[data-theme="dark"] .riego-page .riego-programacion-info h4 {
+    color: #E0F5FC;
+}
+
+body.dark-mode .riego-page .riego-programacion-acciones,
+body.dark-theme .riego-page .riego-programacion-acciones,
+body.tema-oscuro .riego-page .riego-programacion-acciones,
+body.modo-oscuro .riego-page .riego-programacion-acciones,
+html[data-theme="dark"] .riego-page .riego-programacion-acciones,
+body[data-theme="dark"] .riego-page .riego-programacion-acciones {
+    border-top-color: #2B4B5C;
+}
+
+body.dark-mode .riego-page .riego-programacion-acciones button,
+body.dark-theme .riego-page .riego-programacion-acciones button,
+body.tema-oscuro .riego-page .riego-programacion-acciones button,
+body.modo-oscuro .riego-page .riego-programacion-acciones button,
+html[data-theme="dark"] .riego-page .riego-programacion-acciones button,
+body[data-theme="dark"] .riego-page .riego-programacion-acciones button {
+    border-color: #35596A;
+    background: #203F50;
+    color: #DDEBF2;
+}
+
+body.dark-mode .riego-page .riego-table,
+body.dark-theme .riego-page .riego-table,
+body.tema-oscuro .riego-page .riego-table,
+body.modo-oscuro .riego-page .riego-table,
+html[data-theme="dark"] .riego-page .riego-table,
+body[data-theme="dark"] .riego-page .riego-table {
+    background: #183849;
+}
+
+body.dark-mode .riego-page .riego-table thead,
+body.dark-theme .riego-page .riego-table thead,
+body.tema-oscuro .riego-page .riego-table thead,
+body.modo-oscuro .riego-page .riego-table thead,
+html[data-theme="dark"] .riego-page .riego-table thead,
+body[data-theme="dark"] .riego-page .riego-table thead {
+    background: #203F50;
+}
+
+body.dark-mode .riego-page .riego-table th,
+body.dark-theme .riego-page .riego-table th,
+body.tema-oscuro .riego-page .riego-table th,
+body.modo-oscuro .riego-page .riego-table th,
+html[data-theme="dark"] .riego-page .riego-table th,
+body[data-theme="dark"] .riego-page .riego-table th,
+body.dark-mode .riego-page .riego-table td,
+body.dark-theme .riego-page .riego-table td,
+body.tema-oscuro .riego-page .riego-table td,
+body.modo-oscuro .riego-page .riego-table td,
+html[data-theme="dark"] .riego-page .riego-table td,
+body[data-theme="dark"] .riego-page .riego-table td {
+    border-top-color: #2B4B5C;
+    color: #D5E6ED;
+}
+
+body.dark-mode .riego-page .riego-table tbody tr:nth-child(even),
+body.dark-theme .riego-page .riego-table tbody tr:nth-child(even),
+body.tema-oscuro .riego-page .riego-table tbody tr:nth-child(even),
+body.modo-oscuro .riego-page .riego-table tbody tr:nth-child(even),
+html[data-theme="dark"] .riego-page .riego-table tbody tr:nth-child(even),
+body[data-theme="dark"] .riego-page .riego-table tbody tr:nth-child(even) {
+    background: #1C3C4D;
+}
+
+body.dark-mode .riego-page .auto-status,
+body.dark-theme .riego-page .auto-status,
+body.tema-oscuro .riego-page .auto-status,
+body.modo-oscuro .riego-page .auto-status,
+html[data-theme="dark"] .riego-page .auto-status,
+body[data-theme="dark"] .riego-page .auto-status {
+    border-color: #2B4B5C;
+    background: #153447;
+}
+
+body.dark-mode .riego-page .auto-status-text h4,
+body.dark-theme .riego-page .auto-status-text h4,
+body.tema-oscuro .riego-page .auto-status-text h4,
+body.modo-oscuro .riego-page .auto-status-text h4,
+html[data-theme="dark"] .riego-page .auto-status-text h4,
+body[data-theme="dark"] .riego-page .auto-status-text h4 {
+    color: #E0F5FC;
+}
+
+body.dark-mode .riego-page .recomendacion-content,
+body.dark-theme .riego-page .recomendacion-content,
+body.tema-oscuro .riego-page .recomendacion-content,
+body.modo-oscuro .riego-page .recomendacion-content,
+html[data-theme="dark"] .riego-page .recomendacion-content,
+body[data-theme="dark"] .riego-page .recomendacion-content {
+    border-color: #425D48;
+    background: #213F39;
+}
+
+body.dark-mode .riego-page .recomendacion-content p,
+body.dark-theme .riego-page .recomendacion-content p,
+body.tema-oscuro .riego-page .recomendacion-content p,
+body.modo-oscuro .riego-page .recomendacion-content p,
+html[data-theme="dark"] .riego-page .recomendacion-content p,
+body[data-theme="dark"] .riego-page .recomendacion-content p {
+    color: #D0E8D8;
+}
+
+body.dark-mode .riego-page .recommendation-crop,
+body.dark-theme .riego-page .recommendation-crop,
+body.tema-oscuro .riego-page .recommendation-crop,
+body.modo-oscuro .riego-page .recommendation-crop,
+html[data-theme="dark"] .riego-page .recommendation-crop,
+body[data-theme="dark"] .riego-page .recommendation-crop {
+    border-color: #365D48;
+    background: #1A3A30;
+    color: #BCD5C5;
+}
+
+body.dark-mode .riego-page .recommendation-crop strong,
+body.dark-theme .riego-page .recommendation-crop strong,
+body.tema-oscuro .riego-page .recommendation-crop strong,
+body.modo-oscuro .riego-page .recommendation-crop strong,
+html[data-theme="dark"] .riego-page .recommendation-crop strong,
+body[data-theme="dark"] .riego-page .recommendation-crop strong {
+    color: #C7F1D3;
+}
+
+body.dark-mode .riego-page .riego-vacio,
+body.dark-theme .riego-page .riego-vacio,
+body.tema-oscuro .riego-page .riego-vacio,
+body.modo-oscuro .riego-page .riego-vacio,
+html[data-theme="dark"] .riego-page .riego-vacio,
+body[data-theme="dark"] .riego-page .riego-vacio {
+    border-color: #35596A;
+    background: #153447;
+    color: #A6BAC5;
+}
+
+body.dark-mode .modal-content,
+body.dark-theme .modal-content,
+body.tema-oscuro .modal-content,
+body.modo-oscuro .modal-content,
+html[data-theme="dark"] .modal-content,
+body[data-theme="dark"] .modal-content {
+    border-color: #35596A;
+    background: #183849;
+    color: #E0EDF3;
+}
+
+body.dark-mode .modal-header h2,
+body.dark-theme .modal-header h2,
+body.tema-oscuro .modal-header h2,
+body.modo-oscuro .modal-header h2,
+html[data-theme="dark"] .modal-header h2,
+body[data-theme="dark"] .modal-header h2 {
+    color: #E7F6FC;
+}
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1200px) {
+    .riego-page {
+        padding: 20px;
+    }
+
+    .riego-hero {
+        padding: 32px;
+    }
+
+    .riego-hero-visual {
+        flex-basis: 190px;
+        width: 190px;
     }
 
     .main-riego-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            minmax(280px, 0.9fr)
+            minmax(0, 1.1fr);
+    }
+
+    .panel-card {
+        padding: 21px;
+    }
+
+    .metric-card {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 900px) {
+    .riego-hero {
+        min-height: auto;
+    }
+
+    .riego-hero-visual {
+        flex-basis: 150px;
+        width: 150px;
+        height: 160px;
+    }
+
+    .circle-one {
+        width: 140px;
+        height: 140px;
+    }
+
+    .circle-two {
+        width: 110px;
+        height: 110px;
+    }
+
+    .riego-water-icon {
+        width: 85px;
+        height: 85px;
+        font-size: 33px;
+    }
+
+    .riego-metrics {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .metric-card {
+        padding: 17px 20px;
+    }
+
+    .metric-info strong {
+        font-size: 25px;
+    }
+
+    .main-riego-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-riego-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .riego-page {
+        padding: 13px;
+    }
+
+    .riego-hero {
+        padding: 25px 21px;
+        border-radius: 21px;
+    }
+
+    .riego-hero-content {
+        width: 100%;
+    }
+
+    .riego-hero h2 {
+        font-size: 31px;
+    }
+
+    .riego-hero p {
+        font-size: 12px;
+    }
+
+    .riego-hero-visual {
+        display: none;
+    }
+
+    .riego-eyebrow {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .riego-hero-tags {
+        gap: 7px;
+    }
+
+    .riego-hero-tags span {
+        padding: 8px 10px;
+        font-size: 9px;
+    }
+
+    .metric-card {
+        gap: 13px;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .metric-icon {
+        flex-basis: 48px;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 19px;
+    }
+
+    .metric-info strong {
+        font-size: 23px;
+    }
+
+    .metric-info > span {
+        font-size: 11px;
+    }
+
+    .panel-card {
+        padding: 17px;
+        border-radius: 17px;
+    }
+
+    .panel-header {
+        align-items: flex-start;
+        gap: 11px;
+        margin-bottom: 20px;
+    }
+
+    .panel-heading-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        font-size: 16px;
+    }
+
+    .panel-header h3 {
+        font-size: 15px;
+    }
+
+    .panel-header p {
+        font-size: 10px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-header-between {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .programaciones-search {
+        width: 100%;
+    }
+
+    .lista-programaciones-riego {
+        grid-template-columns: 1fr;
+        max-height: 420px;
+    }
+
+    .cal-days-title,
+    .cal-grid {
+        gap: 4px;
+    }
+
+    .cal-dia {
+        min-height: 53px;
+        padding: 6px 1px 4px;
+        border-radius: 9px;
+    }
+
+    .cal-dia.vacio {
+        min-height: 53px;
+    }
+
+    .cal-numero {
+        width: 25px;
+        height: 25px;
+        flex-basis: 25px;
+        font-size: 11px;
+    }
+
+    .cal-indicador {
+        max-width: 100%;
+        padding: 2px 3px;
+        font-size: 7px;
+    }
+
+    .calendar-legend {
+        gap: 10px;
+    }
+
+    .calendar-legend span {
+        font-size: 9px;
+    }
+
+    .history-badge {
+        white-space: normal;
+    }
+
+    .riego-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .modal-overlay {
+        align-items: flex-start;
+        padding: 12px;
+    }
+
+    .modal-content {
+        margin: auto 0;
+        padding: 20px;
+    }
+
+    .settings-group {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .settings-group select,
+    .settings-group input:not([type="checkbox"]):not([type="file"]) {
+        width: 100%;
+    }
+
+    .profile-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .profile-modal-actions .btn-action {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   18. MOVIMIENTO REDUCIDO
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .riego-page *,
+    .riego-page *::before,
+    .riego-page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* ============================================================
+   FIN — HARVESTX PROGRAMACIÓN DE RIEGO
+   ============================================================ */
+
+   /* ============================================================
+   HARVESTX — COMPATIBILIDAD HTML + JAVASCRIPT
+   Ajustes para la estructura real de programacion_de_riego.html
+   ============================================================ */
+
+/* CONTENEDOR GENERAL */
+
+.riego-page {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 22px;
+}
+
+/* HERO */
+
+.riego-hero {
+    display: flex;
+    align-items: center;
+    min-height: 145px;
+    padding: 28px;
+    margin-bottom: 0;
+    border-radius: 22px;
+}
+
+.riego-hero-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.riego-hero-icon {
+    display: grid;
+    flex: 0 0 65px;
+    width: 65px;
+    height: 65px;
+    place-items: center;
+    border-radius: 19px;
+    background: #DDFBF4;
+    color: #159D98;
+    font-size: 27px;
+}
+
+.riego-kicker {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--riego-turquesa-oscuro);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 1.4px;
+}
+
+.riego-hero h2 {
+    margin: 0 0 9px;
+    color: var(--riego-azul-profundo);
+    font-size: clamp(23px, 3vw, 32px);
+    letter-spacing: -0.7px;
+}
+
+.riego-hero p {
+    max-width: 650px;
+    margin: 0;
+    color: #587583;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* MÉTRICAS */
+
+.riego-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.metric-card {
+    min-width: 0;
+    padding: 18px;
+    border-radius: 17px;
+}
+
+.metric-data {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 4px;
+}
+
+.metric-data span {
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.metric-data strong {
+    color: var(--riego-azul-profundo);
+    font-size: 23px;
+    font-weight: 850;
+    overflow-wrap: anywhere;
+}
+
+.metric-data small {
+    color: #8299A4;
+    font-size: 10px;
+}
+
+/* DISTRIBUCIÓN PRINCIPAL */
+
+.main-riego-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(230px, 0.9fr)
+        minmax(300px, 1.2fr)
+        minmax(220px, 0.85fr);
+    align-items: stretch;
+    gap: 18px;
+    margin-bottom: 0;
+}
+
+.panel-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 21px;
+    border-radius: 19px;
+}
+
+.panel-card > h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 19px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--riego-borde);
+    color: var(--riego-azul-profundo);
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.panel-card > h3 i {
+    color: var(--riego-azul);
+}
+
+/* FORMULARIO */
+
+#formRiego {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#formRiego .form-group {
+    margin: 0;
+}
+
+#formRiego .form-group label {
+    color: var(--riego-texto);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+#formRiego .form-control {
+    min-height: 43px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #F8FCFD;
+}
+
+#formRiego > button {
+    width: 100%;
+    margin-top: 3px;
+    background: linear-gradient(115deg, #D9FC8D, #C4FFD4);
+    color: #102B1B !important;
+    font-weight: 800;
+    border: 1px solid #B8E77A;
+    box-shadow: 0 7px 17px rgba(39, 139, 203, 0.18);
+}
+
+#formRiego > button i {
+    color: #102B1B !important;
+}
+
+#formRiego > button:hover {
+    background: linear-gradient(115deg, #C4FFD4, #D9FC8D);
+    color: #102B1B !important;
+}
+
+/* CALENDARIO */
+
+.cal-panel {
+    min-width: 0;
+}
+
+.cal-header-bar {
+    margin-bottom: 10px;
+}
+
+.cal-days-title > div {
+    padding: 7px 0;
+    color: #7C97A3;
+    font-size: 10px;
+    font-weight: 850;
+    text-align: center;
+}
+
+.cal-grid {
+    width: 100%;
+}
+
+.cal-dia {
+    cursor: pointer;
+}
+
+.cal-dia.vacio {
+    cursor: default;
+}
+
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 17px;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--riego-texto-secundario);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.legend-dot.programado {
+    background: var(--riego-turquesa);
+}
+
+.legend-dot.hoy {
+    background: var(--riego-azul);
+}
+
+/* CONTROLES DEL CALENDARIO GENERADOS POR JS */
+
+.riego-calendario-controles {
+    margin-bottom: 15px;
+}
+
+.riego-calendario-controles h3 {
+    border: 0;
+    padding: 0;
+}
+
+/* AUTOMATIZACIÓN */
+
+.auto-box {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.auto-icon-circle {
+    display: grid;
+    width: 75px;
+    height: 75px;
+    place-items: center;
+    margin: 12px auto;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #278BCB, #38CFC3);
+    color: #FFFFFF;
+    font-size: 29px;
+    box-shadow: 0 9px 22px rgba(39, 139, 203, 0.2);
+}
+
+.auto-icon-circle.inactivo {
+    background: #EAF0F4;
+    color: #78909B;
+    box-shadow: none;
+}
+
+.auto-icon-circle.activo {
+    background: linear-gradient(145deg, #159D98, #38CFC3);
+    color: #FFFFFF;
+}
+
+.auto-box h4 {
+    margin: 10px 0;
+    color: var(--riego-azul-profundo);
+    font-size: 17px;
+    font-weight: 850;
+}
+
+.auto-box p {
+    margin: 0;
+    color: var(--riego-texto-secundario);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.auto-box .btn-toggle-auto {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* RECOMENDACIÓN */
+
+.recomendacion-box {
+    display: block;
+    padding: 17px;
+    border: 1px solid #DDEFE4;
+    border-left: 4px solid var(--riego-verde);
+    border-radius: 13px;
+    background: linear-gradient(135deg, #F7FBEF, #F0FBF7);
+    color: #526F5C;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.recomendacion-box p {
+    margin: 0;
+}
+
+.recomendacion-box strong {
+    color: #32764D;
+}
+
+/* BLOQUE INFERIOR */
+
+.bottom-riego-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 0;
+}
+
+/* HISTORIAL */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--riego-borde);
+    border-radius: 12px;
+}
+
+.riego-table {
+    width: 100%;
+    min-width: 540px;
+    border-collapse: collapse;
+}
+
+.riego-table th {
+    padding: 13px;
+    background: #EAF7FB;
+    color: #477181;
+    font-size: 10px;
+    font-weight: 850;
+    text-align: left;
+}
+
+.riego-table td {
+    padding: 13px;
+    border-top: 1px solid #EAF1F4;
+    color: #526D7B;
+    font-size: 11px;
+}
+
+.riego-table tbody tr:nth-child(even) {
+    background: #F7FBFC;
+}
+
+/* LISTA DE PROGRAMACIONES */
+
+.lista-programaciones-riego {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.riego-programacion {
+    min-width: 0;
+}
+
+.riego-programacion-acciones button {
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+    .riego-metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .main-riego-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .auto-box {
-        grid-column: span 2;
+        grid-column: 1 / -1;
     }
 }
 
+@media (max-width: 750px) {
+    .riego-page {
+        padding: 13px;
+    }
 
-@media (max-width: 992px) {
-
-    .main-riego-grid {
+    .main-riego-grid,
+    .bottom-riego-grid {
         grid-template-columns: 1fr;
     }
 
     .auto-box {
         grid-column: auto;
-    }
-}
-
-
-@media (max-width: 768px) {
-
-    .riego-metrics-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .bottom-riego-grid {
-        grid-template-columns: 1fr;
     }
 
     .riego-hero {
@@ -824,50 +2690,394 @@
     }
 
     .riego-hero-info {
-        gap: 15px;
+        align-items: flex-start;
+        gap: 13px;
     }
 
     .riego-hero-icon {
-        width: 56px;
-        height: 56px;
-        font-size: 1.6rem;
+        flex-basis: 48px;
+        width: 48px;
+        height: 48px;
+        font-size: 21px;
     }
-}
-
-
-@media (max-width: 560px) {
 
     .riego-metrics-grid {
         grid-template-columns: 1fr;
     }
 
+    .lista-programaciones-riego {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
     .riego-hero-info {
-        align-items: flex-start;
-    }
-
-    .riego-hero h2 {
-        font-size: 1.3rem;
-    }
-
-    .riego-hero p {
-        font-size: 0.82rem;
+        flex-direction: column;
     }
 
     .panel-card {
-        padding: 16px;
+        padding: 15px;
     }
 
-    .cal-day {
-        min-height: 34px;
-        padding: 8px 2px;
-        font-size: 0.76rem;
+    .cal-days-title,
+    .cal-grid {
+        gap: 3px;
     }
 
-    .cal-days-title {
-        font-size: 0.65rem;
+    .cal-dia {
+        min-height: 48px;
     }
 
-    .cal-legend {
-        gap: 10px;
+    .cal-dia.vacio {
+        min-height: 48px;
     }
+}
+ 
+/* ============================================================
+   HARVESTX — CORRECCIONES FINALES
+   PROGRAMACIÓN DE RIEGO
+   ============================================================ */
+
+/* HERO */
+
+.riego-page .riego-hero h2 {
+    color: #D9FC8D !important;
+    text-shadow: 0 0 10px rgba(217, 252, 141, 0.25);
+}
+
+.riego-page .riego-hero p {
+    color: #E0EDE2 !important;
+}
+
+/* TÍTULOS DE PANELES */
+
+.riego-page .panel-card > h3 {
+    color: #D9FC8D;
+}
+
+.riego-page .panel-card > h3 i {
+    color: #8EB156;
+}
+
+/* FORMULARIO */
+
+.riego-page #formRiego .form-group label {
+    color: #D9FC8D !important;
+}
+
+/* BOTÓN PROGRAMAR */
+
+.riego-page #formRiego > button {
+    width: 100%;
+    margin-top: 3px;
+    background: linear-gradient(115deg, #D9FC8D, #C4FFD4);
+    color: #102B1B !important;
+    font-weight: 800;
+    border: 1px solid #B8E77A;
+    box-shadow: 0 7px 17px rgba(39, 139, 203, 0.18);
+}
+
+.riego-page #formRiego > button i {
+    color: #102B1B !important;
+}
+
+.riego-page #formRiego > button:hover {
+    background: linear-gradient(115deg, #C4FFD4, #D9FC8D);
+    color: #102B1B !important;
+}
+
+/* CONTROL AUTOMATIZADO */
+
+.riego-page .auto-box h4 {
+    color: #D9FC8D !important;
+}
+
+.riego-page .auto-box p {
+    color: #D5E8D9 !important;
+}
+
+/* MODO OSCURO */
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .panel-card,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .metric-card {
+    background: #14251B;
+    border-color: #304B38;
+    color: #E5F2E8;
+}
+
+/* TEXTOS */
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page h2,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page h3,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page h4 {
+    color: #D9FC8D;
+}
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page p,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page label,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page small {
+    color: #B6CDBB;
+}
+
+/* CAMPOS */
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page input,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page select,
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page textarea {
+    background: #1C3225;
+    color: #F0F8F1;
+    border-color: #49634D;
+}
+
+/* CALENDARIO */
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .cal-dia {
+    background: #1C3225;
+    border-color: #395640;
+    color: #E5F2E8;
+}
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .cal-numero {
+    color: #F0F8F1;
+}
+
+/* HISTORIAL */
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .riego-table th {
+    background: #203B2A;
+    color: #D9FC8D;
+}
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .riego-table td {
+    background: #172B1E;
+    color: #DCEADF;
+    border-color: #395640;
+}
+
+/* RECOMENDACIONES */
+
+:is(
+    body.dark-mode,
+    body.dark-theme,
+    body.tema-oscuro,
+    body.modo-oscuro,
+    html.dark-mode,
+    html.dark-theme,
+    html.tema-oscuro,
+    html.modo-oscuro,
+    html[data-theme="dark"],
+    body[data-theme="dark"]
+) .riego-page .recomendacion-box {
+    background: #203B2A;
+    border-color: #496D4C;
+    color: #DCEADF;
+}
+
+/* ============================================================
+   FIN DE CORRECCIONES
+   ============================================================ */
+
+ /* ==========================================
+   CONTRASTE DEL ENCABEZADO DE RIEGO
+========================================== */
+
+/* Texto CONTROL AUTOMATIZADO */
+.riego-page .riego-kicker {
+    color: #315C3D !important;
+    font-weight: 900;
+}
+
+/* Título Programación de Riego */
+.riego-page .riego-hero h2 {
+    color: #214B30 !important;
+    font-weight: 850;
+    text-shadow: none !important;
+}
+
+/* Descripción del encabezado */
+.riego-page .riego-hero p {
+    color: #405B49 !important;
+    font-weight: 500;
+}
+
+/* Título de la columna Programar riego */
+.riego-page .main-riego-grid > .panel-card:first-child h3 {
+    color: #245238 !important;
+}
+
+/* Etiquetas del formulario */
+.riego-page #formRiego label {
+    color: #344D3B !important;
+    font-weight: 700;
+}
+
+/* Texto de los campos */
+.riego-page #formRiego input,
+.riego-page #formRiego select {
+    color: #263C2D !important;
 }

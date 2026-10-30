@@ -3,9 +3,8 @@ from flask_cors import CORS
 import mysql.connector
 import os
 from werkzeug.utils import secure_filename
-from datetime import datetime
-
-
+from datetime import date, time, datetime, timedelta
+from decimal import Decimal
 # ==========================================================
 # CONFIGURACIÓN PRINCIPAL
 # ==========================================================
@@ -2394,6 +2393,628 @@ def crear_alerta_automatica(
 
         if conexion:
 
+            conexion.close()
+
+
+# ==========================================================
+# PROGRAMACIÓN DE RIEGO — HARVESTX
+# ==========================================================
+
+def serializar_fecha(valor):
+    if valor is None:
+        return None
+
+    if isinstance(valor, datetime):
+        return valor.isoformat()
+
+    if isinstance(valor, date):
+        return valor.isoformat()
+
+    if isinstance(valor, time):
+        return valor.strftime("%H:%M:%S")
+
+    if isinstance(valor, timedelta):
+        total_segundos = int(valor.total_seconds())
+        horas, resto = divmod(total_segundos, 3600)
+        minutos, segundos = divmod(resto, 60)
+        return f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+
+    if isinstance(valor, Decimal):
+        return float(valor)
+
+    return valor
+
+
+
+
+def respuesta_error_riego(mensaje, codigo=400):
+    return jsonify({
+        "exito": False,
+        "mensaje": mensaje
+    }), codigo
+
+
+def obtener_usuario_riego(datos):
+    """Obtiene y valida el ID del usuario."""
+
+    try:
+        usuario_id = int(datos)
+    except (TypeError, ValueError):
+        return None
+
+    if usuario_id <= 0:
+        return None
+
+    return usuario_id
+
+
+# ==========================================================
+# LISTAR PROGRAMACIONES DE RIEGO
+# GET /api/riego?usuario_id=1
+# ==========================================================
+
+@app.route("/api/riego", methods=["GET"])
+def obtener_programaciones_riego():
+
+    conexion = None
+    cursor = None
+
+    try:
+        usuario_id = obtener_usuario_riego(
+            request.args.get("usuario_id")
+        )
+
+        if not usuario_id:
+            return respuesta_error_riego(
+                "Se necesita un usuario válido."
+            )
+
+        conexion = conectar_bd()
+
+        cursor = conexion.cursor(dictionary=True)
+
+        sql = """
+            SELECT
+                p.id,
+                p.usuario_id,
+                p.cultivo_id,
+                COALESCE(
+                    NULLIF(p.cultivo_nombre, ''),
+                    c.nombre,
+                    'Cultivo eliminado'
+                ) AS cultivo_nombre,
+                p.fecha,
+                p.hora,
+                p.duracion,
+                p.litros_estimados,
+                p.estado,
+                p.modo,
+                p.fecha_creacion,
+                p.fecha_actualizacion
+            FROM programaciones_riego AS p
+            LEFT JOIN cultivos AS c
+                ON p.cultivo_id = c.id
+            WHERE p.usuario_id = %s
+            ORDER BY p.fecha DESC, p.hora DESC, p.id DESC
+        """
+
+        cursor.execute(sql, (usuario_id,))
+
+        programaciones = cursor.fetchall()
+
+        for registro in programaciones:
+            for campo, valor in registro.items():
+                registro[campo] = serializar_fecha(valor)
+
+        return jsonify({
+            "exito": True,
+            "programaciones": programaciones
+        }), 200
+
+    except Exception as e:
+
+        app.logger.exception(
+            "Error al consultar las programaciones de riego"
+        )
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se pudieron consultar las programaciones.",
+            "error": str(e)
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+# ==========================================================
+# CREAR PROGRAMACIÓN DE RIEGO
+# POST /api/riego
+# ==========================================================
+
+@app.route("/api/riego", methods=["POST"])
+def crear_programacion_riego():
+
+    conexion = None
+    cursor = None
+
+    try:
+        datos = request.get_json(silent=True) or {}
+
+        usuario_id = obtener_usuario_riego(
+            datos.get("usuario_id")
+        )
+
+        if not usuario_id:
+            return respuesta_error_riego(
+                "El usuario indicado no es válido."
+            )
+
+        try:
+            cultivo_id = int(datos.get("cultivo_id"))
+            duracion = int(datos.get("duracion"))
+        except (TypeError, ValueError):
+            return respuesta_error_riego(
+                "Selecciona un cultivo y una duración válidos."
+            )
+
+        fecha_texto = str(datos.get("fecha", "")).strip()
+        hora_texto = str(datos.get("hora", "")).strip()
+
+        modo = datos.get("modo", "Manual")
+
+        if modo not in ("Manual", "Automatico"):
+            return respuesta_error_riego(
+                "El modo de riego no es válido."
+            )
+
+        if duracion < 1 or duracion > 1440:
+            return respuesta_error_riego(
+                "La duración debe estar entre 1 y 1440 minutos."
+            )
+
+        try:
+            fecha_riego = datetime.strptime(
+                fecha_texto, "%Y-%m-%d"
+            ).date()
+
+            hora_riego = datetime.strptime(
+                hora_texto[:5], "%H:%M"
+            ).time()
+
+        except ValueError:
+            return respuesta_error_riego(
+                "La fecha o la hora tienen un formato incorrecto."
+            )
+
+        if fecha_riego < date.today():
+            return respuesta_error_riego(
+                "No puedes programar un riego para una fecha pasada."
+            )
+
+        if (
+            fecha_riego == date.today()
+            and hora_riego < datetime.now().time().replace(
+                second=0, microsecond=0
+            )
+        ):
+            return respuesta_error_riego(
+                "La hora seleccionada ya pasó."
+            )
+
+        conexion = conectar_bd()
+        cursor = conexion.cursor(dictionary=True)
+
+        # Verificar que el cultivo pertenece al usuario.
+        cursor.execute(
+            """
+            SELECT id, nombre
+            FROM cultivos
+            WHERE id = %s
+              AND usuario_id = %s
+            """,
+            (cultivo_id, usuario_id)
+        )
+
+        cultivo = cursor.fetchone()
+
+        if not cultivo:
+            return respuesta_error_riego(
+                "El cultivo no existe o no pertenece a tu cuenta.",
+                404
+            )
+
+        litros_estimados = datos.get("litros_estimados", 0)
+
+        try:
+            litros_estimados = float(litros_estimados)
+        except (TypeError, ValueError):
+            return respuesta_error_riego(
+                "La cantidad estimada de agua no es válida."
+            )
+
+        if (
+            litros_estimados < 0
+            or litros_estimados > 10000000
+        ):
+            return respuesta_error_riego(
+                "La cantidad de agua está fuera del rango permitido."
+            )
+
+        # Insertar la programación en MySQL.
+        cursor.execute(
+            """
+            INSERT INTO programaciones_riego
+            (
+                usuario_id,
+                cultivo_id,
+                cultivo_nombre,
+                fecha,
+                hora,
+                duracion,
+                litros_estimados,
+                estado,
+                modo
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                usuario_id,
+                cultivo_id,
+                cultivo["nombre"],
+                fecha_riego,
+                hora_riego,
+                duracion,
+                litros_estimados,
+                "Programado",
+                modo
+            )
+        )
+
+        nuevo_id = cursor.lastrowid
+        conexion.commit()
+
+        return jsonify({
+            "exito": True,
+            "mensaje": "Riego programado correctamente.",
+            "id": nuevo_id
+        }), 201
+
+    except Exception as e:
+
+        if conexion and conexion.is_connected():
+            conexion.rollback()
+
+        app.logger.exception(
+            "Error al crear una programación de riego"
+        )
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se pudo guardar la programación.",
+            "error": str(e)
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+# ==========================================================
+# ACTUALIZAR ESTADO DE UNA PROGRAMACIÓN
+# PUT /api/riego/<id>
+# ==========================================================
+
+@app.route("/api/riego/<int:id>", methods=["PUT"])
+def actualizar_programacion_riego(id):
+
+    conexion = None
+    cursor = None
+
+    try:
+        datos = request.get_json(silent=True) or {}
+
+        usuario_id = obtener_usuario_riego(
+            datos.get("usuario_id")
+        )
+
+        if not usuario_id:
+            return respuesta_error_riego(
+                "Se necesita un usuario válido."
+            )
+
+        nuevo_estado = datos.get("estado")
+
+        estados_validos = (
+            "Programado",
+            "Completado",
+            "Cancelado"
+        )
+
+        if nuevo_estado not in estados_validos:
+            return respuesta_error_riego(
+                "El estado indicado no es válido."
+            )
+
+        conexion = conectar_bd()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM programaciones_riego
+            WHERE id = %s
+              AND usuario_id = %s
+            FOR UPDATE
+            """,
+            (id, usuario_id)
+        )
+
+        programacion = cursor.fetchone()
+
+        if not programacion:
+            return respuesta_error_riego(
+                "La programación no existe.",
+                404
+            )
+
+        estado_anterior = programacion["estado"]
+
+        if estado_anterior == nuevo_estado:
+            conexion.rollback()
+
+            return jsonify({
+                "exito": True,
+                "mensaje": "La programación ya tiene ese estado."
+            }), 200
+
+        if estado_anterior != "Programado":
+            conexion.rollback()
+
+            return respuesta_error_riego(
+                "Solo puedes cambiar el estado de un riego programado."
+            )
+
+        # Actualizar el estado.
+        cursor.execute(
+            """
+            UPDATE programaciones_riego
+            SET estado = %s
+            WHERE id = %s
+              AND usuario_id = %s
+            """,
+            (nuevo_estado, id, usuario_id)
+        )
+
+        # Registrar en el historial cuando finaliza o se cancela.
+        if nuevo_estado in ("Completado", "Cancelado"):
+
+            cursor.execute(
+                """
+                INSERT INTO historial_riego
+                (
+                    usuario_id,
+                    cultivo_id,
+                    programacion_id,
+                    fecha_riego,
+                    duracion,
+                    agua_utilizada,
+                    estado,
+                    observaciones
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                (
+                    usuario_id,
+                    programacion["cultivo_id"],
+                    id,
+                    datetime.now(),
+                    programacion["duracion"],
+                    (
+                        programacion["litros_estimados"]
+                        if nuevo_estado == "Completado"
+                        else 0
+                    ),
+                    nuevo_estado,
+                    (
+                        "Riego completado desde Programación de Riego."
+                        if nuevo_estado == "Completado"
+                        else "Riego cancelado desde Programación de Riego."
+                    )
+                )
+            )
+
+        conexion.commit()
+
+        return jsonify({
+            "exito": True,
+            "mensaje": "Estado actualizado correctamente."
+        }), 200
+
+    except Exception as e:
+
+        if conexion and conexion.is_connected():
+            conexion.rollback()
+
+        app.logger.exception(
+            "Error al actualizar una programación de riego"
+        )
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se pudo actualizar la programación.",
+            "error": str(e)
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+# ==========================================================
+# ELIMINAR PROGRAMACIÓN DE RIEGO
+# DELETE /api/riego/<id>?usuario_id=1
+# ==========================================================
+
+@app.route("/api/riego/<int:id>", methods=["DELETE"])
+def eliminar_programacion_riego(id):
+
+    conexion = None
+    cursor = None
+
+    try:
+        usuario_id = obtener_usuario_riego(
+            request.args.get("usuario_id")
+        )
+
+        if not usuario_id:
+            return respuesta_error_riego(
+                "Se necesita un usuario válido."
+            )
+
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+
+        cursor.execute(
+            """
+            DELETE FROM programaciones_riego
+            WHERE id = %s
+              AND usuario_id = %s
+              AND estado = 'Programado'
+            """,
+            (id, usuario_id)
+        )
+
+        if cursor.rowcount == 0:
+            conexion.rollback()
+
+            return respuesta_error_riego(
+                "No se encontró el riego programado o ya fue finalizado.",
+                404
+            )
+
+        conexion.commit()
+
+        return jsonify({
+            "exito": True,
+            "mensaje": "Programación eliminada correctamente."
+        }), 200
+
+    except Exception as e:
+
+        if conexion and conexion.is_connected():
+            conexion.rollback()
+
+        app.logger.exception(
+            "Error al eliminar una programación de riego"
+        )
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se pudo eliminar la programación.",
+            "error": str(e)
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+# ==========================================================
+# CONSULTAR HISTORIAL DE RIEGO
+# GET /api/riego/historial?usuario_id=1
+# ==========================================================
+
+@app.route("/api/riego/historial", methods=["GET"])
+def obtener_historial_riego():
+
+    conexion = None
+    cursor = None
+
+    try:
+        usuario_id = obtener_usuario_riego(
+            request.args.get("usuario_id")
+        )
+
+        if not usuario_id:
+            return respuesta_error_riego(
+                "Se necesita un usuario válido."
+            )
+
+        conexion = conectar_bd()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute(
+            """
+            SELECT
+                h.id,
+                h.usuario_id,
+                h.cultivo_id,
+                h.programacion_id,
+                COALESCE(
+                    c.nombre,
+                    'Cultivo eliminado'
+                ) AS cultivo_nombre,
+                h.fecha_riego,
+                h.duracion,
+                h.agua_utilizada,
+                h.estado,
+                h.observaciones
+            FROM historial_riego AS h
+            LEFT JOIN cultivos AS c
+                ON h.cultivo_id = c.id
+            WHERE h.usuario_id = %s
+            ORDER BY h.fecha_riego DESC, h.id DESC
+            """,
+            (usuario_id,)
+        )
+
+        historial = cursor.fetchall()
+
+        for registro in historial:
+            for campo, valor in registro.items():
+                registro[campo] = serializar_fecha(valor)
+
+        return jsonify({
+            "exito": True,
+            "historial": historial
+        }), 200
+
+    except Exception as e:
+
+        app.logger.exception(
+            "Error al consultar el historial de riego"
+        )
+
+        return jsonify({
+            "exito": False,
+            "mensaje": "No se pudo consultar el historial.",
+            "error": str(e)
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conexion and conexion.is_connected():
             conexion.close()
 
 
