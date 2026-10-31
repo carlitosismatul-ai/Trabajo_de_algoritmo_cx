@@ -1,149 +1,171 @@
 /* =========================================================
    HARVESTX - LABORES DEL CAMPO
+   Versión 2.0
+   - Registro de labores
+   - Edición y eliminación
+   - Filtros dinámicos
+   - Estadísticas automáticas
+   - Persistencia local
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    "use strict";
 
     // =====================================================
     // ELEMENTOS
     // =====================================================
 
-    const filtroTipo = document.getElementById("filtroTipoLabor");
-    const filtroCultivo = document.getElementById("filtroCultivoLabor");
-    const filtroEstado = document.getElementById("filtroEstadoLabor");
-    const filtroFecha = document.getElementById("filtroFechaLabor");
+    const $ = (id) => document.getElementById(id);
 
-    const limpiarFiltros = document.getElementById("limpiarFiltros");
-    const actualizarLabores = document.getElementById("actualizarLabores");
-    const btnNuevaLabor = document.getElementById("btnNuevaLabor");
+    const filtroTipo = $("filtroTipoLabor");
+    const filtroCultivo = $("filtroCultivoLabor");
+    const filtroEstado = $("filtroEstadoLabor");
+    const filtroFecha = $("filtroFechaLabor");
 
-    const laboresList = document.getElementById("laboresList");
-    const laboresVacio = document.getElementById("laboresVacio");
-    const contadorLabores = document.getElementById("contadorLabores");
+    const limpiarFiltros = $("limpiarFiltros");
+    const actualizarLabores = $("actualizarLabores");
+    const btnNuevaLabor = $("btnNuevaLabor");
 
-    const totalLabores = document.getElementById("totalLabores");
-    const laboresCompletadas = document.getElementById("laboresCompletadas");
-    const laboresPendientes = document.getElementById("laboresPendientes");
-    const laboresSemana = document.getElementById("laboresSemana");
+    const laboresList = $("laboresList");
+    const laboresVacio = $("laboresVacio");
+    const contadorLabores = $("contadorLabores");
 
-    const labores = document.querySelectorAll(".labor-item");
+    const totalLabores = $("totalLabores");
+    const laboresCompletadas = $("laboresCompletadas");
+    const laboresPendientes = $("laboresPendientes");
+    const laboresSemana = $("laboresSemana");
 
-
-    // =====================================================
-    // FECHA ACTUAL
-    // =====================================================
-
-    const fechaActual = new Date(2026, 8, 2);
+    if (!laboresList) return;
 
 
     // =====================================================
-    // MOSTRAR NOTIFICACIÓN
+    // CONFIGURACIÓN
     // =====================================================
 
-    function mostrarToast(mensaje, tipo = "normal") {
+    const STORAGE_KEY = "harvestX_labores_v2";
 
-        const toastAnterior = document.querySelector(".labores-toast");
+    const TIPOS = {
+        preparacion: {
+            nombre: "Preparación del terreno",
+            icono: "fa-mountain-sun",
+            clase: "labor-preparacion"
+        },
 
-        if (toastAnterior) {
-            toastAnterior.remove();
+        siembra: {
+            nombre: "Siembra",
+            icono: "fa-seedling",
+            clase: "labor-siembra"
+        },
+
+        fertilizacion: {
+            nombre: "Fertilización",
+            icono: "fa-flask",
+            clase: "labor-fertilizacion"
+        },
+
+        poda: {
+            nombre: "Poda",
+            icono: "fa-scissors",
+            clase: "labor-poda"
+        },
+
+        cosecha: {
+            nombre: "Cosecha",
+            icono: "fa-basket-shopping",
+            clase: "labor-cosecha"
+        },
+
+        mantenimiento: {
+            nombre: "Mantenimiento",
+            icono: "fa-wrench",
+            clase: "labor-mantenimiento"
         }
+    };
 
-        const toast = document.createElement("div");
 
-        toast.className = `labores-toast ${tipo}`;
+    // =====================================================
+    // FECHAS
+    // =====================================================
 
-        toast.innerHTML = `
-            <i class="fas fa-circle-check"></i>
-            <span>${mensaje}</span>
-        `;
+    function fechaLocal(fecha = new Date()) {
 
-        document.body.appendChild(toast);
+        const year = fecha.getFullYear();
+        const month = String(fecha.getMonth() + 1).padStart(2, "0");
+        const day = String(fecha.getDate()).padStart(2, "0");
 
-        setTimeout(() => {
-            toast.classList.add("mostrar");
-        }, 50);
-
-        setTimeout(() => {
-            toast.classList.remove("mostrar");
-
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-
-        }, 2500);
+        return `${year}-${month}-${day}`;
     }
 
 
-    // =====================================================
-    // CONVERTIR FECHA
-    // =====================================================
+    function convertirFecha(valor) {
 
-    function obtenerFecha(fecha) {
-        const partes = fecha.split("-");
+        if (!valor) return new Date(NaN);
 
-        return new Date(
-            Number(partes[0]),
-            Number(partes[1]) - 1,
-            Number(partes[2])
-        );
+        const [year, month, day] = valor.split("-").map(Number);
+
+        return new Date(year, month - 1, day);
     }
 
 
-    // =====================================================
-    // VERIFICAR FILTRO DE FECHA
-    // =====================================================
+    function formatearFecha(valor) {
+
+        const fecha = convertirFecha(valor);
+
+        if (Number.isNaN(fecha.getTime())) return valor;
+
+        return fecha.toLocaleDateString("es-GT", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+
+    function inicioSemana(fecha) {
+
+        const resultado = new Date(fecha);
+
+        const diferencia = resultado.getDay() === 0
+            ? 6
+            : resultado.getDay() - 1;
+
+        resultado.setDate(resultado.getDate() - diferencia);
+        resultado.setHours(0, 0, 0, 0);
+
+        return resultado;
+    }
+
 
     function coincideFecha(fechaLabor, filtro) {
 
-        if (filtro === "todas") {
-            return true;
-        }
+        if (filtro === "todas") return true;
 
-        const fecha = obtenerFecha(fechaLabor);
+        const fecha = convertirFecha(fechaLabor);
+        const hoy = convertirFecha(fechaLocal());
 
-        // HOY
+        if (Number.isNaN(fecha.getTime())) return false;
+
         if (filtro === "hoy") {
-
-            return (
-                fecha.getFullYear() === fechaActual.getFullYear() &&
-                fecha.getMonth() === fechaActual.getMonth() &&
-                fecha.getDate() === fechaActual.getDate()
-            );
+            return fechaLabor === fechaLocal();
         }
 
-
-        // ESTA SEMANA
         if (filtro === "semana") {
 
-            const inicioSemana = new Date(fechaActual);
-            const diaSemana = fechaActual.getDay();
+            const inicio = inicioSemana(hoy);
 
-            const diferencia = diaSemana === 0 ? 6 : diaSemana - 1;
+            const fin = new Date(inicio);
 
-            inicioSemana.setDate(
-                fechaActual.getDate() - diferencia
-            );
+            fin.setDate(fin.getDate() + 7);
 
-            inicioSemana.setHours(0, 0, 0, 0);
-
-            const finSemana = new Date(inicioSemana);
-
-            finSemana.setDate(
-                inicioSemana.getDate() + 6
-            );
-
-            finSemana.setHours(23, 59, 59, 999);
-
-            return fecha >= inicioSemana && fecha <= finSemana;
+            return fecha >= inicio && fecha < fin;
         }
 
-
-        // ESTE MES
         if (filtro === "mes") {
 
             return (
-                fecha.getFullYear() === fechaActual.getFullYear() &&
-                fecha.getMonth() === fechaActual.getMonth()
+                fecha.getFullYear() === hoy.getFullYear() &&
+                fecha.getMonth() === hoy.getMonth()
             );
         }
 
@@ -152,43 +174,612 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // FILTRAR LABORES
+    // DATOS INICIALES
+    // =====================================================
+
+    function obtenerDatosIniciales() {
+
+        return [...laboresList.querySelectorAll(".labor-item")]
+            .map((elemento, index) => {
+
+                const texto = (selector) =>
+                    elemento.querySelector(selector)?.textContent.trim() || "";
+
+                return {
+
+                    id: `inicial-${index + 1}`,
+
+                    titulo: texto(".labor-main h4"),
+
+                    tipo: elemento.dataset.tipo || "mantenimiento",
+
+                    cultivo: elemento.dataset.cultivo || "",
+
+                    estado: elemento.dataset.estado || "pendiente",
+
+                    fecha: elemento.dataset.fecha || fechaLocal(),
+
+                    descripcion: texto(".labor-description"),
+
+                    finca: elemento.querySelectorAll(".labor-meta span")[1]
+                        ?.textContent.trim() || "",
+
+                    responsable: elemento.querySelectorAll(".labor-meta span")[3]
+                        ?.textContent.trim() || "Usuario"
+
+                };
+
+            });
+
+    }
+
+
+    function cargarLabores() {
+
+        try {
+
+            const guardadas = localStorage.getItem(STORAGE_KEY);
+
+            if (guardadas !== null) {
+
+                const datos = JSON.parse(guardadas);
+
+                if (Array.isArray(datos)) return datos;
+            }
+
+        } catch (error) {
+
+            console.error("Error cargando labores:", error);
+
+        }
+
+        return obtenerDatosIniciales();
+    }
+
+
+    let labores = cargarLabores();
+
+    let laborEditando = null;
+
+
+    function guardarLabores() {
+
+        try {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(labores)
+            );
+
+        } catch (error) {
+
+            console.error("No se pudieron guardar las labores:", error);
+
+            mostrarToast(
+                "No se pudieron guardar los cambios.",
+                "error"
+            );
+
+        }
+    }
+
+
+    // =====================================================
+    // NOTIFICACIONES
+    // =====================================================
+
+    function mostrarToast(mensaje, tipo = "normal") {
+
+        document.querySelector(".labores-toast")?.remove();
+
+        const toast = document.createElement("div");
+
+        toast.className = `labores-toast ${tipo}`;
+
+        const icono = document.createElement("i");
+
+        icono.className = tipo === "error"
+            ? "fa-solid fa-circle-exclamation"
+            : "fa-solid fa-circle-check";
+
+        const texto = document.createElement("span");
+
+        texto.textContent = mensaje;
+
+        toast.append(icono, texto);
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.add("show");
+        });
+
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+            setTimeout(() => toast.remove(), 300);
+
+        }, 2800);
+
+    }
+
+
+    // =====================================================
+    // MODAL DE NUEVA LABOR
+    // =====================================================
+
+    function crearModal() {
+
+        if ($("modalNuevaLabor")) return;
+
+        const overlay = document.createElement("div");
+
+        overlay.id = "modalNuevaLabor";
+        overlay.className = "labor-modal-overlay";
+
+        overlay.innerHTML = `
+            <div class="labor-modal" role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="tituloModalLabor">
+
+                <div class="labor-modal-header">
+
+                    <div>
+                        <h2 id="tituloModalLabor">Nueva labor</h2>
+                        <p>Registra una actividad de tu finca.</p>
+                    </div>
+
+                    <button type="button"
+                            class="labor-modal-close"
+                            id="cerrarModalLabor"
+                            aria-label="Cerrar">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+                <form id="formNuevaLabor">
+
+                    <div class="labor-form-grid">
+
+                        <div class="labor-form-group full">
+                            <label for="laborTitulo">Nombre de la actividad *</label>
+                            <input type="text"
+                                   id="laborTitulo"
+                                   maxlength="100"
+                                   placeholder="Ej. Fertilización de tomate"
+                                   required>
+                        </div>
+
+                        <div class="labor-form-group">
+                            <label for="laborTipo">Tipo de labor *</label>
+                            <select id="laborTipo" required>
+                                <option value="">Seleccionar</option>
+                                ${Object.entries(TIPOS).map(([valor, tipo]) =>
+                                    `<option value="${valor}">${tipo.nombre}</option>`
+                                ).join("")}
+                            </select>
+                        </div>
+
+                        <div class="labor-form-group">
+                            <label for="laborCultivo">Cultivo *</label>
+                            <select id="laborCultivo" required>
+                                <option value="">Seleccionar</option>
+                                <option value="brocoli">Brócoli</option>
+                                <option value="tomate">Tomate</option>
+                                <option value="limon">Limón</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="labor-form-group">
+                            <label for="laborFecha">Fecha *</label>
+                            <input type="date"
+                                   id="laborFecha"
+                                   required>
+                        </div>
+
+                        <div class="labor-form-group">
+                            <label for="laborEstado">Estado *</label>
+                            <select id="laborEstado" required>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="completada">Completada</option>
+                            </select>
+                        </div>
+
+                        <div class="labor-form-group full">
+                            <label for="laborFinca">Finca</label>
+                            <input type="text"
+                                   id="laborFinca"
+                                   maxlength="100"
+                                   placeholder="Nombre de la finca">
+                        </div>
+
+                        <div class="labor-form-group full">
+                            <label for="laborDescripcion">Descripción</label>
+                            <textarea id="laborDescripcion"
+                                      rows="3"
+                                      maxlength="500"
+                                      placeholder="Describe brevemente la actividad..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="labor-modal-actions">
+
+                        <button type="button"
+                                class="labor-btn-cancelar"
+                                id="cancelarModalLabor">
+                            Cancelar
+                        </button>
+
+                        <button type="submit"
+                                class="labor-btn-guardar">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Guardar labor
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+
+        $("cerrarModalLabor").addEventListener("click", cerrarModal);
+
+        $("cancelarModalLabor").addEventListener("click", cerrarModal);
+
+        $("formNuevaLabor").addEventListener("submit", guardarLabor);
+
+        overlay.addEventListener("click", (event) => {
+
+            if (event.target === overlay) cerrarModal();
+
+        });
+
+    }
+
+
+    function abrirModal(labor = null) {
+
+        crearModal();
+
+        laborEditando = labor ? labor.id : null;
+
+        $("formNuevaLabor").reset();
+
+        $("tituloModalLabor").textContent = labor
+            ? "Editar labor"
+            : "Nueva labor";
+
+        $("laborFecha").value = fechaLocal();
+
+        if (labor) {
+
+            $("laborTitulo").value = labor.titulo;
+            $("laborTipo").value = labor.tipo;
+            $("laborCultivo").value = labor.cultivo;
+            $("laborFecha").value = labor.fecha;
+            $("laborEstado").value = labor.estado;
+            $("laborFinca").value = labor.finca;
+            $("laborDescripcion").value = labor.descripcion;
+
+        }
+
+        $("modalNuevaLabor").classList.add("visible");
+
+        setTimeout(() => $("laborTitulo").focus(), 100);
+
+    }
+
+
+    function cerrarModal() {
+
+        $("modalNuevaLabor")?.classList.remove("visible");
+
+        laborEditando = null;
+
+    }
+
+
+    // =====================================================
+    // GUARDAR LABOR
+    // =====================================================
+
+    function guardarLabor(event) {
+
+        event.preventDefault();
+
+        const nueva = {
+
+            id: laborEditando || `labor-${Date.now()}`,
+
+            titulo: $("laborTitulo").value.trim(),
+
+            tipo: $("laborTipo").value,
+
+            cultivo: $("laborCultivo").value,
+
+            fecha: $("laborFecha").value,
+
+            estado: $("laborEstado").value,
+
+            finca: $("laborFinca").value.trim() || "Sin finca",
+
+            descripcion: $("laborDescripcion").value.trim(),
+
+            responsable: "Usuario"
+
+        };
+
+
+        if (
+            !nueva.titulo ||
+            !nueva.tipo ||
+            !nueva.cultivo ||
+            !nueva.fecha
+        ) {
+
+            mostrarToast("Completa los campos obligatorios.", "error");
+
+            return;
+        }
+
+
+        if (laborEditando) {
+
+            const indice = labores.findIndex(
+                labor => labor.id === laborEditando
+            );
+
+            if (indice !== -1) {
+
+                nueva.responsable = labores[indice].responsable;
+
+                labores[indice] = nueva;
+
+            }
+
+            mostrarToast("Labor actualizada correctamente.");
+
+        } else {
+
+            labores.unshift(nueva);
+
+            mostrarToast("Nueva labor registrada correctamente.");
+
+        }
+
+
+        guardarLabores();
+
+        renderizarLabores();
+
+        cerrarModal();
+
+    }
+
+
+    // =====================================================
+    // CREAR TARJETA
+    // =====================================================
+
+    function crearTarjeta(labor) {
+
+        const tipo = TIPOS[labor.tipo] || TIPOS.mantenimiento;
+
+        const articulo = document.createElement("article");
+
+        articulo.className = "labor-item";
+
+        articulo.dataset.tipo = labor.tipo;
+        articulo.dataset.cultivo = labor.cultivo;
+        articulo.dataset.estado = labor.estado;
+        articulo.dataset.fecha = labor.fecha;
+
+
+        const icono = document.createElement("div");
+
+        icono.className = `labor-icon ${tipo.clase}`;
+
+        icono.innerHTML = `<i class="fa-solid ${tipo.icono}"></i>`;
+
+
+        const contenido = document.createElement("div");
+
+        contenido.className = "labor-content";
+
+
+        const principal = document.createElement("div");
+
+        principal.className = "labor-main";
+
+
+        const titulo = document.createElement("div");
+
+        const categoria = document.createElement("span");
+
+        categoria.className = "labor-type";
+        categoria.textContent = tipo.nombre;
+
+
+        const nombre = document.createElement("h4");
+
+        nombre.textContent = labor.titulo;
+
+
+        titulo.append(categoria, nombre);
+
+
+        const estado = document.createElement("span");
+
+        estado.className = labor.estado === "completada"
+            ? "labor-status status-completada"
+            : "labor-status status-pendiente";
+
+        estado.textContent = labor.estado === "completada"
+            ? "Completada"
+            : "Pendiente";
+
+
+        principal.append(titulo, estado);
+
+
+        const descripcion = document.createElement("p");
+
+        descripcion.className = "labor-description";
+
+        descripcion.textContent = labor.descripcion || "Sin descripción.";
+
+
+        const meta = document.createElement("div");
+
+        meta.className = "labor-meta";
+
+
+        const cultivoNombre = {
+            brocoli: "Brócoli",
+            tomate: "Tomate",
+            limon: "Limón",
+            otro: "Otro"
+        }[labor.cultivo] || labor.cultivo;
+
+
+        const datosMeta = [
+            ["fa-seedling", cultivoNombre],
+            ["fa-mountain-sun", labor.finca || "Sin finca"],
+            ["fa-calendar", formatearFecha(labor.fecha)],
+            ["fa-user", labor.responsable || "Usuario"]
+        ];
+
+
+        datosMeta.forEach(([iconoMeta, textoMeta]) => {
+
+            const elemento = document.createElement("span");
+
+            elemento.innerHTML = `<i class="fa-solid ${iconoMeta}"></i>`;
+
+            elemento.appendChild(
+                document.createTextNode(" " + textoMeta)
+            );
+
+            meta.appendChild(elemento);
+
+        });
+
+
+        const acciones = document.createElement("div");
+
+        acciones.className = "labor-actions";
+
+
+        const editar = document.createElement("button");
+
+        editar.type = "button";
+        editar.className = "labor-action-btn editar";
+
+        editar.innerHTML = '<i class="fa-solid fa-pen"></i> Editar';
+
+        editar.addEventListener("click", () => abrirModal(labor));
+
+
+        const eliminar = document.createElement("button");
+
+        eliminar.type = "button";
+        eliminar.className = "labor-action-btn eliminar";
+
+        eliminar.innerHTML = '<i class="fa-solid fa-trash"></i> Eliminar';
+
+        eliminar.addEventListener("click", () => eliminarLabor(labor.id));
+
+
+        acciones.append(editar, eliminar);
+
+        contenido.append(principal, descripcion, meta, acciones);
+
+        articulo.append(icono, contenido);
+
+        return articulo;
+
+    }
+
+
+    // =====================================================
+    // RENDERIZAR LABORES
+    // =====================================================
+
+    function renderizarLabores() {
+
+        laboresList.innerHTML = "";
+
+        labores.forEach(labor => {
+
+            laboresList.appendChild(crearTarjeta(labor));
+
+        });
+
+        actualizarEstadisticas();
+
+        filtrarLabores();
+
+    }
+
+
+    // =====================================================
+    // ELIMINAR LABOR
+    // =====================================================
+
+    function eliminarLabor(id) {
+
+        const confirmar = confirm(
+            "¿Estás seguro de que deseas eliminar esta labor?"
+        );
+
+        if (!confirmar) return;
+
+        labores = labores.filter(labor => labor.id !== id);
+
+        guardarLabores();
+
+        renderizarLabores();
+
+        mostrarToast("Labor eliminada correctamente.");
+
+    }
+
+
+    // =====================================================
+    // FILTROS
     // =====================================================
 
     function filtrarLabores() {
 
-        const tipoSeleccionado = filtroTipo.value;
-        const cultivoSeleccionado = filtroCultivo.value;
-        const estadoSeleccionado = filtroEstado.value;
-        const fechaSeleccionada = filtroFecha.value;
+        const tipo = filtroTipo.value;
+        const cultivo = filtroCultivo.value;
+        const estado = filtroEstado.value;
+        const fecha = filtroFecha.value;
 
         let visibles = 0;
 
-        labores.forEach(labor => {
 
-            const tipo = labor.dataset.tipo;
-            const cultivo = labor.dataset.cultivo;
-            const estado = labor.dataset.estado;
-            const fecha = labor.dataset.fecha;
-
+        document.querySelectorAll(".labor-item").forEach(elemento => {
 
             const coincideTipo =
-                tipoSeleccionado === "todos" ||
-                tipo === tipoSeleccionado;
-
+                tipo === "todos" || elemento.dataset.tipo === tipo;
 
             const coincideCultivo =
-                cultivoSeleccionado === "todos" ||
-                cultivo === cultivoSeleccionado;
-
+                cultivo === "todos" || elemento.dataset.cultivo === cultivo;
 
             const coincideEstado =
-                estadoSeleccionado === "todos" ||
-                estado === estadoSeleccionado;
-
+                estado === "todos" || elemento.dataset.estado === estado;
 
             const coincideFechaFiltro =
-                coincideFecha(fecha, fechaSeleccionada);
+                coincideFecha(elemento.dataset.fecha, fecha);
 
 
             const mostrar =
@@ -198,82 +789,51 @@ document.addEventListener("DOMContentLoaded", () => {
                 coincideFechaFiltro;
 
 
-            if (mostrar) {
+            elemento.style.display = mostrar ? "flex" : "none";
 
-                labor.style.display = "flex";
-                visibles++;
-
-            } else {
-
-                labor.style.display = "none";
-
-            }
+            if (mostrar) visibles++;
 
         });
 
-
-        // =================================================
-        // CONTADOR
-        // =================================================
 
         contadorLabores.textContent =
             `${visibles} ${visibles === 1 ? "labor encontrada" : "labores encontradas"}`;
 
 
-        // =================================================
-        // ESTADO VACÍO
-        // =================================================
+        laboresVacio.style.display = visibles === 0 ? "flex" : "none";
 
-        if (visibles === 0) {
-
-            laboresVacio.style.display = "flex";
-
-        } else {
-
-            laboresVacio.style.display = "none";
-
-        }
     }
 
 
     // =====================================================
-    // ACTUALIZAR ESTADÍSTICAS
+    // ESTADÍSTICAS
     // =====================================================
 
     function actualizarEstadisticas() {
 
-        let completadas = 0;
-        let pendientes = 0;
-        let semana = 0;
+        const total = labores.length;
+
+        const completadas = labores.filter(
+            labor => labor.estado === "completada"
+        ).length;
+
+        const pendientes = labores.filter(
+            labor => labor.estado === "pendiente"
+        ).length;
+
+        const semana = labores.filter(
+            labor => coincideFecha(labor.fecha, "semana")
+        ).length;
 
 
-        labores.forEach(labor => {
+        totalLabores.textContent = total;
 
-            const estado = labor.dataset.estado;
-            const fecha = labor.dataset.fecha;
-
-
-            if (estado === "completada") {
-                completadas++;
-            }
-
-
-            if (estado === "pendiente") {
-                pendientes++;
-            }
-
-
-            if (coincideFecha(fecha, "semana")) {
-                semana++;
-            }
-
-        });
-
-
-        totalLabores.textContent = labores.length;
         laboresCompletadas.textContent = completadas;
+
         laboresPendientes.textContent = pendientes;
+
         laboresSemana.textContent = semana;
+
     }
 
 
@@ -290,46 +850,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         filtrarLabores();
 
-        mostrarToast("Filtros limpiados");
+        mostrarToast("Filtros limpiados.");
+
     }
 
 
     // =====================================================
-    // ACTUALIZAR LABORES
+    // ACTUALIZAR LISTA
     // =====================================================
 
     function actualizarLista() {
-
-        if (!laboresList) return;
 
         laboresList.classList.add("labores-refreshing");
 
         setTimeout(() => {
 
+            renderizarLabores();
+
             laboresList.classList.remove("labores-refreshing");
 
-            filtrarLabores();
+            mostrarToast("Lista actualizada.");
 
-            mostrarToast("Lista de labores actualizada");
+        }, 350);
 
-        }, 500);
     }
 
 
     // =====================================================
-    // NUEVA LABOR
-    // =====================================================
-
-    function nuevaLabor() {
-
-        mostrarToast(
-            "El registro de nuevas labores estará disponible próximamente."
-        );
-    }
-
-
-    // =====================================================
-    // EVENTOS DE FILTROS
+    // EVENTOS
     // =====================================================
 
     filtroTipo.addEventListener("change", filtrarLabores);
@@ -339,11 +887,6 @@ document.addEventListener("DOMContentLoaded", () => {
     filtroEstado.addEventListener("change", filtrarLabores);
 
     filtroFecha.addEventListener("change", filtrarLabores);
-
-
-    // =====================================================
-    // EVENTOS DE BOTONES
-    // =====================================================
 
     limpiarFiltros.addEventListener(
         "click",
@@ -357,16 +900,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnNuevaLabor.addEventListener(
         "click",
-        nuevaLabor
+        () => abrirModal()
     );
+
+
+    document.addEventListener("keydown", event => {
+
+        if (
+            event.key === "Escape" &&
+            $("modalNuevaLabor")?.classList.contains("visible")
+        ) {
+            cerrarModal();
+        }
+
+    });
 
 
     // =====================================================
     // INICIALIZACIÓN
     // =====================================================
 
-    actualizarEstadisticas();
+    crearModal();
 
-    filtrarLabores();
+    renderizarLabores();
 
 });

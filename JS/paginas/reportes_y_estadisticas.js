@@ -1,1105 +1,1521 @@
 /* =========================================================
-   HARVESTX - REPORTES Y ESTADÍSTICAS
+   HARVESTX — REPORTES Y ESTADÍSTICAS
+   Datos desde Flask + MySQL.
+   Generación de reportes PDF con jsPDF.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+    "use strict";
 
-    /* =====================================================
-       ELEMENTOS
-       ===================================================== */
+    const API = "http://127.0.0.1:5000";
+    const $ = id => document.getElementById(id);
 
-    const fechaActual = document.getElementById("fechaActual");
+    const elementos = {
+        fecha: $("fechaActual"),
+        cultivos: $("totalCultivos"),
+        produccion: $("produccionTotal"),
+        agua: $("consumoAgua"),
+        fincas: $("totalFincas"),
 
-    const totalCultivos = document.getElementById("totalCultivos");
-    const produccionTotal = document.getElementById("produccionTotal");
-    const consumoAgua = document.getElementById("consumoAgua");
-    const totalFincas = document.getElementById("totalFincas");
+        periodoAgua: $("waterPeriod"),
 
-    const productionPeriod = document.getElementById("productionPeriod");
-    const waterPeriod = document.getElementById("waterPeriod");
+        tipo: $("reportType"),
+        periodo: $("reportPeriod"),
+        cultivo: $("reportCrop"),
+        finca: $("reportFarm"),
 
-    const reportType = document.getElementById("reportType");
-    const reportPeriod = document.getElementById("reportPeriod");
-    const reportCrop = document.getElementById("reportCrop");
-    const reportFarm = document.getElementById("reportFarm");
+        fechas: $("customDateFields"),
+        inicio: $("startDate"),
+        fin: $("endDate"),
 
-    const customDateFields = document.getElementById("customDateFields");
-    const startDate = document.getElementById("startDate");
-    const endDate = document.getElementById("endDate");
+        generar: $("generateReport"),
+        imprimir: $("printReport"),
+        descargar: $("downloadLastReport"),
 
-    const generateReport = document.getElementById("generateReport");
-    const printReport = document.getElementById("printReport");
-    const downloadLastReport = document.getElementById("downloadLastReport");
+        nombreReporte: $("lastReportName"),
+        fechaReporte: $("lastReportDate"),
 
-    const lastReportName = document.getElementById("lastReportName");
-    const lastReportDate = document.getElementById("lastReportDate");
-
-    const productionChart = document.getElementById("productionChart");
-    const distributionChart = document.getElementById("distributionChart");
-    const waterChart = document.getElementById("waterChart");
-    const activityChart = document.getElementById("activityChart");
-
-
-    /* =====================================================
-       DATOS DE DEMOSTRACIÓN
-       ===================================================== */
-
-    const datosDemo = {
-
-        resumen: {
-            cultivos: 12,
-            produccion: "8.4 t",
-            agua: "24,500 L",
-            fincas: 5
-        },
-
-        produccion: {
-
-            week: [
-                { nombre: "Brócoli", valor: 1.8 },
-                { nombre: "Tomate", valor: 2.4 },
-                { nombre: "Limón", valor: 1.2 },
-                { nombre: "Otros", valor: 0.9 }
-            ],
-
-            month: [
-                { nombre: "Brócoli", valor: 3.2 },
-                { nombre: "Tomate", valor: 4.5 },
-                { nombre: "Limón", valor: 2.1 },
-                { nombre: "Otros", valor: 1.7 }
-            ],
-
-            year: [
-                { nombre: "Brócoli", valor: 14 },
-                { nombre: "Tomate", valor: 19 },
-                { nombre: "Limón", valor: 11 },
-                { nombre: "Otros", valor: 8 }
-            ]
-        },
-
-        agua: {
-
-            week: [
-                { nombre: "Lun", valor: 3200 },
-                { nombre: "Mar", valor: 4100 },
-                { nombre: "Mié", valor: 3500 },
-                { nombre: "Jue", valor: 2900 },
-                { nombre: "Vie", valor: 4200 },
-                { nombre: "Sáb", valor: 3100 },
-                { nombre: "Dom", valor: 2800 }
-            ],
-
-            month: [
-                { nombre: "Sem. 1", valor: 8200 },
-                { nombre: "Sem. 2", valor: 9100 },
-                { nombre: "Sem. 3", valor: 7600 },
-                { nombre: "Sem. 4", valor: 9600 }
-            ],
-
-            year: [
-                { nombre: "Ene", valor: 21000 },
-                { nombre: "Feb", valor: 23500 },
-                { nombre: "Mar", valor: 25000 },
-                { nombre: "Abr", valor: 22800 },
-                { nombre: "May", valor: 27100 },
-                { nombre: "Jun", valor: 24500 }
-            ]
-        }
+        graficoCultivos: $("productionChart"),
+        graficoDistribucion: $("distributionChart"),
+        graficoAgua: $("waterChart"),
+        graficoActividad: $("activityChart")
     };
 
+    const datos = {
+        usuarioId: null,
+        usuario: {},
+        cultivos: [],
+        fincas: [],
+        riegos: [],
+        ultimoReporte: null,
+        pdfBlob: null,
+        pdfNombre: null
+    };
+
+    /* =====================================================
+       USUARIO
+       ===================================================== */
+
+    function obtenerUsuario() {
+        try {
+            const usuario = JSON.parse(
+                localStorage.getItem("usuarioHarvestX")
+            );
+
+            const id = Number(usuario?.id || usuario?.usuario_id);
+
+            if (!Number.isFinite(id) || id <= 0) {
+                return null;
+            }
+
+            datos.usuario = usuario;
+
+            return id;
+        } catch {
+            return null;
+        }
+    }
+
+    /* =====================================================
+       API
+       ===================================================== */
+
+    async function consultarAPI(ruta) {
+        const respuesta = await fetch(`${API}${ruta}`);
+
+        let resultado;
+
+        try {
+            resultado = await respuesta.json();
+        } catch {
+            throw new Error("El servidor devolvió una respuesta inválida.");
+        }
+
+        if (!respuesta.ok) {
+            throw new Error(
+                resultado.mensaje ||
+                resultado.error ||
+                `Error HTTP ${respuesta.status}`
+            );
+        }
+
+        return resultado;
+    }
+
+    async function cargarDatos() {
+        datos.usuarioId = obtenerUsuario();
+
+        if (!datos.usuarioId) {
+            throw new Error(
+                "No se encontró el usuario. Inicia sesión nuevamente."
+            );
+        }
+
+        const id = encodeURIComponent(datos.usuarioId);
+
+        const [cultivos, fincas, riegos] = await Promise.all([
+            consultarAPI(`/cultivos?usuario_id=${id}`),
+            consultarAPI(`/fincas?usuario_id=${id}`),
+            consultarAPI(`/api/riego/historial?usuario_id=${id}`)
+        ]);
+
+        datos.cultivos = Array.isArray(cultivos)
+            ? cultivos
+            : [];
+
+        datos.fincas = Array.isArray(fincas.fincas)
+            ? fincas.fincas
+            : [];
+
+        datos.riegos = Array.isArray(riegos.historial)
+            ? riegos.historial
+            : [];
+
+        cargarFiltros();
+        actualizarResumen();
+        actualizarGraficoCultivos();
+        actualizarDistribucion();
+        actualizarGraficoAgua();
+        actualizarActividad();
+    }
+
+    /* =====================================================
+       UTILIDADES
+       ===================================================== */
+
+    function numero(valor) {
+        const resultado = Number(valor);
+
+        return Number.isFinite(resultado) ? resultado : 0;
+    }
+
+    function escaparHTML(valor) {
+        return String(valor ?? "").replace(
+            /[&<>"']/g,
+            caracter => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            })[caracter]
+        );
+    }
+
+    function convertirFecha(valor) {
+        if (!valor) return null;
+
+        const texto = String(valor);
+
+        const soloFecha = texto.match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+        if (soloFecha) {
+            return new Date(
+                Number(soloFecha[1]),
+                Number(soloFecha[2]) - 1,
+                Number(soloFecha[3])
+            );
+        }
+
+        const fecha = new Date(texto.replace(" ", "T"));
+
+        return Number.isNaN(fecha.getTime())
+            ? null
+            : fecha;
+    }
+
+    function obtenerFechaInput(fecha) {
+        const anio = fecha.getFullYear();
+        const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+        const dia = String(fecha.getDate()).padStart(2, "0");
+
+        return `${anio}-${mes}-${dia}`;
+    }
+
+    function fechaLegible(valor) {
+        const fecha = convertirFecha(valor);
+
+        return fecha
+            ? fecha.toLocaleDateString("es-GT")
+            : "No disponible";
+    }
+
+    function mostrarMensaje(texto, tipo = "success") {
+        document.querySelector(".report-toast")?.remove();
+
+        const toast = document.createElement("div");
+
+        toast.className = `report-toast ${tipo}`;
+
+        const icono = document.createElement("i");
+
+        icono.className = tipo === "warning"
+            ? "fas fa-triangle-exclamation"
+            : tipo === "error"
+                ? "fas fa-circle-exclamation"
+                : "fas fa-circle-check";
+
+        const mensaje = document.createElement("span");
+        mensaje.textContent = texto;
+
+        toast.append(icono, mensaje);
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add("hide");
+
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+    }
+
+    function mostrarVacio(contenedor, mensaje) {
+        if (!contenedor) return;
+
+        contenedor.innerHTML = "";
+
+        const elemento = document.createElement("div");
+        elemento.className = "chart-empty";
+        elemento.textContent = mensaje;
+
+        contenedor.appendChild(elemento);
+    }
 
     /* =====================================================
        FECHA ACTUAL
        ===================================================== */
 
     function actualizarFecha() {
+        if (!elementos.fecha) return;
 
-        if (!fechaActual) return;
-
-        const fecha = new Date();
-
-        const opciones = {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        };
-
-        let texto = fecha.toLocaleDateString(
+        const texto = new Date().toLocaleDateString(
             "es-GT",
-            opciones
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
         );
 
-        texto =
-            texto.charAt(0).toUpperCase() +
-            texto.slice(1);
-
-        fechaActual.textContent = texto;
+        elementos.fecha.textContent =
+            texto.charAt(0).toUpperCase() + texto.slice(1);
     }
 
-
     /* =====================================================
-       RESUMEN ESTADÍSTICO
+       RESUMEN
        ===================================================== */
 
-    function cargarResumen() {
+    function actualizarResumen() {
+        const activos = datos.cultivos.filter(c =>
+            String(c.estado || "").toLowerCase() === "activo"
+        ).length;
 
-        if (totalCultivos) {
-            totalCultivos.textContent =
-                datosDemo.resumen.cultivos;
+        const agua = datos.riegos.reduce(
+            (total, registro) =>
+                total + Math.max(0, numero(registro.agua_utilizada)),
+            0
+        );
+
+        if (elementos.cultivos) {
+            elementos.cultivos.textContent =
+                activos.toLocaleString("es-GT");
         }
 
-        if (produccionTotal) {
-            produccionTotal.textContent =
-                datosDemo.resumen.produccion;
+        if (elementos.produccion) {
+            elementos.produccion.textContent = "No disponible";
         }
 
-        if (consumoAgua) {
-            consumoAgua.textContent =
-                datosDemo.resumen.agua;
+        if (elementos.agua) {
+            elementos.agua.textContent =
+                `${agua.toLocaleString("es-GT", {
+                    maximumFractionDigits: 2
+                })} L`;
         }
 
-        if (totalFincas) {
-            totalFincas.textContent =
-                datosDemo.resumen.fincas;
+        if (elementos.fincas) {
+            elementos.fincas.textContent =
+                datos.fincas.length.toLocaleString("es-GT");
         }
     }
 
-
     /* =====================================================
-       CREAR BARRAS PARA GRÁFICOS
+       GRÁFICOS DE BARRAS
        ===================================================== */
 
-    function crearGraficoBarras(
-        contenedor,
-        datos,
-        unidad = ""
-    ) {
-
+    function crearGraficoBarras(contenedor, registros, unidad = "") {
         if (!contenedor) return;
 
         contenedor.innerHTML = "";
 
-        if (!datos || datos.length === 0) {
-
-            contenedor.innerHTML = `
-                <div class="chart-empty">
-                    No hay datos disponibles.
-                </div>
-            `;
+        if (
+            !registros.length ||
+            registros.every(r => r.valor <= 0)
+        ) {
+            mostrarVacio(
+                contenedor,
+                "Todavía no hay registros disponibles."
+            );
 
             return;
         }
 
         const maximo = Math.max(
-            ...datos.map(item => item.valor)
+            ...registros.map(r => r.valor),
+            1
         );
 
-        const chart =
-            document.createElement("div");
+        const grafico = document.createElement("div");
+        grafico.className = "simple-bar-chart";
 
-        chart.className =
-            "simple-bar-chart";
+        registros.forEach(registro => {
+            const columna = document.createElement("div");
+            columna.className = "bar-column";
 
-        datos.forEach(item => {
-
-            const columna =
-                document.createElement("div");
-
-            columna.className =
-                "bar-column";
-
-
-            /* VALOR */
-
-            const valor =
-                document.createElement("span");
-
-            valor.className =
-                "bar-value";
-
+            const valor = document.createElement("span");
+            valor.className = "bar-value";
             valor.textContent =
-                `${item.valor}${unidad}`;
+                `${registro.valor.toLocaleString("es-GT")}${unidad}`;
 
+            const area = document.createElement("div");
+            area.className = "bar-area";
 
-            /* ÁREA DE BARRA */
-
-            const barraArea =
-                document.createElement("div");
-
-            barraArea.className =
-                "bar-area";
-
-
-            /* BARRA */
-
-            const barra =
-                document.createElement("div");
-
-            barra.className =
-                "chart-bar";
-
-            const porcentaje =
-                maximo > 0
-                    ? (item.valor / maximo) * 100
-                    : 0;
+            const barra = document.createElement("div");
+            barra.className = "chart-bar";
 
             barra.style.height =
-                `${Math.max(porcentaje, 8)}%`;
+                `${Math.max((registro.valor / maximo) * 100, 3)}%`;
 
+            area.appendChild(barra);
 
-            /* ETIQUETA */
+            const etiqueta = document.createElement("span");
+            etiqueta.className = "bar-label";
+            etiqueta.textContent = registro.nombre;
 
-            const etiqueta =
-                document.createElement("span");
-
-            etiqueta.className =
-                "bar-label";
-
-            etiqueta.textContent =
-                item.nombre;
-
-
-            barraArea.appendChild(barra);
-
-            columna.appendChild(valor);
-            columna.appendChild(barraArea);
-            columna.appendChild(etiqueta);
-
-            chart.appendChild(columna);
+            columna.append(valor, area, etiqueta);
+            grafico.appendChild(columna);
         });
 
-        contenedor.appendChild(chart);
+        contenedor.appendChild(grafico);
     }
 
-
     /* =====================================================
-       GRÁFICO DE PRODUCCIÓN
+       CULTIVOS POR TIPO
        ===================================================== */
 
-    function actualizarGraficoProduccion() {
+    function actualizarGraficoCultivos() {
+        const agrupados = {};
 
-        if (!productionPeriod) return;
+        datos.cultivos.forEach(cultivo => {
+            const tipo = cultivo.tipo || "Sin tipo";
+            agrupados[tipo] = (agrupados[tipo] || 0) + 1;
+        });
 
-        const periodo =
-            productionPeriod.value;
-
-        const datos =
-            datosDemo.produccion[periodo];
+        const registros = Object.entries(agrupados)
+            .map(([nombre, valor]) => ({ nombre, valor }))
+            .sort((a, b) => b.valor - a.valor);
 
         crearGraficoBarras(
-            productionChart,
-            datos,
-            " t"
+            elementos.graficoCultivos,
+            registros
         );
     }
 
-
     /* =====================================================
-       GRÁFICO DE AGUA
+       DISTRIBUCIÓN
        ===================================================== */
 
+    function actualizarDistribucion() {
+        const contenedor = elementos.graficoDistribucion;
+
+        if (!contenedor) return;
+
+        contenedor.innerHTML = "";
+
+        if (!datos.cultivos.length) {
+            mostrarVacio(
+                contenedor,
+                "Todavía no hay cultivos registrados."
+            );
+            return;
+        }
+
+        const agrupados = {};
+
+        datos.cultivos.forEach(cultivo => {
+            const nombre = cultivo.nombre || "Sin nombre";
+            agrupados[nombre] = (agrupados[nombre] || 0) + 1;
+        });
+
+        const registros = Object.entries(agrupados)
+            .sort((a, b) => b[1] - a[1]);
+
+        const colores = [
+            "#43a047",
+            "#2196f3",
+            "#ffc107",
+            "#7e57c2",
+            "#ef6c5b",
+            "#26a69a"
+        ];
+
+        const total = datos.cultivos.length;
+        let acumulado = 0;
+
+        const segmentos = registros.map(
+            ([nombre, cantidad], indice) => {
+                const inicio = acumulado;
+                acumulado += cantidad / total * 100;
+
+                return `${colores[indice % colores.length]} ${inicio}% ${acumulado}%`;
+            }
+        );
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "distribution-wrapper";
+
+        const circulo = document.createElement("div");
+        circulo.className = "distribution-circle";
+        circulo.style.background =
+            `conic-gradient(${segmentos.join(",")})`;
+
+        const centro = document.createElement("div");
+        centro.className = "distribution-center";
+
+        centro.innerHTML = `
+            <strong>${total}</strong>
+            <span>Cultivos</span>
+        `;
+
+        circulo.appendChild(centro);
+
+        const lista = document.createElement("div");
+        lista.className = "distribution-list";
+
+        registros.slice(0, 6).forEach(
+            ([nombre, cantidad], indice) => {
+                const item = document.createElement("div");
+                item.className = "distribution-item";
+
+                const info = document.createElement("div");
+                info.className = "distribution-info";
+
+                const punto = document.createElement("span");
+                punto.className = "distribution-dot";
+                punto.style.background =
+                    colores[indice % colores.length];
+
+                const texto = document.createElement("span");
+                texto.textContent = nombre;
+
+                info.append(punto, texto);
+
+                const porcentaje = document.createElement("strong");
+                porcentaje.textContent =
+                    `${Math.round(cantidad / total * 100)}%`;
+
+                item.append(info, porcentaje);
+                lista.appendChild(item);
+            }
+        );
+
+        wrapper.append(circulo, lista);
+        contenedor.appendChild(wrapper);
+    }
+
+    /* =====================================================
+       CONSUMO DE AGUA
+       ===================================================== */
+
+    function obtenerInicioPeriodo(periodo) {
+        const hoy = new Date();
+
+        const inicio = new Date(
+            hoy.getFullYear(),
+            hoy.getMonth(),
+            hoy.getDate()
+        );
+
+        if (periodo === "week") {
+            inicio.setDate(inicio.getDate() - 6);
+        }
+
+        if (periodo === "month") {
+            inicio.setDate(inicio.getDate() - 29);
+        }
+
+        if (periodo === "year") {
+            inicio.setDate(inicio.getDate() - 364);
+        }
+
+        return inicio;
+    }
+
     function actualizarGraficoAgua() {
+        const periodo = elementos.periodoAgua?.value || "week";
+        const inicio = obtenerInicioPeriodo(periodo);
+        const grupos = {};
 
-        if (!waterPeriod) return;
+        datos.riegos.forEach(registro => {
+            const fecha = convertirFecha(registro.fecha_riego);
 
-        const periodo =
-            waterPeriod.value;
+            if (!fecha || fecha < inicio) return;
 
-        const datos =
-            datosDemo.agua[periodo];
+            let clave;
+            let etiqueta;
+
+            if (periodo === "year") {
+                clave = `${fecha.getFullYear()}-${fecha.getMonth()}`;
+
+                etiqueta = fecha.toLocaleDateString(
+                    "es-GT",
+                    { month: "short" }
+                );
+            } else {
+                clave = obtenerFechaInput(fecha);
+
+                etiqueta = fecha.toLocaleDateString(
+                    "es-GT",
+                    {
+                        day: "numeric",
+                        month: "short"
+                    }
+                );
+            }
+
+            if (!grupos[clave]) {
+                grupos[clave] = {
+                    nombre: etiqueta,
+                    valor: 0
+                };
+            }
+
+            grupos[clave].valor += Math.max(
+                0,
+                numero(registro.agua_utilizada)
+            );
+        });
+
+        const registros = Object.keys(grupos)
+            .sort()
+            .map(clave => grupos[clave]);
 
         crearGraficoBarras(
-            waterChart,
-            datos,
+            elementos.graficoAgua,
+            registros,
             " L"
         );
     }
 
-
     /* =====================================================
-       DISTRIBUCIÓN DE CULTIVOS
+       ACTIVIDAD
        ===================================================== */
 
-    function crearDistribucionCultivos() {
+    function actualizarActividad() {
+        const contenedor = elementos.graficoActividad;
 
-        if (!distributionChart) return;
+        if (!contenedor) return;
 
-        const cultivos = [
+        contenedor.innerHTML = "";
 
-            {
-                nombre: "Brócoli",
-                porcentaje: 35
-            },
+        const agrupados = {};
 
-            {
-                nombre: "Tomate",
-                porcentaje: 30
-            },
-
-            {
-                nombre: "Limón",
-                porcentaje: 20
-            },
-
-            {
-                nombre: "Otros",
-                porcentaje: 15
-            }
-        ];
-
-        distributionChart.innerHTML = "";
-
-
-        /* CONTENEDOR */
-
-        const wrapper =
-            document.createElement("div");
-
-        wrapper.className =
-            "distribution-wrapper";
-
-
-        /* CÍRCULO */
-
-        const circulo =
-            document.createElement("div");
-
-        circulo.className =
-            "distribution-circle";
-
-        circulo.innerHTML = `
-            <div class="distribution-center">
-                <strong>100%</strong>
-                <span>Cultivos</span>
-            </div>
-        `;
-
-
-        /* LISTA */
-
-        const lista =
-            document.createElement("div");
-
-        lista.className =
-            "distribution-list";
-
-
-        cultivos.forEach(cultivo => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "distribution-item";
-
-            item.innerHTML = `
-                <div class="distribution-info">
-
-                    <span class="distribution-dot"></span>
-
-                    <span>
-                        ${cultivo.nombre}
-                    </span>
-
-                </div>
-
-                <strong>
-                    ${cultivo.porcentaje}%
-                </strong>
-            `;
-
-            lista.appendChild(item);
+        datos.riegos.forEach(registro => {
+            const estado = registro.estado || "Sin estado";
+            agrupados[estado] = (agrupados[estado] || 0) + 1;
         });
 
+        const registros = Object.entries(agrupados)
+            .sort((a, b) => b[1] - a[1]);
 
-        wrapper.appendChild(circulo);
-        wrapper.appendChild(lista);
-
-        distributionChart.appendChild(wrapper);
-    }
-
-
-    /* =====================================================
-       ACTIVIDAD AGRÍCOLA
-       ===================================================== */
-
-    function crearActividadAgricola() {
-
-        if (!activityChart) return;
-
-        const actividades = [
-
-            {
-                nombre: "Riego",
-                cantidad: 42,
-                icono: "fa-droplet"
-            },
-
-            {
-                nombre: "Labores",
-                cantidad: 28,
-                icono: "fa-tractor"
-            },
-
-            {
-                nombre: "Monitoreos",
-                cantidad: 19,
-                icono: "fa-cloud-sun"
-            },
-
-            {
-                nombre: "Alertas atendidas",
-                cantidad: 11,
-                icono: "fa-bell"
-            }
-        ];
-
-        activityChart.innerHTML = "";
-
-
-        const lista =
-            document.createElement("div");
-
-        lista.className =
-            "activity-list";
-
-
-        actividades.forEach(actividad => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "activity-item";
-
-            item.innerHTML = `
-
-                <div class="activity-icon">
-
-                    <i class="fas ${actividad.icono}"></i>
-
-                </div>
-
-
-                <div class="activity-info">
-
-                    <span>
-                        ${actividad.nombre}
-                    </span>
-
-                    <div class="activity-progress">
-
-                        <div
-                            class="activity-progress-bar"
-                            style="width: ${actividad.cantidad}%">
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <strong>
-                    ${actividad.cantidad}
-                </strong>
-            `;
-
-            lista.appendChild(item);
-        });
-
-        activityChart.appendChild(lista);
-    }
-
-
-    /* =====================================================
-       MOSTRAR / OCULTAR FECHAS PERSONALIZADAS
-       ===================================================== */
-
-    function controlarFechasPersonalizadas() {
-
-        if (
-            !reportPeriod ||
-            !customDateFields
-        ) {
+        if (!registros.length) {
+            mostrarVacio(
+                contenedor,
+                "No hay registros en el historial de riego."
+            );
             return;
         }
 
+        const maximo = Math.max(
+            ...registros.map(r => r[1]),
+            1
+        );
 
-        /* PERSONALIZADO */
+        const lista = document.createElement("div");
+        lista.className = "activity-list";
+
+        registros.forEach(([estado, cantidad]) => {
+            const item = document.createElement("div");
+            item.className = "activity-item";
+
+            item.innerHTML = `
+                <div class="activity-icon">
+                    <i class="fas fa-droplet"></i>
+                </div>
+
+                <div class="activity-info">
+                    <span></span>
+                    <div class="activity-progress">
+                        <div class="activity-progress-bar"></div>
+                    </div>
+                </div>
+
+                <strong>${cantidad}</strong>
+            `;
+
+            item.querySelector(".activity-info span").textContent =
+                `Riegos: ${estado}`;
+
+            item.querySelector(
+                ".activity-progress-bar"
+            ).style.width = `${cantidad / maximo * 100}%`;
+
+            lista.appendChild(item);
+        });
+
+        contenedor.appendChild(lista);
+    }
+
+    /* =====================================================
+       FILTROS
+       ===================================================== */
+
+    function cargarOpciones(select, registros, textoTodos) {
+        if (!select) return;
+
+        const valorAnterior = select.value;
+
+        select.innerHTML = "";
+
+        const opcion = document.createElement("option");
+        opcion.value = "all";
+        opcion.textContent = textoTodos;
+
+        select.appendChild(opcion);
+
+        registros.forEach(registro => {
+            const option = document.createElement("option");
+
+            option.value = String(registro.id);
+            option.textContent = registro.nombre || "Sin nombre";
+
+            select.appendChild(option);
+        });
 
         if (
-            reportPeriod.value === "custom"
+            [...select.options].some(
+                option => option.value === valorAnterior
+            )
         ) {
-
-            customDateFields.hidden = false;
-
-            customDateFields.style.display =
-                "grid";
-
-
-            /* FECHA INICIAL */
-
-            if (
-                startDate &&
-                !startDate.value
-            ) {
-
-                startDate.value =
-                    obtenerFechaInput(
-                        new Date()
-                    );
-            }
-
-
-            /* FECHA FINAL */
-
-            if (
-                endDate &&
-                !endDate.value
-            ) {
-
-                endDate.value =
-                    obtenerFechaInput(
-                        new Date()
-                    );
-            }
-
-
-        } else {
-
-            customDateFields.hidden = true;
-
-            customDateFields.style.display =
-                "none";
+            select.value = valorAnterior;
         }
     }
 
+    function cargarFiltros() {
+        cargarOpciones(
+            elementos.cultivo,
+            datos.cultivos,
+            "Todos los cultivos"
+        );
 
-    /* =====================================================
-       FECHA PARA INPUT DATE
-       ===================================================== */
-
-    function obtenerFechaInput(fecha) {
-
-        const año =
-            fecha.getFullYear();
-
-        const mes =
-            String(
-                fecha.getMonth() + 1
-            ).padStart(2, "0");
-
-        const dia =
-            String(
-                fecha.getDate()
-            ).padStart(2, "0");
-
-        return `${año}-${mes}-${dia}`;
+        cargarOpciones(
+            elementos.finca,
+            datos.fincas,
+            "Todas las fincas"
+        );
     }
 
-
     /* =====================================================
-       VALIDAR REPORTE
+       FECHAS PERSONALIZADAS
        ===================================================== */
 
-    function validarReporte() {
+    function controlarFechas() {
+        if (!elementos.periodo || !elementos.fechas) return;
 
-        if (!reportPeriod) {
+        const personalizado =
+            elementos.periodo.value === "custom";
+
+        elementos.fechas.hidden = !personalizado;
+
+        if (personalizado) {
+            const hoy = new Date();
+
+            if (!elementos.inicio.value) {
+                const inicio = new Date(hoy);
+                inicio.setDate(inicio.getDate() - 6);
+
+                elementos.inicio.value =
+                    obtenerFechaInput(inicio);
+            }
+
+            if (!elementos.fin.value) {
+                elementos.fin.value =
+                    obtenerFechaInput(hoy);
+            }
+        }
+    }
+
+    function validarFechas() {
+        if (elementos.periodo.value !== "custom") {
             return true;
         }
 
-
-        /* SOLO VALIDAMOS SI ES PERSONALIZADO */
-
-        if (
-            reportPeriod.value !== "custom"
-        ) {
-            return true;
-        }
-
-
-        /* FECHAS VACÍAS */
-
-        if (
-            !startDate ||
-            !endDate ||
-            !startDate.value ||
-            !endDate.value
-        ) {
-
-            mostrarMensaje(
-                "Selecciona la fecha inicial y final.",
-                "warning"
-            );
-
+        if (!elementos.inicio.value || !elementos.fin.value) {
+            mostrarMensaje("Selecciona ambas fechas.", "warning");
             return false;
         }
 
-
-        /* COMPARAR FECHAS */
-
-        const inicio =
-            new Date(startDate.value);
-
-        const fin =
-            new Date(endDate.value);
-
-
-        if (inicio > fin) {
-
+        if (elementos.inicio.value > elementos.fin.value) {
             mostrarMensaje(
-                "La fecha inicial no puede ser posterior a la fecha final.",
+                "La fecha inicial no puede ser posterior a la final.",
                 "warning"
             );
-
             return false;
         }
 
         return true;
     }
 
-
     /* =====================================================
-       GENERAR REPORTE
+       FILTRAR DATOS
        ===================================================== */
 
-    function generarReporte() {
+    function obtenerRangoFechas() {
+        let inicio;
+        let fin = new Date();
 
-        if (!validarReporte()) {
-            return;
+        if (elementos.periodo.value === "custom") {
+            inicio = convertirFecha(elementos.inicio.value);
+            fin = convertirFecha(elementos.fin.value);
+
+            if (fin) {
+                fin.setHours(23, 59, 59, 999);
+            }
+        } else {
+            inicio = obtenerInicioPeriodo(elementos.periodo.value);
         }
 
-
-        const tipo =
-            obtenerTextoSelect(reportType);
-
-        const periodo =
-            obtenerTextoSelect(reportPeriod);
-
-        const cultivo =
-            obtenerTextoSelect(reportCrop);
-
-        const finca =
-            obtenerTextoSelect(reportFarm);
-
-
-        /* NOMBRE BASE */
-
-        let nombreReporte =
-            `Reporte ${tipo}`;
-
-
-        /* PERÍODO */
-
-        if (periodo) {
-
-            nombreReporte +=
-                ` — ${periodo}`;
-        }
-
-
-        /* CULTIVO */
-
-        if (
-            reportCrop &&
-            reportCrop.value !== "all"
-        ) {
-
-            nombreReporte +=
-                ` — ${cultivo}`;
-        }
-
-
-        /* FINCA */
-
-        if (
-            reportFarm &&
-            reportFarm.value !== "all"
-        ) {
-
-            nombreReporte +=
-                ` — ${finca}`;
-        }
-
-
-        /* FECHAS PERSONALIZADAS */
-
-        if (
-            reportPeriod &&
-            reportPeriod.value === "custom" &&
-            startDate &&
-            endDate
-        ) {
-
-            nombreReporte +=
-                ` — ${startDate.value} a ${endDate.value}`;
-        }
-
-
-        const ahora =
-            new Date();
-
-
-        /* ÚLTIMO REPORTE */
-
-        if (lastReportName) {
-
-            lastReportName.textContent =
-                nombreReporte;
-        }
-
-
-        if (lastReportDate) {
-
-            lastReportDate.textContent =
-                `Generado el ${
-                    ahora.toLocaleDateString("es-GT")
-                } a las ${
-                    ahora.toLocaleTimeString(
-                        "es-GT",
-                        {
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        }
-                    )
-                }`;
-        }
-
-
-        /* ACTIVAR DESCARGA */
-
-        if (downloadLastReport) {
-
-            downloadLastReport.disabled =
-                false;
-        }
-
-
-        /* MENSAJE */
-
-        mostrarMensaje(
-            "Reporte generado correctamente.",
-            "success"
-        );
+        return { inicio, fin };
     }
 
+    function filtrarRiegos() {
+        const { inicio, fin } = obtenerRangoFechas();
 
-    /* =====================================================
-       OBTENER TEXTO DEL SELECT
-       ===================================================== */
+        let registros = [...datos.riegos];
 
-    function obtenerTextoSelect(select) {
+        registros = registros.filter(registro => {
+            const fecha = convertirFecha(registro.fecha_riego);
 
-        if (
-            !select ||
-            select.selectedIndex < 0
-        ) {
-            return "";
-        }
+            if (!fecha) return false;
 
-        return select.options[
-            select.selectedIndex
-        ].text;
-    }
-
-
-    /* =====================================================
-       MENSAJES
-       ===================================================== */
-
-    function mostrarMensaje(
-        texto,
-        tipo = "success"
-    ) {
-
-        const anterior =
-            document.querySelector(
-                ".report-toast"
+            return (
+                (!inicio || fecha >= inicio) &&
+                (!fin || fecha <= fin)
             );
+        });
 
-
-        if (anterior) {
-            anterior.remove();
+        if (elementos.cultivo.value !== "all") {
+            registros = registros.filter(
+                registro =>
+                    String(registro.cultivo_id) ===
+                    elementos.cultivo.value
+            );
         }
 
+        if (elementos.finca.value !== "all") {
+            registros = registros.filter(registro => {
+                const cultivo = datos.cultivos.find(
+                    c => Number(c.id) === Number(registro.cultivo_id)
+                );
 
-        const toast =
-            document.createElement("div");
-
-        toast.className =
-            `report-toast ${tipo}`;
-
-
-        let icono =
-            "fa-circle-check";
-
-
-        if (tipo === "warning") {
-
-            icono =
-                "fa-triangle-exclamation";
+                return cultivo &&
+                    String(cultivo.finca_id) === elementos.finca.value;
+            });
         }
 
-
-        toast.innerHTML = `
-            <i class="fas ${icono}"></i>
-
-            <span>
-                ${texto}
-            </span>
-        `;
-
-
-        document.body.appendChild(toast);
-
-
-        setTimeout(() => {
-
-            toast.classList.add("hide");
-
-
-            setTimeout(() => {
-
-                toast.remove();
-
-            }, 300);
-
-        }, 3000);
+        return registros;
     }
 
+    function filtrarCultivos() {
+        let registros = [...datos.cultivos];
 
-    /* =====================================================
-       DESCARGAR REPORTE DEMO
-       ===================================================== */
-
-    function descargarReporte() {
-
-        if (!lastReportName) {
-            return;
+        if (elementos.cultivo.value !== "all") {
+            registros = registros.filter(
+                c => String(c.id) === elementos.cultivo.value
+            );
         }
 
+        if (elementos.finca.value !== "all") {
+            registros = registros.filter(
+                c => String(c.finca_id || "") === elementos.finca.value
+            );
+        }
 
-        const nombre =
-            lastReportName.textContent;
+        return registros;
+    }
 
+    function filtrarFincas() {
+        let registros = [...datos.fincas];
 
-        if (
-            !nombre ||
-            nombre ===
-                "Aún no se ha generado ningún reporte"
-        ) {
+        if (elementos.finca.value !== "all") {
+            registros = registros.filter(
+                f => String(f.id) === elementos.finca.value
+            );
+        }
 
+        return registros;
+    }
+
+    /* =====================================================
+       PREPARAR REPORTE
+       ===================================================== */
+
+    function obtenerNombreReporte() {
+        const tipo = elementos.tipo.selectedOptions[0].textContent;
+        const periodo = elementos.periodo.selectedOptions[0].textContent;
+
+        return `HarvestX - ${tipo} - ${periodo}`;
+    }
+
+    function prepararReporte() {
+        if (!validarFechas()) return false;
+
+        if (!datos.usuarioId) {
             mostrarMensaje(
-                "Primero debes generar un reporte.",
-                "warning"
+                "No hay una sesión de usuario válida.",
+                "error"
             );
-
-            return;
+            return false;
         }
 
+        const tipo = elementos.tipo.value;
 
-        /*
-         * =================================================
-         * DEMO
-         * =================================================
-         *
-         * Por ahora se genera un TXT.
-         *
-         * Más adelante será reemplazado por:
-         *
-         * Flask + MySQL + generación real de PDF.
-         *
-         * =================================================
-         */
+        datos.ultimoReporte = {
+            nombre: obtenerNombreReporte(),
+            tipo,
+            periodo: elementos.periodo.selectedOptions[0].textContent,
+            fechaGeneracion: new Date(),
+            fechaInicio: elementos.periodo.value === "custom"
+                ? elementos.inicio.value
+                : obtenerFechaInput(obtenerInicioPeriodo(elementos.periodo.value)),
+            fechaFin: elementos.periodo.value === "custom"
+                ? elementos.fin.value
+                : obtenerFechaInput(new Date()),
+            cultivos: filtrarCultivos(),
+            fincas: filtrarFincas(),
+            riegos: filtrarRiegos()
+        };
 
-        const contenido = `
+        elementos.nombreReporte.textContent =
+            datos.ultimoReporte.nombre;
 
-HARVESTX
-========================================
+        elementos.fechaReporte.textContent =
+            `Generado el ${new Date().toLocaleString("es-GT")}`;
 
-${nombre}
+        return true;
+    }
 
-${
-    lastReportDate
-        ? lastReportDate.textContent
-        : ""
-}
+    /* =====================================================
+       CREACIÓN DE PDF
+       ===================================================== */
 
-----------------------------------------
-RESUMEN
-----------------------------------------
-
-Cultivos activos:
-${datosDemo.resumen.cultivos}
-
-Producción total:
-${datosDemo.resumen.produccion}
-
-Consumo de agua:
-${datosDemo.resumen.agua}
-
-Fincas registradas:
-${datosDemo.resumen.fincas}
-
-----------------------------------------
-
-Este archivo corresponde a una versión
-de demostración del módulo de reportes.
-
-La generación de reportes oficiales
-se conectará posteriormente con Flask
-y la base de datos MySQL de HarvestX.
-
-        `.trim();
-
-
-        const archivo =
-            new Blob(
-                [contenido],
-                {
-                    type:
-                        "text/plain;charset=utf-8"
-                }
+    function comprobarBibliotecasPDF() {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            throw new Error(
+                "No se pudo cargar jsPDF. Comprueba tu conexión a internet."
             );
+        }
 
-
-        const url =
-            URL.createObjectURL(
-                archivo
+        if (typeof window.html2canvas !== "function") {
+            throw new Error(
+                "No se pudo cargar html2canvas para capturar los gráficos."
             );
+        }
+    }
 
+    function agregarEncabezadoPDF(doc, reporte) {
+        const ancho = doc.internal.pageSize.getWidth();
 
-        const enlace =
-            document.createElement("a");
+        doc.setFillColor(29, 79, 55);
+        doc.rect(0, 0, ancho, 36, "F");
 
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(20);
 
-        enlace.href = url;
+        doc.text("HarvestX", 15, 17);
 
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
 
-        enlace.download =
-            "HarvestX_" +
-
-            nombre
-                .replace(
-                    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]/g,
-                    ""
-                )
-                .replace(
-                    /\s+/g,
-                    "_"
-                ) +
-
-            ".txt";
-
-
-        document.body.appendChild(
-            enlace
+        doc.text(
+            "Sistema Inteligente de Gestión Agrícola",
+            15,
+            25
         );
 
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
 
+        doc.text(
+            "REPORTE Y ESTADÍSTICAS",
+            ancho - 15,
+            17,
+            { align: "right" }
+        );
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+
+        doc.text(
+            "Documento generado desde HarvestX",
+            ancho - 15,
+            25,
+            { align: "right" }
+        );
+
+        doc.setTextColor(35, 60, 48);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+
+        doc.text(reporte.nombre, 15, 47);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+
+        doc.text(
+            `Período: ${reporte.periodo}`,
+            15,
+            55
+        );
+
+        doc.text(
+            `Desde: ${fechaLegible(reporte.fechaInicio)}   Hasta: ${fechaLegible(reporte.fechaFin)}`,
+            15,
+            62
+        );
+
+        doc.text(
+            `Generado: ${reporte.fechaGeneracion.toLocaleString("es-GT")}`,
+            15,
+            69
+        );
+
+        doc.setDrawColor(210, 225, 215);
+        doc.line(15, 75, ancho - 15, 75);
+    }
+
+    function agregarPiePagina(doc) {
+        const paginas = doc.internal.getNumberOfPages();
+
+        for (let pagina = 1; pagina <= paginas; pagina++) {
+            doc.setPage(pagina);
+
+            const ancho = doc.internal.pageSize.getWidth();
+            const alto = doc.internal.pageSize.getHeight();
+
+            doc.setDrawColor(210, 225, 215);
+            doc.line(15, alto - 15, ancho - 15, alto - 15);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(8);
+            doc.setTextColor(110, 125, 115);
+
+            doc.text(
+                "HarvestX | Reportes y Estadísticas",
+                15,
+                alto - 9
+            );
+
+            doc.text(
+                `Página ${pagina} de ${paginas}`,
+                ancho - 15,
+                alto - 9,
+                { align: "right" }
+            );
+        }
+    }
+
+    function agregarTabla(doc, titulo, columnas, filas, y) {
+        const ancho = doc.internal.pageSize.getWidth();
+
+        if (y > 250) {
+            doc.addPage();
+            y = 25;
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.setTextColor(29, 79, 55);
+
+        doc.text(titulo, 15, y);
+
+        doc.autoTable({
+            startY: y + 5,
+            head: [columnas],
+            body: filas.length
+                ? filas
+                : [["No hay registros disponibles.", ...Array(Math.max(0, columnas.length - 1)).fill("")]],
+            theme: "grid",
+            margin: {
+                left: 15,
+                right: 15
+            },
+            styles: {
+                font: "helvetica",
+                fontSize: 8,
+                cellPadding: 3,
+                overflow: "linebreak",
+                textColor: [45, 60, 50],
+                lineColor: [220, 230, 220]
+            },
+            headStyles: {
+                fillColor: [29, 79, 55],
+                textColor: [255, 255, 255],
+                fontStyle: "bold"
+            },
+            alternateRowStyles: {
+                fillColor: [242, 249, 239]
+            }
+        });
+
+        return doc.lastAutoTable.finalY + 14;
+    }
+
+    function agregarResumen(doc, reporte, y) {
+        const ancho = doc.internal.pageSize.getWidth();
+
+        const totalAgua = reporte.riegos.reduce(
+            (total, r) =>
+                total + Math.max(0, numero(r.agua_utilizada)),
+            0
+        );
+
+        const activos = reporte.cultivos.filter(
+            c => String(c.estado || "").toLowerCase() === "activo"
+        ).length;
+
+        const tarjetas = [
+            {
+                titulo: "Cultivos",
+                valor: reporte.cultivos.length
+            },
+            {
+                titulo: "Cultivos activos",
+                valor: activos
+            },
+            {
+                titulo: "Fincas",
+                valor: reporte.fincas.length
+            },
+            {
+                titulo: "Registros de riego",
+                valor: reporte.riegos.length
+            },
+            {
+                titulo: "Agua utilizada",
+                valor: `${totalAgua.toLocaleString("es-GT")} L`
+            }
+        ];
+
+        const espacio = (ancho - 30) / tarjetas.length;
+
+        tarjetas.forEach((tarjeta, indice) => {
+            const x = 15 + indice * espacio;
+
+            doc.setFillColor(242, 249, 239);
+            doc.roundedRect(
+                x,
+                y,
+                espacio - 3,
+                24,
+                2,
+                2,
+                "F"
+            );
+
+            doc.setTextColor(80, 105, 85);
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(7);
+
+            doc.text(
+                tarjeta.titulo,
+                x + 3,
+                y + 8
+            );
+
+            doc.setTextColor(29, 79, 55);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(10);
+
+            doc.text(
+                String(tarjeta.valor),
+                x + 3,
+                y + 18
+            );
+        });
+
+        return y + 34;
+    }
+
+    async function agregarGraficosPDF(doc, reporte, y) {
+        const graficos = [
+            {
+                id: "distributionChart",
+                titulo: "Distribución de cultivos"
+            },
+            {
+                id: "productionChart",
+                titulo: "Cultivos por tipo"
+            },
+            {
+                id: "waterChart",
+                titulo: "Consumo de agua"
+            },
+            {
+                id: "activityChart",
+                titulo: "Actividad de riego"
+            }
+        ];
+
+        for (const grafico of graficos) {
+            const elemento = $(grafico.id);
+
+            if (!elemento || !elemento.children.length) continue;
+
+            if (
+                elemento.querySelector(".chart-empty") ||
+                elemento.textContent.trim().length === 0
+            ) {
+                continue;
+            }
+
+            try {
+                const canvas = await html2canvas(elemento, {
+                    scale: 1.5,
+                    backgroundColor: "#FFFFFF",
+                    useCORS: true,
+                    logging: false
+                });
+
+                const imagen = canvas.toDataURL("image/png");
+
+                const anchoPagina = doc.internal.pageSize.getWidth();
+                const anchoImagen = anchoPagina - 30;
+
+                const altoImagen = Math.min(
+                    canvas.height * anchoImagen / canvas.width,
+                    85
+                );
+
+                if (y + altoImagen + 15 > 270) {
+                    doc.addPage();
+                    y = 25;
+                }
+
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(11);
+                doc.setTextColor(29, 79, 55);
+
+                doc.text(grafico.titulo, 15, y);
+
+                y += 5;
+
+                doc.addImage(
+                    imagen,
+                    "PNG",
+                    15,
+                    y,
+                    anchoImagen,
+                    altoImagen
+                );
+
+                y += altoImagen + 12;
+
+            } catch (error) {
+                console.warn(
+                    `No se pudo capturar el gráfico ${grafico.id}:`,
+                    error
+                );
+            }
+        }
+
+        return y;
+    }
+
+    async function crearPDF(reporte) {
+        comprobarBibliotecasPDF();
+
+        const { jsPDF } = window.jspdf;
+
+        const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+            compress: true
+        });
+
+        agregarEncabezadoPDF(doc, reporte);
+
+        let y = 84;
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.setTextColor(29, 79, 55);
+
+        doc.text("Resumen general", 15, y);
+
+        y += 7;
+
+        y = agregarResumen(doc, reporte, y);
+
+        const tipo = reporte.tipo;
+
+        if (tipo === "general" || tipo === "cultivos") {
+            const filas = reporte.cultivos.map(cultivo => {
+                const finca = datos.fincas.find(
+                    f => Number(f.id) === Number(cultivo.finca_id)
+                );
+
+                return [
+                    cultivo.id ?? "",
+                    cultivo.nombre || "Sin nombre",
+                    cultivo.tipo || "Sin tipo",
+                    cultivo.estado || "Sin estado",
+                    cultivo.agua || "No especificado",
+                    cultivo.cosecha || "No especificada",
+                    finca?.nombre || "Sin finca"
+                ];
+            });
+
+            y = agregarTabla(
+                doc,
+                "Detalle de cultivos",
+                [
+                    "ID",
+                    "Nombre",
+                    "Tipo",
+                    "Estado",
+                    "Agua",
+                    "Cosecha",
+                    "Finca"
+                ],
+                filas,
+                y
+            );
+        }
+
+        if (tipo === "general" || tipo === "fincas") {
+            const filas = reporte.fincas.map(finca => [
+                finca.id ?? "",
+                finca.nombre || "Sin nombre",
+                finca.ubicacion || "No disponible",
+                finca.area_total ?? "No disponible"
+            ]);
+
+            y = agregarTabla(
+                doc,
+                "Detalle de fincas",
+                [
+                    "ID",
+                    "Nombre",
+                    "Ubicación",
+                    "Área total"
+                ],
+                filas,
+                y
+            );
+        }
+
+        if (tipo === "general" || tipo === "riego") {
+            const filas = reporte.riegos.map(riego => {
+                const cultivo = datos.cultivos.find(
+                    c => Number(c.id) === Number(riego.cultivo_id)
+                );
+
+                return [
+                    riego.id ?? "",
+                    riego.cultivo_nombre || cultivo?.nombre || "No disponible",
+                    fechaLegible(riego.fecha_riego),
+                    riego.duracion ?? "No disponible",
+                    riego.agua_utilizada ?? "No disponible",
+                    riego.estado || "Sin estado"
+                ];
+            });
+
+            y = agregarTabla(
+                doc,
+                "Historial de riego",
+                [
+                    "ID",
+                    "Cultivo",
+                    "Fecha",
+                    "Duración",
+                    "Agua utilizada (L)",
+                    "Estado"
+                ],
+                filas,
+                y
+            );
+        }
+
+        if (tipo === "general") {
+            if (y + 30 > 270) {
+                doc.addPage();
+                y = 25;
+            }
+
+            y = await agregarGraficosPDF(doc, reporte, y);
+        }
+
+        agregarPiePagina(doc);
+
+        const nombreArchivo = `${reporte.nombre
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-zA-Z0-9_-]+/g, "_")}.pdf`;
+
+        const blob = doc.output("blob");
+
+        datos.pdfBlob = blob;
+        datos.pdfNombre = nombreArchivo;
+
+        return {
+            blob,
+            nombre: nombreArchivo
+        };
+    }
+
+    /* =====================================================
+       DESCARGAR PDF
+       ===================================================== */
+
+    function descargarBlob(blob, nombre) {
+        const url = URL.createObjectURL(blob);
+
+        const enlace = document.createElement("a");
+        enlace.href = url;
+        enlace.download = nombre;
+
+        document.body.appendChild(enlace);
         enlace.click();
-
-
         enlace.remove();
 
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
 
-        URL.revokeObjectURL(
-            url
-        );
+    async function generarReporte() {
+        if (!prepararReporte()) return;
 
+        const boton = elementos.generar;
 
-        mostrarMensaje(
-            "Reporte de demostración descargado.",
-            "success"
+        try {
+            boton.disabled = true;
+
+            boton.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Generando PDF...
+            `;
+
+            const resultado = await crearPDF(datos.ultimoReporte);
+
+            descargarBlob(
+                resultado.blob,
+                resultado.nombre
+            );
+
+            elementos.descargar.disabled = false;
+
+            mostrarMensaje(
+                "El reporte PDF se generó y descargó correctamente."
+            );
+
+        } catch (error) {
+            console.error("Error generando PDF:", error);
+
+            mostrarMensaje(
+                error.message || "No se pudo generar el PDF.",
+                "error"
+            );
+
+        } finally {
+            boton.disabled = false;
+
+            boton.innerHTML = `
+                <i class="fa-solid fa-file-pdf"></i>
+                Generar PDF
+            `;
+        }
+    }
+
+    function descargarUltimoReporte() {
+        if (!datos.pdfBlob || !datos.pdfNombre) {
+            mostrarMensaje(
+                "Primero genera un reporte PDF.",
+                "warning"
+            );
+            return;
+        }
+
+        descargarBlob(
+            datos.pdfBlob,
+            datos.pdfNombre
         );
     }
 
-
     /* =====================================================
-       IMPRIMIR
+       IMPRESIÓN
        ===================================================== */
 
     function imprimirReporte() {
+        if (!datos.ultimoReporte) {
+            mostrarMensaje(
+                "Primero genera un reporte.",
+                "warning"
+            );
+            return;
+        }
 
         window.print();
     }
-
 
     /* =====================================================
        EVENTOS
        ===================================================== */
 
-    if (productionPeriod) {
+    elementos.periodoAgua?.addEventListener(
+        "change",
+        actualizarGraficoAgua
+    );
 
-        productionPeriod.addEventListener(
-            "change",
-            actualizarGraficoProduccion
-        );
-    }
+    elementos.periodo?.addEventListener(
+        "change",
+        controlarFechas
+    );
 
+    elementos.generar?.addEventListener(
+        "click",
+        generarReporte
+    );
 
-    if (waterPeriod) {
+    elementos.descargar?.addEventListener(
+        "click",
+        descargarUltimoReporte
+    );
 
-        waterPeriod.addEventListener(
-            "change",
-            actualizarGraficoAgua
-        );
-    }
-
-
-    if (reportPeriod) {
-
-        reportPeriod.addEventListener(
-            "change",
-            controlarFechasPersonalizadas
-        );
-    }
-
-
-    if (generateReport) {
-
-        generateReport.addEventListener(
-            "click",
-            generarReporte
-        );
-    }
-
-
-    if (printReport) {
-
-        printReport.addEventListener(
-            "click",
-            imprimirReporte
-        );
-    }
-
-
-    if (downloadLastReport) {
-
-        downloadLastReport.addEventListener(
-            "click",
-            descargarReporte
-        );
-    }
-
+    elementos.imprimir?.addEventListener(
+        "click",
+        imprimirReporte
+    );
 
     /* =====================================================
        INICIALIZACIÓN
        ===================================================== */
 
     actualizarFecha();
+    controlarFechas();
 
-    cargarResumen();
+    cargarDatos().catch(error => {
+        console.error("Error en reportes:", error);
 
-    actualizarGraficoProduccion();
+        mostrarMensaje(
+            error.message || "No se pudieron cargar los datos.",
+            "error"
+        );
 
-    actualizarGraficoAgua();
+        [
+            elementos.cultivos,
+            elementos.fincas,
+            elementos.agua
+        ].forEach(elemento => {
+            if (elemento) elemento.textContent = "—";
+        });
 
-    crearDistribucionCultivos();
+        if (elementos.produccion) {
+            elementos.produccion.textContent = "No disponible";
+        }
 
-    crearActividadAgricola();
+        mostrarVacio(
+            elementos.graficoCultivos,
+            "No se pudieron cargar los cultivos."
+        );
 
-    controlarFechasPersonalizadas();
+        mostrarVacio(
+            elementos.graficoDistribucion,
+            "No se pudieron cargar los cultivos."
+        );
 
+        mostrarVacio(
+            elementos.graficoAgua,
+            "No se pudo cargar el historial de riego."
+        );
+
+        mostrarVacio(
+            elementos.graficoActividad,
+            "No se pudo cargar el historial de riego."
+        );
+    });
 });
+

@@ -3019,6 +3019,277 @@ def obtener_historial_riego():
 
 
 # ==========================================================
+# HISTORIAL GENERAL DE ACTIVIDADES — HARVESTX
+# GET /api/historial-actividades?usuario_id=1
+# ==========================================================
+
+@app.route("/api/historial-actividades", methods=["GET"])
+def obtener_historial_actividades():
+
+    conexion = None
+    cursor = None
+
+    try:
+        usuario_id = request.args.get("usuario_id", type=int)
+
+        if not usuario_id or usuario_id <= 0:
+            return jsonify({
+                "exito": False,
+                "mensaje": "Se necesita un usuario válido."
+            }), 400
+
+        conexion = conectar_bd()
+        cursor = conexion.cursor(dictionary=True)
+
+        actividades = []
+
+        # --------------------------------------------------
+        # 1. RIEGOS FINALIZADOS
+        # --------------------------------------------------
+
+        cursor.execute("""
+            SELECT
+                h.id,
+                h.fecha_riego,
+                h.duracion,
+                h.agua_utilizada,
+                h.estado,
+                h.observaciones,
+                COALESCE(c.nombre, 'Cultivo eliminado')
+                    AS cultivo_nombre,
+                COALESCE(u.nombre, 'Usuario')
+                    AS usuario_nombre
+            FROM historial_riego AS h
+            LEFT JOIN cultivos AS c
+                ON h.cultivo_id = c.id
+            LEFT JOIN usuarios AS u
+                ON h.usuario_id = u.id
+            WHERE h.usuario_id = %s
+            ORDER BY h.fecha_riego DESC, h.id DESC
+        """, (usuario_id,))
+
+        for registro in cursor.fetchall():
+
+            estado_original = str(
+                registro["estado"] or ""
+            )
+
+            estado_normalizado = estado_original.lower()
+
+            if estado_normalizado == "completado":
+                estado = "completada"
+            else:
+                estado = "atendida"
+
+            actividades.append({
+                "id": f"riego-{registro['id']}",
+                "tipo": "riego",
+                "estado": estado,
+                "estado_texto": estado_original,
+                "titulo": "Riego registrado",
+                "descripcion": (
+                    f"Riego de {registro['cultivo_nombre']}. "
+                    f"Duración: {registro['duracion']} minutos. "
+                    f"Agua utilizada: "
+                    f"{registro['agua_utilizada']} litros."
+                ),
+                "fecha": serializar_fecha(
+                    registro["fecha_riego"]
+                ),
+                "usuario": registro["usuario_nombre"],
+                "icono": "fa-droplet"
+            })
+
+        # --------------------------------------------------
+        # 2. RIEGOS PROGRAMADOS
+        # --------------------------------------------------
+
+        cursor.execute("""
+            SELECT
+                p.id,
+                p.cultivo_nombre,
+                p.fecha,
+                p.hora,
+                p.duracion,
+                p.estado,
+                COALESCE(u.nombre, 'Usuario')
+                    AS usuario_nombre
+            FROM programaciones_riego AS p
+            LEFT JOIN usuarios AS u
+                ON p.usuario_id = u.id
+            WHERE p.usuario_id = %s
+              AND p.estado = 'Programado'
+            ORDER BY p.fecha DESC, p.hora DESC, p.id DESC
+        """, (usuario_id,))
+
+        for registro in cursor.fetchall():
+
+            fecha = registro["fecha"]
+            hora = registro["hora"]
+
+            if fecha and hora:
+                fecha_completa = (
+                    f"{serializar_fecha(fecha)} "
+                    f"{serializar_fecha(hora)}"
+                )
+            else:
+                fecha_completa = serializar_fecha(fecha)
+
+            actividades.append({
+                "id": f"programacion-{registro['id']}",
+                "tipo": "riego",
+                "estado": "pendiente",
+                "estado_texto": "Programado",
+                "titulo": "Riego programado",
+                "descripcion": (
+                    f"Se programó un riego para "
+                    f"{registro['cultivo_nombre']}. "
+                    f"Duración: {registro['duracion']} minutos."
+                ),
+                "fecha": fecha_completa,
+                "usuario": registro["usuario_nombre"],
+                "icono": "fa-clock"
+            })
+
+        # --------------------------------------------------
+        # 3. ALERTAS RESUELTAS
+        # --------------------------------------------------
+
+        # La tabla alertas no contiene usuario_id.
+        # Por ello, se consultan las alertas globales.
+
+        cursor.execute("""
+            SELECT
+                id,
+                tipo,
+                nivel,
+                mensaje,
+                estado,
+                fecha
+            FROM alertas
+            WHERE estado = 'Resuelta'
+            ORDER BY fecha DESC, id DESC
+        """)
+
+        for alerta in cursor.fetchall():
+
+            actividades.append({
+                "id": f"alerta-{alerta['id']}",
+                "tipo": "alerta",
+                "estado": "atendida",
+                "estado_texto": "Resuelta",
+                "titulo": "Alerta atendida",
+                "descripcion": (
+                    f"{alerta['mensaje']} "
+                    f"Nivel: {alerta['nivel']}."
+                ),
+                "fecha": serializar_fecha(
+                    alerta["fecha"]
+                ),
+                "usuario": "Sistema HarvestX",
+                "icono": "fa-bell"
+            })
+
+        # --------------------------------------------------
+        # 4. ORDENAR ACTIVIDADES
+        # --------------------------------------------------
+
+        actividades.sort(
+            key=lambda actividad: (
+                actividad["fecha"] or ""
+            ),
+            reverse=True
+        )
+
+        # --------------------------------------------------
+        # 5. CALCULAR ESTADÍSTICAS
+        # --------------------------------------------------
+
+        hoy = date.today()
+
+        inicio_semana = (
+            hoy - timedelta(days=hoy.weekday())
+        )
+
+        total_hoy = 0
+        total_semana = 0
+        total_riegos = 0
+        total_alertas = 0
+
+        for actividad in actividades:
+
+            fecha_texto = actividad["fecha"]
+
+            if not fecha_texto:
+                continue
+
+            try:
+                fecha_actividad = datetime.fromisoformat(
+                    fecha_texto
+                ).date()
+
+            except (ValueError, TypeError):
+                continue
+
+            if fecha_actividad == hoy:
+                total_hoy += 1
+
+            if inicio_semana <= fecha_actividad <= hoy:
+                total_semana += 1
+
+            if (
+                actividad["tipo"] == "riego"
+                and actividad["estado"] == "completada"
+            ):
+                total_riegos += 1
+
+            if (
+                actividad["tipo"] == "alerta"
+                and actividad["estado"] == "atendida"
+            ):
+                total_alertas += 1
+
+        # --------------------------------------------------
+        # 6. RESPUESTA
+        # --------------------------------------------------
+
+        return jsonify({
+            "exito": True,
+            "actividades": actividades,
+            "estadisticas": {
+                "actividades_hoy": total_hoy,
+                "actividades_semana": total_semana,
+                "riegos_realizados": total_riegos,
+                "alertas_atendidas": total_alertas
+            }
+        }), 200
+
+    except Exception as e:
+
+        app.logger.exception(
+            "Error al consultar el historial general."
+        )
+
+        return jsonify({
+            "exito": False,
+            "mensaje": (
+                "No se pudo obtener el historial "
+                "de actividades."
+            ),
+            "error": str(e)
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+
+# ==========================================================
 # EJECUTAR SERVIDOR
 # ==========================================================
 

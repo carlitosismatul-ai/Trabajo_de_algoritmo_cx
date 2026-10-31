@@ -1,110 +1,628 @@
 /* =========================================================
    HARVESTX — MONITOREO CLIMÁTICO
-   Estilo colorido / Natural Tech
+   Natural Tech · Modern Dashboard
+   Compatible con HTML y JavaScript existentes.
+========================================================= */
+
+
+/* =========================================================
+   1. VARIABLES
 ========================================================= */
 
 :root {
+    --clima-verde: #1d653e;
+    --clima-verde-oscuro: #123f2a;
+    --clima-verde-claro: #e5f2e8;
+    --clima-verde-suave: #f2f8f3;
+    --clima-acento: #8eb156;
 
-    --clima-verde: #2e7d32;
-    --clima-verde-claro: #66bb6a;
-    --clima-verde-intenso: #1b5e20;
+    --clima-azul: #397da8;
+    --clima-azul-suave: #eaf3f9;
 
-    --clima-verde-suave: #dff4e2;
-    --clima-verde-vivo: #c8efcf;
+    --clima-celeste: #3196a8;
+    --clima-celeste-suave: #e8f5f6;
 
-    --clima-azul: #1976d2;
-    --clima-azul-claro: #42a5f5;
-    --clima-azul-suave: #dcecff;
+    --clima-naranja: #c87935;
+    --clima-naranja-suave: #fbf0e5;
 
-    --clima-celeste: #0288d1;
-    --clima-celeste-claro: #4fc3f7;
-    --clima-celeste-suave: #d9f5fc;
+    --clima-amarillo: #b58a32;
+    --clima-amarillo-suave: #faf4e5;
 
-    --clima-naranja: #ef6c00;
-    --clima-naranja-claro: #ffb74d;
-    --clima-naranja-suave: #ffead2;
-
-    --clima-amarillo: #f9a825;
-    --clima-amarillo-suave: #fff3c4;
-
-    --clima-borde:
-        rgba(46, 125, 50, 0.15);
+    --clima-borde: rgba(29, 79, 55, 0.12);
 
     --clima-sombra:
-        0 8px 24px rgba(28, 67, 35, 0.08);
+        0 5px 18px rgba(24, 54, 35, 0.055);
 
     --clima-sombra-hover:
-        0 15px 32px rgba(28, 67, 35, 0.15);
+        0 12px 26px rgba(24, 54, 35, 0.11);
 
+    --clima-transicion:
+        all 0.25s ease;
 }
 
 
 /* =========================================================
-   PÁGINA
+   2. CONTENEDOR PRINCIPAL
 ========================================================= */
 
 .clima-page {
-
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 19px;
+    min-width: 0;
+}
 
+.clima-page * {
+    box-sizing: border-box;
 }
 
 
 /* =========================================================
-   HERO
+   3. ENCABEZADO PRINCIPAL
 ========================================================= */
 
 .clima-hero {
-
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 
-    padding: 23px 25px;
+    padding: 25px 27px;
 
     position: relative;
     overflow: hidden;
 
-    border: 1px solid rgba(46,125,50,0.12);
+    border: 1px solid var(--clima-borde);
+    border-radius: 19px;
 
     background:
         linear-gradient(
-            120deg,
+            115deg,
             #ffffff 0%,
-            #effbea 45%,
-            #e4f7ed 100%
+            #f4f9f3 55%,
+            #e9f4e9 100%
         );
 
-    box-shadow:
-        var(--clima-sombra);
+    box-shadow: var(--clima-sombra);
+}
 
+.clima-hero::before {
+    content: "";
+    position: absolute;
+
+    width: 290px;
+    height: 290px;
+
+    right: -105px;
+    top: -185px;
+
+    border-radius: 50%;
+
+    background: rgba(142, 177, 86, 0.13);
+    pointer-events: none;
+}
+
+.clima-hero::after {
+    content: "";
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: 150px;
+    bottom: -115px;
+
+    border-radius: 50%;
+
+    background: rgba(49, 150, 168, 0.07);
+    pointer-events: none;
+}
+
+.clima-hero-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    position: relative;
+    z-index: 1;
+
+    min-width: 0;
+}
+
+.clima-hero-icon {
+    width: 59px;
+    height: 59px;
+    min-width: 59px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 17px;
+
+    background: linear-gradient(
+        145deg,
+        #dceedd,
+        #edf6e9
+    );
+
+    color: var(--clima-verde);
+
+    font-size: 24px;
+
+    border: 1px solid rgba(29, 101, 62, 0.08);
+}
+
+.clima-kicker {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--clima-verde);
+
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+}
+
+.clima-hero h2 {
+    margin: 0 0 5px;
+
+    color: var(--texto-oscuro);
+
+    font-size: 1.28rem;
+    font-weight: 750;
+    letter-spacing: -0.4px;
+}
+
+.clima-hero p {
+    margin: 0;
+
+    color: var(--texto-claro);
+    font-size: 0.76rem;
+    line-height: 1.5;
+}
+
+.clima-location {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+
+    position: relative;
+    z-index: 1;
+
+    border: 1px solid var(--clima-borde);
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.78);
+
+    color: var(--clima-verde);
+
+    box-shadow: 0 3px 12px rgba(24, 54, 35, 0.035);
+
+    max-width: 100%;
+}
+
+.clima-location > i {
+    font-size: 19px;
+}
+
+.clima-location span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--texto-claro);
+    font-size: 0.59rem;
+}
+
+.clima-location strong {
+    display: block;
+
+    color: var(--texto-oscuro);
+    font-size: 0.76rem;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
 }
 
 
-.clima-hero::before {
+/* =========================================================
+   4. ESTADO DE CONEXIÓN
+========================================================= */
 
+.clima-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+
+    border: 1px solid var(--clima-borde);
+    border-radius: 12px;
+
+    background: var(--fondo-tarjeta, #ffffff);
+
+    box-shadow: var(--clima-sombra);
+}
+
+.clima-status-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--texto-claro);
+    font-size: 0.70rem;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    min-width: 9px;
+
+    border-radius: 50%;
+
+    background: #a3a3a3;
+}
+
+.status-dot.online {
+    background: #43a56a;
+
+    box-shadow:
+        0 0 0 4px rgba(67, 165, 106, 0.12),
+        0 0 10px rgba(67, 165, 106, 0.22);
+}
+
+.status-dot.offline {
+    background: #d45d5d;
+
+    box-shadow:
+        0 0 0 4px rgba(212, 93, 93, 0.11);
+}
+
+.clima-update {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: var(--texto-claro);
+    font-size: 0.66rem;
+}
+
+.clima-update i {
+    color: var(--clima-verde);
+}
+
+.clima-update strong {
+    color: var(--texto-oscuro);
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   5. TÍTULOS DE SECCIÓN
+========================================================= */
+
+.clima-section-title {
+    padding: 4px 2px 1px;
+}
+
+.clima-section-title span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--clima-verde);
+
+    font-size: 0.59rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.clima-section-title h3 {
+    margin: 0;
+
+    color: var(--texto-oscuro);
+
+    font-size: 1rem;
+    font-weight: 750;
+    letter-spacing: -0.2px;
+}
+
+
+/* =========================================================
+   6. MÉTRICAS DEL CLIMA
+========================================================= */
+
+.clima-current-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.clima-card {
+    min-height: 145px;
+    padding: 19px;
+
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid transparent;
+    border-radius: 16px;
+
+    box-shadow: var(--clima-sombra);
+
+    transition: var(--clima-transicion);
+}
+
+.clima-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--clima-sombra-hover);
+}
+
+.clima-card::before {
     content: "";
 
     position: absolute;
 
-    width: 280px;
-    height: 280px;
+    top: 0;
+    left: 0;
 
-    right: -100px;
-    top: -170px;
+    width: 100%;
+    height: 3px;
+}
+
+.clima-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 105px;
+    height: 105px;
+
+    right: -42px;
+    bottom: -48px;
 
     border-radius: 50%;
 
-    background:
-        rgba(102,187,106,0.20);
+    background: rgba(255, 255, 255, 0.30);
+    pointer-events: none;
+}
 
+.clima-card-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 13px;
+
+    position: relative;
+    z-index: 1;
+
+    border-radius: 12px;
+
+    font-size: 17px;
+}
+
+.clima-card-info {
+    position: relative;
+    z-index: 1;
+}
+
+.clima-card-info span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--texto-claro);
+
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+.clima-card-info strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 1.38rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+}
+
+.clima-card-info small {
+    display: block;
+
+    color: var(--texto-claro);
+
+    font-size: 0.61rem;
+    line-height: 1.4;
 }
 
 
-.clima-hero::after {
+/* =========================================================
+   7. TEMPERATURA
+========================================================= */
 
+.clima-temperature {
+    background: linear-gradient(
+        145deg,
+        #fffaf4,
+        #f9eee2
+    );
+
+    border-color: rgba(200, 121, 53, 0.15);
+}
+
+.clima-temperature::before {
+    background: linear-gradient(
+        90deg,
+        #c87935,
+        #e5a568
+    );
+}
+
+.clima-temperature .clima-card-icon {
+    background: #f8e4d0;
+    color: #bd7134;
+}
+
+.clima-temperature .clima-card-info strong {
+    color: #bd7134;
+}
+
+
+/* =========================================================
+   8. HUMEDAD
+========================================================= */
+
+.clima-humidity {
+    background: linear-gradient(
+        145deg,
+        #f1fafb,
+        #e5f2f5
+    );
+
+    border-color: rgba(49, 150, 168, 0.15);
+}
+
+.clima-humidity::before {
+    background: linear-gradient(
+        90deg,
+        #3196a8,
+        #79bdc8
+    );
+}
+
+.clima-humidity .clima-card-icon {
+    background: #d7edf0;
+    color: #27899b;
+}
+
+.clima-humidity .clima-card-info strong {
+    color: #27899b;
+}
+
+
+/* =========================================================
+   9. PROBABILIDAD DE LLUVIA
+========================================================= */
+
+.clima-rain {
+    background: linear-gradient(
+        145deg,
+        #f2f7fc,
+        #e6eef8
+    );
+
+    border-color: rgba(57, 125, 168, 0.15);
+}
+
+.clima-rain::before {
+    background: linear-gradient(
+        90deg,
+        #397da8,
+        #79aaca
+    );
+}
+
+.clima-rain .clima-card-icon {
+    background: #dceaf5;
+    color: #397da8;
+}
+
+.clima-rain .clima-card-info strong {
+    color: #397da8;
+}
+
+
+/* =========================================================
+   10. VIENTO
+========================================================= */
+
+.clima-wind {
+    background: linear-gradient(
+        145deg,
+        #f3f8ef,
+        #e7f0e1
+    );
+
+    border-color: rgba(91, 139, 75, 0.15);
+}
+
+.clima-wind::before {
+    background: linear-gradient(
+        90deg,
+        #527f43,
+        #8eb156
+    );
+}
+
+.clima-wind .clima-card-icon {
+    background: #dcebd4;
+    color: #527f43;
+}
+
+.clima-wind .clima-card-info strong {
+    color: #527f43;
+}
+
+
+/* =========================================================
+   11. RESUMEN DEL CLIMA ACTUAL
+========================================================= */
+
+.clima-main-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 22px;
+
+    padding: 25px 27px;
+
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid var(--clima-borde);
+    border-radius: 18px;
+
+    background: linear-gradient(
+        115deg,
+        #ffffff,
+        #f1f8f0 60%,
+        #e8f2e9
+    );
+
+    box-shadow: var(--clima-sombra);
+}
+
+.clima-main-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    right: -100px;
+    top: -145px;
+
+    border-radius: 50%;
+
+    background: rgba(142, 177, 86, 0.12);
+    pointer-events: none;
+}
+
+.clima-main-card::after {
     content: "";
 
     position: absolute;
@@ -112,1606 +630,659 @@
     width: 130px;
     height: 130px;
 
-    right: 160px;
+    right: 180px;
     bottom: -100px;
 
     border-radius: 50%;
 
-    background:
-        rgba(255,193,7,0.10);
-
+    background: rgba(49, 150, 168, 0.07);
+    pointer-events: none;
 }
-
-
-.clima-hero-info {
-
-    display: flex;
-    align-items: center;
-
-    gap: 15px;
-
-    position: relative;
-    z-index: 2;
-
-}
-
-
-.clima-hero-icon {
-
-    width: 60px;
-    height: 60px;
-
-    min-width: 60px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 17px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #b9e9bd,
-            #e5f8e7
-        );
-
-    color:
-        #24752a;
-
-    font-size: 26px;
-
-    box-shadow:
-        0 7px 18px rgba(46,125,50,0.13);
-
-}
-
-
-.clima-kicker {
-
-    display: block;
-
-    font-size: 0.60rem;
-
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-
-    color:
-        #388e3c;
-
-    margin-bottom: 4px;
-
-}
-
-
-.clima-hero h2 {
-
-    font-size: 1.28rem;
-
-    font-weight: 750;
-
-    color:
-        var(--texto-oscuro);
-
-    margin-bottom: 4px;
-
-}
-
-
-.clima-hero p {
-
-    font-size: 0.76rem;
-
-    color:
-        var(--texto-claro);
-
-}
-
-
-.clima-location {
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 11px 16px;
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #edf8ee
-        );
-
-    border:
-        1px solid rgba(46,125,50,0.15);
-
-    color:
-        var(--clima-verde);
-
-    position: relative;
-    z-index: 2;
-
-    box-shadow:
-        0 5px 15px rgba(46,125,50,0.06);
-
-}
-
-
-.clima-location > i {
-
-    font-size: 18px;
-
-}
-
-
-.clima-location span {
-
-    display: block;
-
-    font-size: 0.58rem;
-
-    color:
-        var(--texto-claro);
-
-}
-
-
-.clima-location strong {
-
-    display: block;
-
-    font-size: 0.74rem;
-
-}
-
-
-/* =========================================================
-   ESTADO DE CONEXIÓN
-========================================================= */
-
-.clima-status {
-
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 11px 17px;
-
-    border:
-        1px solid rgba(46,125,50,0.10);
-
-    background:
-        linear-gradient(
-            90deg,
-            #ffffff,
-            #f4fbf4
-        );
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.035);
-
-}
-
-
-.clima-status-left {
-
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    font-size: 0.69rem;
-
-    color:
-        var(--texto-claro);
-
-}
-
-
-.status-dot {
-
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-
-    background: #999;
-
-}
-
-
-.status-dot.online {
-
-    background: #43a047;
-
-    box-shadow:
-        0 0 0 4px rgba(67,160,71,0.15),
-        0 0 12px rgba(67,160,71,0.35);
-
-}
-
-
-.status-dot.offline {
-
-    background: #e53935;
-
-    box-shadow:
-        0 0 0 4px rgba(229,57,53,0.12);
-
-}
-
-
-.clima-update {
-
-    display: flex;
-    align-items: center;
-
-    gap: 5px;
-
-    font-size: 0.65rem;
-
-    color:
-        var(--texto-claro);
-
-}
-
-
-.clima-update i {
-
-    color:
-        var(--clima-verde);
-
-}
-
-
-.clima-update strong {
-
-    color:
-        var(--texto-oscuro);
-
-}
-
-
-/* =========================================================
-   TÍTULOS
-========================================================= */
-
-.clima-section-title {
-
-    padding: 5px 2px 2px;
-
-}
-
-
-.clima-section-title span {
-
-    display: block;
-
-    font-size: 0.58rem;
-
-    font-weight: 800;
-
-    letter-spacing: 1.4px;
-
-    color:
-        var(--clima-verde);
-
-    margin-bottom: 3px;
-
-}
-
-
-.clima-section-title h3 {
-
-    font-size: 0.98rem;
-
-    font-weight: 700;
-
-    color:
-        var(--texto-oscuro);
-
-}
-
-
-/* =========================================================
-   TARJETAS ACTUALES
-========================================================= */
-
-.clima-current-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 14px;
-
-}
-
-
-.clima-card {
-
-    min-height: 148px;
-
-    padding: 18px;
-
-    border-radius: 17px;
-
-    position: relative;
-
-    overflow: hidden;
-
-    border:
-        1px solid transparent;
-
-    box-shadow:
-        var(--clima-sombra);
-
-    transition:
-        transform 0.22s ease,
-        box-shadow 0.22s ease;
-
-}
-
-
-.clima-card:hover {
-
-    transform: translateY(-5px);
-
-    box-shadow:
-        var(--clima-sombra-hover);
-
-}
-
-
-/* Barra superior */
-
-.clima-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 5px;
-
-}
-
-
-/* Círculo decorativo */
-
-.clima-card::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 115px;
-    height: 115px;
-
-    right: -45px;
-    bottom: -55px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255,255,255,0.25);
-
-}
-
-
-/* Icono */
-
-.clima-card-icon {
-
-    width: 45px;
-    height: 45px;
-
-    border-radius: 13px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 18px;
-
-    margin-bottom: 12px;
-
-    position: relative;
-    z-index: 2;
-
-    box-shadow:
-        0 5px 12px rgba(0,0,0,0.06);
-
-}
-
-
-.clima-card-info {
-
-    position: relative;
-    z-index: 2;
-
-}
-
-
-.clima-card-info span {
-
-    display: block;
-
-    font-size: 0.65rem;
-
-    font-weight: 600;
-
-    color:
-        var(--texto-claro);
-
-    margin-bottom: 3px;
-
-}
-
-
-.clima-card-info strong {
-
-    display: block;
-
-    font-size: 1.34rem;
-
-    font-weight: 800;
-
-    line-height: 1.1;
-
-    margin-bottom: 4px;
-
-}
-
-
-.clima-card-info small {
-
-    display: block;
-
-    font-size: 0.61rem;
-
-    color:
-        var(--texto-claro);
-
-}
-
-
-/* =========================================================
-   TEMPERATURA — NARANJA
-========================================================= */
-
-.clima-temperature {
-
-    background:
-        linear-gradient(
-            145deg,
-            #fff0dc 0%,
-            #fff8ed 55%,
-            #ffe5c4 100%
-        );
-
-    border-color:
-        rgba(239,108,0,0.18);
-
-}
-
-
-.clima-temperature::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #ef6c00,
-            #ff9800,
-            #ffcc80
-        );
-
-}
-
-
-.clima-temperature::after {
-
-    background:
-        rgba(255,152,0,0.10);
-
-}
-
-
-.clima-temperature .clima-card-icon {
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffcc80,
-            #ffe0b2
-        );
-
-    color:
-        #e65100;
-
-}
-
-
-.clima-temperature .clima-card-info strong {
-
-    color:
-        #e65100;
-
-}
-
-
-/* =========================================================
-   HUMEDAD — CELESTE
-========================================================= */
-
-.clima-humidity {
-
-    background:
-        linear-gradient(
-            145deg,
-            #d9f6fc 0%,
-            #effcff 55%,
-            #c9edf7 100%
-        );
-
-    border-color:
-        rgba(2,136,209,0.18);
-
-}
-
-
-.clima-humidity::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #0288d1,
-            #03a9f4,
-            #80deea
-        );
-
-}
-
-
-.clima-humidity::after {
-
-    background:
-        rgba(3,169,244,0.10);
-
-}
-
-
-.clima-humidity .clima-card-icon {
-
-    background:
-        linear-gradient(
-            145deg,
-            #80deea,
-            #b2ebf2
-        );
-
-    color:
-        #0277bd;
-
-}
-
-
-.clima-humidity .clima-card-info strong {
-
-    color:
-        #0277bd;
-
-}
-
-
-/* =========================================================
-   LLUVIA — AZUL
-========================================================= */
-
-.clima-rain {
-
-    background:
-        linear-gradient(
-            145deg,
-            #dceaff 0%,
-            #f0f6ff 55%,
-            #c8dcfa 100%
-        );
-
-    border-color:
-        rgba(25,118,210,0.18);
-
-}
-
-
-.clima-rain::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #1565c0,
-            #1976d2,
-            #64b5f6
-        );
-
-}
-
-
-.clima-rain::after {
-
-    background:
-        rgba(25,118,210,0.10);
-
-}
-
-
-.clima-rain .clima-card-icon {
-
-    background:
-        linear-gradient(
-            145deg,
-            #90caf9,
-            #bbdefb
-        );
-
-    color:
-        #1565c0;
-
-}
-
-
-.clima-rain .clima-card-info strong {
-
-    color:
-        #1565c0;
-
-}
-
-
-/* =========================================================
-   VIENTO — VERDE
-========================================================= */
-
-.clima-wind {
-
-    background:
-        linear-gradient(
-            145deg,
-            #d9f3dd 0%,
-            #effaf0 55%,
-            #c7eacb 100%
-        );
-
-    border-color:
-        rgba(46,125,50,0.18);
-
-}
-
-
-.clima-wind::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #1b5e20,
-            #43a047,
-            #81c784
-        );
-
-}
-
-
-.clima-wind::after {
-
-    background:
-        rgba(46,125,50,0.10);
-
-}
-
-
-.clima-wind .clima-card-icon {
-
-    background:
-        linear-gradient(
-            145deg,
-            #a5d6a7,
-            #c8e6c9
-        );
-
-    color:
-        #2e7d32;
-
-}
-
-
-.clima-wind .clima-card-info strong {
-
-    color:
-        #2e7d32;
-
-}
-
-
-/* =========================================================
-   CLIMA PRINCIPAL
-========================================================= */
-
-.clima-main-card {
-
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 24px 26px;
-
-    position: relative;
-    overflow: hidden;
-
-    border:
-        1px solid rgba(46,125,50,0.13);
-
-    background:
-        linear-gradient(
-            120deg,
-            #ffffff 0%,
-            #edf9ef 50%,
-            #e0f2e4 100%
-        );
-
-    box-shadow:
-        var(--clima-sombra);
-
-}
-
-
-.clima-main-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 240px;
-    height: 240px;
-
-    right: -100px;
-    top: -130px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(76,175,80,0.13);
-
-}
-
-
-.clima-main-card::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 110px;
-    height: 110px;
-
-    right: 180px;
-    bottom: -80px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(3,169,244,0.08);
-
-}
-
 
 .clima-main-weather {
-
     display: flex;
     align-items: center;
-
-    gap: 18px;
+    gap: 19px;
 
     position: relative;
-    z-index: 2;
+    z-index: 1;
 
+    min-width: 0;
 }
 
-
 .clima-weather-icon {
-
     width: 78px;
     height: 78px;
-
-    border-radius: 22px;
+    min-width: 78px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background:
-        linear-gradient(
-            145deg,
-            #b9e9bd,
-            #e5f8e7
-        );
+    border-radius: 21px;
 
-    color:
-        #24752a;
+    background: linear-gradient(
+        145deg,
+        #e0efdb,
+        #f0f7eb
+    );
 
-    font-size: 33px;
+    border: 1px solid rgba(29, 101, 62, 0.08);
 
-    box-shadow:
-        0 8px 20px rgba(46,125,50,0.12);
+    color: var(--clima-verde);
 
+    font-size: 32px;
 }
-
 
 .clima-weather-info span {
-
     display: block;
 
-    font-size: 0.58rem;
+    margin-bottom: 5px;
 
-    font-weight: 800;
-
-    letter-spacing: 1.3px;
-
-    color:
-        var(--clima-verde);
-
-    margin-bottom: 4px;
-
-}
-
-
-.clima-weather-info h2 {
-
-    font-size: 1.20rem;
-
-    font-weight: 750;
-
-    color:
-        var(--texto-oscuro);
-
-    margin-bottom: 4px;
-
-}
-
-
-.clima-weather-info p {
-
-    font-size: 0.70rem;
-
-    color:
-        var(--texto-claro);
-
-}
-
-
-.clima-main-extra {
-
-    display: flex;
-
-    gap: 20px;
-
-    position: relative;
-    z-index: 2;
-
-}
-
-
-.clima-main-extra > div {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    gap: 4px;
-
-    min-width: 82px;
-
-    padding: 10px;
-
-    border-radius: 13px;
-
-    background:
-        rgba(255,255,255,0.60);
-
-}
-
-
-.clima-main-extra i {
-
-    color:
-        var(--clima-verde);
-
-    font-size: 17px;
-
-}
-
-
-.clima-main-extra span {
+    color: var(--clima-verde);
 
     font-size: 0.60rem;
-
-    color:
-        var(--texto-claro);
-
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
 }
 
+.clima-weather-info h2 {
+    margin: 0 0 5px;
+
+    color: var(--texto-oscuro);
+
+    font-size: 1.22rem;
+    font-weight: 750;
+}
+
+.clima-weather-info p {
+    margin: 0;
+
+    color: var(--texto-claro);
+    font-size: 0.71rem;
+    line-height: 1.5;
+}
+
+.clima-main-extra {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+
+    position: relative;
+    z-index: 1;
+}
+
+.clima-main-extra > div {
+    min-width: 92px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 12px 10px;
+
+    border: 1px solid rgba(29, 101, 62, 0.07);
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.68);
+}
+
+.clima-main-extra i {
+    color: var(--clima-verde);
+    font-size: 17px;
+}
+
+.clima-main-extra span {
+    color: var(--texto-claro);
+    font-size: 0.60rem;
+    text-align: center;
+}
 
 .clima-main-extra strong {
-
-    font-size: 0.84rem;
-
-    color:
-        var(--texto-oscuro);
-
+    color: var(--texto-oscuro);
+    font-size: 0.85rem;
+    font-weight: 750;
 }
 
 
 /* =========================================================
-   PRONÓSTICO
+   12. PRONÓSTICO DE CINCO DÍAS
 ========================================================= */
 
 .clima-forecast {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(5, minmax(0,1fr));
-
-    gap: 12px;
-
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 13px;
 }
 
-
 .forecast-card {
+    padding: 16px 12px;
 
-    padding: 15px 12px;
-
+    border: 1px solid var(--clima-borde);
     border-radius: 15px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f3faf4
-        );
+    background: var(--fondo-tarjeta, #ffffff);
 
-    border:
-        1px solid rgba(46,125,50,0.12);
-
-    box-shadow:
-        var(--clima-sombra);
+    box-shadow: var(--clima-sombra);
 
     text-align: center;
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
+    transition: var(--clima-transicion);
 }
-
 
 .forecast-card:hover {
-
     transform: translateY(-4px);
-
-    box-shadow:
-        var(--clima-sombra-hover);
-
+    box-shadow: var(--clima-sombra-hover);
 }
-
 
 .forecast-card .forecast-day {
+    margin-bottom: 11px;
 
-    font-size: 0.67rem;
+    color: var(--texto-oscuro);
 
+    font-size: 0.68rem;
     font-weight: 750;
-
-    color:
-        var(--texto-oscuro);
-
-    margin-bottom: 9px;
-
 }
 
-
 .forecast-card .forecast-icon {
-
-    width: 46px;
-    height: 46px;
-
-    margin: 0 auto 9px;
+    width: 47px;
+    height: 47px;
 
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
+    margin: 0 auto 10px;
 
     border-radius: 14px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #dff4e2,
-            #c8efcf
-        );
+    background: var(--clima-verde-claro);
+
+    color: var(--clima-verde);
 
     font-size: 21px;
-
-    color:
-        var(--clima-verde);
-
 }
-
 
 .forecast-card .forecast-condition {
+    min-height: 28px;
+
+    color: var(--texto-claro);
 
     font-size: 0.62rem;
-
-    color:
-        var(--texto-claro);
-
-    min-height: 27px;
-
+    line-height: 1.4;
 }
 
-
 .forecast-temperature {
-
     display: flex;
-
     justify-content: center;
+    align-items: center;
+    gap: 9px;
 
-    gap: 8px;
+    margin-top: 10px;
+}
+
+.forecast-max {
+    color: var(--clima-naranja);
+
+    font-size: 0.77rem;
+    font-weight: 800;
+}
+
+.forecast-min {
+    color: var(--clima-azul);
+
+    font-size: 0.77rem;
+    font-weight: 600;
+}
+
+.forecast-rain {
+    display: block;
 
     margin-top: 9px;
 
-}
+    color: var(--clima-azul);
 
-
-.forecast-max {
-
-    font-size: 0.76rem;
-
-    font-weight: 800;
-
-    color:
-        var(--clima-naranja);
-
-}
-
-
-.forecast-min {
-
-    font-size: 0.76rem;
-
-    color:
-        var(--clima-azul);
-
-}
-
-
-.forecast-rain {
-
-    display: block;
-
-    margin-top: 8px;
-
-    font-size: 0.60rem;
-
-    color:
-        var(--clima-azul);
-
+    font-size: 0.61rem;
 }
 
 
 /* =========================================================
-   CARGANDO
+   13. ESTADO DE CARGA
 ========================================================= */
 
 .clima-loading {
-
     grid-column: 1 / -1;
 
-    min-height: 120px;
+    min-height: 125px;
 
     display: flex;
-
     justify-content: center;
     align-items: center;
+    gap: 10px;
 
-    gap: 9px;
+    color: var(--texto-claro);
 
-    color:
-        var(--texto-claro);
-
-    font-size: 0.72rem;
-
+    font-size: 0.73rem;
 }
 
-
 .clima-loading i {
-
-    color:
-        var(--clima-verde);
-
+    color: var(--clima-verde);
 }
 
 
 /* =========================================================
-   INFORMACIÓN
+   14. INFORMACIÓN ADICIONAL
 ========================================================= */
 
 .clima-info-card {
-
     display: flex;
-
     align-items: center;
-
     gap: 14px;
 
-    padding: 15px 18px;
+    padding: 16px 19px;
 
-    border:
-        1px solid rgba(46,125,50,0.13);
+    border: 1px solid var(--clima-borde);
+    border-radius: 14px;
 
-    background:
-        linear-gradient(
-            100deg,
-            #ffffff,
-            #edf9ef,
-            #f3fbff
-        );
+    background: linear-gradient(
+        100deg,
+        #ffffff,
+        #f2f8f1
+    );
 
+    box-shadow: var(--clima-sombra);
 }
 
-
 .clima-info-icon {
-
-    width: 40px;
-    height: 40px;
-
-    min-width: 40px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
 
     display: flex;
-
     justify-content: center;
     align-items: center;
 
     border-radius: 12px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #b9e9bd,
-            #dff4e2
-        );
+    background: #e3f0df;
 
-    color:
-        var(--clima-verde);
+    color: var(--clima-verde);
 
+    font-size: 17px;
 }
-
 
 .clima-info-card strong {
-
     display: block;
 
-    font-size: 0.74rem;
+    margin-bottom: 4px;
 
-    color:
-        var(--texto-oscuro);
+    color: var(--texto-oscuro);
 
-    margin-bottom: 3px;
-
+    font-size: 0.75rem;
+    font-weight: 750;
 }
 
-
 .clima-info-card p {
+    margin: 0;
 
-    font-size: 0.65rem;
+    color: var(--texto-claro);
 
-    line-height: 1.5;
-
-    color:
-        var(--texto-claro);
-
+    font-size: 0.66rem;
+    line-height: 1.6;
 }
 
 
 /* =========================================================
-   MODO OSCURO
+   15. MODO OSCURO
 ========================================================= */
 
 [data-theme="dark"] {
-
     --clima-sombra:
-        0 8px 25px rgba(0,0,0,0.35);
+        0 6px 20px rgba(0, 0, 0, 0.18);
 
     --clima-sombra-hover:
-        0 15px 35px rgba(0,0,0,0.50);
-
+        0 12px 27px rgba(0, 0, 0, 0.30);
 }
-
 
 [data-theme="dark"] .clima-hero {
+    background: linear-gradient(
+        115deg,
+        var(--fondo-tarjeta),
+        rgba(29, 101, 62, 0.15)
+    );
 
-    background:
-        linear-gradient(
-            120deg,
-            var(--fondo-tarjeta),
-            rgba(46,125,50,0.14),
-            rgba(2,136,209,0.06)
-        );
-
+    border-color: rgba(142, 177, 86, 0.13);
 }
-
 
 [data-theme="dark"] .clima-hero-icon {
-
-    background:
-        rgba(76,175,80,0.15);
-
+    background: rgba(142, 177, 86, 0.15);
+    color: #a8cf79;
+    border-color: rgba(142, 177, 86, 0.12);
 }
 
+[data-theme="dark"] .clima-kicker,
+[data-theme="dark"] .clima-section-title span {
+    color: #a8cf79;
+}
 
 [data-theme="dark"] .clima-location {
-
-    background:
-        rgba(76,175,80,0.12);
-
-    border-color:
-        rgba(76,175,80,0.15);
-
+    background: rgba(255, 255, 255, 0.045);
+    border-color: rgba(255, 255, 255, 0.09);
 }
 
+[data-theme="dark"] .clima-location > i {
+    color: #a8cf79;
+}
 
 [data-theme="dark"] .clima-status {
-
-    background:
-        var(--fondo-tarjeta);
-
+    background: var(--fondo-tarjeta);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
+[data-theme="dark"] .clima-update i {
+    color: #a8cf79;
+}
 
 [data-theme="dark"] .clima-card {
-
-    border-color:
-        rgba(255,255,255,0.08);
-
+    border-color: rgba(255, 255, 255, 0.07);
 }
-
 
 [data-theme="dark"] .clima-temperature {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(239,108,0,0.18),
-            rgba(239,108,0,0.07)
-        );
-
+    background: linear-gradient(
+        145deg,
+        rgba(200, 121, 53, 0.16),
+        rgba(200, 121, 53, 0.06)
+    );
 }
 
+[data-theme="dark"] .clima-temperature .clima-card-icon {
+    background: rgba(200, 121, 53, 0.19);
+}
 
 [data-theme="dark"] .clima-humidity {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(3,169,244,0.17),
-            rgba(3,169,244,0.06)
-        );
-
+    background: linear-gradient(
+        145deg,
+        rgba(49, 150, 168, 0.16),
+        rgba(49, 150, 168, 0.06)
+    );
 }
 
+[data-theme="dark"] .clima-humidity .clima-card-icon {
+    background: rgba(49, 150, 168, 0.19);
+}
 
 [data-theme="dark"] .clima-rain {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(25,118,210,0.18),
-            rgba(25,118,210,0.06)
-        );
-
+    background: linear-gradient(
+        145deg,
+        rgba(57, 125, 168, 0.17),
+        rgba(57, 125, 168, 0.06)
+    );
 }
 
+[data-theme="dark"] .clima-rain .clima-card-icon {
+    background: rgba(57, 125, 168, 0.20);
+}
 
 [data-theme="dark"] .clima-wind {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(46,125,50,0.18),
-            rgba(46,125,50,0.06)
-        );
-
+    background: linear-gradient(
+        145deg,
+        rgba(82, 127, 67, 0.18),
+        rgba(82, 127, 67, 0.06)
+    );
 }
 
-
-[data-theme="dark"] .clima-card-icon {
-
-    box-shadow:
-        none;
-
+[data-theme="dark"] .clima-wind .clima-card-icon {
+    background: rgba(82, 127, 67, 0.21);
 }
 
+[data-theme="dark"] .clima-card::after {
+    background: rgba(255, 255, 255, 0.025);
+}
 
 [data-theme="dark"] .clima-main-card {
+    background: linear-gradient(
+        115deg,
+        var(--fondo-tarjeta),
+        rgba(29, 101, 62, 0.14)
+    );
 
-    background:
-        linear-gradient(
-            120deg,
-            var(--fondo-tarjeta),
-            rgba(46,125,50,0.13),
-            rgba(3,169,244,0.05)
-        );
-
+    border-color: rgba(142, 177, 86, 0.12);
 }
-
 
 [data-theme="dark"] .clima-weather-icon {
-
-    background:
-        rgba(76,175,80,0.14);
-
+    background: rgba(142, 177, 86, 0.14);
+    color: #a8cf79;
+    border-color: rgba(142, 177, 86, 0.10);
 }
-
 
 [data-theme="dark"] .clima-main-extra > div {
-
-    background:
-        rgba(255,255,255,0.05);
-
+    background: rgba(255, 255, 255, 0.045);
+    border-color: rgba(255, 255, 255, 0.07);
 }
 
+[data-theme="dark"] .clima-main-extra i {
+    color: #a8cf79;
+}
 
 [data-theme="dark"] .forecast-card {
-
-    background:
-        linear-gradient(
-            145deg,
-            var(--fondo-tarjeta),
-            rgba(46,125,50,0.07)
-        );
-
-    border-color:
-        rgba(255,255,255,0.08);
-
+    background: var(--fondo-tarjeta);
+    border-color: rgba(255, 255, 255, 0.08);
 }
-
 
 [data-theme="dark"] .forecast-card .forecast-icon {
-
-    background:
-        rgba(76,175,80,0.13);
-
+    background: rgba(142, 177, 86, 0.13);
+    color: #a8cf79;
 }
-
 
 [data-theme="dark"] .clima-info-card {
+    background: linear-gradient(
+        100deg,
+        var(--fondo-tarjeta),
+        rgba(29, 101, 62, 0.10)
+    );
 
-    background:
-        linear-gradient(
-            100deg,
-            var(--fondo-tarjeta),
-            rgba(46,125,50,0.10),
-            rgba(3,169,244,0.05)
-        );
-
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
-
 [data-theme="dark"] .clima-info-icon {
+    background: rgba(142, 177, 86, 0.14);
+    color: #a8cf79;
+}
 
-    background:
-        rgba(76,175,80,0.13);
+[data-theme="dark"] .clima-temperature .clima-card-info strong {
+    color: #e7ad79;
+}
 
+[data-theme="dark"] .clima-humidity .clima-card-info strong {
+    color: #83c9d3;
+}
+
+[data-theme="dark"] .clima-rain .clima-card-info strong {
+    color: #8bbce0;
+}
+
+[data-theme="dark"] .clima-wind .clima-card-info strong {
+    color: #a8cf79;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   16. RESPONSIVE — TABLET
 ========================================================= */
 
 @media (max-width: 1200px) {
-
     .clima-current-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
 
     .clima-forecast {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-
 }
-
 
 @media (max-width: 850px) {
-
     .clima-hero {
-
         flex-direction: column;
-
         align-items: flex-start;
-
-        gap: 16px;
-
+        gap: 17px;
     }
-
 
     .clima-location {
-
         width: 100%;
-
     }
-
 
     .clima-main-card {
-
         flex-direction: column;
-
         align-items: flex-start;
-
-        gap: 23px;
-
+        gap: 20px;
     }
-
 
     .clima-main-extra {
-
         width: 100%;
-
-        justify-content: space-around;
-
+        justify-content: flex-start;
     }
 
+    .clima-main-extra > div {
+        flex: 1;
+    }
 
     .clima-forecast {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
 }
 
+
+/* =========================================================
+   17. RESPONSIVE — MÓVILES
+========================================================= */
 
 @media (max-width: 600px) {
+    .clima-page {
+        gap: 15px;
+    }
 
     .clima-current-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
     }
 
+    .clima-card {
+        min-height: 135px;
+        padding: 14px;
+    }
+
+    .clima-card-icon {
+        width: 39px;
+        height: 39px;
+        margin-bottom: 10px;
+    }
+
+    .clima-card-info strong {
+        font-size: 1.19rem;
+    }
 
     .clima-forecast {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
 
     .clima-status {
-
         flex-direction: column;
-
         align-items: flex-start;
-
-        gap: 8px;
-
+        gap: 9px;
     }
-
 
     .clima-main-weather {
-
         align-items: flex-start;
-
     }
-
 
     .clima-weather-icon {
+        width: 62px;
+        height: 62px;
+        min-width: 62px;
 
-        width: 60px;
-        height: 60px;
-
-        min-width: 60px;
-
+        border-radius: 17px;
         font-size: 25px;
-
     }
-
 
     .clima-main-extra {
-
-        gap: 15px;
-
+        gap: 8px;
     }
 
+    .clima-main-extra > div {
+        min-width: 0;
+        padding: 10px 6px;
+    }
+
+    .clima-info-card {
+        align-items: flex-start;
+    }
 }
 
-
-@media (max-width: 480px) {
-
+@media (max-width: 380px) {
     .clima-hero {
-
         padding: 18px;
-
     }
-
 
     .clima-hero-info {
-
         align-items: flex-start;
-
+        gap: 11px;
     }
-
 
     .clima-hero-icon {
+        width: 47px;
+        height: 47px;
+        min-width: 47px;
 
-        width: 48px;
-        height: 48px;
-
-        min-width: 48px;
-
+        border-radius: 13px;
         font-size: 20px;
-
     }
-
 
     .clima-hero h2 {
-
         font-size: 1.05rem;
-
     }
-
 
     .clima-hero p {
-
-        font-size: 0.69rem;
-
+        font-size: 0.68rem;
     }
 
+    .clima-current-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .clima-card {
+        min-height: 125px;
+    }
 
     .clima-main-card {
-
-        padding: 19px;
-
+        padding: 18px;
     }
-
 
     .clima-main-extra {
-
         flex-wrap: wrap;
-
-        justify-content: flex-start;
-
     }
 
+    .clima-main-extra > div {
+        flex: 1 1 40%;
+    }
 }
+
+
+/* =========================================================
+   18. ACCESIBILIDAD
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .clima-card,
+    .forecast-card {
+        transition: none;
+    }
+
+    .clima-card:hover,
+    .forecast-card:hover {
+        transform: none;
+    }
+}
+

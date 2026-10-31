@@ -1,1538 +1,527 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>HarvestX - Reportes y Estadísticas</title>
 
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet"
-          href="../../CSS/paginas/administrador.css">
+    <link rel="stylesheet" href="../../CSS/paginas/administrador.css">
+    <link rel="stylesheet" href="../../CSS/paginas/reportes_y_estadisticas.css">
 
-    <!-- CSS DEL MÓDULO -->
-    <link rel="stylesheet"
-          href="../../CSS/paginas/reportes_y_estadisticas.css">
-
-    <!-- FONT AWESOME -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+    <!-- BIBLIOTECAS PARA GENERAR PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-
 
 <body>
 
-
-<!-- =========================================================
-     LOADER
-========================================================= -->
-
-<div id="loader" class="loader-container">
-
-    <div class="loader">
-
-        <i class="fa-solid fa-seedling loader-icon"></i>
-
-        <div class="spinner"></div>
-
-        <p>Cargando tu cosecha...</p>
-
+    <!-- LOADER -->
+    <div id="loader" class="loader-container">
+        <div class="loader">
+            <i class="fa-solid fa-seedling loader-icon"></i>
+            <div class="spinner"></div>
+            <p>Cargando tu cosecha...</p>
+        </div>
     </div>
 
-</div>
-
-
-
-<!-- =========================================================
-     MODAL DE CONFIGURACIÓN
-========================================================= -->
-
-<div id="settingsModal" class="modal-overlay">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <h2>Ajustes del Sistema</h2>
-
-            <i class="fa-solid fa-xmark close-modal"
-               id="closeSettings"></i>
-
-        </div>
-
-
-        <div class="modal-body">
-
-
-            <!-- TEMA -->
-
-            <div class="setting-group">
-
-                <label>
-                    Tema Oscuro
-                </label>
-
-                <label class="switch">
-
-                    <input type="checkbox"
-                           id="themeToggle">
-
-                    <span class="slider round"></span>
-
-                </label>
-
+    <!-- CONFIGURACIÓN -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajustes del Sistema</h2>
+                <i class="fa-solid fa-xmark close-modal" id="closeSettings"></i>
             </div>
 
-
-            <!-- SONIDO -->
-
-            <div class="setting-group">
-
-                <label>
-                    Sonido
-                </label>
-
-                <label class="switch">
-
-                    <input type="checkbox"
-                           id="soundToggle">
-
-                    <span class="slider round"></span>
-
-                </label>
-
-            </div>
-
-
-            <!-- VOZ -->
-
-            <div class="setting-group">
-
-                <label>
-                    Voz del asistente
-                </label>
-
-                <span style="font-size:0.9rem; color:var(--texto-claro);">
-                    🎙️ Asistente HarvestX
-                </span>
-
-            </div>
-
-
-            <!-- PROBAR VOZ -->
-
-            <div class="setting-group">
-
-                <label>
-                    Probar voz
-                </label>
-
-                <button
-                    type="button"
-                    id="testVoiceButton"
-                    class="btn-size">
-
-                    🔊 Probar voz
-
-                </button>
-
-            </div>
-
-
-            <!-- FUENTE -->
-
-            <div class="setting-group">
-
-                <label>
-                    Fuente de Letra
-                </label>
-
-                <select id="fontSelect"
-                        class="form-select">
-
-                    <option value="'Poppins', sans-serif">
-                        Poppins
-                    </option>
-
-                    <option value="'Arial', sans-serif">
-                        Arial
-                    </option>
-
-                    <option value="'Courier New', monospace">
-                        Courier New
-                    </option>
-
-                    <option value="'Times New Roman', serif">
-                        Times New Roman
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TAMAÑO -->
-
-            <div class="setting-group">
-
-                <label>
-                    Tamaño de Letra
-                </label>
-
-                <div class="size-controls">
-
-                    <button
-                        id="btnSizeSmall"
-                        class="btn-size">
-
-                        A-
-
-                    </button>
-
-                    <button
-                        id="btnSizeNormal"
-                        class="btn-size active">
-
-                        A
-
-                    </button>
-
-                    <button
-                        id="btnSizeLarge"
-                        class="btn-size">
-
-                        A+
-
-                    </button>
-
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="themeToggle">Tema Oscuro</label>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
 
+                <div class="setting-group">
+                    <label for="soundToggle">Sonido</label>
+                    <label class="switch">
+                        <input type="checkbox" id="soundToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="setting-group">
+                    <label>Voz del asistente</label>
+                    <span style="font-size:0.9rem; color:var(--texto-claro);">
+                        Asistente HarvestX
+                    </span>
+                </div>
+
+                <div class="setting-group">
+                    <label for="testVoiceButton">Probar voz</label>
+                    <button type="button" id="testVoiceButton" class="btn-size">
+                        <i class="fa-solid fa-volume-high"></i>
+                        Probar voz
+                    </button>
+                </div>
+
+                <div class="setting-group">
+                    <label for="fontSelect">Fuente de letra</label>
+                    <select id="fontSelect" class="form-select">
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label>Tamaño de letra</label>
+                    <div class="size-controls">
+                        <button type="button" id="btnSizeSmall" class="btn-size">A-</button>
+                        <button type="button" id="btnSizeNormal" class="btn-size active">A</button>
+                        <button type="button" id="btnSizeLarge" class="btn-size">A+</button>
+                    </div>
+                </div>
             </div>
-
-
         </div>
-
     </div>
 
-</div>
+    <!-- PERFIL -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content profile-modal">
+            <div class="modal-header">
+                <h2>Mi Perfil</h2>
+                <i class="fa-solid fa-xmark close-modal" id="closeProfile"></i>
+            </div>
 
+            <div class="modal-body">
+                <div class="profile-photo-section">
+                    <div class="profile-photo-wrapper">
+                        <div id="profilePhotoPreview" class="profile-photo-preview">U</div>
 
+                        <label for="profilePhotoInput" class="change-photo-button">
+                            <i class="fa-solid fa-camera"></i>
+                        </label>
 
-<!-- =========================================================
-     MODAL DE PERFIL
-========================================================= -->
-
-<div id="profileModal"
-     class="modal-overlay">
-
-    <div class="modal-content profile-modal">
-
-
-        <!-- ENCABEZADO -->
-
-        <div class="modal-header">
-
-            <h2>
-                Mi Perfil
-            </h2>
-
-            <i class="fa-solid fa-xmark close-modal"
-               id="closeProfile"></i>
-
-        </div>
-
-
-        <!-- CUERPO -->
-
-        <div class="modal-body">
-
-
-            <!-- FOTO -->
-
-            <div class="profile-photo-section">
-
-                <div class="profile-photo-wrapper">
-
-                    <div id="profilePhotoPreview"
-                         class="profile-photo-preview">
-
-                        U
-
+                        <input type="file"
+                               id="profilePhotoInput"
+                               accept="image/*"
+                               hidden>
                     </div>
 
-
-                    <label
-                        for="profilePhotoInput"
-                        class="change-photo-button">
-
-                        <i class="fa-solid fa-camera"></i>
-
-                    </label>
-
-
-                    <input
-                        type="file"
-                        id="profilePhotoInput"
-                        accept="image/*"
-                        hidden>
-
+                    <p class="profile-photo-text">
+                        Haz clic en la cámara para cambiar tu foto
+                    </p>
                 </div>
 
+                <div class="profile-form">
+                    <div class="profile-field">
+                        <label for="profileNombre">Nombre completo</label>
+                        <input type="text" id="profileNombre" placeholder="Nombre completo">
+                    </div>
 
-                <p class="profile-photo-text">
+                    <div class="profile-field">
+                        <label for="profileUsuario">Nombre de usuario</label>
+                        <input type="text" id="profileUsuario" readonly>
+                    </div>
 
-                    Haz clic en la cámara para cambiar tu foto
+                    <div class="profile-field">
+                        <label for="profileRol">Rol</label>
+                        <input type="text" id="profileRol" readonly>
+                    </div>
+                </div>
 
-                </p>
+                <div class="profile-actions">
+                    <button type="button" id="cancelProfile" class="btn-modal btn-cancelar">
+                        Cancelar
+                    </button>
 
+                    <button type="button" id="saveProfile" class="btn-modal btn-guardar">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Guardar cambios
+                    </button>
+                </div>
             </div>
-
-
-
-            <!-- INFORMACIÓN -->
-
-            <div class="profile-form">
-
-
-                <!-- NOMBRE -->
-
-                <div class="profile-field">
-
-                    <label for="profileNombre">
-                        Nombre completo
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileNombre"
-                        placeholder="Nombre completo">
-
-                </div>
-
-
-                <!-- USUARIO -->
-
-                <div class="profile-field">
-
-                    <label for="profileUsuario">
-                        Nombre de usuario
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileUsuario"
-                        readonly>
-
-                </div>
-
-
-                <!-- ROL -->
-
-                <div class="profile-field">
-
-                    <label for="profileRol">
-                        Rol
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileRol"
-                        readonly>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- BOTONES -->
-
-            <div class="profile-actions">
-
-                <button
-                    type="button"
-                    id="cancelProfile"
-                    class="btn-modal btn-cancelar">
-
-                    Cancelar
-
-                </button>
-
-
-                <button
-                    type="button"
-                    id="saveProfile"
-                    class="btn-modal btn-guardar">
-
-                    <i class="fa-solid fa-floppy-disk"></i>
-
-                    Guardar cambios
-
-                </button>
-
-            </div>
-
-
         </div>
-
     </div>
 
-</div>
+    <!-- DASHBOARD -->
+    <div class="dashboard-container">
 
-
-
-<!-- =========================================================
-     DASHBOARD
-========================================================= -->
-
-<div class="dashboard-container">
-
-
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <aside class="sidebar"
-           id="sidebar">
-
-
-        <!-- CABECERA -->
-
-        <div class="sidebar-header">
-
-            <div class="logo-wrapper">
-
-                <i class="fa-solid fa-leaf logo-icon"></i>
-
-                <div class="logo-text">
-
-                    <h2>
-                        HarvestX
-                    </h2>
-
-                    <span>
-                        Sistema Inteligente
-                    </span>
-
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <i class="fa-solid fa-leaf logo-icon"></i>
+                    <div class="logo-text">
+                        <h2>HarvestX</h2>
+                        <span>Sistema Inteligente</span>
+                    </div>
                 </div>
 
+                <i class="fa-solid fa-xmark close-sidebar-mobile"
+                   id="closeSidebarMobile"></i>
             </div>
 
+            <nav class="sidebar-nav">
+                <a href="inicio.html" class="nav-link">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
 
-            <i class="fa-solid fa-xmark close-sidebar-mobile"
-               id="closeSidebarMobile">
-            </i>
+                <div class="nav-category">
+                    <span class="nav-text">GESTIÓN</span>
+                </div>
 
-        </div>
+                <a href="fincas.html" class="nav-link">
+                    <i class="fa-solid fa-mountain-sun"></i>
+                    <span class="nav-text">Fincas</span>
+                </a>
 
+                <a href="cultivos.html" class="nav-link">
+                    <i class="fa-solid fa-seedling"></i>
+                    <span class="nav-text">Cultivos</span>
+                </a>
 
+                <a href="programacion_de_riego.html" class="nav-link">
+                    <i class="fa-solid fa-droplet"></i>
+                    <span class="nav-text">Programación de Riego</span>
+                </a>
 
-        <!-- =================================================
-             NAVEGACIÓN
-        ================================================== -->
+                <a href="labores_del_campo.html" class="nav-link">
+                    <i class="fa-solid fa-tractor"></i>
+                    <span class="nav-text">Labores del Campo</span>
+                </a>
 
-        <nav class="sidebar-nav">
+                <a href="monitoreo_climatico.html" class="nav-link">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <span class="nav-text">Monitoreo Climático</span>
+                </a>
 
+                <a href="alertas.html" class="nav-link">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="nav-text">Alertas</span>
+                </a>
 
-            <!-- DASHBOARD -->
+                <div class="nav-category">
+                    <span class="nav-text">REPORTES</span>
+                </div>
 
-            <a href="inicio.html"
-               class="nav-link">
+                <a href="reportes_y_estadisticas.html" class="nav-link active">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span class="nav-text">Reportes y Estadísticas</span>
+                </a>
 
-                <i class="fa-solid fa-house"></i>
+                <a href="historial.html" class="nav-link">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="nav-text">Historial de Actividades</span>
+                </a>
 
-                <span class="nav-text">
-                    Dashboard
-                </span>
+                <div class="nav-category">
+                    <span class="nav-text">SISTEMA</span>
+                </div>
 
-            </a>
+                <a href="usuarios.html" class="nav-link">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="nav-text">Usuarios</span>
+                </a>
 
+                <a href="#" class="nav-link" id="openSettings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="nav-text">Configuración</span>
+                </a>
+            </nav>
 
-
-            <!-- GESTIÓN -->
-
-            <div class="nav-category">
-
-                <span class="nav-text">
-                    GESTIÓN
-                </span>
-
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-link logout" id="cerrarSesion">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span class="nav-text">Cerrar Sesión</span>
+                </a>
             </div>
+        </aside>
 
+        <!-- CONTENIDO -->
+        <main class="main-content" id="mainContent">
 
-            <!-- FINCAS -->
+            <header class="topbar">
+                <div class="left-controls">
+                    <div class="menu-toggle-desktop" id="toggleSidebarDesktop">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
 
-            <a href="fincas.html"
-               class="nav-link">
+                    <div class="menu-toggle-mobile" id="menuToggleMobile">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
 
-                <i class="fa-solid fa-mountain-sun"></i>
+                    <div class="header-title">
+                        <div>
+                            <h1>HarvestX</h1>
+                            <p>Sistema Inteligente de Gestión Agrícola</p>
+                        </div>
+                    </div>
+                </div>
 
-                <span class="nav-text">
-                    Fincas
-                </span>
+                <div class="user-info">
+                    <div class="notifications"
+                         id="notificationsButton"
+                         role="button"
+                         tabindex="0"
+                         aria-label="Abrir notificaciones"
+                         title="Notificaciones">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge" id="notificationBadge">0</span>
+                    </div>
 
-            </a>
+                    <div class="avatar"
+                         id="openProfile"
+                         aria-label="Abrir perfil"
+                         title="Abrir mi perfil"
+                         style="cursor:pointer;">
+                        <img id="avatarImagen" class="avatar-img" src="" alt="Foto de perfil">
+                    </div>
 
-
-            <!-- CULTIVOS -->
-
-            <a href="cultivos.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-seedling"></i>
-
-                <span class="nav-text">
-                    Cultivos
-                </span>
-
-            </a>
-
-
-            <!-- RIEGO -->
-
-            <a href="programacion_de_riego.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-droplet"></i>
-
-                <span class="nav-text">
-                    Programación de Riego
-                </span>
-
-            </a>
-
-
-            <!-- LABORES -->
-
-            <a href="labores_del_campo.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-tractor"></i>
-
-                <span class="nav-text">
-                    Labores del Campo
-                </span>
-
-            </a>
-
-
-            <!-- CLIMA -->
-
-            <a href="monitoreo_climatico.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-cloud-sun"></i>
-
-                <span class="nav-text">
-                    Monitoreo Climático
-                </span>
-
-            </a>
-
-
-            <!-- ALERTAS -->
-
-            <a href="alertas.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-bell"></i>
-
-                <span class="nav-text">
-                    Alertas
-                </span>
-
-            </a>
-
-
+                    <div class="user-details">
+                        <span class="name" id="nombreUsuario">Usuario</span>
+                        <span class="role" id="rolUsuario">Administrador</span>
+                    </div>
+                </div>
+            </header>
 
             <!-- REPORTES -->
-
-            <div class="nav-category">
-
-                <span class="nav-text">
-                    REPORTES
-                </span>
-
-            </div>
-
-
-            <!-- REPORTES Y ESTADÍSTICAS -->
-
-            <a href="reportes_y_estadisticas.html"
-               class="nav-link active">
-
-                <i class="fa-solid fa-chart-column"></i>
-
-                <span class="nav-text">
-                    Reportes y Estadísticas
-                </span>
-
-            </a>
-
-
-            <!-- HISTORIAL -->
-
-            <a href="historial.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-clock-rotate-left"></i>
-
-                <span class="nav-text">
-                    Historial de Actividades
-                </span>
-
-            </a>
-
-
-
-            <!-- SISTEMA -->
-
-            <div class="nav-category">
-
-                <span class="nav-text">
-                    SISTEMA
-                </span>
-
-            </div>
-
-
-            <!-- USUARIOS -->
-
-            <a href="usuarios.html"
-               class="nav-link">
-
-                <i class="fa-solid fa-user"></i>
-
-                <span class="nav-text">
-                    Usuarios
-                </span>
-
-            </a>
-
-
-            <!-- CONFIGURACIÓN -->
-
-            <a href="#"
-               class="nav-link"
-               id="openSettings">
-
-                <i class="fa-solid fa-gear"></i>
-
-                <span class="nav-text">
-                    Configuración
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-
-        <!-- CERRAR SESIÓN -->
-
-        <div class="sidebar-footer">
-
-            <a href="../../login.html"
-               class="nav-link logout"
-               id="cerrarSesion">
-
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
-                <span class="nav-text">
-                    Cerrar Sesión
-                </span>
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-
-    <!-- =====================================================
-         CONTENIDO PRINCIPAL
-    ====================================================== -->
-
-    <main class="main-content"
-          id="mainContent">
-
-
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
-
-        <header class="topbar">
-
-
-            <!-- IZQUIERDA -->
-
-            <div class="left-controls">
-
-
-                <!-- DESKTOP -->
-
-                <div class="menu-toggle-desktop"
-                     id="toggleSidebarDesktop">
-
-                    <i class="fa-solid fa-bars"></i>
-
-                </div>
-
-
-                <!-- MÓVIL -->
-
-                <div class="menu-toggle-mobile"
-                     id="menuToggleMobile">
-
-                    <i class="fa-solid fa-bars"></i>
-
-                </div>
-
-
-                <!-- TÍTULO -->
-
-                <div class="header-title">
-
-                    <div>
-
-                        <h1>
-                            HarvestX 🌱
-                        </h1>
-
-                        <p>
-                            Sistema Inteligente de Gestión Agrícola
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 INFORMACIÓN DEL USUARIO
-            ================================================== -->
-
-            <div class="user-info">
-
-
-<!-- NOTIFICACIONES -->
-
-<div class="notifications"
-     id="notificationsButton"
-     role="button"
-     tabindex="0"
-     aria-label="Abrir notificaciones"
-     title="Notificaciones">
-
-    <i class="fa-regular fa-bell"></i>
-
-    <span class="badge"
-          id="notificationBadge">
-        0
-    </span>
-
-</div>
-
-
-
-                <!-- PERFIL -->
-
-                <div
-                    class="avatar"
-                    id="openProfile"
-                    aria-label="Abrir perfil"
-                    title="Abrir mi perfil"
-                    style="cursor:pointer;">
-
-                    <img
-                        id="avatarImagen"
-                        class="avatar-img"
-                        src=""
-                        alt="Foto de perfil">
-
-                </div>
-
-
-
-                <!-- INFORMACIÓN -->
-
-                <div class="user-details">
-
-                    <span
-                        class="name"
-                        id="nombreUsuario">
-
-                        Usuario
-
-                    </span>
-
-
-                    <span
-                        class="role"
-                        id="rolUsuario">
-
-                        Administrador
-
-                    </span>
-
-                </div>
-
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =====================================================
-             MÓDULO REPORTES Y ESTADÍSTICAS
-        ====================================================== -->
-
-        <section class="reports-module">
-
-
-            <!-- =================================================
-                 ENCABEZADO DEL MÓDULO
-            ================================================== -->
-
-            <div class="reports-header">
-
-                <div class="reports-title">
-
-                    <div class="reports-title-icon">
-
-                        <i class="fa-solid fa-chart-line"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h2>
-                            Reportes y Estadísticas
-                        </h2>
-
-                        <p>
-                            Analiza el rendimiento y actividad de tu producción agrícola
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="reports-date">
-
-                    <i class="fa-regular fa-calendar"></i>
-
-                    <span id="fechaActual">
-                        Hoy
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 TARJETAS DE RESUMEN
-            ================================================== -->
-
-            <div class="stats-cards">
-
-
-                <!-- CULTIVOS -->
-
-                <div class="stat-card stat-cultivos">
-
-                    <div class="stat-card-icon">
-
-                        <i class="fa-solid fa-seedling"></i>
-
-                    </div>
-
-                    <div class="stat-card-info">
-
-                        <span class="stat-label">
-                            Cultivos activos
-                        </span>
-
-                        <strong id="totalCultivos">
-                            12
-                        </strong>
-
-                        <small>
-                            <i class="fa-solid fa-arrow-up"></i>
-                            En producción
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- PRODUCCIÓN -->
-
-                <div class="stat-card stat-produccion">
-
-                    <div class="stat-card-icon">
-
-                        <i class="fa-solid fa-wheat-awn"></i>
-
-                    </div>
-
-                    <div class="stat-card-info">
-
-                        <span class="stat-label">
-                            Producción total
-                        </span>
-
-                        <strong id="produccionTotal">
-                            8.4 t
-                        </strong>
-
-                        <small>
+            <section class="reports-module">
+
+                <div class="reports-header">
+                    <div class="reports-title">
+                        <div class="reports-title-icon">
                             <i class="fa-solid fa-chart-line"></i>
-                            Rendimiento registrado
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- AGUA -->
-
-                <div class="stat-card stat-agua">
-
-                    <div class="stat-card-icon">
-
-                        <i class="fa-solid fa-droplet"></i>
-
-                    </div>
-
-                    <div class="stat-card-info">
-
-                        <span class="stat-label">
-                            Consumo de agua
-                        </span>
-
-                        <strong id="consumoAgua">
-                            24,500 L
-                        </strong>
-
-                        <small>
-                            <i class="fa-solid fa-gauge-high"></i>
-                            Período actual
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- FINCAS -->
-
-                <div class="stat-card stat-fincas">
-
-                    <div class="stat-card-icon">
-
-                        <i class="fa-solid fa-mountain-sun"></i>
-
-                    </div>
-
-                    <div class="stat-card-info">
-
-                        <span class="stat-label">
-                            Fincas registradas
-                        </span>
-
-                        <strong id="totalFincas">
-                            5
-                        </strong>
-
-                        <small>
-                            <i class="fa-solid fa-location-dot"></i>
-                            Bajo gestión
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 GRÁFICOS
-            ================================================== -->
-
-            <div class="charts-grid">
-
-
-                <!-- PRODUCCIÓN -->
-
-                <div class="report-card chart-card production-chart-card">
-
-                    <div class="card-heading">
+                        </div>
 
                         <div>
-
-                            <h3>
-                                <i class="fa-solid fa-chart-column"></i>
-                                Producción por cultivo
-                            </h3>
-
-                            <p>
-                                Comparación de producción registrada
-                            </p>
-
+                            <h2>Reportes y Estadísticas</h2>
+                            <p>Analiza el rendimiento y la actividad de tu producción agrícola.</p>
                         </div>
-
-
-                        <select
-                            id="productionPeriod"
-                            class="report-select">
-
-                            <option value="month">
-                                Este mes
-                            </option>
-
-                            <option value="week">
-                                Esta semana
-                            </option>
-
-                            <option value="year">
-                                Este año
-                            </option>
-
-                        </select>
-
                     </div>
 
-
-                    <div class="chart-container"
-                         id="productionChart">
-
-                        <div class="chart-placeholder">
-
-                            <i class="fa-solid fa-chart-column"></i>
-
-                            <span>
-                                Gráfico de producción
-                            </span>
-
-                            <small>
-                                Los datos aparecerán aquí
-                            </small>
-
-                        </div>
-
+                    <div class="reports-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span id="fechaActual">Cargando fecha...</span>
                     </div>
-
                 </div>
 
-
-
-                <!-- DISTRIBUCIÓN -->
-
-                <div class="report-card chart-card distribution-chart-card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                <i class="fa-solid fa-chart-pie"></i>
-                                Distribución de cultivos
-                            </h3>
-
-                            <p>
-                                Cultivos registrados actualmente
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container"
-                         id="distributionChart">
-
-                        <div class="chart-placeholder">
-
-                            <i class="fa-solid fa-chart-pie"></i>
-
-                            <span>
-                                Distribución de cultivos
-                            </span>
-
-                            <small>
-                                Los datos aparecerán aquí
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- CONSUMO DE AGUA -->
-
-                <div class="report-card chart-card water-chart-card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                <i class="fa-solid fa-droplet"></i>
-                                Consumo de agua
-                            </h3>
-
-                            <p>
-                                Uso de agua durante el período
-                            </p>
-
-                        </div>
-
-
-                        <select
-                            id="waterPeriod"
-                            class="report-select">
-
-                            <option value="week">
-                                Últimos 7 días
-                            </option>
-
-                            <option value="month">
-                                Último mes
-                            </option>
-
-                            <option value="year">
-                                Último año
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="chart-container"
-                         id="waterChart">
-
-                        <div class="chart-placeholder">
-
-                            <i class="fa-solid fa-droplet"></i>
-
-                            <span>
-                                Consumo de agua
-                            </span>
-
-                            <small>
-                                Los datos aparecerán aquí
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ACTIVIDAD -->
-
-                <div class="report-card chart-card activity-chart-card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                <i class="fa-solid fa-chart-line"></i>
-                                Actividad agrícola
-                            </h3>
-
-                            <p>
-                                Actividades realizadas recientemente
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container"
-                         id="activityChart">
-
-                        <div class="chart-placeholder">
-
-                            <i class="fa-solid fa-chart-line"></i>
-
-                            <span>
-                                Actividad agrícola
-                            </span>
-
-                            <small>
-                                Los datos aparecerán aquí
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 GENERADOR DE REPORTES
-            ================================================== -->
-
-            <div class="report-generator">
-
-
-                <div class="generator-header">
-
-                    <div class="generator-icon">
-
-                        <i class="fa-solid fa-file-chart-column"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Generar reporte
-                        </h3>
-
-                        <p>
-                            Selecciona los parámetros para crear un reporte personalizado
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="generator-form">
-
-
-                    <!-- TIPO -->
-
-                    <div class="filter-group">
-
-                        <label for="reportType">
-                            <i class="fa-solid fa-file-lines"></i>
-                            Tipo de reporte
-                        </label>
-
-                        <select
-                            id="reportType"
-                            class="report-select">
-
-                            <option value="general">
-                                Reporte general
-                            </option>
-
-                            <option value="cultivos">
-                                Cultivos
-                            </option>
-
-                            <option value="fincas">
-                                Fincas
-                            </option>
-
-                            <option value="riego">
-                                Programación de riego
-                            </option>
-
-                            <option value="labores">
-                                Labores del campo
-                            </option>
-
-                            <option value="clima">
-                                Monitoreo climático
-                            </option>
-
-                            <option value="alertas">
-                                Alertas
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-
-                    <!-- PERÍODO -->
-
-                    <div class="filter-group">
-
-                        <label for="reportPeriod">
-                            <i class="fa-regular fa-calendar"></i>
-                            Período
-                        </label>
-
-                        <select
-                            id="reportPeriod"
-                            class="report-select">
-
-                            <option value="today">
-                                Hoy
-                            </option>
-
-                            <option value="week">
-                                Última semana
-                            </option>
-
-                            <option value="month"
-                                    selected>
-                                Último mes
-                            </option>
-
-                            <option value="year">
-                                Último año
-                            </option>
-
-                            <option value="custom">
-                                Personalizado
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-
-                    <!-- CULTIVO -->
-
-                    <div class="filter-group">
-
-                        <label for="reportCrop">
+                <!-- RESUMEN -->
+                <div class="stats-cards">
+                    <div class="stat-card stat-cultivos">
+                        <div class="stat-card-icon">
                             <i class="fa-solid fa-seedling"></i>
-                            Cultivo
-                        </label>
-
-                        <select
-                            id="reportCrop"
-                            class="report-select">
-
-                            <option value="all">
-                                Todos los cultivos
-                            </option>
-
-                            <option value="brocoli">
-                                Brócoli
-                            </option>
-
-                            <option value="tomate">
-                                Tomate
-                            </option>
-
-                            <option value="limon">
-                                Limón
-                            </option>
-
-                        </select>
-
+                        </div>
+                        <div class="stat-card-info">
+                            <span class="stat-label">Cultivos activos</span>
+                            <strong id="totalCultivos">—</strong>
+                            <small>Cultivos registrados</small>
+                        </div>
                     </div>
 
+                    <div class="stat-card stat-produccion">
+                        <div class="stat-card-icon">
+                            <i class="fa-solid fa-wheat-awn"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <span class="stat-label">Producción total</span>
+                            <strong id="produccionTotal">No disponible</strong>
+                            <small>Sin datos de producción</small>
+                        </div>
+                    </div>
 
+                    <div class="stat-card stat-agua">
+                        <div class="stat-card-icon">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <span class="stat-label">Consumo de agua</span>
+                            <strong id="consumoAgua">—</strong>
+                            <small>Según registros de riego</small>
+                        </div>
+                    </div>
 
-                    <!-- FINCA -->
-
-                    <div class="filter-group">
-
-                        <label for="reportFarm">
+                    <div class="stat-card stat-fincas">
+                        <div class="stat-card-icon">
                             <i class="fa-solid fa-mountain-sun"></i>
-                            Finca
-                        </label>
-
-                        <select
-                            id="reportFarm"
-                            class="report-select">
-
-                            <option value="all">
-                                Todas las fincas
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-
-                    <!-- FECHAS PERSONALIZADAS -->
-
-                    <div class="custom-date-fields"
-                         id="customDateFields"
-                         hidden>
-
-                        <div class="filter-group">
-
-                            <label for="startDate">
-                                Fecha inicial
-                            </label>
-
-                            <input
-                                type="date"
-                                id="startDate"
-                                class="report-input">
-
                         </div>
-
-
-                        <div class="filter-group">
-
-                            <label for="endDate">
-                                Fecha final
-                            </label>
-
-                            <input
-                                type="date"
-                                id="endDate"
-                                class="report-input">
-
+                        <div class="stat-card-info">
+                            <span class="stat-label">Fincas registradas</span>
+                            <strong id="totalFincas">—</strong>
+                            <small>Fincas bajo gestión</small>
                         </div>
-
                     </div>
-
-
-
-                    <!-- ACCIONES -->
-
-                    <div class="generator-actions">
-
-                        <button
-                            type="button"
-                            id="generateReport"
-                            class="btn-generate">
-
-                            <i class="fa-solid fa-file-circle-check"></i>
-
-                            Generar reporte
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            id="printReport"
-                            class="btn-secondary-report">
-
-                            <i class="fa-solid fa-print"></i>
-
-                            Imprimir
-
-                        </button>
-
-                    </div>
-
-
                 </div>
 
-            </div>
+                <!-- GRÁFICOS -->
+                <div class="charts-grid">
 
-
-
-            <!-- =================================================
-                 ÚLTIMO REPORTE
-            ================================================== -->
-
-            <div class="recent-report-card">
-
-
-                <div class="recent-report-info">
-
-                    <div class="recent-report-icon">
-
-                        <i class="fa-solid fa-file-pdf"></i>
-
+                    <div class="report-card chart-card">
+                        <div class="card-heading">
+                            <div>
+                                <h3><i class="fa-solid fa-chart-column"></i> Cultivos por tipo</h3>
+                                <p>Cantidad de cultivos registrados por categoría.</p>
+                            </div>
+                        </div>
+                        <div class="chart-container" id="productionChart"></div>
                     </div>
 
-
-                    <div>
-
-                        <span class="recent-label">
-                            Último reporte generado
-                        </span>
-
-                        <strong id="lastReportName">
-                            Aún no se ha generado ningún reporte
-                        </strong>
-
-                        <small id="lastReportDate">
-                            Selecciona los parámetros y genera tu primer reporte.
-                        </small>
-
+                    <div class="report-card chart-card">
+                        <div class="card-heading">
+                            <div>
+                                <h3><i class="fa-solid fa-chart-pie"></i> Distribución de cultivos</h3>
+                                <p>Distribución de los cultivos registrados.</p>
+                            </div>
+                        </div>
+                        <div class="chart-container" id="distributionChart"></div>
                     </div>
 
+                    <div class="report-card chart-card">
+                        <div class="card-heading">
+                            <div>
+                                <h3><i class="fa-solid fa-droplet"></i> Consumo de agua</h3>
+                                <p>Uso de agua según los registros de riego.</p>
+                            </div>
+
+                            <select id="waterPeriod" class="report-select">
+                                <option value="week">Últimos 7 días</option>
+                                <option value="month">Último mes</option>
+                                <option value="year">Último año</option>
+                            </select>
+                        </div>
+                        <div class="chart-container" id="waterChart"></div>
+                    </div>
+
+                    <div class="report-card chart-card">
+                        <div class="card-heading">
+                            <div>
+                                <h3><i class="fa-solid fa-chart-line"></i> Actividad agrícola</h3>
+                                <p>Estado de los registros de riego.</p>
+                            </div>
+                        </div>
+                        <div class="chart-container" id="activityChart"></div>
+                    </div>
                 </div>
 
+                <!-- GENERADOR -->
+                <div class="report-generator">
+                    <div class="generator-header">
+                        <div class="generator-icon">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <h3>Generar reporte PDF</h3>
+                            <p>Selecciona los parámetros para crear y descargar tu reporte.</p>
+                        </div>
+                    </div>
 
-                <button
-                    type="button"
-                    id="downloadLastReport"
-                    class="btn-download-report"
-                    disabled>
+                    <div class="generator-form">
 
-                    <i class="fa-solid fa-download"></i>
+                        <div class="filter-group">
+                            <label for="reportType">Tipo de reporte</label>
+                            <select id="reportType" class="report-select">
+                                <option value="general">Reporte general</option>
+                                <option value="cultivos">Cultivos</option>
+                                <option value="fincas">Fincas</option>
+                                <option value="riego">Programación de riego</option>
+                            </select>
+                        </div>
 
-                    Descargar
+                        <div class="filter-group">
+                            <label for="reportPeriod">Período</label>
+                            <select id="reportPeriod" class="report-select">
+                                <option value="week">Última semana</option>
+                                <option value="month" selected>Último mes</option>
+                                <option value="year">Último año</option>
+                                <option value="custom">Personalizado</option>
+                            </select>
+                        </div>
 
-                </button>
+                        <div class="filter-group">
+                            <label for="reportCrop">Cultivo</label>
+                            <select id="reportCrop" class="report-select">
+                                <option value="all">Todos los cultivos</option>
+                            </select>
+                        </div>
 
+                        <div class="filter-group">
+                            <label for="reportFarm">Finca</label>
+                            <select id="reportFarm" class="report-select">
+                                <option value="all">Todas las fincas</option>
+                            </select>
+                        </div>
 
-            </div>
+                        <div class="custom-date-fields"
+                             id="customDateFields"
+                             hidden>
+                            <div class="filter-group">
+                                <label for="startDate">Fecha inicial</label>
+                                <input type="date" id="startDate" class="report-input">
+                            </div>
 
+                            <div class="filter-group">
+                                <label for="endDate">Fecha final</label>
+                                <input type="date" id="endDate" class="report-input">
+                            </div>
+                        </div>
 
-        </section>
+                        <div class="generator-actions">
+                            <button type="button" id="generateReport" class="btn-generate">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                Generar PDF
+                            </button>
 
+                            <button type="button" id="printReport" class="btn-secondary-report">
+                                <i class="fa-solid fa-print"></i>
+                                Imprimir
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-    </main>
+                <!-- ÚLTIMO REPORTE -->
+                <div class="recent-report-card">
+                    <div class="recent-report-info">
+                        <div class="recent-report-icon">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
 
+                        <div>
+                            <span class="recent-label">Último reporte generado</span>
+                            <strong id="lastReportName">Aún no se ha generado ningún reporte</strong>
+                            <small id="lastReportDate">
+                                Selecciona los parámetros y genera tu primer reporte.
+                            </small>
+                        </div>
+                    </div>
 
-</div>
+                    <button type="button"
+                            id="downloadLastReport"
+                            class="btn-download-report"
+                            disabled>
+                        <i class="fa-solid fa-download"></i>
+                        Descargar PDF
+                    </button>
+                </div>
 
+            </section>
+        </main>
+    </div>
 
+    <!-- SCRIPTS DEL SISTEMA -->
+    <script src="../../JS/paginas/configuracion.js"></script>
+    <script src="../../JS/paginas/administrador.js"></script>
+    <script src="../../JS/paginas/sistema-notificaciones.js"></script>
 
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
-<script src="../../JS/paginas/configuracion.js"></script>
-
-<script src="../../JS/paginas/administrador.js"></script>
-
-<!-- JS DEL MÓDULO -->
-  <script src="../../JS/paginas/sistema-notificaciones.js"></script>
-<script src="../../JS/paginas/reportes_y_estadisticas.js"></script>
-
+    <!-- SCRIPT DEL MÓDULO -->
+    <script src="../../JS/paginas/reportes_y_estadisticas.js"></script>
 
 </body>
-
 </html>
 

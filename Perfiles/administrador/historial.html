@@ -1,256 +1,138 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HarvestX</title>
 
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet"
-          href="../../CSS/paginas/administrador.css">
+<title>Historial de Actividades | HarvestX</title>
 
-    <!-- CSS DEL MÓDULO -->
-    <link rel="stylesheet"
-          href="../../CSS/paginas/historial.css">
+<!-- CSS PRINCIPAL -->
+<link rel="stylesheet" href="../../CSS/paginas/administrador.css">
 
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<!-- CSS DEL MÓDULO -->
+<link rel="stylesheet" href="../../CSS/paginas/historial.css">
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 
 </head>
-
 
 <body>
 
 
-<!-- =========================================================
+<!-- =====================================================
      LOADER
-========================================================= -->
+====================================================== -->
 
 <div id="loader" class="loader-container">
-
     <div class="loader">
-
         <i class="fa-solid fa-seedling loader-icon"></i>
-
         <div class="spinner"></div>
-
         <p>Cargando tu cosecha...</p>
-
     </div>
-
 </div>
 
 
-
-<!-- =========================================================
+<!-- =====================================================
      MODAL DE CONFIGURACIÓN
-========================================================= -->
+====================================================== -->
 
 <div id="settingsModal" class="modal-overlay">
 
     <div class="modal-content">
 
         <div class="modal-header">
-
             <h2>Ajustes del Sistema</h2>
 
             <i class="fa-solid fa-xmark close-modal"
                id="closeSettings"></i>
-
         </div>
-
 
         <div class="modal-body">
 
-
-            <!-- TEMA -->
-
             <div class="setting-group">
-
-                <label>
-                    Tema Oscuro
-                </label>
+                <label>Tema Oscuro</label>
 
                 <label class="switch">
-
-                    <input type="checkbox"
-                           id="themeToggle">
-
+                    <input type="checkbox" id="themeToggle">
                     <span class="slider round"></span>
-
                 </label>
-
             </div>
 
-
-            <!-- SONIDO -->
-
             <div class="setting-group">
-
-                <label>
-                    Sonido
-                </label>
+                <label>Sonido</label>
 
                 <label class="switch">
-
-                    <input type="checkbox"
-                           id="soundToggle">
-
+                    <input type="checkbox" id="soundToggle">
                     <span class="slider round"></span>
-
                 </label>
-
             </div>
 
-
-            <!-- VOZ -->
-
             <div class="setting-group">
-
-                <label>
-                    Voz del asistente
-                </label>
+                <label>Voz del asistente</label>
 
                 <span style="font-size:0.9rem; color:var(--texto-claro);">
                     🎙️ Asistente HarvestX
                 </span>
-
             </div>
 
-
-            <!-- PROBAR VOZ -->
-
             <div class="setting-group">
+                <label>Probar voz</label>
 
-                <label>
-                    Probar voz
-                </label>
-
-                <button
-                    type="button"
-                    id="testVoiceButton"
-                    class="btn-size">
-
+                <button type="button"
+                        id="testVoiceButton"
+                        class="btn-size">
                     🔊 Probar voz
-
                 </button>
-
             </div>
 
-
-            <!-- FUENTE -->
-
             <div class="setting-group">
+                <label>Fuente de Letra</label>
 
-                <label>
-                    Fuente de Letra
-                </label>
-
-                <select id="fontSelect"
-                        class="form-select">
-
-                    <option value="'Poppins', sans-serif">
-                        Poppins
-                    </option>
-
-                    <option value="'Arial', sans-serif">
-                        Arial
-                    </option>
-
-                    <option value="'Courier New', monospace">
-                        Courier New
-                    </option>
-
-                    <option value="'Times New Roman', serif">
-                        Times New Roman
-                    </option>
-
+                <select id="fontSelect" class="form-select">
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Arial', sans-serif">Arial</option>
+                    <option value="'Courier New', monospace">Courier New</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
                 </select>
-
             </div>
 
-
-            <!-- TAMAÑO -->
-
             <div class="setting-group">
-
-                <label>
-                    Tamaño de Letra
-                </label>
+                <label>Tamaño de Letra</label>
 
                 <div class="size-controls">
-
-                    <button
-                        id="btnSizeSmall"
-                        class="btn-size">
-
-                        A-
-
-                    </button>
-
-                    <button
-                        id="btnSizeNormal"
-                        class="btn-size active">
-
-                        A
-
-                    </button>
-
-                    <button
-                        id="btnSizeLarge"
-                        class="btn-size">
-
-                        A+
-
-                    </button>
-
+                    <button id="btnSizeSmall" class="btn-size">A-</button>
+                    <button id="btnSizeNormal" class="btn-size active">A</button>
+                    <button id="btnSizeLarge" class="btn-size">A+</button>
                 </div>
-
             </div>
 
-
         </div>
-
     </div>
-
 </div>
 
 
-
-<!-- =========================================================
+<!-- =====================================================
      MODAL DE PERFIL
-========================================================= -->
+====================================================== -->
 
-<div id="profileModal"
-     class="modal-overlay">
+<div id="profileModal" class="modal-overlay">
 
     <div class="modal-content profile-modal">
 
-
-        <!-- ENCABEZADO -->
-
         <div class="modal-header">
-
-            <h2>
-                Mi Perfil
-            </h2>
+            <h2>Mi Perfil</h2>
 
             <i class="fa-solid fa-xmark close-modal"
                id="closeProfile"></i>
-
         </div>
 
-
-        <!-- CUERPO -->
-
         <div class="modal-body">
-
-
-            <!-- FOTO -->
 
             <div class="profile-photo-section">
 
@@ -258,149 +140,85 @@
 
                     <div id="profilePhotoPreview"
                          class="profile-photo-preview">
-
                         U
-
                     </div>
 
-
-                    <label
-                        for="profilePhotoInput"
-                        class="change-photo-button">
-
+                    <label for="profilePhotoInput"
+                           class="change-photo-button">
                         <i class="fa-solid fa-camera"></i>
-
                     </label>
 
-
-                    <input
-                        type="file"
-                        id="profilePhotoInput"
-                        accept="image/*"
-                        hidden>
-
+                    <input type="file"
+                           id="profilePhotoInput"
+                           accept="image/*"
+                           hidden>
                 </div>
 
-
                 <p class="profile-photo-text">
-
                     Haz clic en la cámara para cambiar tu foto
-
                 </p>
 
             </div>
 
-
-
-            <!-- INFORMACIÓN -->
-
             <div class="profile-form">
 
-
-                <!-- NOMBRE -->
-
                 <div class="profile-field">
+                    <label for="profileNombre">Nombre completo</label>
 
-                    <label for="profileNombre">
-                        Nombre completo
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileNombre"
-                        placeholder="Nombre completo">
-
+                    <input type="text"
+                           id="profileNombre"
+                           placeholder="Nombre completo">
                 </div>
 
-
-                <!-- USUARIO -->
-
                 <div class="profile-field">
+                    <label for="profileUsuario">Nombre de usuario</label>
 
-                    <label for="profileUsuario">
-                        Nombre de usuario
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileUsuario"
-                        readonly>
-
+                    <input type="text"
+                           id="profileUsuario"
+                           readonly>
                 </div>
 
-
-                <!-- ROL -->
-
                 <div class="profile-field">
+                    <label for="profileRol">Rol</label>
 
-                    <label for="profileRol">
-                        Rol
-                    </label>
-
-                    <input
-                        type="text"
-                        id="profileRol"
-                        readonly>
-
+                    <input type="text"
+                           id="profileRol"
+                           readonly>
                 </div>
-
 
             </div>
-
-
-
-            <!-- BOTONES -->
 
             <div class="profile-actions">
 
-                <button
-                    type="button"
-                    id="cancelProfile"
-                    class="btn-modal btn-cancelar">
-
+                <button type="button"
+                        id="cancelProfile"
+                        class="btn-modal btn-cancelar">
                     Cancelar
-
                 </button>
 
-
-                <button
-                    type="button"
-                    id="saveProfile"
-                    class="btn-modal btn-guardar">
-
+                <button type="button"
+                        id="saveProfile"
+                        class="btn-modal btn-guardar">
                     <i class="fa-solid fa-floppy-disk"></i>
-
                     Guardar cambios
-
                 </button>
 
             </div>
 
-
         </div>
-
     </div>
-
 </div>
 
 
-
-<!-- =========================================================
+<!-- =====================================================
      DASHBOARD
-========================================================= -->
+====================================================== -->
 
 <div class="dashboard-container">
 
+    <!-- SIDEBAR -->
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <aside class="sidebar"
-           id="sidebar">
-
-
-        <!-- CABECERA -->
+    <aside class="sidebar" id="sidebar">
 
         <div class="sidebar-header">
 
@@ -409,226 +227,90 @@
                 <i class="fa-solid fa-leaf logo-icon"></i>
 
                 <div class="logo-text">
-
-                    <h2>
-                        HarvestX
-                    </h2>
-
-                    <span>
-                        Sistema Inteligente
-                    </span>
-
+                    <h2>HarvestX</h2>
+                    <span>Sistema Inteligente</span>
                 </div>
 
             </div>
 
-
             <i class="fa-solid fa-xmark close-sidebar-mobile"
-               id="closeSidebarMobile">
-            </i>
+               id="closeSidebarMobile"></i>
 
         </div>
 
 
-
-        <!-- =================================================
-             NAVEGACIÓN
-        ================================================== -->
+        <!-- NAVEGACIÓN -->
 
         <nav class="sidebar-nav">
 
-
-            <!-- DASHBOARD -->
-
-            <a href="inicio.html"
-               class="nav-link">
-
+            <a href="inicio.html" class="nav-link">
                 <i class="fa-solid fa-house"></i>
-
-                <span class="nav-text">
-                    Dashboard
-                </span>
-
+                <span class="nav-text">Dashboard</span>
             </a>
 
-
-
-            <!-- GESTIÓN -->
-
             <div class="nav-category">
-
-                <span class="nav-text">
-                    GESTIÓN
-                </span>
-
+                <span class="nav-text">GESTIÓN</span>
             </div>
 
-
-            <!-- FINCAS -->
-
-            <a href="fincas.html"
-               class="nav-link">
-
+            <a href="fincas.html" class="nav-link">
                 <i class="fa-solid fa-mountain-sun"></i>
-
-                <span class="nav-text">
-                    Fincas
-                </span>
-
+                <span class="nav-text">Fincas</span>
             </a>
 
-
-            <!-- CULTIVOS -->
-
-            <a href="cultivos.html"
-               class="nav-link">
-
+            <a href="cultivos.html" class="nav-link">
                 <i class="fa-solid fa-seedling"></i>
-
-                <span class="nav-text">
-                    Cultivos
-                </span>
-
+                <span class="nav-text">Cultivos</span>
             </a>
 
-
-            <!-- RIEGO -->
-
-            <a href="programacion_de_riego.html"
-               class="nav-link">
-
+            <a href="programacion_de_riego.html" class="nav-link">
                 <i class="fa-solid fa-droplet"></i>
-
-                <span class="nav-text">
-                    Programación de Riego
-                </span>
-
+                <span class="nav-text">Programación de Riego</span>
             </a>
 
-
-            <!-- LABORES -->
-
-            <a href="labores_del_campo.html"
-               class="nav-link">
-
+            <a href="labores_del_campo.html" class="nav-link">
                 <i class="fa-solid fa-tractor"></i>
-
-                <span class="nav-text">
-                    Labores del Campo
-                </span>
-
+                <span class="nav-text">Labores del Campo</span>
             </a>
 
-
-            <!-- CLIMA -->
-
-            <a href="monitoreo_climatico.html"
-               class="nav-link">
-
+            <a href="monitoreo_climatico.html" class="nav-link">
                 <i class="fa-solid fa-cloud-sun"></i>
-
-                <span class="nav-text">
-                    Monitoreo Climático
-                </span>
-
+                <span class="nav-text">Monitoreo Climático</span>
             </a>
 
-
-            <!-- ALERTAS -->
-
-            <a href="alertas.html"
-               class="nav-link">
-
+            <a href="alertas.html" class="nav-link">
                 <i class="fa-solid fa-bell"></i>
-
-                <span class="nav-text">
-                    Alertas
-                </span>
-
+                <span class="nav-text">Alertas</span>
             </a>
 
-
-
-            <!-- REPORTES -->
-
             <div class="nav-category">
-
-                <span class="nav-text">
-                    REPORTES
-                </span>
-
+                <span class="nav-text">REPORTES</span>
             </div>
 
-
-            <a href="reportes_y_estadisticas.html"
-               class="nav-link">
-
+            <a href="reportes_y_estadisticas.html" class="nav-link">
                 <i class="fa-solid fa-chart-column"></i>
-
-                <span class="nav-text">
-                    Reportes y Estadísticas
-                </span>
-
+                <span class="nav-text">Reportes y Estadísticas</span>
             </a>
 
-
-            <!-- HISTORIAL -->
-
-            <a href="historial.html"
-               class="nav-link active">
-
+            <a href="historial.html" class="nav-link active">
                 <i class="fa-solid fa-clock-rotate-left"></i>
-
-                <span class="nav-text">
-                    Historial de Actividades
-                </span>
-
+                <span class="nav-text">Historial de Actividades</span>
             </a>
-
-
-
-            <!-- SISTEMA -->
 
             <div class="nav-category">
-
-                <span class="nav-text">
-                    SISTEMA
-                </span>
-
+                <span class="nav-text">SISTEMA</span>
             </div>
 
-
-            <!-- USUARIOS -->
-
-            <a href="usuarios.html"
-               class="nav-link">
-
+            <a href="usuarios.html" class="nav-link">
                 <i class="fa-solid fa-user"></i>
-
-                <span class="nav-text">
-                    Usuarios
-                </span>
-
+                <span class="nav-text">Usuarios</span>
             </a>
 
-
-            <!-- CONFIGURACIÓN -->
-
-            <a href="#"
-               class="nav-link"
-               id="openSettings">
-
+            <a href="#" class="nav-link" id="openSettings">
                 <i class="fa-solid fa-gear"></i>
-
-                <span class="nav-text">
-                    Configuración
-                </span>
-
+                <span class="nav-text">Configuración</span>
             </a>
-
 
         </nav>
-
 
 
         <!-- CERRAR SESIÓN -->
@@ -640,10 +322,7 @@
                id="cerrarSesion">
 
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
-                <span class="nav-text">
-                    Cerrar Sesión
-                </span>
+                <span class="nav-text">Cerrar Sesión</span>
 
             </a>
 
@@ -652,178 +331,112 @@
     </aside>
 
 
-
-    <!-- =====================================================
+    <!-- =================================================
          CONTENIDO PRINCIPAL
-    ====================================================== -->
+    ================================================== -->
 
-    <main class="main-content"
-          id="mainContent">
+    <main class="main-content" id="mainContent">
 
-
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
+        <!-- TOPBAR -->
 
         <header class="topbar">
 
-
-            <!-- IZQUIERDA -->
-
             <div class="left-controls">
-
-
-                <!-- DESKTOP -->
 
                 <div class="menu-toggle-desktop"
                      id="toggleSidebarDesktop">
-
                     <i class="fa-solid fa-bars"></i>
-
                 </div>
-
-
-                <!-- MÓVIL -->
 
                 <div class="menu-toggle-mobile"
                      id="menuToggleMobile">
-
                     <i class="fa-solid fa-bars"></i>
-
                 </div>
-
-
-                <!-- TÍTULO -->
 
                 <div class="header-title">
-
                     <div>
-
-                        <h1>
-                            HarvestX 🌱
-                        </h1>
-
-                        <p>
-                            Sistema Inteligente de Gestión Agrícola
-                        </p>
-
+                        <h1>HarvestX 🌱</h1>
+                        <p>Sistema Inteligente de Gestión Agrícola</p>
                     </div>
-
                 </div>
-
 
             </div>
 
 
-
-            <!-- =================================================
-                 INFORMACIÓN DEL USUARIO
-            ================================================== -->
-
             <div class="user-info">
 
+                <!-- NOTIFICACIONES -->
 
-<!-- NOTIFICACIONES -->
+                <div class="notifications"
+                     id="notificationsButton"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Abrir notificaciones"
+                     title="Notificaciones">
 
-<div class="notifications"
-     id="notificationsButton"
-     role="button"
-     tabindex="0"
-     aria-label="Abrir notificaciones"
-     title="Notificaciones">
+                    <i class="fa-regular fa-bell"></i>
 
-    <i class="fa-regular fa-bell"></i>
+                    <span class="badge" id="notificationBadge">0</span>
 
-    <span class="badge"
-          id="notificationBadge">
-        0
-    </span>
-
-</div>
-
+                </div>
 
 
                 <!-- PERFIL -->
 
-                <div
-                    class="avatar"
-                    id="openProfile"
-                    aria-label="Abrir perfil"
-                    title="Abrir mi perfil"
-                    style="cursor:pointer;">
+                <div class="avatar"
+                     id="openProfile"
+                     aria-label="Abrir perfil"
+                     title="Abrir mi perfil"
+                     style="cursor:pointer;">
 
-                    <img
-                        id="avatarImagen"
-                        class="avatar-img"
-                        src=""
-                        alt="Foto de perfil">
+                    <img id="avatarImagen"
+                         class="avatar-img"
+                         src=""
+                         alt="Foto de perfil">
 
                 </div>
 
-
-
-                <!-- INFORMACIÓN -->
 
                 <div class="user-details">
 
-                    <span
-                        class="name"
-                        id="nombreUsuario">
-
+                    <span class="name" id="nombreUsuario">
                         Usuario
-
                     </span>
 
-
-                    <span
-                        class="role"
-                        id="rolUsuario">
-
+                    <span class="role" id="rolUsuario">
                         Administrador
-
                     </span>
 
                 </div>
-
 
             </div>
 
         </header>
 
 
-
-        <!-- =====================================================
-             CONTENIDO DEL MÓDULO
-        ====================================================== -->
+        <!-- =================================================
+             MÓDULO HISTORIAL
+        ================================================== -->
 
         <section class="content-grid historial-module">
 
-
-            <!-- =================================================
-                 ENCABEZADO
-            ================================================== -->
+            <!-- ENCABEZADO -->
 
             <div class="historial-header card">
 
                 <div class="historial-title">
 
                     <div class="historial-title-icon">
-
                         <i class="fa-solid fa-clock-rotate-left"></i>
-
                     </div>
 
                     <div>
-
-                        <h2>
-                            Historial de Actividades
-                        </h2>
+                        <h2>Historial de Actividades</h2>
 
                         <p>
                             Consulta y revisa las actividades
                             realizadas dentro de HarvestX.
                         </p>
-
                     </div>
 
                 </div>
@@ -831,143 +444,89 @@
             </div>
 
 
-
-            <!-- =================================================
-                 TARJETAS DE RESUMEN
-            ================================================== -->
+            <!-- ESTADÍSTICAS -->
 
             <div class="historial-stats">
-
 
                 <div class="historial-stat-card">
 
                     <div class="stat-icon activity-icon">
-
                         <i class="fa-solid fa-list-check"></i>
-
                     </div>
 
                     <div class="stat-info">
-
-                        <span>
-                            Actividades de hoy
-                        </span>
-
-                        <strong id="actividadesHoy">
-                            12
-                        </strong>
-
+                        <span>Actividades de hoy</span>
+                        <strong id="actividadesHoy">0</strong>
                     </div>
 
                 </div>
-
 
 
                 <div class="historial-stat-card">
 
                     <div class="stat-icon week-icon">
-
                         <i class="fa-solid fa-calendar-week"></i>
-
                     </div>
 
                     <div class="stat-info">
-
-                        <span>
-                            Esta semana
-                        </span>
-
-                        <strong id="actividadesSemana">
-                            47
-                        </strong>
-
+                        <span>Esta semana</span>
+                        <strong id="actividadesSemana">0</strong>
                     </div>
 
                 </div>
-
 
 
                 <div class="historial-stat-card">
 
                     <div class="stat-icon water-icon">
-
                         <i class="fa-solid fa-droplet"></i>
-
                     </div>
 
                     <div class="stat-info">
-
-                        <span>
-                            Riegos realizados
-                        </span>
-
-                        <strong id="riegosRealizados">
-                            18
-                        </strong>
-
+                        <span>Riegos realizados</span>
+                        <strong id="riegosRealizados">0</strong>
                     </div>
 
                 </div>
-
 
 
                 <div class="historial-stat-card">
 
                     <div class="stat-icon alert-icon">
-
                         <i class="fa-solid fa-bell"></i>
-
                     </div>
 
                     <div class="stat-info">
-
-                        <span>
-                            Alertas atendidas
-                        </span>
-
-                        <strong id="alertasAtendidas">
-                            9
-                        </strong>
-
+                        <span>Alertas atendidas</span>
+                        <strong id="alertasAtendidas">0</strong>
                     </div>
 
                 </div>
 
-
             </div>
 
 
-
-            <!-- =================================================
-                 FILTROS
-            ================================================== -->
+            <!-- FILTROS -->
 
             <div class="historial-filters card">
 
                 <div class="filters-header">
 
                     <div>
-
                         <h3>
-
                             <i class="fa-solid fa-filter"></i>
-
                             Filtrar actividades
-
                         </h3>
 
                         <p>
-                            Busca actividades específicas
-                            del historial.
+                            Busca actividades específicas del historial.
                         </p>
-
                     </div>
 
                 </div>
 
 
                 <div class="filters-grid">
-
 
                     <!-- TIPO -->
 
@@ -977,46 +536,23 @@
                             Tipo de actividad
                         </label>
 
-                        <select
-                            id="filtroTipo"
-                            class="form-select">
+                        <select id="filtroTipo" class="form-select">
 
                             <option value="todos">
                                 Todas las actividades
                             </option>
 
-                            <option value="riego">
-                                Riego
-                            </option>
-
-                            <option value="cultivo">
-                                Cultivos
-                            </option>
-
-                            <option value="labor">
-                                Labores del campo
-                            </option>
-
-                            <option value="alerta">
-                                Alertas
-                            </option>
-
-                            <option value="clima">
-                                Monitoreo climático
-                            </option>
-
-                            <option value="finca">
-                                Fincas
-                            </option>
-
-                            <option value="usuario">
-                                Usuarios
-                            </option>
+                            <option value="riego">Riego</option>
+                            <option value="cultivo">Cultivos</option>
+                            <option value="labor">Labores del campo</option>
+                            <option value="alerta">Alertas</option>
+                            <option value="clima">Monitoreo climático</option>
+                            <option value="finca">Fincas</option>
+                            <option value="usuario">Usuarios</option>
 
                         </select>
 
                     </div>
-
 
 
                     <!-- FECHA -->
@@ -1024,16 +560,14 @@
                     <div class="filter-group">
 
                         <label for="filtroFecha">
-                            Fecha
+                            Fecha específica
                         </label>
 
-                        <input
-                            type="date"
-                            id="filtroFecha"
-                            class="form-input">
+                        <input type="date"
+                               id="filtroFecha"
+                               class="form-input">
 
                     </div>
-
 
 
                     <!-- ESTADO -->
@@ -1044,85 +578,58 @@
                             Estado
                         </label>
 
-                        <select
-                            id="filtroEstado"
-                            class="form-select">
+                        <select id="filtroEstado" class="form-select">
 
-                            <option value="todos">
-                                Todos
-                            </option>
-
-                            <option value="completada">
-                                Completada
-                            </option>
-
-                            <option value="pendiente">
-                                Pendiente
-                            </option>
-
-                            <option value="atendida">
-                                Atendida
-                            </option>
+                            <option value="todos">Todos</option>
+                            <option value="completada">Completada</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="atendida">Atendida</option>
+                            <option value="cancelado">Cancelado</option>
 
                         </select>
 
                     </div>
 
 
-
                     <!-- LIMPIAR -->
 
                     <div class="filter-actions">
 
-                        <button
-                            type="button"
-                            id="limpiarFiltros"
-                            class="btn-filter-clear">
+                        <button type="button"
+                                id="limpiarFiltros"
+                                class="btn-filter-clear">
 
                             <i class="fa-solid fa-rotate-left"></i>
-
                             Limpiar filtros
 
                         </button>
 
                     </div>
 
-
                 </div>
 
             </div>
 
 
-
-            <!-- =================================================
-                 HISTORIAL
-            ================================================== -->
+            <!-- LISTA DE ACTIVIDADES -->
 
             <div class="historial-container card">
-
-
-                <!-- CABECERA -->
 
                 <div class="historial-list-header">
 
                     <div>
-
-                        <h3>
-                            Actividades recientes
-                        </h3>
+                        <h3>Actividades recientes</h3>
 
                         <p id="contadorActividades">
-                            Mostrando 8 actividades
+                            Cargando actividades...
                         </p>
-
                     </div>
 
-
-                    <button
-                        type="button"
-                        id="actualizarHistorial"
-                        class="btn-refresh"
-                        title="Actualizar historial">
+                    <button type="button"
+                            id="actualizarHistorial"
+                            class="btn-refresh"
+                            title="Actualizar historial"
+                            aria-label="Actualizar historial">
 
                         <i class="fa-solid fa-rotate"></i>
 
@@ -1131,557 +638,27 @@
                 </div>
 
 
-
-                <!-- LISTA -->
-
-                <div
-                    class="activity-history-list"
-                    id="activityHistoryList">
-
-
-                    <!-- ACTIVIDAD 1 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="riego"
-                        data-estado="completada"
-                        data-fecha="2026-09-02">
-
-                        <div class="history-icon history-riego">
-
-                            <i class="fa-solid fa-droplet"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Riego completado
-                                </h4>
-
-                                <span class="history-type type-riego">
-                                    Riego
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se realizó el riego programado
-                                para el cultivo de Tomate.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    Finca El Paraíso
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    08:30 AM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-completada">
-                            Completada
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 2 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="cultivo"
-                        data-estado="completada"
-                        data-fecha="2026-09-02">
-
-                        <div class="history-icon history-cultivo">
-
-                            <i class="fa-solid fa-seedling"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Cultivo registrado
-                                </h4>
-
-                                <span class="history-type type-cultivo">
-                                    Cultivos
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se registró un nuevo cultivo
-                                de Brócoli en el sistema.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-seedling"></i>
-                                    Brócoli
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    10:15 AM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-completada">
-                            Completada
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 3 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="alerta"
-                        data-estado="atendida"
-                        data-fecha="2026-09-02">
-
-                        <div class="history-icon history-alerta">
-
-                            <i class="fa-solid fa-bell"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Alerta atendida
-                                </h4>
-
-                                <span class="history-type type-alerta">
-                                    Alerta
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se atendió una alerta relacionada
-                                con el nivel de humedad del suelo.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-                                    Humedad baja
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    11:40 AM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-atendida">
-                            Atendida
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 4 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="labor"
-                        data-estado="completada"
-                        data-fecha="2026-09-01">
-
-                        <div class="history-icon history-labor">
-
-                            <i class="fa-solid fa-tractor"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Labor agrícola registrada
-                                </h4>
-
-                                <span class="history-type type-labor">
-                                    Labores
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se registró una jornada de
-                                fertilización en el cultivo de Limón.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-lemon"></i>
-                                    Limón
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    02:20 PM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-completada">
-                            Completada
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 5 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="clima"
-                        data-estado="completada"
-                        data-fecha="2026-09-01">
-
-                        <div class="history-icon history-clima">
-
-                            <i class="fa-solid fa-cloud-sun"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Monitoreo climático
-                                </h4>
-
-                                <span class="history-type type-clima">
-                                    Clima
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se registraron las condiciones
-                                climáticas de la finca.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-temperature-half"></i>
-                                    Condiciones normales
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    04:10 PM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-completada">
-                            Completada
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 6 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="finca"
-                        data-estado="completada"
-                        data-fecha="2026-08-31">
-
-                        <div class="history-icon history-finca">
-
-                            <i class="fa-solid fa-mountain-sun"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Finca actualizada
-                                </h4>
-
-                                <span class="history-type type-finca">
-                                    Fincas
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se actualizaron los datos de
-                                la finca Santa María.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    Finca Santa María
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    09:05 AM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-completada">
-                            Completada
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 7 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="usuario"
-                        data-estado="completada"
-                        data-fecha="2026-08-30">
-
-                        <div class="history-icon history-usuario">
-
-                            <i class="fa-solid fa-user-plus"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Usuario registrado
-                                </h4>
-
-                                <span class="history-type type-usuario">
-                                    Usuarios
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se registró un nuevo usuario
-                                en HarvestX.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-user-plus"></i>
-                                    Nuevo usuario
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    01:30 PM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-completada">
-                            Completada
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACTIVIDAD 8 -->
-
-                    <div
-                        class="history-item"
-                        data-tipo="riego"
-                        data-estado="pendiente"
-                        data-fecha="2026-08-30">
-
-                        <div class="history-icon history-riego">
-
-                            <i class="fa-solid fa-droplet"></i>
-
-                        </div>
-
-
-                        <div class="history-content">
-
-                            <div class="history-main">
-
-                                <h4>
-                                    Riego programado
-                                </h4>
-
-                                <span class="history-type type-riego">
-                                    Riego
-                                </span>
-
-                            </div>
-
-
-                            <p>
-                                Se programó un nuevo riego
-                                para el cultivo de Brócoli.
-                            </p>
-
-
-                            <div class="history-meta">
-
-                                <span>
-                                    <i class="fa-solid fa-user"></i>
-                                    Administrador
-                                </span>
-
-                                <span>
-                                    <i class="fa-solid fa-seedling"></i>
-                                    Brócoli
-                                </span>
-
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    05:45 PM
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="history-status status-pendiente">
-                            Pendiente
-                        </div>
-
-                    </div>
-
+                <!--
+                    JavaScript insertará aquí las actividades
+                    obtenidas desde el backend.
+                -->
+
+                <div class="activity-history-list"
+                     id="activityHistoryList"
+                     aria-live="polite">
 
                 </div>
 
 
-
                 <!-- SIN RESULTADOS -->
 
-                <div
-                    id="historialVacio"
-                    class="historial-empty"
-                    style="display:none;">
+                <div id="historialVacio"
+                     class="historial-empty"
+                     style="display:none;">
 
                     <i class="fa-solid fa-clock-rotate-left"></i>
 
-                    <h3>
-                        No se encontraron actividades
-                    </h3>
+                    <h3>No se encontraron actividades</h3>
 
                     <p>
                         Intenta cambiar los filtros para encontrar
@@ -1690,33 +667,24 @@
 
                 </div>
 
-
             </div>
-
 
         </section>
 
-
     </main>
-
 
 </div>
 
 
-
-<!-- =========================================================
+<!-- =====================================================
      JAVASCRIPT
-========================================================= -->
+====================================================== -->
 
 <script src="../../JS/paginas/configuracion.js"></script>
-
 <script src="../../JS/paginas/administrador.js"></script>
-
-<!-- JS DEL MÓDULO -->
-  <script src="../../JS/paginas/sistema-notificaciones.js"></script>
+<script src="../../JS/paginas/sistema-notificaciones.js"></script>
 <script src="../../JS/paginas/historial.js"></script>
 
 
 </body>
-
 </html>
